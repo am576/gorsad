@@ -1,0 +1,31 @@
+.app-container {
+  min-height: 100%;
+  position: relative;
+  background: #f9f9f9;
+  padding-bottom: 30px;
+}
+
+.navbar {
+  padding-left: 60px;
+}
+
+.app-container .content-container .side-menu {
+  width: 60px;
+}
+
+.navbar-fixed-top {
+  position: fixed;
+  width: 100%;
+}
+
+.side-menu.sidebar {
+  position: fixed;
+  height: 100%;
+  background-image: linear-gradient(45deg, #353d47, #21292e);
+  transition: width 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.side-menu.sidebar:hover {
+  width: 250px;
+}
+
