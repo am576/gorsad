@@ -70,9 +70,15 @@
             </div>
         </nav>
         <div class="side-menu sidebar">
-            <ul>
-                <li class=""><a target="_self" href="http://127.0.0.1:8001/admin"><span class="mdi mdi-cart"></span>
-                        <span class="title">Dashboard</span></a> <!----></li>
+            <ul class="nav navbar-nav">
+                @foreach(config('admin.menu') as $menu_item)
+                    <li>
+                        <a href="{{ url('/admin/'.$menu_item['route']) }}">
+                            <span class="mdi mdi-{{$menu_item['icon']}}"></span>
+                            <span class="title">{{$menu_item['title']}}</span>
+                        </a>
+                    </li>
+                @endforeach
             </ul>
         </div>
     </div>

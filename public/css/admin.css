@@ -25,7 +25,17 @@
   transition: width 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
+.side-menu.sidebar ul li {
+  color: white;
+}
+
 .side-menu.sidebar:hover {
   width: 250px;
+}
+
+.side-menu.sidebar span.mdi {
+  display: inline-block;
+  text-align: center;
+  width: 38px;
 }
 
