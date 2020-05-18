@@ -28,44 +28,19 @@
                         <li class="active">
                             <a href="http://127.0.0.1:8001/admin"><i class="voyager-boat"></i> Панель управления</a>
                         </li>
-                        <li>Products</li>
                     </ol>
                 </div>
                 <ul class="nav navbar-nav  navbar-right ">
-                    <li class="dropdown profile">
-                        <a href="#" class="dropdown-toggle text-right" data-toggle="dropdown" role="button" aria-expanded="false"><img src="http://localhost:8000/storage/users/default.png" class="profile-img"> <span class="caret"></span></a>
-                        <ul class="dropdown-menu dropdown-menu-animated">
-                            <li class="profile-img">
-                                <img src="http://localhost:8000/storage/users/default.png" class="profile-img">
-                                <div class="profile-body">
-                                    <h5>admin</h5>
-                                    <h6>admin@karandash.zp.ua</h6>
-                                </div>
-                            </li>
-                            <li class="divider"></li>
-                            <li class="class-full-of-rum">
-                                <a href="http://127.0.0.1:8001/admin/profile">
-                                    <i class="voyager-person"></i>
-                                    Профиль
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/" target="_blank">
-                                    <i class="voyager-home"></i>
-                                    Главная
-                                </a>
-                            </li>
-                            <li>
-                                <form action="http://127.0.0.1:8001/admin/logout" method="POST">
-                                    <input type="hidden" name="_token" value="OoQIko2UXpwVyt6f5x9p1EbkoS3ce9qYtt3vXAK6">
-                                    <button type="submit" class="btn btn-danger btn-block">
-                                        <i class="voyager-power"></i>
-                                        Выход
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
+
+                <li>
+                    <form action="http://127.0.0.1:8001/admin/logout" method="POST">
+                        {{ csrf_field() }}
+                        <button type="submit" class="btn btn-danger btn-block">
+                            <i class="voyager-power"></i>
+                            Выход
+                        </button>
+                    </form>
+                </li>
                 </ul>
             </div>
         </nav>

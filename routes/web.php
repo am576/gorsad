@@ -29,4 +29,12 @@ Route::prefix('admin')->group(function(){
     Route::post('logout/', 'Auth\AdminLoginController@logout')->name('admin.logout');
     Route::get('/','Auth\AdminController@index')->name('admin.dashboard');
 
+    Route::resources([
+        'products'    => 'ProductController',
+        'categories'  => 'CategoriyController',
+        'attributes'  => 'AttributeController'
+    ]);
 });
+
+
+
