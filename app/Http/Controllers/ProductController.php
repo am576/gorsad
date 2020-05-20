@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\View;
 class ProductController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
+
     public function index()
     {
         $products = Product::all();
@@ -46,6 +51,8 @@ class ProductController extends Controller
        ]);
 
        $product->save();
+
+       return redirect()->intended(route('products.index'));
     }
 
     /**

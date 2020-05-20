@@ -40,3 +40,23 @@ $sidebar-width : 60px;
     text-align: center;
     width: 38px;
 }
+
+.app-container .content-container .side-body.padding-top {
+    padding-top: 62px;
+}
+
+.breadcrumb {
+    list-style: none;
+    background-color: #fff;
+    border-radius: 25px;
+    position: relative;
+    top: 2px;
+    border: 1px solid #f9f9f9;
+    font-size: 12px;
+    padding: 4px 15px 4px 10px;
+}
+
+.app-container .side-body {
+    margin-left: 50px;
+    margin-right: 12px;
+}

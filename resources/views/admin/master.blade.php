@@ -21,12 +21,9 @@
         <nav class="navbar navbar-default navbar-fixed-top navbar-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <button class="hamburger btn-link">
-                        <span class="hamburger-inner"></span>
-                    </button>
                     <ol class="breadcrumb hidden-xs">
                         <li class="active">
-                            <a href="http://127.0.0.1:8001/admin"><i class="voyager-boat"></i> Панель управления</a>
+                            <a href="http://127.0.0.1:8001/admin"><i class="mdi mdi-home"></i> Панель управления</a>
                         </li>
                     </ol>
                 </div>
@@ -55,6 +52,13 @@
                     </li>
                 @endforeach
             </ul>
+        </div>
+        <div class="container-fluid">
+            <div class="side-body padding-top">
+                @yield('page_header')
+                @yield('content')
+            </div>
+
         </div>
     </div>
 </div>
