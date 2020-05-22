@@ -6,6 +6,8 @@
 
     <title>Laravel</title>
 
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
@@ -53,7 +55,7 @@
                 @endforeach
             </ul>
         </div>
-        <div class="container-fluid">
+        <div id="app" class="container-fluid">
             <div class="side-body padding-top">
                 @yield('page_header')
                 @yield('content')

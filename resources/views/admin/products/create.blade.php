@@ -25,7 +25,7 @@
     </div>
     <div class="form-group">
         <label for="category">Категория</label>
-        <input type="text" id="category_id" name="category_id">
+        <category-selector :categories="{{App\Category::all()}}"></category-selector>
     </div>
     <div class="form-group">
         <label for="price">Цена</label>

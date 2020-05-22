@@ -1,6 +1,8 @@
 @extends('admin.master')
 @section('content')
+
     <div class="page-content browse container-fluid">
+
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-bordered">
@@ -24,7 +26,7 @@
                                     <tr>
                                         <td>{{$product->title}}</td>
                                         <td>{{$product->code}}</td>
-                                        <td>{{$product->category_id}}</td>
+                                        <td>{{$product->category->title}}</td>
                                         <td>{{$product->price}}</td>
                                         <td>{{$product->discount}}</td>
                                         <td>{{$product->quantity}}</td>
