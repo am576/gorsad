@@ -32,8 +32,8 @@
                 <ul class="nav navbar-nav  navbar-right ">
 
                 <li>
-                    <form action="http://127.0.0.1:8001/admin/logout" method="POST">
-                        {{ csrf_field() }}
+                    <form action="http://127.0.0.1:8000/admin/logout" method="POST">
+                        @csrf
                         <button type="submit" class="btn btn-danger btn-block">
                             <i class="voyager-power"></i>
                             Выход

@@ -13,18 +13,21 @@
                                     <th>Родит. категория</th>
                                     <th>Картинка</th>
                                     <th>Количество товаров</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($categories as $category)
                                     <tr>
-                                        <td>{{$product->title}}</td>
-                                        <td>{{$product->parent_id}}</td>
+                                        <td>{{$category->title}}</td>
+                                        <td>{{$category->parent_id}}</td>
                                         <td></td>
                                         <td></td>
+                                        <td>@include('admin.macros.table-buttons', ['entity' => $category])</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
+                            </table>
                     </div>
                 </div>
             </div>
