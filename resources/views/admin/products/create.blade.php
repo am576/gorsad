@@ -24,8 +24,8 @@
         <input type="text" id="description" name="description">
     </div>
     <div class="form-group">
-        <label for="category">Категория</label>
-        <category-selector :categories="{{App\Category::all()}}"></category-selector>
+        <label for="category_id">Категория</label>
+        @include('admin.macros.category-selector')
     </div>
     <div class="form-group">
         <label for="price">Цена</label>

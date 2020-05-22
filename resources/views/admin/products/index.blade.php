@@ -19,6 +19,7 @@
                                     <th>Количество</th>
                                     <th>Статус</th>
                                     <th>Добавлен</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -32,6 +33,9 @@
                                         <td>{{$product->quantity}}</td>
                                         <td>{{$product->status}}</td>
                                         <td>{{$product->created_at}}</td>
+                                        <td>
+                                            @include('admin.macros.table-buttons', ['entity' => $product])
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

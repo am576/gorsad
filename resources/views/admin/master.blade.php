@@ -25,7 +25,7 @@
                 <div class="navbar-header">
                     <ol class="breadcrumb hidden-xs">
                         <li class="active">
-                            <a href="http://127.0.0.1:8001/admin"><i class="mdi mdi-home"></i> Панель управления</a>
+                            <a href="http://127.0.0.1:8000/admin"><i class="mdi mdi-home"></i> Панель управления</a>
                         </li>
                     </ol>
                 </div>
