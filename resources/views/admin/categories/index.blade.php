@@ -1,4 +1,7 @@
 @extends('admin.master')
+@section('page_header')
+    @include('admin.partials.page_header')
+@endsection
 @section('content')
     <div class="page-content browse container-fluid">
         <div class="row">

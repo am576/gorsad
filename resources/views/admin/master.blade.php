@@ -45,7 +45,7 @@
         </nav>
         <div class="side-menu sidebar">
             <ul class="nav navbar-nav">
-                @foreach(config('admin.menu') as $menu_item)
+                @foreach(config('admin.menu') as $menu_title => $menu_item)
                     <li>
                         <a href="{{ url('/admin/'.$menu_item['route']) }}">
                             <span class="mdi mdi-{{$menu_item['icon']}}"></span>
