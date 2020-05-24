@@ -1,4 +1,7 @@
 @extends('admin.master')
+@section('page_header')
+    @include('admin.partials.page_header', ['entity' => 'product', 'mode' => 'edit'])
+@endsection
 @section('content')
     @if ($errors->any())
         <div class="alert alert-danger">

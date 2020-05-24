@@ -2,18 +2,21 @@
 
 return [
   'menu' => [
-      'products' =>[
-          'title' => 'Товары',
+      'product' =>[
+          'title' => 'товары',
+          'singular' => 'товар',
           'route' => 'products',
           'icon'  => 'cart'
       ],
-      'categories' =>[
-          'title' => 'Категории',
+      'category' =>[
+          'title' => 'категории',
+          'singular' => 'категория',
           'route' => 'categories',
           'icon'  => 'format-list-bulleted-square'
       ],
-      'attributes'=>[
-          'title' => 'Атрибуты',
+      'attribute'=>[
+          'title' => 'атрибуты',
+          'singular' => 'атрибут',
           'route' => 'attributes',
           'icon'  => 'google-circles-extended'
       ],
