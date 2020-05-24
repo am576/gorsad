@@ -49,7 +49,7 @@
                     <li>
                         <a href="{{ url('/admin/'.$menu_item['route']) }}">
                             <span class="mdi mdi-{{$menu_item['icon']}}"></span>
-                            <span class="title">{{$menu_item['title']}}</span>
+                            <span class="title">{{Str::ucfirst($menu_item['title'])}}</span>
                         </a>
                     </li>
                 @endforeach

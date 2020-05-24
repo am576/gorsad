@@ -21,4 +21,14 @@ else
         <i class="mdi mdi-{{ $entity_config['icon'] }}"></i>
         {{$title}}
     </h1>
+    @if($with_buttons)
+        <a href="{{ route($entity_config['route'].'.create') }}" class="btn btn-success btn-add-new">
+            <i class="mdi mdi-plus"></i>
+            <span>Создать</span>
+        </a>
+        <a href="#" class="btn btn-danger" id="bulk_delete_btn">
+            <i class="mdi mdi-trash-can-outline"></i>
+            <span>Удалить выбранное</span>
+        </a>
+    @endif
 </div>

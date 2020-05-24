@@ -1,6 +1,12 @@
 @extends('admin.master')
 @section('page_header')
-    @include('admin.partials.page_header', ['entity' => 'category', 'mode' => 'index'])
+    @include('admin.partials.page_header',
+                [
+                    'entity' => 'category',
+                    'mode' => 'index',
+                    'with_buttons' => true
+                ]
+            )
 @endsection
 @section('content')
     <div class="page-content browse container-fluid">
