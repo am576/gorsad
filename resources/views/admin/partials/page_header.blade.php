@@ -21,7 +21,7 @@ else
         <i class="mdi mdi-{{ $entity_config['icon'] }}"></i>
         {{$title}}
     </h1>
-    @if($with_buttons)
+    @if($with_buttons ?? '')
         <a href="{{ route($entity_config['route'].'.create') }}" class="btn btn-success btn-add-new">
             <i class="mdi mdi-plus"></i>
             <span>Создать</span>

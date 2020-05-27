@@ -60,7 +60,6 @@
                 @yield('page_header')
                 @yield('content')
             </div>
-
         </div>
     </div>
 </div>

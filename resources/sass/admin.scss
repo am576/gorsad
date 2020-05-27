@@ -13,6 +13,7 @@ $sidebar-width : 60px;
 
 .app-container .content-container .side-menu {
     width: $sidebar-width;
+    z-index: 9999;
 }
 
 .navbar-fixed-top {
@@ -38,7 +39,8 @@ $sidebar-width : 60px;
 .side-menu.sidebar span.mdi {
     display: inline-block;
     text-align: center;
-    width: 38px;
+    width: 70px;
+    font-size: 26px;
 }
 
 .app-container .content-container .side-body.padding-top {
@@ -83,4 +85,20 @@ $sidebar-width : 60px;
     border: 1px solid transparent;
     border-radius: 4px;
     box-shadow: 0 2px 10px rgba(0,0,0,.05);
+}
+
+.app-container .content-container .side-menu .navbar-nav li {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}
+
+.app-container .content-container .side-menu .navbar-nav li a {
+    height: 50px;
+    line-height: 50px;
+    display: block;
+}
+
+.app-container .content-container .side-menu .navbar-nav li a:hover {
+    text-decoration: none;
 }

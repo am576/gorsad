@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductStore;
 use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -29,22 +30,12 @@ class ProductController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(ProductStore $request)
     {
-       $request->validate([
-          'title' => 'required',
-          'code'  =>  'required'
-       ]);
 
-       $product = new Product([
-           'title' => $request->get('title'),
-           'code'  => $request->get('code'),
-           'description'  => $request->get('description'),
-           'category_id'  => $request->get('category_id'),
-           'price'  => $request->get('price'),
-           'discount'  => $request->get('discount'),
-           'status'  => $request->get('status')
-       ]);
+//        $validated = $request->validated();
+
+       $product = new Product($request->all());
 
        $product->save();
 
@@ -71,13 +62,9 @@ class ProductController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(ProductStore $request, $id)
     {
-        $request->validate([
-            'title' => 'required',
-            'code'  =>  'required',
-            'price' =>  'digits_between:1,6'
-        ]);
+        $validated = $request->validated();
 
         Product::whereId($id)->update($request->except(['_token','_method']));
 
