@@ -29,7 +29,7 @@
                                 @foreach($categories as $category)
                                     <tr>
                                         <td>{{$category->title}}</td>
-                                        <td>{{$category->parent_id}}</td>
+                                        <td>{{$category->parentCategory()->title ?? '-'}}</td>
                                         <td></td>
                                         <td></td>
                                         <td>@include('admin.macros.table-buttons', ['entity' => $category])</td>

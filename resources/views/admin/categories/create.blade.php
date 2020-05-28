@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
         <label for="parent_id">Родительская категория</label>
-        @include('admin.macros.category-selector')
+        @include('admin.macros.category-selector', ['input_name' => 'parent_id'])
     </div>
     <div class="form-group">
         <label for="description">Описание</label>

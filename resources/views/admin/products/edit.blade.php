@@ -29,7 +29,7 @@
         </div>
         <div class="form-group">
             <label for="category_id">Категория</label>
-            @include('admin.macros.category-selector', ['product_category' => $product->category_id])
+            @include('admin.macros.category-selector', ['product_category' => $product->category_id, 'children_only' => true])
         </div>
         <div class="form-group">
             <label for="price">Цена</label>

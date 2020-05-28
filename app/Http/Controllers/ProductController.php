@@ -33,8 +33,6 @@ class ProductController extends Controller
     public function store(ProductStore $request)
     {
 
-//        $validated = $request->validated();
-
        $product = new Product($request->all());
 
        $product->save();
@@ -64,21 +62,17 @@ class ProductController extends Controller
 
     public function update(ProductStore $request, $id)
     {
-        $validated = $request->validated();
-
         Product::whereId($id)->update($request->except(['_token','_method']));
 
         return redirect()->intended(route('products.index'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
+
+        return redirect()->intended(route('products.index'));
     }
 }

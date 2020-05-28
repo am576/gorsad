@@ -25,7 +25,7 @@
     </div>
     <div class="form-group">
         <label for="category_id">Категория</label>
-        @include('admin.macros.category-selector')
+        @include('admin.macros.category-selector', ['children_only' => true])
     </div>
     <div class="form-group">
         <label for="price">Цена</label>

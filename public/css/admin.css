@@ -101,3 +101,7 @@
   text-decoration: none;
 }
 
+form.table-delete-entity {
+  display: inline-block;
+}
+
