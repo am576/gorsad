@@ -7,7 +7,6 @@ if($children_only ?? '')
 if($exclude_self ?? '')
 {
 }
-dd($categories);
 @endphp
 <select name="{{$input_name ?? 'category_id'}}" id="{{$input_name ?? 'category_id'}}">
         <option value="0">-</option>

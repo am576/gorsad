@@ -4,5 +4,6 @@
 <form class="table-delete-entity" action="{{$entity->getTable()}}/{{$entity->id}}" method="post">
 @csrf
 @method('DELETE')
-<input type="submit" title="Удалить" class="btn btn-sm btn-danger pull-right delete hidden-xs hidden-sm" value="Удалить">
+    <button type="submit" title="Удалить" class="btn btn-sm btn-danger pull-right delete hidden-xs hidden-sm" value="Удалить" onclick="return confirm('Вы уверены, что хотите удалить этот объект?');">Удалить</button>
 </form>
+
