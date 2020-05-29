@@ -29,7 +29,7 @@
         </div>
         <div class="form-group">
             <label for="category_id">Категория</label>
-            @include('admin.macros.category-selector', ['product_category' => $product->category_id, 'children_only' => true])
+            @include('admin.macros.category-selector', ['selected_category' => $product->category_id, 'children_only' => true])
         </div>
         <div class="form-group">
             <label for="price">Цена</label>
@@ -48,7 +48,7 @@
             <input type="text" id="status" name="status" value="{{$product->status}}">
         </div>
         <div class="form-group">
-            <input type="submit" value="Обновить">
+            <input type="submit" value="Сохранить">
         </div>
     </form>
 @endsection

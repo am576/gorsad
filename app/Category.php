@@ -23,4 +23,11 @@ class Category extends Model
     {
         return Category::find($this->parent_id);
     }
+
+    public function getCategoriesExceptSelf()
+    {
+        return Category::where('parent_id', '!=', $this->id)
+            ->where('id', '!=', $this->id)
+            ->get();
+    }
 }
