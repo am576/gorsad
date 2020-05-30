@@ -11,7 +11,7 @@ class Category extends Model
     protected $fillable = ['title', 'parent_id', 'description'];
 
     public function products() {
-        return $this->hasMany('App\Product');
+        return $this->hasMany('App\Product','category_id','id');
     }
 
     public static function getChildrenOnly()

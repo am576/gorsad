@@ -11,7 +11,7 @@ class Product extends Model
     protected $fillable = ['title', 'code', 'description', 'category_id', 'price', 'discount', 'status', 'quantity'];
 
     public function category() {
-        return $this->belongsTo('App\Category');
+        return $this->belongsTo('App\Category','category_id');
     }
 
     public static function statuses()
