@@ -4,9 +4,6 @@ if($children_only ?? '')
 {
     $categories = App\Category::getChildrenOnly();
 }
-if($exclude_self ?? '')
-{
-}
 @endphp
 <select name="{{$input_name ?? 'category_id'}}" id="{{$input_name ?? 'category_id'}}">
         <option value="0">-</option>

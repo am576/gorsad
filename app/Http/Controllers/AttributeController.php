@@ -2,39 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Attribute;
 use Illuminate\Http\Request;
 
 class AttributeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        return view('admin.attributes.index')->with('attributes', Attribute::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        //
+        return view('admin.attributes.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'value' => 'required'
+        ]);
+
+        $attribute = new Attribute($request->all());
+        $attribute->save();
+
+        return redirect(route('attributes.index'));
     }
 
     /**
@@ -48,27 +44,20 @@ class AttributeController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
-        //
+        $attribute = Attribute::find($id);
+
+        return view('admin.attributes.edit')->with(['attribute' => $attribute]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
-        //
+        Attribute::whereId($id)->update($request->except(['_token','_method']));
+
+        return redirect()->intended(route('attributes.index'));
     }
 
     /**

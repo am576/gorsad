@@ -14,6 +14,11 @@ class Category extends Model
         return $this->hasMany('App\Product','category_id','id');
     }
 
+    public function attributes()
+    {
+        return $this->hasMany('App\Attribute','category_id','id');
+    }
+
     public static function getChildrenOnly()
     {
         return Category::where('parent_id', '<>', 0)->get();
