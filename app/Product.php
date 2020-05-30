@@ -14,9 +14,14 @@ class Product extends Model
         return $this->belongsTo('App\Category');
     }
 
+    public static function statuses()
+    {
+        return ['Неактивный', 'Активный'];
+    }
+
     public static function getStatusName($status)
     {
-        $statuses = ['Неактивный', 'Активный'];
+        $statuses = self::statuses();
 
         return $statuses[$status];
     }

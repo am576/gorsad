@@ -41,7 +41,7 @@
     </div>
     <div class="form-group">
         <label for="status">Статус</label>
-        <input type="text" id="status" name="status" value="{{old('status')}}">
+        @include('admin.macros.product-status-selector')
     </div>
     <div class="form-group">
         <input type="submit" value="Создать">

@@ -45,7 +45,7 @@
         </div>
         <div class="form-group">
             <label for="status">Статус</label>
-            <input type="text" id="status" name="status" value="{{$product->status}}">
+            @include('admin.macros.product-status-selector', ['value' => $product->status])
         </div>
         <div class="form-group">
             <input type="submit" value="Сохранить">
