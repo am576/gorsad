@@ -28,7 +28,9 @@ class ProductStore extends FormRequest
             'title' => 'required',
             'code'  =>  'required',
             'description'  =>  'required',
-            'price' =>  'digits_between:0,6'
+            'price' =>  'required | digits_between:0,6',
+            'quantity' => 'required',
+            'status' => 'required'
         ];
     }
 }

@@ -13,15 +13,15 @@
 @csrf
     <div class="form-group">
         <label for="title">Название</label>
-        <input type="text" id="title" name="title" value="{{old('title')}}">
+        <input type="text" id="title" name="title" value="{{old('title')}}" autocomplete="off">
     </div>
     <div class="form-group">
         <label for="code">Код товара</label>
-        <input type="text" id="code" name="code" value="{{old('code')}}">
+        <input type="text" id="code" name="code" value="{{old('code')}}" autocomplete="off">
     </div>
     <div class="form-group">
         <label for="description">Описание</label>
-        <input type="text" id="description" name="description" value="{{old('description')}}">
+        <input type="text" id="description" name="description" value="{{old('description')}}" autocomplete="off">
     </div>
     <div class="form-group">
         <label for="category_id">Категория</label>

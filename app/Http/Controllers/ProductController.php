@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStore;
 use App\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\View;
 
 class ProductController extends Controller
 {
@@ -32,9 +29,16 @@ class ProductController extends Controller
 
     public function store(ProductStore $request)
     {
+       $input = $request->input();
+       foreach($input as $field=>$value)
+       {
+           if ($value == '')
+           {
+               $input[$field] = 0;
+           }
 
-       $product = new Product($request->all());
-
+       }
+       $product = new Product($input);
        $product->save();
 
        return redirect()->intended(route('products.index'));
@@ -62,7 +66,19 @@ class ProductController extends Controller
 
     public function update(ProductStore $request, $id)
     {
-        Product::whereId($id)->update($request->except(['_token','_method']));
+        $product = Product::findOrFail($id);
+
+        $input = $request->all();
+        foreach($input as $field=>$value)
+        {
+            if ($value == '')
+            {
+                $input[$field] = 0;
+            }
+
+        }
+        $product->fill($input);
+        $product->save();
 
         return redirect()->intended(route('products.index'));
     }

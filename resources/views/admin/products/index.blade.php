@@ -34,7 +34,7 @@
                                     <tr>
                                         <td>{{$product->title}}</td>
                                         <td>{{$product->code}}</td>
-                                        <td>{{$product->category->title}}</td>
+                                        <td>{{$product->category->title ?? '-'}}</td>
                                         <td>{{$product->price}}</td>
                                         <td>{{$product->discount}}</td>
                                         <td>{{$product->quantity}}</td>
