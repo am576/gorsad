@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class AttributeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
 
     public function index()
     {
@@ -60,14 +64,13 @@ class AttributeController extends Controller
         return redirect()->intended(route('attributes.index'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
-        //
+        $attribute = Attribute::find($id);
+
+        $attribute->delete();
+
+        return redirect(route('attributes.index'));
     }
 }
