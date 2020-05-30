@@ -38,7 +38,7 @@
                                         <td>{{$product->price}}</td>
                                         <td>{{$product->discount}}</td>
                                         <td>{{$product->quantity}}</td>
-                                        <td>{{$product->status}}</td>
+                                        <td>@include('admin.macros.product-status-label', ['product' => $product])</td>
                                         <td>{{$product->created_at}}</td>
                                         <td>
                                             @include('admin.macros.table-buttons', ['entity' => $product])
