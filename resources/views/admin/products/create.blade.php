@@ -48,16 +48,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="attribute_name">Название</label>
-                    <input class="form-control" type="text" name="attribute_name" id="attribute_name">
-                </div>
-                <div class="form-group">
-                    <label for="attribute_value">Значение</label>
-                    <input class="form-control" type="text" name="attribute_value" id="attribute_value">
-                </div>
-            </div>
+            <attribute-selector></attribute-selector>
         </div>
     </div>
     <div class="form-group">

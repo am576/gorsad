@@ -20,7 +20,7 @@
                                 <tr>
                                     <th>Категория</th>
                                     <th>Название</th>
-                                    <th>Значение</th>
+                                    <th>Значения</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -29,7 +29,11 @@
                                     <tr>
                                         <td>{{$attribute->category->title ?? '-'}}</td>
                                         <td>{{$attribute->name}}</td>
-                                        <td>{{$attribute->value}}</td>
+                                        <td>
+                                            @foreach($attribute->values() as $value)
+                                            {{$value->value}};
+                                            @endforeach
+                                        </td>
                                         <td>@include('admin.macros.table-buttons', ['entity' => $attribute])</td>
                                     </tr>
                                 @endforeach

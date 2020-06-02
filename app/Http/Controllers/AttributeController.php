@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Attribute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AttributeController extends Controller
 {
@@ -31,8 +32,13 @@ class AttributeController extends Controller
             'value' => 'required'
         ]);
 
-        $attribute = new Attribute($request->all());
+        $attribute = new Attribute($request->except(['value']));
         $attribute->save();
+
+        DB::table('attributes_values')->insert([
+           'attribute_id' => $attribute->id,
+           'value' => $request->value
+        ]);
 
         return redirect(route('attributes.index'));
     }

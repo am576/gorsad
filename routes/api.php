@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 Route::get('getAllCategories','ApiController@getAllCategories');
 Route::get('getChildCategories','ApiController@getChildCategories');
+Route::get('getAttributesForCategory','ApiController@getAttributesForCategory');
+Route::get('getAttributeValues', 'ApiController@getAttributeValues');

@@ -1,5 +1,5 @@
 <template>
-        <select name="category_id" id="category_id">
+        <select name="category_id" id="category_id" @change="changeCategory" v-model="category_id">
             <option value="0">...</option>
             <option v-for="category in categories" :value="category.id" :key="category.id">{{category.title}}</option>
         </select>
@@ -15,7 +15,7 @@
         },
         data() {
             return {
-                category : 0,
+                category_id : 0,
                 categories : []
             }
         },
@@ -31,6 +31,10 @@
                     .then((response) => {
                         this.categories = response.data;
                     })
+            },
+            changeCategory()
+            {
+                this.$eventBus.$emit('changeCategory', this.category_id)
             }
         },
         created: function () {
