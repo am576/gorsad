@@ -19,7 +19,6 @@ class Attribute extends Model
     public function values()
     {
         return DB::table('attributes_values')
-            ->select('value')
             ->where('attribute_id', $this->id)
             ->get();
     }

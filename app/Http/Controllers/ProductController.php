@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStore;
 use App\Product;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -29,7 +30,7 @@ class ProductController extends Controller
 
     public function store(ProductStore $request)
     {
-       $input = $request->input();
+       $input = $request->except(['attribute_id', 'attribute_value_id']);
        foreach($input as $field=>$value)
        {
            if ($value == '')
@@ -40,6 +41,15 @@ class ProductController extends Controller
        }
        $product = new Product($input);
        $product->save();
+
+       foreach($request->attribute_id as $index => $id)
+       {
+           DB::table('products_attributes')->insert([
+              'product_id' => $product->id,
+              'attribute_id' => $id,
+              'attribute_value_id' => $request->attribute_value_id[$index]
+           ]);
+       }
 
        return redirect()->intended(route('products.index'));
     }

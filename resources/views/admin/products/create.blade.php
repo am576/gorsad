@@ -28,7 +28,6 @@
             <div class="form-group">
                 <label for="category_id">Категория</label>
                 <category-selector :children_only="true"></category-selector>
-                @include('admin.macros.category-selector', ['children_only' => true])
             </div>
             <div class="form-group">
                 <label for="price">Цена</label>
@@ -48,6 +47,7 @@
             </div>
         </div>
         <div class="col-md-4">
+            <h3>Атрибуты</h3>
             <attribute-selector></attribute-selector>
         </div>
     </div>

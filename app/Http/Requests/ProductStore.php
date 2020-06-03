@@ -26,11 +26,12 @@ class ProductStore extends FormRequest
     {
         return [
             'title' => 'required',
+            'category_id' => 'numeric',
             'code'  =>  'required',
             'description'  =>  'required',
             'price' =>  'required | numeric | max:1000000',
             'discount' => 'numeric | max:100',
-            'quantity' => 'required | numeric | max:1000000',
+            'quantity' => 'numeric | max:1000000',
             'status' => 'required | numeric'
         ];
     }
