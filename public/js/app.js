@@ -2007,9 +2007,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Category selector mounted');
+    console.log(this.selected_category);
   },
   props: {
-    children_only: Boolean
+    children_only: Boolean,
+    category_id: 0
   },
   data: function data() {
     return {
@@ -37571,23 +37573,6 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ "./node_modules/vue-cloneya/dist/vue-cloneya.js":
-/*!******************************************************!*\
-  !*** ./node_modules/vue-cloneya/dist/vue-cloneya.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var require;parcelRequire=function(e,r,n,t){function i(n,t){function o(e){return i(o.resolve(e))}function c(r){return e[n][1][r]||r}if(!r[n]){if(!e[n]){var l="function"==typeof parcelRequire&&parcelRequire;if(!t&&l)return l(n,!0);if(u)return u(n,!0);if(f&&"string"==typeof n)return f(n);var p=new Error("Cannot find module '"+n+"'");throw p.code="MODULE_NOT_FOUND",p}o.resolve=c;var a=r[n]=new i.Module(n);e[n][0].call(a.exports,o,a,a.exports,this)}return r[n].exports}function o(e){this.id=e,this.bundle=i,this.exports={}}var u="function"==typeof parcelRequire&&parcelRequire,f="function"==typeof require&&require;i.isParcelRequire=!0,i.Module=o,i.modules=e,i.cache=r,i.parent=u;for(var c=0;c<n.length;c++)i(n[c]);if(n.length){var l=i(n[n.length-1]); true?module.exports=l:undefined}return i}({3:[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});const e=function(){let e="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",t="";for(let r=0;r<4;r++)t+=e.charAt(Math.floor(Math.random()*e.length));return btoa(t+(new Date).getTime())},t=function(e,t,r){for(let n=0;n<e.length;n++)if(e[n][t]===r)return n;return-1};exports.uniqId=e,exports.hasDirective=t;
-},{}],4:[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});const e={cloneyaInput:function(e){e.classList.add("vcloneya")},cloneyaAdd:function(e){e.classList.add("vcloneya-add")},cloneyaRemove:function(e){e.classList.add("vcloneya-remove")}},t=exports.installDirectives=(t=>{for(let o in e)t.directive(o,e[o])});exports.default=t;
-},{}],1:[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.install=exports.createCloneYa=void 0;var t=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var a=arguments[e];for(var i in a)Object.prototype.hasOwnProperty.call(a,i)&&(t[i]=a[i])}return t},e=require("./utils"),a=require("./directives"),i=n(a);function n(t){return t&&t.__esModule?t:{default:t}}const s=exports.createCloneYa=((a={})=>{return{name:a.name||"VueCloneya",props:{multiple:{default:!1},minimum:{default:1},maximum:{default:999},value:{default:null,type:Array}},data:()=>({renderData:[]}),mounted(){this.value&&this.fillWithValues(),this.fillToMin()},render:function(a){let i=this,n=i.$slots.default;if(!n||n.length>1)return void console.error("VueCloneya default slot should contain exactly one root element.");const s=function(a,n,s){return a.map(a=>(function a(r){if(r.data&&r.data.hasOwnProperty("directives")){let a=-1!==(0,e.hasDirective)(r.data.directives,"name","cloneya-add"),s=-1!==(0,e.hasDirective)(r.data.directives,"name","cloneya-remove"),l=(0,e.hasDirective)(r.data.directives,"name","cloneya-input"),u={on:t({},r.data.on),attrs:t({},r.data.attrs),domProps:{}};a?u.on.click=i.add:s&&(u.attrs.index=n.index,u.on.click=i.del),-1!==l&&(i.multiple&&r.data.hasOwnProperty("attrs")&&r.data.attrs.hasOwnProperty("name")&&r.data.attrs.name&&(u.domProps.name=r.data.attrs.name.replace("[]",`[${n.index}]`)),u.on.input=function(t){i.updateData(n.index,t.target.value,r.data.directives[l].value)},(n.el.hasOwnProperty("value")||i.multiple&&0!==Object.keys(n.el.value).length)&&(u.domProps.value=i.multiple?n.el.value[r.data.directives[l].value]:n.el.value)),r.data=t({},r.data,u)}const l=r.children&&r.children.map(t=>a(t)),u=s(r.tag,r.data,l);return u.text=r.text,u.isComment=r.isComment,u.componentOptions=r.componentOptions,u.elm=r.elm,u.context=r.context,u.ns=r.ns,u.isStatic=r.isStatic,u.key=r.key,u})(a))};return a("div",{class:{"clone-wrapper":!0}},this.renderData.map(function(t,e){let i=s(n,{el:t,index:e},a);return a("div",{key:t._hash,class:{toClone:!0}},[i])}))},methods:{add(){this.renderData.length!==this.maximum&&(this.pushEmptyElement(),this.emitData())},del(t){let a=t.currentTarget.attributes.index.value;if(this.renderData.length===this.minimum){let t={_hash:(0,e.uniqId)()};return this.multiple&&(t.value={}),this.$set(this.renderData,a,t),this.emitData()}this.renderData.splice(a,1),this.emitData()},pushEmptyElement(){let t={_hash:(0,e.uniqId)()};this.multiple&&(t.value={}),this.renderData.push(t)},updateData(t,e,a){if(this.multiple&&a)return this.$set(this.renderData[t].value,a,e),void this.emitData();this.$set(this.renderData[t],"value",e),this.emitData()},emitData(){this.emitting=!0,this.$emit("input",this.getFilteredValues()),this.$nextTick(()=>{this.emitting=!1})},fillToMin(){let t=this.minimum-this.renderData.length;for(let e=0;e<t;e++)this.pushEmptyElement()},fillWithValues(){this.value&&Array.isArray(this.value)&&this.value.map(t=>this.renderData.push({_hash:(0,e.uniqId)(),value:t}))},getFilteredValues(){return this.renderData.map(t=>t.hasOwnProperty("value")?t.value:"")}},watch:{value:function(){this.emitting||(this.renderData=[],this.fillWithValues(),this.fillToMin())},renderData:function(t){t.length===this.minimum&&this.$emit("minimum:cloneya"),t.length===this.maximum&&this.$emit("maximum:cloneya")}}}}),r=exports.install=((t,e)=>{const a=s(e);t.component(a.name,a),(0,i.default)(t)});exports.default=r;
-},{"./utils":3,"./directives":4}]},{},[1], null)
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AttributeSelector.vue?vue&type=template&id=01f8a380&":
 /*!********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AttributeSelector.vue?vue&type=template&id=01f8a380& ***!
@@ -49934,13 +49919,9 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_cloneya__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-cloneya */ "./node_modules/vue-cloneya/dist/vue-cloneya.js");
-/* harmony import */ var vue_cloneya__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_cloneya__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -49960,7 +49941,6 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.prototype.$eventBus = new Vue();
-
 Vue.component('category-selector', __webpack_require__(/*! ./components/CategorySelector.vue */ "./resources/js/components/CategorySelector.vue")["default"]);
 Vue.component('attribute-selector', __webpack_require__(/*! ./components/AttributeSelector.vue */ "./resources/js/components/AttributeSelector.vue")["default"]);
 /**
@@ -49969,7 +49949,6 @@ Vue.component('attribute-selector', __webpack_require__(/*! ./components/Attribu
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.use(vue_cloneya__WEBPACK_IMPORTED_MODULE_0___default.a);
 var app = new Vue({
   el: '#app'
 });

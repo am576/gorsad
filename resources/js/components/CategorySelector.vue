@@ -9,9 +9,11 @@
     export default {
         mounted() {
             console.log('Category selector mounted')
+            console.log(this.selected_category)
         },
         props: {
-          children_only: Boolean
+          children_only: Boolean,
+          category_id: 0
         },
         data() {
             return {

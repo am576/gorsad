@@ -19,7 +19,7 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 Vue.prototype.$eventBus = new Vue();
-import VueCloneya from "vue-cloneya";
+
 Vue.component('category-selector', require('./components/CategorySelector.vue').default);
 Vue.component('attribute-selector', require('./components/AttributeSelector.vue').default);
 
@@ -28,7 +28,6 @@ Vue.component('attribute-selector', require('./components/AttributeSelector.vue'
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-Vue.use(VueCloneya);
 const app = new Vue({
     el: '#app',
 

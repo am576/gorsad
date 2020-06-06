@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -24,5 +25,15 @@ class Product extends Model
         $statuses = self::statuses();
 
         return $statuses[$status];
+    }
+
+    public function attributes()
+    {
+        $attributes = DB::table('attributes')->
+            whereIn('id', DB::table('products_attributes')->select('attribute_id')->where('id', $this->id))
+            ->get();
+        dd($attributes);
+
+        $values=
     }
 }
