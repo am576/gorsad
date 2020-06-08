@@ -56,7 +56,7 @@
             </div>
             <div class="col-md-4">
                 <h3>Атрибуты</h3>
-                <attribute-selector></attribute-selector>
+                <attribute-selector-edit :prop_attributes="{{$product->attributes()}}"></attribute-selector-edit>
             </div>
         </div>
     </form>

@@ -29,11 +29,12 @@ class Product extends Model
 
     public function attributes()
     {
-        $attributes = DB::table('attributes')->
-            whereIn('id', DB::table('products_attributes')->select('attribute_id')->where('id', $this->id))
-            ->get();
-        dd($attributes);
+         return DB::table('attributes')
+             ->whereIn('attributes.id', DB::table('products_attributes')->select('attribute_id')->where('product_id', $this->id))
+             ->join('products_attributes','attributes.id','=','products_attributes.attribute_id')
+             ->select('attributes.*', 'products_attributes.attribute_value_id as value_id')
+             ->get();
 
-        $values=
+//        $values=
     }
 }

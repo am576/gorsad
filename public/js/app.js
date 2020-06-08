@@ -1943,7 +1943,8 @@ __webpack_require__.r(__webpack_exports__);
       category_id: 0,
       attributes: [],
       attribute_id: 0,
-      values: []
+      values: [],
+      selected_values: []
     };
   },
   methods: {
@@ -1962,10 +1963,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.attributes = response.data;
       });
     },
-    getAttributeValues: function getAttributeValues(event, index) {
+    getAttributeValues: function getAttributeValues(attribute_id, index) {
       var _this2 = this;
 
-      var attribute_id = event.target.value;
       axios.get('/api/getAttributeValues', {
         params: {
           attribute_id: attribute_id
@@ -1983,6 +1983,117 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.$eventBus.$on('changeCategory', this.setCategoryId);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AttributeSelectorEdit.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AttributeSelectorEdit.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    console.log('Attribute selector mounted');
+  },
+  props: {
+    prop_attributes: []
+  },
+  data: function data() {
+    return {
+      rows: [],
+      category_id: 0,
+      attribute_id: 0,
+      attributes: [],
+      values: [],
+      selected_values: []
+    };
+  },
+  methods: {
+    setCategoryId: function setCategoryId(id) {
+      this.category_id = id;
+      this.getAttributesForCategory();
+    },
+    getAttributesForCategory: function getAttributesForCategory() {
+      var _this = this;
+
+      axios.get('/api/getAttributesForCategory', {
+        params: {
+          category_id: this.category_id
+        }
+      }).then(function (response) {
+        _this.attributes = response.data;
+      });
+    },
+    getAttributeValues: function getAttributeValues(attribute_id, index) {
+      var _this2 = this;
+
+      axios.get('/api/getAttributeValues', {
+        params: {
+          attribute_id: attribute_id
+        }
+      }).then(function (response) {
+        _this2.$set(_this2.values, index, response.data);
+      });
+    },
+    populateAttributes: function populateAttributes() {
+      var _this3 = this;
+
+      if (this.prop_attributes.length > 0) {
+        this.attributes = this.prop_attributes;
+        this.attributes.forEach(function (attribute, index) {
+          _this3.getAttributeValues(attribute.id, index);
+
+          _this3.$set(_this3.selected_values, index, attribute.value_id);
+
+          _this3.$set(_this3.rows, _this3.rows.length, 1);
+        });
+      }
+    },
+    createCloned: function createCloned() {
+      this.$set(this.prop_attributes, this.rows.length, {
+        id: 0
+      }); //TODO ПОКАЗАТЬ ЛЕРОЧКЕ ЕЩЁ ОДНУ КУМЕНДУЮ ОШИБКУ
+
+      this.$set(this.rows, this.rows.length, 1); //TODO
+    },
+    removeCloned: function removeCloned(index) {
+      this.$set(this.rows, index, 0);
+    }
+  },
+  created: function created() {
+    this.$eventBus.$on('changeCategory', this.setCategoryId);
+    this.populateAttributes();
   }
 });
 
@@ -37594,7 +37705,7 @@ var render = function() {
       [
         _vm._l(_vm.rows, function(item, index) {
           return item === 1
-            ? _c("div", { staticClass: "form-row" }, [
+            ? _c("div", { key: index, staticClass: "form-row" }, [
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", [_vm._v("Название")]),
                   _vm._v(" "),
@@ -37604,7 +37715,10 @@ var render = function() {
                       attrs: { name: "attribute_id[]" },
                       on: {
                         change: function($event) {
-                          return _vm.getAttributeValues($event, index)
+                          return _vm.getAttributeValues(
+                            $event.target.value,
+                            index
+                          )
                         }
                       }
                     },
@@ -37629,6 +37743,178 @@ var render = function() {
                   _c(
                     "select",
                     { attrs: { name: "attribute_value_id[]" } },
+                    [
+                      _c("option", { attrs: { value: "0" } }, [_vm._v("...")]),
+                      _vm._v(" "),
+                      _vm._l(_vm.values[index], function(value) {
+                        return _c("option", { domProps: { value: value.id } }, [
+                          _vm._v(_vm._s(value.value))
+                        ])
+                      })
+                    ],
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                index > 0
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger delete",
+                        attrs: { type: "button", tabindex: "-1" },
+                        on: {
+                          click: function($event) {
+                            return _vm.removeCloned(index)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "mdi mdi-minus" })]
+                    )
+                  : _vm._e()
+              ])
+            : _vm._e()
+        }),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success clonspan",
+            attrs: { type: "button", tabindex: "-1" },
+            on: {
+              click: function($event) {
+                return _vm.createCloned()
+              }
+            }
+          },
+          [_c("i", { staticClass: "mdi mdi-plus" })]
+        )
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AttributeSelectorEdit.vue?vue&type=template&id=3305512c&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/AttributeSelectorEdit.vue?vue&type=template&id=3305512c& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      [
+        _vm._l(_vm.rows, function(item, index) {
+          return item === 1
+            ? _c("div", { key: index, staticClass: "form-row" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", [_vm._v("Название")]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.prop_attributes[index].id,
+                          expression: "prop_attributes[index].id"
+                        }
+                      ],
+                      attrs: { name: "attribute_id[]" },
+                      on: {
+                        change: [
+                          function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.prop_attributes[index],
+                              "id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                          function($event) {
+                            return _vm.getAttributeValues(
+                              $event.target.value,
+                              index
+                            )
+                          }
+                        ]
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "0" } }, [_vm._v("...")]),
+                      _vm._v(" "),
+                      _vm._l(_vm.attributes, function(attribute) {
+                        return _c(
+                          "option",
+                          { domProps: { value: attribute.id } },
+                          [_vm._v(_vm._s(attribute.name))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", [_vm._v("Значение")]),
+                  _vm._v(" "),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.selected_values[index],
+                          expression: "selected_values[index]"
+                        }
+                      ],
+                      attrs: { name: "attribute_value_id[]" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.selected_values,
+                            index,
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
                     [
                       _c("option", { attrs: { value: "0" } }, [_vm._v("...")]),
                       _vm._v(" "),
@@ -49943,6 +50229,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 Vue.prototype.$eventBus = new Vue();
 Vue.component('category-selector', __webpack_require__(/*! ./components/CategorySelector.vue */ "./resources/js/components/CategorySelector.vue")["default"]);
 Vue.component('attribute-selector', __webpack_require__(/*! ./components/AttributeSelector.vue */ "./resources/js/components/AttributeSelector.vue")["default"]);
+Vue.component('attribute-selector-edit', __webpack_require__(/*! ./components/AttributeSelectorEdit.vue */ "./resources/js/components/AttributeSelectorEdit.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -50064,6 +50351,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AttributeSelector_vue_vue_type_template_id_01f8a380___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AttributeSelector_vue_vue_type_template_id_01f8a380___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/AttributeSelectorEdit.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/AttributeSelectorEdit.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AttributeSelectorEdit_vue_vue_type_template_id_3305512c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AttributeSelectorEdit.vue?vue&type=template&id=3305512c& */ "./resources/js/components/AttributeSelectorEdit.vue?vue&type=template&id=3305512c&");
+/* harmony import */ var _AttributeSelectorEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AttributeSelectorEdit.vue?vue&type=script&lang=js& */ "./resources/js/components/AttributeSelectorEdit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AttributeSelectorEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AttributeSelectorEdit_vue_vue_type_template_id_3305512c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AttributeSelectorEdit_vue_vue_type_template_id_3305512c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/AttributeSelectorEdit.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/AttributeSelectorEdit.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/AttributeSelectorEdit.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AttributeSelectorEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./AttributeSelectorEdit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AttributeSelectorEdit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AttributeSelectorEdit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/AttributeSelectorEdit.vue?vue&type=template&id=3305512c&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/AttributeSelectorEdit.vue?vue&type=template&id=3305512c& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AttributeSelectorEdit_vue_vue_type_template_id_3305512c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./AttributeSelectorEdit.vue?vue&type=template&id=3305512c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/AttributeSelectorEdit.vue?vue&type=template&id=3305512c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AttributeSelectorEdit_vue_vue_type_template_id_3305512c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AttributeSelectorEdit_vue_vue_type_template_id_3305512c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

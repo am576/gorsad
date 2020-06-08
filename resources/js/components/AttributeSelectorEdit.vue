@@ -4,14 +4,14 @@
             <div v-if="item === 1" class="form-row" v-for="(item, index) in rows" :key="index">
                 <div class="form-group">
                     <label>Название</label>
-                    <select  name="attribute_id[]" @change="getAttributeValues($event.target.value, index)">
+                    <select name="attribute_id[]" @change="getAttributeValues($event.target.value, index)" v-model="prop_attributes[index].id">
                         <option value="0">...</option>
                         <option v-for="attribute in attributes" :value="attribute.id">{{attribute.name}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Значение</label>
-                    <select name="attribute_value_id[]">
+                    <select name="attribute_value_id[]" v-model="selected_values[index]">
                         <option value="0">...</option>
                         <option v-for="value in values[index]" :value="value.id">{{value.value}}</option>
                     </select>
@@ -29,13 +29,15 @@
             console.log('Attribute selector mounted')
 
         },
-
+        props: {
+            prop_attributes: [],
+        },
         data() {
             return {
-                rows: [1],
+                rows: [],
                 category_id: 0,
-                attributes: [],
                 attribute_id: 0,
+                attributes: [],
                 values: [],
                 selected_values: [],
             }
@@ -66,9 +68,22 @@
                this.$set(this.values, index, response.data)
                 })
             },
+            populateAttributes()
+            {
+                if(this.prop_attributes.length > 0)
+                {
+                    this.attributes = this.prop_attributes;
+                    this.attributes.forEach((attribute, index) => {
+                        this.getAttributeValues(attribute.id, index);
+                        this.$set(this.selected_values, index, attribute.value_id)
+                        this.$set(this.rows, this.rows.length, 1);
+                    })
+                }
+            },
             createCloned()
             {
-                this.$set(this.rows, this.rows.length, 1)
+                this.$set(this.prop_attributes, this.rows.length, {id:0}); //TODO ПОКАЗАТЬ ЛЕРОЧКЕ ЕЩЁ ОДНУ КУМЕНДУЮ ОШИБКУ
+                this.$set(this.rows, this.rows.length, 1); //TODO
             },
             removeCloned(index)
             {
@@ -77,6 +92,7 @@
         },
         created: function () {
             this.$eventBus.$on('changeCategory', this.setCategoryId);
+            this.populateAttributes();
         }
     }
 </script>
