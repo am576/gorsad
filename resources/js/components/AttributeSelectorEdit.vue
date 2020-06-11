@@ -83,7 +83,7 @@
             createCloned()
             {
                 this.$set(this.prop_attributes, this.rows.length, {id:0}); //TODO ПОКАЗАТЬ ЛЕРОЧКЕ ЕЩЁ ОДНУ КУМЕНДУЮ ОШИБКУ
-                this.$set(this.rows, this.rows.length, 1); //TODO
+                this.$set(this.rows, this.rows.length, 1);
             },
             removeCloned(index)
             {

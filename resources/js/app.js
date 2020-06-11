@@ -23,6 +23,7 @@ Vue.prototype.$eventBus = new Vue();
 Vue.component('category-selector', require('./components/CategorySelector.vue').default);
 Vue.component('attribute-selector', require('./components/AttributeSelector.vue').default);
 Vue.component('attribute-selector-edit', require('./components/AttributeSelectorEdit.vue').default);
+Vue.component('image-uploader', require('./components/ImageUploader').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

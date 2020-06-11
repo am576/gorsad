@@ -34,7 +34,10 @@ class Product extends Model
              ->join('products_attributes','attributes.id','=','products_attributes.attribute_id')
              ->select('attributes.*', 'products_attributes.attribute_value_id as value_id')
              ->get();
+    }
 
-//        $values=
+    public function images()
+    {
+        return $this->morphMany('App\Image', 'imageable');
     }
 }
