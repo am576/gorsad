@@ -30,28 +30,41 @@ class ProductController extends Controller
 
     public function store(ProductStore $request)
     {
-       $input = $request->except(['attribute_id', 'attribute_value_id']);
-       foreach($input as $field=>$value)
-       {
-           if ($value == '')
-           {
-               $input[$field] = 0;
-           }
+        $input = $request->except(['attribute_id', 'attribute_value_id']);
+        foreach ($input as $field => $value) {
+            if ($value == '') {
+                $input[$field] = 0;
+            }
+        }
 
-       }
-       $product = new Product($input);
-       $product->save();
+        $product = new Product($input);
+        $product->save();
 
-       foreach($request->attribute_id as $index => $id)
-       {
-           DB::table('products_attributes')->insert([
-              'product_id' => $product->id,
-              'attribute_id' => $id,
-              'attribute_value_id' => $request->attribute_value_id[$index]
-           ]);
-       }
+        if (count($request->images)) {
+            foreach ($request->images as $index => $file) {
+                $product->images()->create([
+                    'label' => $product->title . '_0' . $index,
+                    'icon' => $file->hashName(),
+                    'small' => $file->hashName(),
+                    'medium' => $file->hashName(),
+                    'large' => $file->hashName(),
+                    'mimetype' => 'lalala'
+                ]);
 
-       return redirect()->intended(route('products.index'));
+            }
+        }
+
+        if (count($request->attribute_id)) {
+            foreach ($request->attribute_id as $index => $id) {
+                DB::table('products_attributes')->insert([
+                    'product_id' => $product->id,
+                    'attribute_id' => $id,
+                    'attribute_value_id' => $request->attribute_value_id[$index]
+                ]);
+            }
+        }
+
+        return redirect()->intended(route('products.index'));
     }
 
     /**

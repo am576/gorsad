@@ -16,12 +16,19 @@
             <label for="file">Выберите файл</label>
             <input type="file" id="file" multiple @change="onInputChange">
         </div>
-        <div class="images-preview" v-show="images.length">
-            <div class="img-wrapper" v-for="(image, index) in images" :key="index">
-                <img :src="image" :alt="index">
-                <div class="image-details">
-                    <span class="image-name" v-text="files[index].name"></span>
-                    <span class="image-size" v-text="files[index].size"></span>
+        <div class="card" v-show="images.length">
+            <div class="card-header d-flex flex-row">
+                <div class="m-auto">Загруженные изображения</div>
+            </div>
+            <div class="card-body">
+                <div class="images-preview" v-show="images.length">
+                    <div class="img-wrapper" v-for="(image, index) in images" :key="index">
+                        <img :src="image" :alt="index">
+                        <div class="image-details">
+                            <span class="image-name" v-text="files[index].name" :title="files[index].name"></span>
+                            <span class="image-size" v-text="files[index].size + ' байт'"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,7 +44,10 @@
         }),
         methods : {
             onInputChange(e) {
-                console.log(e);
+                const files = e.target.files;
+                Array.from(files).forEach(file => this.addImage(file));
+
+                this.passImages();
             },
             onDragIn(e) {
                 this.isDragging = true;
@@ -50,6 +60,8 @@
 
                 const files = e.dataTransfer.files;
                 Array.from(files).forEach(file => this.addImage(file));
+
+                this.passImages();
             },
             addImage(file) {
                 if(!file.type.match('image.*'))
@@ -62,6 +74,35 @@
 
                 reader.onload = (e) => this.images.push(e.target.result);
                 reader.readAsDataURL(file);
+            },
+            passImages() {
+                const files = [];
+                Array.from(this.files).forEach(file => {
+                    files.push({
+                        'name': file.name,
+                        'type': file.type,
+                        'size': file.size
+                    })
+                })
+                const images = {
+                    files: files,
+                    images_data: this.images
+                }
+                this.$eventBus.$emit('addImages', this.files)
+            },
+            uploadImages() {
+                const formData = new FormData();
+
+                this.files.forEach(file => {
+                    formData.append('images[]', file, file.name);
+                })
+
+                axios.post('/admin/images-upload', formData)
+                .then(resposne => {
+                    alert('Изображения успешно загружены');
+                    // this.images = [];
+                    // this.files = [];
+                })
             }
         }
 
@@ -120,6 +161,49 @@
             input {
                 opacity: 0;
                 z-index: -2;
+            }
+        }
+
+        .card {
+            color: #000;
+        }
+
+        .images-preview {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+
+            .img-wrapper {
+                width: 150px;
+                display: flex;
+                flex-direction: column;
+                margin: 10px;
+                height: 220px;
+                justify-content: space-between;
+                box-shadow: 5px 5px 20px #000;
+                background: #fff;
+
+                img {
+                    max-height: 150px;
+                }
+            }
+
+            .image-details {
+                width: 100%;
+                height: 60px;
+                background: #fff;
+                color: #000;
+                display: flex;
+                flex-direction: column;
+                align-items: self-start;
+                padding: 3px 6px;
+                font-size: 16px;
+
+                .image-name {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    width: 100%;
+                }
             }
         }
     }

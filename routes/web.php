@@ -38,6 +38,8 @@ Route::prefix('admin')->group(function(){
         'categories'  => 'CategoryController',
         'attributes'  => 'AttributeController'
     ]);
+
+    Route::post('/images-upload', 'ImagesController@upload');
 });
 
 
