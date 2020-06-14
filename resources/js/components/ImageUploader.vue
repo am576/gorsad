@@ -24,6 +24,7 @@
                 <div class="images-preview" v-show="images.length">
                     <div class="img-wrapper" v-for="(image, index) in images" :key="index">
                         <img :src="image" :alt="index">
+                        <i class="mdi mdi-close-circle-outline" @click.prevent="removeImage(index)"></i>
                         <div class="image-details">
                             <span class="image-name" v-text="files[index].name" :title="files[index].name"></span>
                             <span class="image-size" v-text="files[index].size + ' байт'"></span>
@@ -75,19 +76,13 @@
                 reader.onload = (e) => this.images.push(e.target.result);
                 reader.readAsDataURL(file);
             },
+            removeImage(index) {
+                this.$delete(this.files, index);
+                this.$delete(this.images, index);
+
+                this.passImages();
+            },
             passImages() {
-                const files = [];
-                Array.from(this.files).forEach(file => {
-                    files.push({
-                        'name': file.name,
-                        'type': file.type,
-                        'size': file.size
-                    })
-                })
-                const images = {
-                    files: files,
-                    images_data: this.images
-                }
                 this.$eventBus.$emit('addImages', this.files)
             },
             uploadImages() {
@@ -174,6 +169,7 @@
             margin-top: 20px;
 
             .img-wrapper {
+                position: relative;
                 width: 150px;
                 display: flex;
                 flex-direction: column;
@@ -186,6 +182,23 @@
                 img {
                     max-height: 150px;
                 }
+
+                i {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    line-height: 24px;
+                    font-size: 24px;
+
+                    cursor: pointer;
+
+                    &:hover {
+                        line-height: 26px;
+                        font-size: 26px;
+                        color: coral;
+                    }
+                }
+
             }
 
             .image-details {

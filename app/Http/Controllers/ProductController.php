@@ -40,7 +40,7 @@ class ProductController extends Controller
         $product = new Product($input);
         $product->save();
 
-        if (count($request->images)) {
+        if (isset($request->images) && count($request->images)) {
             foreach ($request->images as $index => $file) {
                 $product->images()->create([
                     'label' => $product->title . '_0' . $index,
@@ -54,7 +54,7 @@ class ProductController extends Controller
             }
         }
 
-        if (count($request->attribute_id)) {
+        if (isset($request->attribute_id) && count($request->attribute_id)) {
             foreach ($request->attribute_id as $index => $id) {
                 DB::table('products_attributes')->insert([
                     'product_id' => $product->id,

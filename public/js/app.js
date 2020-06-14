@@ -2200,6 +2200,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2251,19 +2252,12 @@ __webpack_require__.r(__webpack_exports__);
 
       reader.readAsDataURL(file);
     },
+    removeImage: function removeImage(index) {
+      this.$delete(this.files, index);
+      this.$delete(this.images, index);
+      this.passImages();
+    },
     passImages: function passImages() {
-      var files = [];
-      Array.from(this.files).forEach(function (file) {
-        files.push({
-          'name': file.name,
-          'type': file.type,
-          'size': file.size
-        });
-      });
-      var images = {
-        files: files,
-        images_data: this.images
-      };
       this.$eventBus.$emit('addImages', this.files);
     },
     uploadImages: function uploadImages() {
@@ -6902,7 +6896,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".uploader[data-v-4984bfe4] {\n  width: 100%;\n  background: #00b7ff;\n  color: white;\n  padding: 40px 15px;\n  border-radius: 10px;\n  border: 3px dashed white;\n  text-align: center;\n  font-size: 24px;\n  position: relative;\n}\n.uploader.dragging[data-v-4984bfe4] {\n  background: white;\n  color: #00b7ff;\n  border-color: #00b7ff;\n}\n.uploader .dropin *[data-v-4984bfe4] {\n  pointer-events: none;\n}\n.uploader i[data-v-4984bfe4] {\n  font-size: 85px;\n}\n.uploader .file-input[data-v-4984bfe4] {\n  width: 200px;\n  margin: auto;\n  position: relative;\n  height: 70px;\n}\n.uploader .file-input label[data-v-4984bfe4],\n.uploader .file-input input[data-v-4984bfe4] {\n  background: white;\n  width: 100%;\n  color: #00b7ff;\n  position: absolute;\n  left: 0;\n  top: 0;\n  padding: 10px;\n  border-radius: 4px;\n  margin-top: 15px;\n  cursor: pointer;\n}\n.uploader .file-input input[data-v-4984bfe4] {\n  opacity: 0;\n  z-index: -2;\n}\n.uploader .card[data-v-4984bfe4] {\n  color: #000;\n}\n.uploader .images-preview[data-v-4984bfe4] {\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 20px;\n}\n.uploader .images-preview .img-wrapper[data-v-4984bfe4] {\n  width: 150px;\n  display: flex;\n  flex-direction: column;\n  margin: 10px;\n  height: 220px;\n  justify-content: space-between;\n  box-shadow: 5px 5px 20px #000;\n  background: #fff;\n}\n.uploader .images-preview .img-wrapper img[data-v-4984bfe4] {\n  max-height: 150px;\n}\n.uploader .images-preview .image-details[data-v-4984bfe4] {\n  width: 100%;\n  height: 60px;\n  background: #fff;\n  color: #000;\n  display: flex;\n  flex-direction: column;\n  align-items: self-start;\n  padding: 3px 6px;\n  font-size: 16px;\n}\n.uploader .images-preview .image-details .image-name[data-v-4984bfe4] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  width: 100%;\n}", ""]);
+exports.push([module.i, ".uploader[data-v-4984bfe4] {\n  width: 100%;\n  background: #00b7ff;\n  color: white;\n  padding: 40px 15px;\n  border-radius: 10px;\n  border: 3px dashed white;\n  text-align: center;\n  font-size: 24px;\n  position: relative;\n}\n.uploader.dragging[data-v-4984bfe4] {\n  background: white;\n  color: #00b7ff;\n  border-color: #00b7ff;\n}\n.uploader .dropin *[data-v-4984bfe4] {\n  pointer-events: none;\n}\n.uploader i[data-v-4984bfe4] {\n  font-size: 85px;\n}\n.uploader .file-input[data-v-4984bfe4] {\n  width: 200px;\n  margin: auto;\n  position: relative;\n  height: 70px;\n}\n.uploader .file-input label[data-v-4984bfe4],\n.uploader .file-input input[data-v-4984bfe4] {\n  background: white;\n  width: 100%;\n  color: #00b7ff;\n  position: absolute;\n  left: 0;\n  top: 0;\n  padding: 10px;\n  border-radius: 4px;\n  margin-top: 15px;\n  cursor: pointer;\n}\n.uploader .file-input input[data-v-4984bfe4] {\n  opacity: 0;\n  z-index: -2;\n}\n.uploader .card[data-v-4984bfe4] {\n  color: #000;\n}\n.uploader .images-preview[data-v-4984bfe4] {\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 20px;\n}\n.uploader .images-preview .img-wrapper[data-v-4984bfe4] {\n  position: relative;\n  width: 150px;\n  display: flex;\n  flex-direction: column;\n  margin: 10px;\n  height: 220px;\n  justify-content: space-between;\n  box-shadow: 5px 5px 20px #000;\n  background: #fff;\n}\n.uploader .images-preview .img-wrapper img[data-v-4984bfe4] {\n  max-height: 150px;\n}\n.uploader .images-preview .img-wrapper i[data-v-4984bfe4] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  line-height: 24px;\n  font-size: 24px;\n  cursor: pointer;\n}\n.uploader .images-preview .img-wrapper i[data-v-4984bfe4]:hover {\n  line-height: 26px;\n  font-size: 26px;\n  color: coral;\n}\n.uploader .images-preview .image-details[data-v-4984bfe4] {\n  width: 100%;\n  height: 60px;\n  background: #fff;\n  color: #000;\n  display: flex;\n  flex-direction: column;\n  align-items: self-start;\n  padding: 3px 6px;\n  font-size: 16px;\n}\n.uploader .images-preview .image-details .image-name[data-v-4984bfe4] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  width: 100%;\n}", ""]);
 
 // exports
 
@@ -39092,6 +39086,16 @@ var render = function() {
               _vm._l(_vm.images, function(image, index) {
                 return _c("div", { key: index, staticClass: "img-wrapper" }, [
                   _c("img", { attrs: { src: image, alt: index } }),
+                  _vm._v(" "),
+                  _c("i", {
+                    staticClass: "mdi mdi-close-circle-outline",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.removeImage(index)
+                      }
+                    }
+                  }),
                   _vm._v(" "),
                   _c("div", { staticClass: "image-details" }, [
                     _c("span", {
