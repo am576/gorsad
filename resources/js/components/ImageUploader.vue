@@ -18,7 +18,7 @@
         </div>
         <div class="card" v-show="images.length">
             <div class="card-header d-flex flex-row">
-                <div class="m-auto">Загруженные изображения</div>
+                <div class="m-auto"></div>
             </div>
             <div class="card-body">
                 <div class="images-preview" v-show="images.length">
@@ -84,20 +84,6 @@
             },
             passImages() {
                 this.$eventBus.$emit('addImages', this.files)
-            },
-            uploadImages() {
-                const formData = new FormData();
-
-                this.files.forEach(file => {
-                    formData.append('images[]', file, file.name);
-                })
-
-                axios.post('/admin/images-upload', formData)
-                .then(resposne => {
-                    alert('Изображения успешно загружены');
-                    // this.images = [];
-                    // this.files = [];
-                })
             }
         }
 

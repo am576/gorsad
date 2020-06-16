@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductStore;
 use App\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -50,7 +51,7 @@ class ProductController extends Controller
                     'large' => $file->hashName(),
                     'mimetype' => 'lalala'
                 ]);
-
+                $file->store('products', 'images');
             }
         }
 

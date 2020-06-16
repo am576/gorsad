@@ -2259,16 +2259,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     passImages: function passImages() {
       this.$eventBus.$emit('addImages', this.files);
-    },
-    uploadImages: function uploadImages() {
-      var formData = new FormData();
-      this.files.forEach(function (file) {
-        formData.append('images[]', file, file.name);
-      });
-      axios.post('/admin/images-upload', formData).then(function (resposne) {
-        alert('Изображения успешно загружены'); // this.images = [];
-        // this.files = [];
-      });
     }
   }
 });
@@ -39127,7 +39117,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header d-flex flex-row" }, [
-      _c("div", { staticClass: "m-auto" }, [_vm._v("Загруженные изображения")])
+      _c("div", { staticClass: "m-auto" })
     ])
   }
 ]
