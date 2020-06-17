@@ -29,16 +29,21 @@ class AttributeController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'value' => 'required'
+            'values' => 'required'
         ]);
 
-        $attribute = new Attribute($request->except(['value']));
+        $attribute = new Attribute($request->except(['values']));
         $attribute->save();
 
-        DB::table('attributes_values')->insert([
-           'attribute_id' => $attribute->id,
-           'value' => $request->value
-        ]);
+        $values = explode(',', str_replace(' ','', $request->values));
+
+        foreach($values as $value)
+        {
+            DB::table('attributes_values')->insert([
+                'attribute_id' => $attribute->id,
+                'value' => $value
+            ]);
+        }
 
         return redirect(route('attributes.index'));
     }

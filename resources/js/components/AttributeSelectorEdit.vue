@@ -75,14 +75,14 @@
                     this.attributes = this.prop_attributes;
                     this.attributes.forEach((attribute, index) => {
                         this.getAttributeValues(attribute.id, index);
-                        this.$set(this.selected_values, index, attribute.value_id)
+                        this.$set(this.selected_values, index, attribute.value_id);
                         this.$set(this.rows, this.rows.length, 1);
                     })
                 }
             },
             createCloned()
             {
-                this.$set(this.prop_attributes, this.rows.length, {id:0}); //TODO ПОКАЗАТЬ ЛЕРОЧКЕ ЕЩЁ ОДНУ КУМЕНДУЮ ОШИБКУ
+                this.$set(this.prop_attributes, this.rows.length, {id:0});
                 this.$set(this.rows, this.rows.length, 1);
             },
             removeCloned(index)

@@ -1,11 +1,12 @@
 <template>
     <form @submit.prevent="submit">
+        <input type="hidden" name="_method" value="put">
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="title">Название</label>
                     <input type="text" class="form-control" id="title" name="title" autocomplete="off"
-                           v-model="fields.title">
+                           v-model="fields.title" value="123">
                     <div v-if="errors && errors.title" class="text-danger">{{errors.title[0]}}</div>
                 </div>
                 <div class="form-group">
@@ -50,7 +51,7 @@
                         <option value="0">Неактивный</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Создать</button>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
             </div>
             <div class="col-md-4">
                 <image-uploader></image-uploader>
@@ -58,6 +59,23 @@
             <div class="col-md-4">
                 <h3>Атрибуты</h3>
                 <div v-if="item === 1" class="form-row" v-for="(item, index) in attribute_rows" :key="index">
+                    <div class="form-group">
+                        <label>Название</label>
+                        <select name="attribute_id[]" @change="getAttributeValues($event.target.value, index)" v-model="product_attributes[index].id">
+                            <option value="0">...</option>
+                            <option v-for="attribute in attributes" :value="attribute.id">{{attribute.name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Значение</label>
+                        <select name="attribute_value_id[]" v-model="selected_values[index]">
+                            <option value="0">...</option>
+                            <option v-for="value in attribute_values[index]" :value="value.id">{{value.value}}</option>
+                        </select>
+                    </div>
+                    <button v-if="index > 0" type="button" class="btn btn-danger delete" tabindex="-1" @click="removeCloned(index)"><i class="mdi mdi-minus"></i></button>
+                </div>
+                <!--<div v-if="item === 1" class="form-row" v-for="(item, index) in attribute_rows" :key="index">
                     <div class="form-group">
                         <label>Название</label>
                         <select name="attribute_id[]" @change="getAttributeValues($event.target.value, index)" v-model="fields.attribute_id[index]">
@@ -74,7 +92,7 @@
                     </div>
                     <button v-if="index > 0" type="button" class="btn btn-danger delete" tabindex="-1"
                             @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
-                </div>
+                </div>-->
                 <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="createAttributeRow()"><i
                     class="mdi mdi-plus"></i></button>
             </div>
@@ -84,17 +102,18 @@
 
 <script>
     export default {
+        props: {
+            fields: {},
+            product_attributes: []
+        },
         data() {
             return {
-                fields: {
-                    attribute_id: [],
-                    attribute_value_id: [],
-                },
                 images: [],
                 errors: {},
-                attribute_rows : [1],
+                attribute_rows : [],
                 attributes: [],
-                attribute_values: []
+                attribute_values: [],
+                selected_values: [],
             }
         },
         methods: {
@@ -125,9 +144,23 @@
             setProductImages(images) {
                 this.images = images;
             },
+            populateAttributes()
+            {
+                if(this.product_attributes.length > 0)
+                {
+                    this.attributes = this.product_attributes;
+                    this.attributes.forEach((attribute, index) => {
+                        this.getAttributeValues(attribute.id, index);
+                        this.$set(this.selected_values, index, attribute.value_id);
+                        this.$set(this.attribute_rows, this.attribute_rows.length, 1);
+                    })
+                }
+            },
             createAttributeRow()
             {
-                this.$set(this.attribute_rows, this.attribute_rows.length, 1)
+                this.$set(this.product_attributes, this.attribute_rows.length, {id:0});
+                this.$set(this.attribute_rows, this.attribute_rows.length, 1);
+
             },
             removeAttributeRow(index)
             {
@@ -146,14 +179,14 @@
                 this.images.forEach(file => {
                     formData.append('images[]', file, file.name);
                 });
-                this.fields.attribute_id.forEach(id => {
-                    formData.append('attribute_id[]', id);
+                this.product_attributes.forEach(attribute => {
+                    formData.append('attribute_id[]', attribute.id);
                 });
-                this.fields.attribute_value_id.forEach(value => {
+                this.selected_values.forEach(value => {
                     formData.append('attribute_value_id[]', value);
                 });
-
-                axios.post('/admin/products', formData)
+                formData.append('_method', 'PUT');
+                axios.post('/admin/products/' + this.fields.id, formData)
                 .then(response =>{
                     console.log(response)
                 }).catch(error => {
@@ -165,7 +198,8 @@
         },
         created: function () {
             this.$eventBus.$on('changeCategory', this.setProductCategory);
-            this.$eventBus.$on('addImages', this.setProductImages)
+            this.$eventBus.$on('addImages', this.setProductImages);
+            this.populateAttributes();
         }
     }
 </script>

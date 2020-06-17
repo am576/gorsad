@@ -6,6 +6,7 @@ use App\Http\Requests\ProductStore;
 use App\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -88,21 +89,47 @@ class ProductController extends Controller
     }
 
 
-    public function update(ProductStore $request, $id)
+    public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
 
-        $input = $request->all();
-        foreach($input as $field=>$value)
-        {
-            if ($value == '')
-            {
+        $input = $request->except(['attribute_id', 'attribute_value_id']);
+        foreach ($input as $field => $value) {
+            if ($value == '') {
                 $input[$field] = 0;
             }
-
         }
+
         $product->fill($input);
         $product->save();
+
+
+        if (isset($request->images) && count($request->images)) {
+            foreach ($request->images as $index => $file) {
+                $product->images()->create([
+                    'label' => $product->title . '_0' . $index,
+                    'icon' => $file->hashName(),
+                    'small' => $file->hashName(),
+                    'medium' => $file->hashName(),
+                    'large' => $file->hashName(),
+                    'mimetype' => 'lalala'
+                ]);
+                $file->store('products', 'images');
+            }
+        }
+
+        $attributes = [
+            'product_id' => $product->id,
+            'attribute_id' => $id,
+            'attribute_value_id' => $request->attribute_value_id[$index]
+        ];
+
+        if (isset($request->attribute_id) && count($request->attribute_id)) {
+            foreach ($request->attribute_id as $index => $id) {
+                DB::table('products_attributes')->updateOrInsert($attributes, $attributes);
+            }
+        }
+
 
         return redirect()->intended(route('products.index'));
     }

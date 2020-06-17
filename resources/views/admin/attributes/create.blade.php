@@ -16,12 +16,12 @@
         @include('admin.macros.category-selector', ['children_only' => true])
     </div>
     <div class="form-group">
-        <label for="title">Название</label>
+        <label for="name">Название</label>
         <input type="text" id="name" name="name">
     </div>
     <div class="form-group">
-        <label for="description">Значение</label>
-        <input type="text" id="value" name="value">
+        <label for="values">Значение</label>
+        <input type="text" id="values" name="values">
     </div>
     <div class="form-group">
         <input type="submit" value="Создать">
