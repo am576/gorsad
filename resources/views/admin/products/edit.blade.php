@@ -3,6 +3,6 @@
     @include('admin.partials.page_header', ['entity' => 'product', 'mode' => 'edit'])
 @endsection
 @section('content')
-    <product-edit-form :fields="{{$product}}" :product_attributes="{{$product->attributes()}}"></product-edit-form>
+    <product-edit-form :product="{{$product}}" :product_attributes="{{$product->attributes()}}" :product_images="{{$product->images}}"></product-edit-form>
     @method('put')
 @endsection

@@ -1,33 +1,47 @@
 <template>
-    <div class="uploader"
-         :class="{dragging: isDragging}"
-    >
-        <div class="dropin"
-            @dragenter.self.stop.prevent="onDragIn($event)"
-            @dragleave.self.stop.prevent="onDragOut($event)"
-            @drop.self.stop.prevent="onDrop($event)"
-            @dragover.prevent
-        >
-            <i class="mdi mdi-cloud-upload"></i>
-            <p>Перетащите файлы</p>
-            <div>ИЛИ</div>
-        </div>
-        <div class="file-input">
-            <label for="file">Выберите файл</label>
-            <input type="file" id="file" multiple @change="onInputChange">
-        </div>
-        <div class="card" v-show="images.length">
-            <div class="card-header d-flex flex-row">
-                <div class="m-auto"></div>
-            </div>
+    <div class="product_images">
+        <div class="card">
+            <div class="card-header">Загруженные изображения</div>
             <div class="card-body">
-                <div class="images-preview" v-show="images.length">
-                    <div class="img-wrapper" v-for="(image, index) in images" :key="index">
-                        <img :src="image" :alt="index">
-                        <i class="mdi mdi-close-circle-outline" @click.prevent="removeImage(index)"></i>
-                        <div class="image-details">
-                            <span class="image-name" v-text="files[index].name" :title="files[index].name"></span>
-                            <span class="image-size" v-text="files[index].size + ' байт'"></span>
+                <div class="images-preview" v-show="product_images.length">
+                    <div class="img-wrapper" v-for="(image, index) in product_images" :key="index">
+                        <img :src="'/storage/images/products/'+image.icon" :alt="index">
+                        <i class="mdi mdi-close-circle-outline" @click.prevent="removeUploadedImage(index)"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="uploader"
+             :class="{dragging: isDragging}"
+        >
+            <div class="dropin"
+                @dragenter.self.stop.prevent="onDragIn($event)"
+                @dragleave.self.stop.prevent="onDragOut($event)"
+                @drop.self.stop.prevent="onDrop($event)"
+                @dragover.prevent
+            >
+                <i class="mdi mdi-cloud-upload"></i>
+                <p>Перетащите файлы</p>
+                <div>ИЛИ</div>
+            </div>
+            <div class="file-input">
+                <label for="file">Выберите файл</label>
+                <input type="file" id="file" multiple @change="onInputChange">
+            </div>
+
+            <div class="card" v-show="images.length">
+                <div class="card-header d-flex flex-row">
+                    <div class="m-auto"></div>
+                </div>
+                <div class="card-body">
+                    <div class="images-preview" v-show="images.length">
+                        <div class="img-wrapper" v-for="(image, index) in images" :key="index">
+                            <img :src="image" :alt="index">
+                            <i class="mdi mdi-close-circle-outline" @click.prevent="removeUploadedImage(index)"></i>
+                            <div class="image-details">
+                                <span class="image-name" v-text="files[index].name" :title="files[index].name"></span>
+                                <span class="image-size" v-text="files[index].size + ' байт'"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -38,10 +52,14 @@
 
 <script>
     export default {
+        props: {
+            product_id: 0
+        },
         data: () => ({
           isDragging: false,
           files: [],
-          images: []
+          images: [],
+          product_images: [],
         }),
         methods : {
             onInputChange(e) {
@@ -76,17 +94,37 @@
                 reader.onload = (e) => this.images.push(e.target.result);
                 reader.readAsDataURL(file);
             },
-            removeImage(index) {
+            removeUploadedImage(index) {
                 this.$delete(this.files, index);
                 this.$delete(this.images, index);
 
                 this.passImages();
             },
+            removeProductImage() {
+
+            },
             passImages() {
                 this.$eventBus.$emit('addImages', this.files)
+            },
+            getProductImages()
+            {
+                axios.get('/api/getProductImages',{
+                    params: {
+                        id: this.product_id
+                    }
+                })
+                .then(response => {
+                    this.product_images = response.data;
+                })
+            },
+
+        },
+        created() {
+            if(this.product_id)
+            {
+                this.getProductImages()
             }
         }
-
     }
 </script>
 
@@ -203,6 +241,47 @@
                     text-overflow: ellipsis;
                     width: 100%;
                 }
+            }
+        }
+    }
+
+    .product_images {
+        .images-preview {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+
+            .img-wrapper {
+                position: relative;
+                width: 100px;
+                height: 100px;
+                display: flex;
+                flex-direction: column;
+                margin: 10px;
+                justify-content: space-between;
+                box-shadow: 5px 5px 20px #000;
+                background: #fff;
+
+                img {
+                    max-height: 150px;
+                }
+
+                i {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    line-height: 24px;
+                    font-size: 24px;
+
+                    cursor: pointer;
+
+                    &:hover {
+                        line-height: 26px;
+                        font-size: 26px;
+                        color: coral;
+                    }
+                }
+
             }
         }
     }

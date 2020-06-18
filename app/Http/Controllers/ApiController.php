@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Attribute;
 use App\Category;
+use App\Product;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -35,5 +36,10 @@ class ApiController extends Controller
         $values = $attribute->values();
 
         return response()->json($values);
+    }
+
+    public function getProductImages(Request $request)
+    {
+        return Product::find($request->id)->images()->get();
     }
 }

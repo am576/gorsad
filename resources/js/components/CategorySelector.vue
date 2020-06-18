@@ -12,6 +12,7 @@
         },
         props: {
           children_only: Boolean,
+            category : 0,
         },
         data() {
             return {
@@ -38,6 +39,10 @@
             }
         },
         created: function () {
+            if(this.category)
+            {
+                this.category_id = this.category;
+            }
             if(this.children_only)
             this.getChildCategories();
             else

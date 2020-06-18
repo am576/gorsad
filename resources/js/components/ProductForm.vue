@@ -5,19 +5,19 @@
                 <div class="form-group">
                     <label for="title">Название</label>
                     <input type="text" class="form-control" id="title" name="title" autocomplete="off"
-                           v-model="fields.title">
+                           v-model="product.title">
                     <div v-if="errors && errors.title" class="text-danger">{{errors.title[0]}}</div>
                 </div>
                 <div class="form-group">
                     <label for="code">Код товара</label>
                     <input type="text" class="form-control" id="code" name="code" autocomplete="off"
-                           v-model="fields.code">
+                           v-model="product.code">
                     <div v-if="errors && errors.code" class="text-danger">{{errors.code[0]}}</div>
                 </div>
                 <div class="form-group">
                     <label for="description">Описание</label>
                     <input type="text" class="form-control" id="description" name="description" autocomplete="off"
-                           v-model="fields.description">
+                           v-model="product.description">
                     <div v-if="errors && errors.description" class="text-danger">{{errors.description[0]}}</div>
                 </div>
                 <div class="form-group">
@@ -28,24 +28,24 @@
                 <div class="form-group">
                     <label for="price">Цена</label>
                     <input type="text" class="form-control" id="price" name="price" autocomplete="off"
-                           v-model="fields.price">
+                           v-model="product.price">
                     <div v-if="errors && errors.price" class="text-danger">{{errors.price[0]}}</div>
                 </div>
                 <div class="form-group">
                     <label for="discount">Скидка</label>
                     <input type="text" class="form-control" id="discount" name="discount" autocomplete="off"
-                           v-model="fields.discount">
+                           v-model="product.discount">
                     <div v-if="errors && errors.discount" class="text-danger">{{errors.discount[0]}}</div>
                 </div>
                 <div class="form-group">
                     <label for="quantity">Количество</label>
                     <input type="text" class="form-control" id="quantity" name="quantity" autocomplete="off"
-                           v-model="fields.quantity">
+                           v-model="product.quantity">
                     <div v-if="errors && errors.quantity" class="text-danger">{{errors.quantity[0]}}</div>
                 </div>
                 <div class="form-group">
                     <label for="status">Статус</label>
-                    <select name="status" id="status" v-model="fields.status">
+                    <select name="status" id="status" v-model="product.status">
                         <option value="1">Активный</option>
                         <option value="0">Неактивный</option>
                     </select>
@@ -60,14 +60,14 @@
                 <div v-if="item === 1" class="form-row" v-for="(item, index) in attribute_rows" :key="index">
                     <div class="form-group">
                         <label>Название</label>
-                        <select name="attribute_id[]" @change="getAttributeValues($event.target.value, index)" v-model="fields.attribute_id[index]">
+                        <select name="attribute_id[]" @change="getAttributeValues($event.target.value, index)" v-model="product.attribute_id[index]">
                             <option value="0">...</option>
                             <option v-for="attribute in attributes" :value="attribute.id">{{attribute.name}}</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Значение</label>
-                        <select name="attribute_value_id[]" v-model="fields.attribute_value_id[index]">
+                        <select name="attribute_value_id[]" v-model="product.attribute_value_id[index]">
                             <option value="0">...</option>
                             <option v-for="value in attribute_values[index]" :value="value.id">{{value.value}}</option>
                         </select>
@@ -86,7 +86,7 @@
     export default {
         data() {
             return {
-                fields: {
+                product: {
                     attribute_id: [],
                     attribute_value_id: [],
                 },
@@ -99,14 +99,14 @@
         },
         methods: {
             setProductCategory(id) {
-                this.fields.category_id = id;
+                this.product.category_id = id;
                 this.getAttributesForCategory();
             },
             getAttributesForCategory()
             {
                 axios.get('/api/getAttributesForCategory', {
                     params: {
-                        category_id: this.fields.category_id
+                        category_id: this.product.category_id
                     }
                 }).then(response => {
                     this.attributes = response.data;
@@ -137,8 +137,8 @@
                 this.errors = {};
                 const formData = new FormData();
 
-                Object.keys(this.fields).forEach(key => {
-                    formData.append(key, this.fields[key])
+                Object.keys(this.product).forEach(key => {
+                    formData.append(key, this.product[key])
                 });
 
                 formData.delete('attribute_id');
@@ -146,10 +146,10 @@
                 this.images.forEach(file => {
                     formData.append('images[]', file, file.name);
                 });
-                this.fields.attribute_id.forEach(id => {
+                this.product.attribute_id.forEach(id => {
                     formData.append('attribute_id[]', id);
                 });
-                this.fields.attribute_value_id.forEach(value => {
+                this.product.attribute_value_id.forEach(value => {
                     formData.append('attribute_value_id[]', value);
                 });
 

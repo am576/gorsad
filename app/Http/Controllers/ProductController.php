@@ -104,8 +104,10 @@ class ProductController extends Controller
         $product->save();
 
 
-        if (isset($request->images) && count($request->images)) {
-            foreach ($request->images as $index => $file) {
+        if (isset($request->images) && count($request->images))
+        {
+            foreach ($request->images as $index => $file)
+            {
                 $product->images()->create([
                     'label' => $product->title . '_0' . $index,
                     'icon' => $file->hashName(),
@@ -118,18 +120,35 @@ class ProductController extends Controller
             }
         }
 
-        $attributes = [
-            'product_id' => $product->id,
-            'attribute_id' => $id,
-            'attribute_value_id' => $request->attribute_value_id[$index]
-        ];
-
-        if (isset($request->attribute_id) && count($request->attribute_id)) {
-            foreach ($request->attribute_id as $index => $id) {
-                DB::table('products_attributes')->updateOrInsert($attributes, $attributes);
+        if (isset($request->attribute_id) && count($request->attribute_id))
+        {
+            foreach ($request->attribute_id as $index => $id)
+            {
+                DB::table('products_attributes')->updateOrInsert([
+                    'product_id' => $product->id,
+                    'attribute_id' => $id,
+                    'attribute_value_id' => $request->attribute_value_id[$index]
+                ], [
+                    'product_id' => $product->id,
+                    'attribute_id' => $id,
+                    'attribute_value_id' => $request->attribute_value_id[$index]
+                ]);
             }
         }
 
+        if(isset($request->attributes_to_delete))
+        {
+
+            foreach ($request->attributes_to_delete as $attr_id)
+            {
+                DB::table('products_attributes')
+                    ->where([
+                        ['product_id','=', $product->id],
+                        ['attribute_id','=', $attr_id]
+                    ])
+                    ->delete();
+            }
+        }
 
         return redirect()->intended(route('products.index'));
     }

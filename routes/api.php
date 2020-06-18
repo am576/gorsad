@@ -22,3 +22,4 @@ Route::get('getAllCategories','ApiController@getAllCategories');
 Route::get('getChildCategories','ApiController@getChildCategories');
 Route::get('getAttributesForCategory','ApiController@getAttributesForCategory');
 Route::get('getAttributeValues', 'ApiController@getAttributeValues');
+Route::get('getProductImages', 'ApiController@getProductImages');

@@ -2119,7 +2119,8 @@ __webpack_require__.r(__webpack_exports__);
     console.log('Category selector mounted');
   },
   props: {
-    children_only: Boolean
+    children_only: Boolean,
+    category: 0
   },
   data: function data() {
     return {
@@ -2147,6 +2148,10 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    if (this.category) {
+      this.category_id = this.category;
+    }
+
     if (this.children_only) this.getChildCategories();else this.getAllCategories();
   }
 });
@@ -2200,12 +2205,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    product_id: 0
+  },
   data: function data() {
     return {
       isDragging: false,
       files: [],
-      images: []
+      images: [],
+      product_images: []
     };
   },
   methods: {
@@ -2251,13 +2274,30 @@ __webpack_require__.r(__webpack_exports__);
 
       reader.readAsDataURL(file);
     },
-    removeImage: function removeImage(index) {
+    removeUploadedImage: function removeUploadedImage(index) {
       this.$delete(this.files, index);
       this.$delete(this.images, index);
       this.passImages();
     },
+    removeProductImage: function removeProductImage() {},
     passImages: function passImages() {
       this.$eventBus.$emit('addImages', this.files);
+    },
+    getProductImages: function getProductImages() {
+      var _this4 = this;
+
+      axios.get('/api/getProductImages', {
+        params: {
+          id: this.product_id
+        }
+      }).then(function (response) {
+        _this4.product_images = response.data;
+      });
+    }
+  },
+  created: function created() {
+    if (this.product_id) {
+      this.getProductImages();
     }
   }
 });
@@ -2361,24 +2401,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    fields: {},
-    product_attributes: []
+    product: {},
+    product_attributes: [],
+    product_images: []
   },
   data: function data() {
     return {
@@ -2387,12 +2414,14 @@ __webpack_require__.r(__webpack_exports__);
       attribute_rows: [],
       attributes: [],
       attribute_values: [],
-      selected_values: []
+      selected_values: [],
+      images_to_delete: [],
+      attributes_to_delete: []
     };
   },
   methods: {
     setProductCategory: function setProductCategory(id) {
-      this.fields.category_id = id;
+      this.product.category_id = id;
       this.getAttributesForCategory();
     },
     getAttributesForCategory: function getAttributesForCategory() {
@@ -2400,7 +2429,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/api/getAttributesForCategory', {
         params: {
-          category_id: this.fields.category_id
+          category_id: this.product.category_id
         }
       }).then(function (response) {
         _this.attributes = response.data;
@@ -2423,6 +2452,8 @@ __webpack_require__.r(__webpack_exports__);
     populateAttributes: function populateAttributes() {
       var _this3 = this;
 
+      this.getAttributesForCategory();
+
       if (this.product_attributes.length > 0) {
         this.attributes = this.product_attributes;
         this.attributes.forEach(function (attribute, index) {
@@ -2442,30 +2473,32 @@ __webpack_require__.r(__webpack_exports__);
     },
     removeAttributeRow: function removeAttributeRow(index) {
       this.$set(this.attribute_rows, index, 0);
+      this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.product_attributes[index].id);
     },
     submit: function submit() {
       var _this4 = this;
 
       this.errors = {};
       var formData = new FormData();
-      Object.keys(this.fields).forEach(function (key) {
-        formData.append(key, _this4.fields[key]);
+      Object.keys(this.product).forEach(function (key) {
+        formData.append(key, _this4.product[key]);
       });
-      formData["delete"]('attribute_id');
-      formData["delete"]('attribute_value_id');
       this.images.forEach(function (file) {
         formData.append('images[]', file, file.name);
       });
       this.product_attributes.forEach(function (attribute) {
-        formData.append('attribute_id[]', attribute.id);
+        if (attribute.id) {
+          formData.append('attribute_id[]', attribute.id);
+        }
       });
       this.selected_values.forEach(function (value) {
         formData.append('attribute_value_id[]', value);
       });
+      this.attributes_to_delete.forEach(function (attr_id) {
+        formData.append('attributes_to_delete[]', attr_id);
+      });
       formData.append('_method', 'PUT');
-      axios.post('/admin/products/' + this.fields.id, formData).then(function (response) {
-        console.log(response);
-      })["catch"](function (error) {
+      axios.post('/admin/products/' + this.product.id, formData).then(function (response) {})["catch"](function (error) {
         if (error.response.status === 422) {
           _this4.errors = error.response.data.errors || {};
         }
@@ -2577,7 +2610,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      fields: {
+      product: {
         attribute_id: [],
         attribute_value_id: []
       },
@@ -2590,7 +2623,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     setProductCategory: function setProductCategory(id) {
-      this.fields.category_id = id;
+      this.product.category_id = id;
       this.getAttributesForCategory();
     },
     getAttributesForCategory: function getAttributesForCategory() {
@@ -2598,7 +2631,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/api/getAttributesForCategory', {
         params: {
-          category_id: this.fields.category_id
+          category_id: this.product.category_id
         }
       }).then(function (response) {
         _this.attributes = response.data;
@@ -2629,18 +2662,18 @@ __webpack_require__.r(__webpack_exports__);
 
       this.errors = {};
       var formData = new FormData();
-      Object.keys(this.fields).forEach(function (key) {
-        formData.append(key, _this3.fields[key]);
+      Object.keys(this.product).forEach(function (key) {
+        formData.append(key, _this3.product[key]);
       });
       formData["delete"]('attribute_id');
       formData["delete"]('attribute_value_id');
       this.images.forEach(function (file) {
         formData.append('images[]', file, file.name);
       });
-      this.fields.attribute_id.forEach(function (id) {
+      this.product.attribute_id.forEach(function (id) {
         formData.append('attribute_id[]', id);
       });
-      this.fields.attribute_value_id.forEach(function (value) {
+      this.product.attribute_value_id.forEach(function (value) {
         formData.append('attribute_value_id[]', value);
       });
       axios.post('/admin/products', formData).then(function (response) {
@@ -7102,7 +7135,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".uploader[data-v-4984bfe4] {\n  width: 100%;\n  background: #00b7ff;\n  color: white;\n  padding: 40px 15px;\n  border-radius: 10px;\n  border: 3px dashed white;\n  text-align: center;\n  font-size: 24px;\n  position: relative;\n}\n.uploader.dragging[data-v-4984bfe4] {\n  background: white;\n  color: #00b7ff;\n  border-color: #00b7ff;\n}\n.uploader .dropin *[data-v-4984bfe4] {\n  pointer-events: none;\n}\n.uploader i[data-v-4984bfe4] {\n  font-size: 85px;\n}\n.uploader .file-input[data-v-4984bfe4] {\n  width: 200px;\n  margin: auto;\n  position: relative;\n  height: 70px;\n}\n.uploader .file-input label[data-v-4984bfe4],\n.uploader .file-input input[data-v-4984bfe4] {\n  background: white;\n  width: 100%;\n  color: #00b7ff;\n  position: absolute;\n  left: 0;\n  top: 0;\n  padding: 10px;\n  border-radius: 4px;\n  margin-top: 15px;\n  cursor: pointer;\n}\n.uploader .file-input input[data-v-4984bfe4] {\n  opacity: 0;\n  z-index: -2;\n}\n.uploader .card[data-v-4984bfe4] {\n  color: #000;\n}\n.uploader .images-preview[data-v-4984bfe4] {\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 20px;\n}\n.uploader .images-preview .img-wrapper[data-v-4984bfe4] {\n  position: relative;\n  width: 150px;\n  display: flex;\n  flex-direction: column;\n  margin: 10px;\n  height: 220px;\n  justify-content: space-between;\n  box-shadow: 5px 5px 20px #000;\n  background: #fff;\n}\n.uploader .images-preview .img-wrapper img[data-v-4984bfe4] {\n  max-height: 150px;\n}\n.uploader .images-preview .img-wrapper i[data-v-4984bfe4] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  line-height: 24px;\n  font-size: 24px;\n  cursor: pointer;\n}\n.uploader .images-preview .img-wrapper i[data-v-4984bfe4]:hover {\n  line-height: 26px;\n  font-size: 26px;\n  color: coral;\n}\n.uploader .images-preview .image-details[data-v-4984bfe4] {\n  width: 100%;\n  height: 60px;\n  background: #fff;\n  color: #000;\n  display: flex;\n  flex-direction: column;\n  align-items: self-start;\n  padding: 3px 6px;\n  font-size: 16px;\n}\n.uploader .images-preview .image-details .image-name[data-v-4984bfe4] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  width: 100%;\n}", ""]);
+exports.push([module.i, ".uploader[data-v-4984bfe4] {\n  width: 100%;\n  background: #00b7ff;\n  color: white;\n  padding: 40px 15px;\n  border-radius: 10px;\n  border: 3px dashed white;\n  text-align: center;\n  font-size: 24px;\n  position: relative;\n}\n.uploader.dragging[data-v-4984bfe4] {\n  background: white;\n  color: #00b7ff;\n  border-color: #00b7ff;\n}\n.uploader .dropin *[data-v-4984bfe4] {\n  pointer-events: none;\n}\n.uploader i[data-v-4984bfe4] {\n  font-size: 85px;\n}\n.uploader .file-input[data-v-4984bfe4] {\n  width: 200px;\n  margin: auto;\n  position: relative;\n  height: 70px;\n}\n.uploader .file-input label[data-v-4984bfe4],\n.uploader .file-input input[data-v-4984bfe4] {\n  background: white;\n  width: 100%;\n  color: #00b7ff;\n  position: absolute;\n  left: 0;\n  top: 0;\n  padding: 10px;\n  border-radius: 4px;\n  margin-top: 15px;\n  cursor: pointer;\n}\n.uploader .file-input input[data-v-4984bfe4] {\n  opacity: 0;\n  z-index: -2;\n}\n.uploader .card[data-v-4984bfe4] {\n  color: #000;\n}\n.uploader .images-preview[data-v-4984bfe4] {\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 20px;\n}\n.uploader .images-preview .img-wrapper[data-v-4984bfe4] {\n  position: relative;\n  width: 150px;\n  display: flex;\n  flex-direction: column;\n  margin: 10px;\n  height: 220px;\n  justify-content: space-between;\n  box-shadow: 5px 5px 20px #000;\n  background: #fff;\n}\n.uploader .images-preview .img-wrapper img[data-v-4984bfe4] {\n  max-height: 150px;\n}\n.uploader .images-preview .img-wrapper i[data-v-4984bfe4] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  line-height: 24px;\n  font-size: 24px;\n  cursor: pointer;\n}\n.uploader .images-preview .img-wrapper i[data-v-4984bfe4]:hover {\n  line-height: 26px;\n  font-size: 26px;\n  color: coral;\n}\n.uploader .images-preview .image-details[data-v-4984bfe4] {\n  width: 100%;\n  height: 60px;\n  background: #fff;\n  color: #000;\n  display: flex;\n  flex-direction: column;\n  align-items: self-start;\n  padding: 3px 6px;\n  font-size: 16px;\n}\n.uploader .images-preview .image-details .image-name[data-v-4984bfe4] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  width: 100%;\n}\n.product_images .images-preview[data-v-4984bfe4] {\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 20px;\n}\n.product_images .images-preview .img-wrapper[data-v-4984bfe4] {\n  position: relative;\n  width: 100px;\n  height: 100px;\n  display: flex;\n  flex-direction: column;\n  margin: 10px;\n  justify-content: space-between;\n  box-shadow: 5px 5px 20px #000;\n  background: #fff;\n}\n.product_images .images-preview .img-wrapper img[data-v-4984bfe4] {\n  max-height: 150px;\n}\n.product_images .images-preview .img-wrapper i[data-v-4984bfe4] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  line-height: 24px;\n  font-size: 24px;\n  cursor: pointer;\n}\n.product_images .images-preview .img-wrapper i[data-v-4984bfe4]:hover {\n  line-height: 26px;\n  font-size: 26px;\n  color: coral;\n}", ""]);
 
 // exports
 
@@ -39203,129 +39236,175 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "uploader", class: { dragging: _vm.isDragging } },
-    [
-      _c(
-        "div",
-        {
-          staticClass: "dropin",
-          on: {
-            dragenter: function($event) {
-              if ($event.target !== $event.currentTarget) {
-                return null
-              }
-              $event.stopPropagation()
-              $event.preventDefault()
-              return _vm.onDragIn($event)
-            },
-            dragleave: function($event) {
-              if ($event.target !== $event.currentTarget) {
-                return null
-              }
-              $event.stopPropagation()
-              $event.preventDefault()
-              return _vm.onDragOut($event)
-            },
-            drop: function($event) {
-              if ($event.target !== $event.currentTarget) {
-                return null
-              }
-              $event.stopPropagation()
-              $event.preventDefault()
-              return _vm.onDrop($event)
-            },
-            dragover: function($event) {
-              $event.preventDefault()
-            }
-          }
-        },
-        [
-          _c("i", { staticClass: "mdi mdi-cloud-upload" }),
-          _vm._v(" "),
-          _c("p", [_vm._v("Перетащите файлы")]),
-          _vm._v(" "),
-          _c("div", [_vm._v("ИЛИ")])
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "file-input" }, [
-        _c("label", { attrs: { for: "file" } }, [_vm._v("Выберите файл")]),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "file", id: "file", multiple: "" },
-          on: { change: _vm.onInputChange }
-        })
+  return _c("div", { staticClass: "product_images" }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [
+        _vm._v("Загруженные изображения")
       ]),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.images.length,
-              expression: "images.length"
-            }
-          ],
-          staticClass: "card"
-        },
-        [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c(
-              "div",
+      _c("div", { staticClass: "card-body" }, [
+        _c(
+          "div",
+          {
+            directives: [
               {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.images.length,
-                    expression: "images.length"
+                name: "show",
+                rawName: "v-show",
+                value: _vm.product_images.length,
+                expression: "product_images.length"
+              }
+            ],
+            staticClass: "images-preview"
+          },
+          _vm._l(_vm.product_images, function(image, index) {
+            return _c("div", { key: index, staticClass: "img-wrapper" }, [
+              _c("img", {
+                attrs: {
+                  src: "/storage/images/products/" + image.icon,
+                  alt: index
+                }
+              }),
+              _vm._v(" "),
+              _c("i", {
+                staticClass: "mdi mdi-close-circle-outline",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.removeUploadedImage(index)
                   }
-                ],
-                staticClass: "images-preview"
+                }
+              })
+            ])
+          }),
+          0
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "uploader", class: { dragging: _vm.isDragging } },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "dropin",
+            on: {
+              dragenter: function($event) {
+                if ($event.target !== $event.currentTarget) {
+                  return null
+                }
+                $event.stopPropagation()
+                $event.preventDefault()
+                return _vm.onDragIn($event)
               },
-              _vm._l(_vm.images, function(image, index) {
-                return _c("div", { key: index, staticClass: "img-wrapper" }, [
-                  _c("img", { attrs: { src: image, alt: index } }),
-                  _vm._v(" "),
-                  _c("i", {
-                    staticClass: "mdi mdi-close-circle-outline",
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.removeImage(index)
-                      }
+              dragleave: function($event) {
+                if ($event.target !== $event.currentTarget) {
+                  return null
+                }
+                $event.stopPropagation()
+                $event.preventDefault()
+                return _vm.onDragOut($event)
+              },
+              drop: function($event) {
+                if ($event.target !== $event.currentTarget) {
+                  return null
+                }
+                $event.stopPropagation()
+                $event.preventDefault()
+                return _vm.onDrop($event)
+              },
+              dragover: function($event) {
+                $event.preventDefault()
+              }
+            }
+          },
+          [
+            _c("i", { staticClass: "mdi mdi-cloud-upload" }),
+            _vm._v(" "),
+            _c("p", [_vm._v("Перетащите файлы")]),
+            _vm._v(" "),
+            _c("div", [_vm._v("ИЛИ")])
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "file-input" }, [
+          _c("label", { attrs: { for: "file" } }, [_vm._v("Выберите файл")]),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { type: "file", id: "file", multiple: "" },
+            on: { change: _vm.onInputChange }
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.images.length,
+                expression: "images.length"
+              }
+            ],
+            staticClass: "card"
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.images.length,
+                      expression: "images.length"
                     }
-                  }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "image-details" }, [
-                    _c("span", {
-                      staticClass: "image-name",
-                      attrs: { title: _vm.files[index].name },
-                      domProps: { textContent: _vm._s(_vm.files[index].name) }
+                  ],
+                  staticClass: "images-preview"
+                },
+                _vm._l(_vm.images, function(image, index) {
+                  return _c("div", { key: index, staticClass: "img-wrapper" }, [
+                    _c("img", { attrs: { src: image, alt: index } }),
+                    _vm._v(" "),
+                    _c("i", {
+                      staticClass: "mdi mdi-close-circle-outline",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.removeUploadedImage(index)
+                        }
+                      }
                     }),
                     _vm._v(" "),
-                    _c("span", {
-                      staticClass: "image-size",
-                      domProps: {
-                        textContent: _vm._s(_vm.files[index].size + " байт")
-                      }
-                    })
+                    _c("div", { staticClass: "image-details" }, [
+                      _c("span", {
+                        staticClass: "image-name",
+                        attrs: { title: _vm.files[index].name },
+                        domProps: { textContent: _vm._s(_vm.files[index].name) }
+                      }),
+                      _vm._v(" "),
+                      _c("span", {
+                        staticClass: "image-size",
+                        domProps: {
+                          textContent: _vm._s(_vm.files[index].size + " байт")
+                        }
+                      })
+                    ])
                   ])
-                ])
-              }),
-              0
-            )
-          ])
-        ]
-      )
-    ]
-  )
+                }),
+                0
+              )
+            ])
+          ]
+        )
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -39381,8 +39460,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.title,
-                  expression: "fields.title"
+                  value: _vm.product.title,
+                  expression: "product.title"
                 }
               ],
               staticClass: "form-control",
@@ -39393,13 +39472,13 @@ var render = function() {
                 autocomplete: "off",
                 value: "123"
               },
-              domProps: { value: _vm.fields.title },
+              domProps: { value: _vm.product.title },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "title", $event.target.value)
+                  _vm.$set(_vm.product, "title", $event.target.value)
                 }
               }
             }),
@@ -39419,8 +39498,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.code,
-                  expression: "fields.code"
+                  value: _vm.product.code,
+                  expression: "product.code"
                 }
               ],
               staticClass: "form-control",
@@ -39430,13 +39509,13 @@ var render = function() {
                 name: "code",
                 autocomplete: "off"
               },
-              domProps: { value: _vm.fields.code },
+              domProps: { value: _vm.product.code },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "code", $event.target.value)
+                  _vm.$set(_vm.product, "code", $event.target.value)
                 }
               }
             }),
@@ -39458,8 +39537,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.description,
-                  expression: "fields.description"
+                  value: _vm.product.description,
+                  expression: "product.description"
                 }
               ],
               staticClass: "form-control",
@@ -39469,13 +39548,13 @@ var render = function() {
                 name: "description",
                 autocomplete: "off"
               },
-              domProps: { value: _vm.fields.description },
+              domProps: { value: _vm.product.description },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "description", $event.target.value)
+                  _vm.$set(_vm.product, "description", $event.target.value)
                 }
               }
             }),
@@ -39495,7 +39574,12 @@ var render = function() {
                 _vm._v("Категория")
               ]),
               _vm._v(" "),
-              _c("category-selector", { attrs: { children_only: true } }),
+              _c("category-selector", {
+                attrs: {
+                  children_only: true,
+                  category: _vm.product.category_id
+                }
+              }),
               _vm._v(" "),
               _vm.errors && _vm.errors.category_id
                 ? _c("div", { staticClass: "text-danger" }, [
@@ -39514,8 +39598,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.price,
-                  expression: "fields.price"
+                  value: _vm.product.price,
+                  expression: "product.price"
                 }
               ],
               staticClass: "form-control",
@@ -39525,13 +39609,13 @@ var render = function() {
                 name: "price",
                 autocomplete: "off"
               },
-              domProps: { value: _vm.fields.price },
+              domProps: { value: _vm.product.price },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "price", $event.target.value)
+                  _vm.$set(_vm.product, "price", $event.target.value)
                 }
               }
             }),
@@ -39551,8 +39635,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.discount,
-                  expression: "fields.discount"
+                  value: _vm.product.discount,
+                  expression: "product.discount"
                 }
               ],
               staticClass: "form-control",
@@ -39562,13 +39646,13 @@ var render = function() {
                 name: "discount",
                 autocomplete: "off"
               },
-              domProps: { value: _vm.fields.discount },
+              domProps: { value: _vm.product.discount },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "discount", $event.target.value)
+                  _vm.$set(_vm.product, "discount", $event.target.value)
                 }
               }
             }),
@@ -39588,8 +39672,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.quantity,
-                  expression: "fields.quantity"
+                  value: _vm.product.quantity,
+                  expression: "product.quantity"
                 }
               ],
               staticClass: "form-control",
@@ -39599,13 +39683,13 @@ var render = function() {
                 name: "quantity",
                 autocomplete: "off"
               },
-              domProps: { value: _vm.fields.quantity },
+              domProps: { value: _vm.product.quantity },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "quantity", $event.target.value)
+                  _vm.$set(_vm.product, "quantity", $event.target.value)
                 }
               }
             }),
@@ -39627,8 +39711,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.fields.status,
-                    expression: "fields.status"
+                    value: _vm.product.status,
+                    expression: "product.status"
                   }
                 ],
                 attrs: { name: "status", id: "status" },
@@ -39643,7 +39727,7 @@ var render = function() {
                         return val
                       })
                     _vm.$set(
-                      _vm.fields,
+                      _vm.product,
                       "status",
                       $event.target.multiple ? $$selectedVal : $$selectedVal[0]
                     )
@@ -39664,8 +39748,6 @@ var render = function() {
             [_vm._v("Сохранить")]
           )
         ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-4" }, [_c("image-uploader")], 1),
         _vm._v(" "),
         _c(
           "div",
@@ -39796,7 +39878,7 @@ var render = function() {
                             attrs: { type: "button", tabindex: "-1" },
                             on: {
                               click: function($event) {
-                                return _vm.removeCloned(index)
+                                return _vm.removeAttributeRow(index)
                               }
                             }
                           },
@@ -39822,6 +39904,15 @@ var render = function() {
             )
           ],
           2
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row product_images" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-8" },
+          [_c("image-uploader", { attrs: { product_id: _vm.product.id } })],
+          1
         )
       ])
     ]
@@ -39870,8 +39961,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.title,
-                  expression: "fields.title"
+                  value: _vm.product.title,
+                  expression: "product.title"
                 }
               ],
               staticClass: "form-control",
@@ -39881,13 +39972,13 @@ var render = function() {
                 name: "title",
                 autocomplete: "off"
               },
-              domProps: { value: _vm.fields.title },
+              domProps: { value: _vm.product.title },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "title", $event.target.value)
+                  _vm.$set(_vm.product, "title", $event.target.value)
                 }
               }
             }),
@@ -39907,8 +39998,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.code,
-                  expression: "fields.code"
+                  value: _vm.product.code,
+                  expression: "product.code"
                 }
               ],
               staticClass: "form-control",
@@ -39918,13 +40009,13 @@ var render = function() {
                 name: "code",
                 autocomplete: "off"
               },
-              domProps: { value: _vm.fields.code },
+              domProps: { value: _vm.product.code },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "code", $event.target.value)
+                  _vm.$set(_vm.product, "code", $event.target.value)
                 }
               }
             }),
@@ -39946,8 +40037,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.description,
-                  expression: "fields.description"
+                  value: _vm.product.description,
+                  expression: "product.description"
                 }
               ],
               staticClass: "form-control",
@@ -39957,13 +40048,13 @@ var render = function() {
                 name: "description",
                 autocomplete: "off"
               },
-              domProps: { value: _vm.fields.description },
+              domProps: { value: _vm.product.description },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "description", $event.target.value)
+                  _vm.$set(_vm.product, "description", $event.target.value)
                 }
               }
             }),
@@ -40002,8 +40093,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.price,
-                  expression: "fields.price"
+                  value: _vm.product.price,
+                  expression: "product.price"
                 }
               ],
               staticClass: "form-control",
@@ -40013,13 +40104,13 @@ var render = function() {
                 name: "price",
                 autocomplete: "off"
               },
-              domProps: { value: _vm.fields.price },
+              domProps: { value: _vm.product.price },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "price", $event.target.value)
+                  _vm.$set(_vm.product, "price", $event.target.value)
                 }
               }
             }),
@@ -40039,8 +40130,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.discount,
-                  expression: "fields.discount"
+                  value: _vm.product.discount,
+                  expression: "product.discount"
                 }
               ],
               staticClass: "form-control",
@@ -40050,13 +40141,13 @@ var render = function() {
                 name: "discount",
                 autocomplete: "off"
               },
-              domProps: { value: _vm.fields.discount },
+              domProps: { value: _vm.product.discount },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "discount", $event.target.value)
+                  _vm.$set(_vm.product, "discount", $event.target.value)
                 }
               }
             }),
@@ -40076,8 +40167,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.fields.quantity,
-                  expression: "fields.quantity"
+                  value: _vm.product.quantity,
+                  expression: "product.quantity"
                 }
               ],
               staticClass: "form-control",
@@ -40087,13 +40178,13 @@ var render = function() {
                 name: "quantity",
                 autocomplete: "off"
               },
-              domProps: { value: _vm.fields.quantity },
+              domProps: { value: _vm.product.quantity },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.fields, "quantity", $event.target.value)
+                  _vm.$set(_vm.product, "quantity", $event.target.value)
                 }
               }
             }),
@@ -40115,8 +40206,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.fields.status,
-                    expression: "fields.status"
+                    value: _vm.product.status,
+                    expression: "product.status"
                   }
                 ],
                 attrs: { name: "status", id: "status" },
@@ -40131,7 +40222,7 @@ var render = function() {
                         return val
                       })
                     _vm.$set(
-                      _vm.fields,
+                      _vm.product,
                       "status",
                       $event.target.multiple ? $$selectedVal : $$selectedVal[0]
                     )
@@ -40174,8 +40265,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.fields.attribute_id[index],
-                              expression: "fields.attribute_id[index]"
+                              value: _vm.product.attribute_id[index],
+                              expression: "product.attribute_id[index]"
                             }
                           ],
                           attrs: { name: "attribute_id[]" },
@@ -40191,7 +40282,7 @@ var render = function() {
                                     return val
                                   })
                                 _vm.$set(
-                                  _vm.fields.attribute_id,
+                                  _vm.product.attribute_id,
                                   index,
                                   $event.target.multiple
                                     ? $$selectedVal
@@ -40234,8 +40325,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.fields.attribute_value_id[index],
-                              expression: "fields.attribute_value_id[index]"
+                              value: _vm.product.attribute_value_id[index],
+                              expression: "product.attribute_value_id[index]"
                             }
                           ],
                           attrs: { name: "attribute_value_id[]" },
@@ -40250,7 +40341,7 @@ var render = function() {
                                   return val
                                 })
                               _vm.$set(
-                                _vm.fields.attribute_value_id,
+                                _vm.product.attribute_value_id,
                                 index,
                                 $event.target.multiple
                                   ? $$selectedVal
