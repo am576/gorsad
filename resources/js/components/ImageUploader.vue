@@ -6,7 +6,7 @@
                 <div class="images-preview" v-show="product_images.length">
                     <div class="img-wrapper" v-for="(image, index) in product_images" :key="index">
                         <img :src="'/storage/images/products/'+image.icon" :alt="index">
-                        <i class="mdi mdi-close-circle-outline" @click.prevent="removeUploadedImage(index)"></i>
+                        <i class="mdi mdi-close-circle-outline" @click.prevent="removeProductImage(image.id)"></i>
                     </div>
                 </div>
             </div>
@@ -100,8 +100,8 @@
 
                 this.passImages();
             },
-            removeProductImage() {
-
+            removeProductImage(image_id) {
+                this.$emit('removeImage', image_id)
             },
             passImages() {
                 this.$eventBus.$emit('addImages', this.files)

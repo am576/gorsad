@@ -80,7 +80,7 @@
         </div>
         <div class="row product_images">
             <div class="col-md-8">
-                <image-uploader :product_id="product.id"></image-uploader>
+                <image-uploader :product_id="product.id" @removeImage="removeImage"></image-uploader>
             </div>
         </div>
     </form>
@@ -157,6 +157,13 @@
                 this.$set(this.attribute_rows, index, 0);
                 this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.product_attributes[index].id);
             },
+            removeImage(image_id)
+            {
+                if(!this.images_to_delete.includes(image_id))
+                {
+                    this.images_to_delete.push(image_id);
+                }
+            },
             submit() {
                 this.errors = {};
                 const formData = new FormData();
@@ -180,7 +187,11 @@
                 this.attributes_to_delete.forEach(attr_id => {
                     formData.append('attributes_to_delete[]', attr_id)
                 });
+                this.images_to_delete.forEach(image_id => {
+                    formData.append('images_to_delete[]', image_id)
+                });
                 formData.append('_method', 'PUT');
+
                 axios.post('/admin/products/' + this.product.id, formData)
                 .then(response =>{
                 }).catch(error => {

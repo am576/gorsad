@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStore;
+use App\Image;
 use App\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -148,6 +149,23 @@ class ProductController extends Controller
                     ])
                     ->delete();
             }
+        }
+
+        if(isset($request->images_to_delete))
+        {
+            foreach ($request->images_to_delete as $image_id) {
+                $images = array_map(
+                    function($el) {
+                      return 'products/' . $el;
+                    },
+                    array_values(Image::select('icon','small','medium','large')
+                    ->where('id', $image_id)->get()->toArray()[0]));
+
+                Storage::disk('images')->delete($images);
+            }
+            Image::whereIn('id', $request->images_to_delete)
+                ->delete();
+
         }
 
         return redirect()->intended(route('products.index'));

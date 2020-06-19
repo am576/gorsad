@@ -2279,7 +2279,9 @@ __webpack_require__.r(__webpack_exports__);
       this.$delete(this.images, index);
       this.passImages();
     },
-    removeProductImage: function removeProductImage() {},
+    removeProductImage: function removeProductImage(image_id) {
+      this.$emit('removeImage', image_id);
+    },
     passImages: function passImages() {
       this.$eventBus.$emit('addImages', this.files);
     },
@@ -2475,6 +2477,11 @@ __webpack_require__.r(__webpack_exports__);
       this.$set(this.attribute_rows, index, 0);
       this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.product_attributes[index].id);
     },
+    removeImage: function removeImage(image_id) {
+      if (!this.images_to_delete.includes(image_id)) {
+        this.images_to_delete.push(image_id);
+      }
+    },
     submit: function submit() {
       var _this4 = this;
 
@@ -2496,6 +2503,9 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.attributes_to_delete.forEach(function (attr_id) {
         formData.append('attributes_to_delete[]', attr_id);
+      });
+      this.images_to_delete.forEach(function (image_id) {
+        formData.append('images_to_delete[]', image_id);
       });
       formData.append('_method', 'PUT');
       axios.post('/admin/products/' + this.product.id, formData).then(function (response) {})["catch"](function (error) {
@@ -39270,7 +39280,7 @@ var render = function() {
                 on: {
                   click: function($event) {
                     $event.preventDefault()
-                    return _vm.removeUploadedImage(index)
+                    return _vm.removeProductImage(image.id)
                   }
                 }
               })
@@ -39911,7 +39921,12 @@ var render = function() {
         _c(
           "div",
           { staticClass: "col-md-8" },
-          [_c("image-uploader", { attrs: { product_id: _vm.product.id } })],
+          [
+            _c("image-uploader", {
+              attrs: { product_id: _vm.product.id },
+              on: { removeImage: _vm.removeImage }
+            })
+          ],
           1
         )
       ])
