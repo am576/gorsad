@@ -1,7 +1,7 @@
 <template>
     <div class="product_images">
-        <div class="card">
-            <div class="card-header">Загруженные изображения</div>
+        <div v-show="product_images.length" class="card">
+            <div class="card-header">Сохранённые изображения</div>
             <div class="card-body">
                 <div class="images-preview" v-show="product_images.length">
                     <div class="img-wrapper" v-for="(image, index) in product_images" :key="index">

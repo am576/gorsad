@@ -2508,8 +2508,12 @@ __webpack_require__.r(__webpack_exports__);
         formData.append('images_to_delete[]', image_id);
       });
       formData.append('_method', 'PUT');
-      axios.post('/admin/products/' + this.product.id, formData).then(function (response) {})["catch"](function (error) {
-        if (error.response.status === 422) {
+      axios.post('/admin/products/' + this.product.id, formData).then(function (response) {
+        if (response.status == '200') {
+          window.location.href = '/admin/products';
+        }
+      })["catch"](function (error) {
+        if ([422, 500].includes(error.response.status)) {
           _this4.errors = error.response.data.errors || {};
         }
       });
@@ -39247,49 +39251,63 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "product_images" }, [
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _vm._v("Загруженные изображения")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "div",
+    _c(
+      "div",
+      {
+        directives: [
           {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.product_images.length,
-                expression: "product_images.length"
-              }
-            ],
-            staticClass: "images-preview"
-          },
-          _vm._l(_vm.product_images, function(image, index) {
-            return _c("div", { key: index, staticClass: "img-wrapper" }, [
-              _c("img", {
-                attrs: {
-                  src: "/storage/images/products/" + image.icon,
-                  alt: index
+            name: "show",
+            rawName: "v-show",
+            value: _vm.product_images.length,
+            expression: "product_images.length"
+          }
+        ],
+        staticClass: "card"
+      },
+      [
+        _c("div", { staticClass: "card-header" }, [
+          _vm._v("Сохранённые изображения")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.product_images.length,
+                  expression: "product_images.length"
                 }
-              }),
-              _vm._v(" "),
-              _c("i", {
-                staticClass: "mdi mdi-close-circle-outline",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.removeProductImage(image.id)
+              ],
+              staticClass: "images-preview"
+            },
+            _vm._l(_vm.product_images, function(image, index) {
+              return _c("div", { key: index, staticClass: "img-wrapper" }, [
+                _c("img", {
+                  attrs: {
+                    src: "/storage/images/products/" + image.icon,
+                    alt: index
                   }
-                }
-              })
-            ])
-          }),
-          0
-        )
-      ])
-    ]),
+                }),
+                _vm._v(" "),
+                _c("i", {
+                  staticClass: "mdi mdi-close-circle-outline",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.removeProductImage(image.id)
+                    }
+                  }
+                })
+              ])
+            }),
+            0
+          )
+        ])
+      ]
+    ),
     _vm._v(" "),
     _c(
       "div",

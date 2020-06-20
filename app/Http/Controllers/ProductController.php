@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStore;
+use App\Http\Requests\ProductUpdate;
 use App\Image;
 use App\Product;
 use Illuminate\Support\Facades\DB;
@@ -90,7 +91,7 @@ class ProductController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(ProductUpdate $request, $id)
     {
         $product = Product::findOrFail($id);
 
@@ -139,7 +140,6 @@ class ProductController extends Controller
 
         if(isset($request->attributes_to_delete))
         {
-
             foreach ($request->attributes_to_delete as $attr_id)
             {
                 DB::table('products_attributes')

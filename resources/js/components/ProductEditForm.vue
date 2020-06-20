@@ -193,9 +193,13 @@
                 formData.append('_method', 'PUT');
 
                 axios.post('/admin/products/' + this.product.id, formData)
-                .then(response =>{
+                .then(response => {
+                    if(response.status == '200')
+                    {
+                        window.location.href = '/admin/products'
+                    }
                 }).catch(error => {
-                    if (error.response.status === 422) {
+                    if ([422, 500].includes(error.response.status)) {
                         this.errors = error.response.data.errors || {};
                     }
                 });
