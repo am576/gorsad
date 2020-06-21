@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('getAllCategories','ApiController@getAllCategories');
 Route::get('getChildCategories','ApiController@getChildCategories');
+Route::get('getProductCategory','ApiController@getProductCategory');
 Route::get('getAttributesForCategory','ApiController@getAttributesForCategory');
 Route::get('getAttributeValues', 'ApiController@getAttributeValues');
 Route::get('getProductImages', 'ApiController@getProductImages');

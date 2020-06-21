@@ -23,6 +23,13 @@ class ApiController extends Controller
         return response()->json($data);
     }
 
+    public function getProducts()
+    {
+        $data = [
+            'products' => Product::all(),
+        ];
+    }
+
     public function getAttributesForCategory(Request $request)
     {
         $attributes = Attribute::where('category_id',$request->category_id)->get();
