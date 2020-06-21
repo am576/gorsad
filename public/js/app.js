@@ -2279,7 +2279,8 @@ __webpack_require__.r(__webpack_exports__);
       this.$delete(this.images, index);
       this.passImages();
     },
-    removeProductImage: function removeProductImage(image_id) {
+    removeProductImage: function removeProductImage(image_id, index) {
+      this.$delete(this.product_images, index);
       this.$emit('removeImage', image_id);
     },
     passImages: function passImages() {
@@ -39297,7 +39298,7 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.removeProductImage(image.id)
+                      return _vm.removeProductImage(image.id, index)
                     }
                   }
                 })
