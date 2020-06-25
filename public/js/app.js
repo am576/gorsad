@@ -2752,9 +2752,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    products: {}
+    prop_products: {}
+  },
+  data: function data() {
+    return {
+      products: this.prop_products,
+      filter_fields: []
+    };
+  },
+  methods: {
+    test: function test(msg) {
+      var _this = this;
+
+      axios.get('/api/filterProducts', {
+        params: {
+          'title': msg
+        }
+      }).then(function (response) {
+        _this.products = response.data;
+      });
+    }
+  },
+  computed: {
+    filterProducts: function filterProducts(products) {
+      this.products = products;
+    }
   }
 });
 
@@ -40514,40 +40552,90 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "table-responsive" }, [
-    _c(
-      "table",
-      { staticClass: "table table-hover", attrs: { id: "dataTable" } },
-      [
-        _vm._m(0),
+  return _c("div", [
+    _c("form", { attrs: { action: "" } }, [
+      _c("div", { staticClass: "form-row" }, [
+        _c("div", { staticClass: "col-auto" }, [
+          _c("label", { staticClass: "sr-only", attrs: { for: "title" } }, [
+            _vm._v("Название")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control",
+            attrs: {
+              type: "text",
+              id: "title",
+              name: "title",
+              placeholder: "Название"
+            },
+            on: {
+              keyup: function($event) {
+                return _vm.test($event.target.value)
+              }
+            }
+          })
+        ]),
         _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.products, function(product, index) {
-            return _c("tr", { key: index }, [
-              _c("td", [_vm._v(_vm._s(product.title))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.code))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.category.title))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.price))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.discount))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.quantity))]),
-              _vm._v(" "),
-              _c("td", [_vm._v("status")]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(product.created_at))]),
-              _vm._v(" "),
-              _c("td", [_vm._v("\n                buttons\n            ")])
-            ])
-          }),
-          0
-        )
-      ]
-    )
+        _c("div", { staticClass: "col-auto" }, [
+          _c("label", { staticClass: "sr-only", attrs: { for: "title" } }, [
+            _vm._v("Код товара")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control",
+            attrs: {
+              type: "text",
+              id: "code",
+              name: "code",
+              placeholder: "Код товара"
+            },
+            on: {
+              keyup: function($event) {
+                return _vm.test($event.target.value)
+              }
+            }
+          })
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "table-responsive" }, [
+      _c(
+        "table",
+        { staticClass: "table table-hover", attrs: { id: "dataTable" } },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.products, function(product, index) {
+              return _c("tr", { key: index }, [
+                _c("td", [_vm._v(_vm._s(product.title))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(product.code))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(product.category.title))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(product.price))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(product.discount))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(product.quantity))]),
+                _vm._v(" "),
+                _c("td", [_vm._v("status")]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(product.created_at))]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v("\n                    buttons\n                ")
+                ])
+              ])
+            }),
+            0
+          )
+        ]
+      )
+    ])
   ])
 }
 var staticRenderFns = [

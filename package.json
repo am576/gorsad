@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "bootstrap-icons": "^1.0.0-alpha3"
+        "bootstrap-icons": "^1.0.0-alpha3",
+        "vuejs-datatable": "^2.0.0-alpha.7"
     }
 }

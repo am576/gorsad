@@ -49,4 +49,10 @@ class ApiController extends Controller
     {
         return Product::find($request->id)->images()->get();
     }
+
+    public function filterProducts(Request $request)
+    {
+        $products = Product::where('title', 'like', '%'.$request->title.'%')->with('category')->get();
+        return response()->json($products);
+    }
 }
