@@ -40553,7 +40553,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("form", { attrs: { action: "" } }, [
+    _c("form", [
       _c("div", { staticClass: "form-row" }, [
         _c("div", { staticClass: "col-auto" }, [
           _c("label", { staticClass: "sr-only", attrs: { for: "title" } }, [
@@ -53454,9 +53454,9 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/am/Work/www/karandash/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /home/am/Work/www/karandash/resources/sass/app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! /home/am/Work/www/karandash/resources/sass/admin.scss */"./resources/sass/admin.scss");
+__webpack_require__(/*! /home/am/Work/karandash/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/am/Work/karandash/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /home/am/Work/karandash/resources/sass/admin.scss */"./resources/sass/admin.scss");
 
 
 /***/ })

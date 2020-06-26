@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form action="">
+        <form>
             <div class="form-row">
                 <div class="col-auto">
                     <label class="sr-only" for="title">Название</label>
