@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "bootstrap-icons": "^1.0.0-alpha3",
+        "qs": "^6.9.4",
         "vuejs-datatable": "^2.0.0-alpha.7"
     }
 }

@@ -52,7 +52,18 @@ class ApiController extends Controller
 
     public function filterProducts(Request $request)
     {
-        $products = Product::where('title', 'like', '%'.$request->title.'%')->with('category')->get();
+        $filter_data = json_decode($request->filter_data);
+        $params_where = [];
+        foreach ($filter_data as $filter) {
+            $operator = $filter->type == 'input' ? 'like' : '=';
+            $value = $filter->type == 'input' ? '%'.$filter->value.'%'  : $filter->value;
+            array_push($params_where,
+                [
+                   $filter->name, $operator, $value
+                ]);
+        }
+        $products = Product::where($params_where)->with('category')->get();
+
         return response()->json($products);
     }
 }

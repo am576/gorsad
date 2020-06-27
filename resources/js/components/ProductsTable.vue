@@ -1,17 +1,6 @@
 <template>
     <div>
-        <form>
-            <div class="form-row">
-                <div class="col-auto">
-                    <label class="sr-only" for="title">Название</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="Название" @keyup="test($event.target.value)">
-                </div>
-                <div class="col-auto">
-                    <label class="sr-only" for="title">Код товара</label>
-                    <input type="text" class="form-control" id="code" name="code" placeholder="Код товара" @keyup="test($event.target.value)">
-                </div>
-            </div>
-        </form>
+        <table-filter :filter_fields="filter_fields" @filter="filterTable"></table-filter>
         <div class="table-responsive">
             <table id="dataTable" class="table table-hover">
                 <thead>
@@ -35,7 +24,7 @@
                     <td>{{product.price}}</td>
                     <td>{{product.discount}}</td>
                     <td>{{product.quantity}}</td>
-                    <td>status</td>
+                    <td :class="colorStatus(product.status)">{{statuses[product.status]}}</td>
                     <td>{{product.created_at}}</td>
                     <td>
                         buttons
@@ -50,29 +39,61 @@
 <script>
     export default {
         props: {
-          prop_products: {},
+          products_data: {},
         },
         data() {
           return {
-              products: this.prop_products,
-              filter_fields: []
+              products: this.products_data,
+              filter_fields: [
+                  {
+                      name: 'title',
+                      title: 'Название',
+                      type:  'input'
+                  },
+                  {
+                      name:  'code',
+                      title: 'Код товара',
+                      type:  'input'
+                  },
+                  {
+                      name: 'status',
+                      title: 'Статус',
+                      type:  'select',
+                      options:
+                      [
+                          {
+                              label: 'Активный',
+                              value: 1
+                          },
+                          {
+                              label: 'Неактивный',
+                              value: 0
+                          }
+                      ]
+                  },
+              ],
+              statuses: ['Неактивный', 'Активный']
           }
         },
         methods: {
-            test(msg) {
-                axios.get('/api/filterProducts', {
-                    params: {
-                        'title': msg
-                    }
-                }).then(response => {
-                    this.products =  response.data
+            filterTable(filter_data) {
+                axios.post('/api/filterProducts', filter_data
+                ).then(response => {
+                    this.products = response.data;
                 })
+            },
+            colorStatus(status) {
+                return {
+                    'text-danger': !status,
+                    'text-success': status
+                }
             }
         },
         computed: {
             filterProducts(products) {
                 this.products =  products
-            }
+            },
+
         }
     }
 </script>

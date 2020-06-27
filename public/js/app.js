@@ -2755,6 +2755,74 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    products_data: {}
+  },
+  data: function data() {
+    return {
+      products: this.products_data,
+      filter_fields: [{
+        name: 'title',
+        title: 'Название',
+        type: 'input'
+      }, {
+        name: 'code',
+        title: 'Код товара',
+        type: 'input'
+      }, {
+        name: 'status',
+        title: 'Статус',
+        type: 'select',
+        options: [{
+          label: 'Активный',
+          value: 1
+        }, {
+          label: 'Неактивный',
+          value: 0
+        }]
+      }],
+      statuses: ['Неактивный', 'Активный']
+    };
+  },
+  methods: {
+    filterTable: function filterTable(filter_data) {
+      var _this = this;
+
+      axios.post('/api/filterProducts', filter_data).then(function (response) {
+        _this.products = response.data;
+      });
+    },
+    colorStatus: function colorStatus(status) {
+      return {
+        'text-danger': !status,
+        'text-success': status
+      };
+    }
+  },
+  computed: {
+    filterProducts: function filterProducts(products) {
+      this.products = products;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TableFilter.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TableFilter.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2768,32 +2836,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    prop_products: {}
+    filter_fields: {
+      type: Array,
+      "default": []
+    }
   },
   data: function data() {
     return {
-      products: this.prop_products,
-      filter_fields: []
+      filter_data: []
     };
   },
   methods: {
-    test: function test(msg) {
-      var _this = this;
-
-      axios.get('/api/filterProducts', {
-        params: {
-          'title': msg
-        }
-      }).then(function (response) {
-        _this.products = response.data;
-      });
+    updateFilterData: function updateFilterData(index, value) {
+      var filter_data = {
+        name: this.filter_fields[index].name,
+        value: value,
+        type: this.filter_fields[index].type
+      };
+      this.$set(this.filter_data, index, filter_data);
+      this.emitFilter();
+    },
+    emitFilter: function emitFilter() {
+      var filter_data = new FormData();
+      filter_data.append('filter_data', JSON.stringify(this.filter_data));
+      this.$emit('filter', filter_data);
     }
   },
-  computed: {
-    filterProducts: function filterProducts(products) {
-      this.products = products;
-    }
-  }
+  created: function created() {}
 });
 
 /***/ }),
@@ -40552,91 +40621,56 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("form", [
-      _c("div", { staticClass: "form-row" }, [
-        _c("div", { staticClass: "col-auto" }, [
-          _c("label", { staticClass: "sr-only", attrs: { for: "title" } }, [
-            _vm._v("Название")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control",
-            attrs: {
-              type: "text",
-              id: "title",
-              name: "title",
-              placeholder: "Название"
-            },
-            on: {
-              keyup: function($event) {
-                return _vm.test($event.target.value)
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-auto" }, [
-          _c("label", { staticClass: "sr-only", attrs: { for: "title" } }, [
-            _vm._v("Код товара")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control",
-            attrs: {
-              type: "text",
-              id: "code",
-              name: "code",
-              placeholder: "Код товара"
-            },
-            on: {
-              keyup: function($event) {
-                return _vm.test($event.target.value)
-              }
-            }
-          })
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "table-responsive" }, [
-      _c(
-        "table",
-        { staticClass: "table table-hover", attrs: { id: "dataTable" } },
-        [
-          _vm._m(0),
-          _vm._v(" "),
-          _c(
-            "tbody",
-            _vm._l(_vm.products, function(product, index) {
-              return _c("tr", { key: index }, [
-                _c("td", [_vm._v(_vm._s(product.title))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(product.code))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(product.category.title))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(product.price))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(product.discount))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(product.quantity))]),
-                _vm._v(" "),
-                _c("td", [_vm._v("status")]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(product.created_at))]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v("\n                    buttons\n                ")
+  return _c(
+    "div",
+    [
+      _c("table-filter", {
+        attrs: { filter_fields: _vm.filter_fields },
+        on: { filter: _vm.filterTable }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "table-responsive" }, [
+        _c(
+          "table",
+          { staticClass: "table table-hover", attrs: { id: "dataTable" } },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.products, function(product, index) {
+                return _c("tr", { key: index }, [
+                  _c("td", [_vm._v(_vm._s(product.title))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.code))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.category.title))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.price))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.discount))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.quantity))]),
+                  _vm._v(" "),
+                  _c("td", { class: _vm.colorStatus(product.status) }, [
+                    _vm._v(_vm._s(_vm.statuses[product.status]))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.created_at))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v("\n                    buttons\n                ")
+                  ])
                 ])
-              ])
-            }),
-            0
-          )
-        ]
-      )
-    ])
-  ])
+              }),
+              0
+            )
+          ]
+        )
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -40666,6 +40700,78 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TableFilter.vue?vue&type=template&id=c6b50e6a&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TableFilter.vue?vue&type=template&id=c6b50e6a& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("form", [
+    _c(
+      "div",
+      { staticClass: "form-row" },
+      _vm._l(_vm.filter_fields, function(field, index) {
+        return _c("div", { key: index, staticClass: "col-auto" }, [
+          _c("label", { staticClass: "sr-only", attrs: { for: field.name } }, [
+            _vm._v(_vm._s(field.title))
+          ]),
+          _vm._v(" "),
+          field.type === "input"
+            ? _c("input", {
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  id: field.name,
+                  name: field.name,
+                  placeholder: field.title
+                },
+                on: {
+                  keyup: function($event) {
+                    return _vm.updateFilterData(index, $event.target.value)
+                  }
+                }
+              })
+            : field.type === "select"
+            ? _c(
+                "select",
+                {
+                  attrs: { name: field.name, id: field.name },
+                  on: {
+                    change: function($event) {
+                      return _vm.updateFilterData(index, $event.target.value)
+                    }
+                  }
+                },
+                _vm._l(field.options, function(option) {
+                  return _c("option", { domProps: { value: option.value } }, [
+                    _vm._v(_vm._s(option.label))
+                  ])
+                }),
+                0
+              )
+            : _vm._e()
+        ])
+      }),
+      0
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -52867,6 +52973,7 @@ Vue.component('image-uploader', __webpack_require__(/*! ./components/ImageUpload
 Vue.component('product-form', __webpack_require__(/*! ./components/ProductForm */ "./resources/js/components/ProductForm.vue")["default"]);
 Vue.component('product-edit-form', __webpack_require__(/*! ./components/ProductEditForm */ "./resources/js/components/ProductEditForm.vue")["default"]);
 Vue.component('products-table', __webpack_require__(/*! ./components/ProductsTable */ "./resources/js/components/ProductsTable.vue")["default"]);
+Vue.component('table-filter', __webpack_require__(/*! ./components/TableFilter */ "./resources/js/components/TableFilter.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -53425,6 +53532,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/TableFilter.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/TableFilter.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TableFilter_vue_vue_type_template_id_c6b50e6a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TableFilter.vue?vue&type=template&id=c6b50e6a& */ "./resources/js/components/TableFilter.vue?vue&type=template&id=c6b50e6a&");
+/* harmony import */ var _TableFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TableFilter.vue?vue&type=script&lang=js& */ "./resources/js/components/TableFilter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TableFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TableFilter_vue_vue_type_template_id_c6b50e6a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TableFilter_vue_vue_type_template_id_c6b50e6a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/TableFilter.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/TableFilter.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/TableFilter.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TableFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TableFilter.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TableFilter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TableFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/TableFilter.vue?vue&type=template&id=c6b50e6a&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/TableFilter.vue?vue&type=template&id=c6b50e6a& ***!
+  \********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TableFilter_vue_vue_type_template_id_c6b50e6a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./TableFilter.vue?vue&type=template&id=c6b50e6a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TableFilter.vue?vue&type=template&id=c6b50e6a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TableFilter_vue_vue_type_template_id_c6b50e6a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TableFilter_vue_vue_type_template_id_c6b50e6a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/sass/admin.scss":
 /*!***********************************!*\
   !*** ./resources/sass/admin.scss ***!
@@ -53454,9 +53630,9 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/am/Work/karandash/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /home/am/Work/karandash/resources/sass/app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! /home/am/Work/karandash/resources/sass/admin.scss */"./resources/sass/admin.scss");
+__webpack_require__(/*! /home/am/Work/www/karandash/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/am/Work/www/karandash/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /home/am/Work/www/karandash/resources/sass/admin.scss */"./resources/sass/admin.scss");
 
 
 /***/ })

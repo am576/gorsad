@@ -14,7 +14,7 @@
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-body">
-                        <products-table :prop_products="{{$products}}"></products-table>
+                        <products-table :products_data="{{$products}}"></products-table>
                     </div>
                 </div>
             </div>
