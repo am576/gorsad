@@ -28,6 +28,7 @@ Vue.component('product-form', require('./components/ProductForm').default);
 Vue.component('product-edit-form', require('./components/ProductEditForm').default);
 Vue.component('products-table', require('./components/ProductsTable').default);
 Vue.component('table-filter', require('./components/TableFilter').default);
+Vue.component('table-pagination', require('./components/TablePagination').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

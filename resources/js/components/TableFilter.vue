@@ -38,9 +38,9 @@
                 this.emitFilter()
             },
             emitFilter() {
-                let filter_data = new FormData();
-                filter_data.append('filter_data', JSON.stringify(this.filter_data));
-                this.$emit('filter', filter_data);
+                // let filter_data = new FormData();
+                // filter_data.append('filter_data', JSON.stringify(this.filter_data));
+                this.$emit('filter', this.filter_data);
             }
         },
         created() {

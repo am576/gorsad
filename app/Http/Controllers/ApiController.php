@@ -23,13 +23,6 @@ class ApiController extends Controller
         return response()->json($data);
     }
 
-    public function getProducts()
-    {
-        $data = [
-            'products' => Product::all(),
-        ];
-    }
-
     public function getAttributesForCategory(Request $request)
     {
         $attributes = Attribute::where('category_id',$request->category_id)->get();
@@ -52,17 +45,30 @@ class ApiController extends Controller
 
     public function filterProducts(Request $request)
     {
-        $filter_data = json_decode($request->filter_data);
         $params_where = [];
-        foreach ($filter_data as $filter) {
-            $operator = $filter->type == 'input' ? 'like' : '=';
-            $value = $filter->type == 'input' ? '%'.$filter->value.'%'  : $filter->value;
-            array_push($params_where,
-                [
-                   $filter->name, $operator, $value
-                ]);
+        if(isset($request->filter_data))
+        {
+            $filter_data = $request->filter_data;
+
+            foreach ($filter_data as $filter) {
+                $filter = json_decode($filter);
+                $operator = $filter->type == 'input' ? 'like' : '=';
+                $value = $filter->type == 'input' ? '%'.$filter->value.'%'  : $filter->value;
+                array_push($params_where,
+                    [
+                        $filter->name, $operator, $value
+                    ]);
+            }
         }
-        $products = Product::where($params_where)->with('category')->get();
+
+        $products = Product::where($params_where)->with('category')->paginate(5);
+
+        return response()->json($products);
+    }
+
+    public function getProducts()
+    {
+        $products = Product::with('category')->paginate(5);
 
         return response()->json($products);
     }

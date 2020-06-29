@@ -24,4 +24,5 @@ Route::get('getProductCategory','ApiController@getProductCategory');
 Route::get('getAttributesForCategory','ApiController@getAttributesForCategory');
 Route::get('getAttributeValues', 'ApiController@getAttributeValues');
 Route::get('getProductImages', 'ApiController@getProductImages');
-Route::post('filterProducts', 'ApiController@filterProducts');
+Route::get('filterProducts', 'ApiController@filterProducts');
+Route::get('getProducts', 'ApiController@getProducts');

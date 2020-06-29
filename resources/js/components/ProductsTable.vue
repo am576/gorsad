@@ -17,7 +17,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(product, index) in products" :key="index">
+                <tr v-for="(product, index) in products.data" :key="index">
                     <td>{{product.title }}</td>
                     <td>{{product.code}}</td>
                     <td>{{product.category.title}}</td><!---->
@@ -32,18 +32,16 @@
                 </tr>
                 </tbody>
             </table>
+            <table-pagination :pagination="products" :offset="4" @paginate="getProducts"></table-pagination>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        props: {
-          products_data: {},
-        },
+
         data() {
           return {
-              products: this.products_data,
               filter_fields: [
                   {
                       name: 'title',
@@ -72,12 +70,27 @@
                       ]
                   },
               ],
-              statuses: ['Неактивный', 'Активный']
+              statuses: ['Неактивный', 'Активный'],
+              products: {
+                  total: 0,
+                  per_page: 2,
+                  from: 1,
+                  to: 0,
+                  current_page: 1
+              },
+              filter_data: []
           }
         },
         methods: {
             filterTable(filter_data) {
-                axios.post('/api/filterProducts', filter_data
+                this.filter_data = filter_data;
+                console.log(this.filter_data);
+                axios.get('/api/filterProducts', {
+                    params: {
+                        page: this.products.current_page,
+                        filter_data: filter_data
+                    }
+                    }
                 ).then(response => {
                     this.products = response.data;
                 })
@@ -87,13 +100,23 @@
                     'text-danger': !status,
                     'text-success': status
                 }
+            },
+            getProducts() {
+                axios.get('/api/filterProducts', {
+                        params: {
+                            page: this.products.current_page,
+                            filter_data: this.filter_data
+                        }
+                    }
+                ).then(response => {
+                    this.products = response.data;
+                })
             }
         },
-        computed: {
-            filterProducts(products) {
-                this.products =  products
-            },
-
+        created() {
+            this.getProducts()
         }
+
+
     }
 </script>
