@@ -40,37 +40,9 @@
 
 <script>
     export default {
-
         data() {
           return {
-              filter_fields: [
-                  {
-                      name: 'title',
-                      title: 'Название',
-                      type:  'input'
-                  },
-                  {
-                      name:  'code',
-                      title: 'Код товара',
-                      type:  'input'
-                  },
-                  {
-                      name: 'status',
-                      title: 'Статус',
-                      type:  'select',
-                      options:
-                      [
-                          {
-                              label: 'Активный',
-                              value: 1
-                          },
-                          {
-                              label: 'Неактивный',
-                              value: 0
-                          }
-                      ]
-                  },
-              ],
+              categories: [],
               statuses: ['Неактивный', 'Активный'],
               products: {
                   total: 0,
@@ -124,10 +96,67 @@
             changePerPage(per_page) {
                 this.per_page = per_page;
                 this.getProducts(this.products.current_page);
+            },
+            getCategories() {
+                return axios.get('/api/getAllCategories')
+                    .then(response => {
+                        return response.data
+                    })
+            },
+            setCategoriesFilter() {
+                this.getCategories()
+                    .then(categories => {
+                        $.each(categories, (index, category) => {
+                            this.$set(this.categories, index, {
+                                label: category.title,
+                                value: category.id
+                            })
+                        });
+                    })
+                console.log(this.categories);
+            }
+        },
+        computed: {
+            filter_fields() {
+                return  [
+                    {
+                        name: 'title',
+                        title: 'Название',
+                        type:  'input'
+                    },
+                    {
+                        name:  'code',
+                        title: 'Код товара',
+                        type:  'input'
+                    },
+                    {
+                        name: 'status',
+                        title: 'Статус',
+                        type:  'select',
+                        options:
+                            [
+                                {
+                                    label: 'Активный',
+                                    value: 1
+                                },
+                                {
+                                    label: 'Неактивный',
+                                    value: 0
+                                }
+                            ]
+                    },
+                    {
+                        name: 'category_id',
+                        title: 'Категория',
+                        type: 'select',
+                        options: this.categories
+                    }
+                ]
             }
         },
         created() {
-            this.getProducts(this.products.current_page)
+            this.getProducts(this.products.current_page);
+            this.setCategoriesFilter()
         }
     }
 </script>

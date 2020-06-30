@@ -2760,26 +2760,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      filter_fields: [{
-        name: 'title',
-        title: 'Название',
-        type: 'input'
-      }, {
-        name: 'code',
-        title: 'Код товара',
-        type: 'input'
-      }, {
-        name: 'status',
-        title: 'Статус',
-        type: 'select',
-        options: [{
-          label: 'Активный',
-          value: 1
-        }, {
-          label: 'Неактивный',
-          value: 0
-        }]
-      }],
+      categories: [],
       statuses: ['Неактивный', 'Активный'],
       products: {
         total: 0,
@@ -2836,10 +2817,58 @@ __webpack_require__.r(__webpack_exports__);
     changePerPage: function changePerPage(per_page) {
       this.per_page = per_page;
       this.getProducts(this.products.current_page);
+    },
+    getCategories: function getCategories() {
+      return axios.get('/api/getAllCategories').then(function (response) {
+        return response.data;
+      });
+    },
+    setCategoriesFilter: function setCategoriesFilter() {
+      var _this3 = this;
+
+      this.getCategories().then(function (categories) {
+        $.each(categories, function (index, category) {
+          _this3.$set(_this3.categories, index, {
+            label: category.title,
+            value: category.id
+          });
+        });
+      });
+      console.log(this.categories);
+    }
+  },
+  computed: {
+    filter_fields: function filter_fields() {
+      return [{
+        name: 'title',
+        title: 'Название',
+        type: 'input'
+      }, {
+        name: 'code',
+        title: 'Код товара',
+        type: 'input'
+      }, {
+        name: 'status',
+        title: 'Статус',
+        type: 'select',
+        options: [{
+          label: 'Активный',
+          value: 1
+        }, {
+          label: 'Неактивный',
+          value: 0
+        }]
+      }, {
+        name: 'category_id',
+        title: 'Категория',
+        type: 'select',
+        options: this.categories
+      }];
     }
   },
   created: function created() {
     this.getProducts(this.products.current_page);
+    this.setCategoriesFilter();
   }
 });
 
