@@ -61,9 +61,19 @@ class ApiController extends Controller
             }
         }
 
-        $products = Product::where($params_where)->with('category')->paginate(5);
+        $products = Product::where($params_where)->with('category')->paginate($request->per_page)->toJson();
 
-        return response()->json($products);
+        $jproducts = json_decode($products);
+
+        if(!isset($jproducts->to) && !isset($jproducts->from))
+        {
+            $request->page = 1;
+            $jproducts->from = 1;
+            $jproducts->to = $jproducts->total;
+            $jproducts->current_page = 1;
+        }
+
+        return json_encode($jproducts);
     }
 
     public function getProducts()

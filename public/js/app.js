@@ -2756,6 +2756,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2787,7 +2788,8 @@ __webpack_require__.r(__webpack_exports__);
         to: 0,
         current_page: 1
       },
-      filter_data: []
+      filter_data: [],
+      per_page: 10
     };
   },
   methods: {
@@ -2799,7 +2801,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/api/filterProducts', {
         params: {
           page: this.products.current_page,
-          filter_data: filter_data
+          filter_data: filter_data,
+          per_page: this.per_page
         }
       }).then(function (response) {
         _this.products = response.data;
@@ -2811,21 +2814,32 @@ __webpack_require__.r(__webpack_exports__);
         'text-success': status
       };
     },
-    getProducts: function getProducts() {
+    getProducts: function getProducts(page_number) {
       var _this2 = this;
 
       axios.get('/api/filterProducts', {
         params: {
-          page: this.products.current_page,
-          filter_data: this.filter_data
+          page: page_number,
+          filter_data: this.filter_data,
+          per_page: this.per_page
         }
       }).then(function (response) {
+        if (_this2.per_page > response.data.total) {
+          if (_this2.products.current_page !== 1) {
+            _this2.getProducts(1);
+          }
+        }
+
         _this2.products = response.data;
       });
+    },
+    changePerPage: function changePerPage(per_page) {
+      this.per_page = per_page;
+      this.getProducts(this.products.current_page);
     }
   },
   created: function created() {
-    this.getProducts();
+    this.getProducts(this.products.current_page);
   }
 });
 
@@ -2918,6 +2932,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     pagination: {
@@ -2959,7 +2982,10 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     changePage: function changePage(page) {
       this.pagination.current_page = page;
-      this.$emit('paginate');
+      this.$emit('paginate', page);
+    },
+    changePerPage: function changePerPage(per_page) {
+      this.$emit('changePerPage', per_page);
     }
   }
 });
@@ -40772,7 +40798,7 @@ var render = function() {
           _vm._v(" "),
           _c("table-pagination", {
             attrs: { pagination: _vm.products, offset: 4 },
-            on: { paginate: _vm.getProducts }
+            on: { paginate: _vm.getProducts, changePerPage: _vm.changePerPage }
           })
         ],
         1
@@ -40980,7 +41006,31 @@ var render = function() {
           : _vm._e()
       ],
       2
-    )
+    ),
+    _vm._v(" "),
+    _c("label", [_vm._v("Показывать")]),
+    _vm._v(" "),
+    _c(
+      "select",
+      {
+        on: {
+          change: function($event) {
+            return _vm.changePerPage($event.target.value)
+          }
+        }
+      },
+      [
+        _c("option", { attrs: { value: "10" } }, [_vm._v("10")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "20" } }, [_vm._v("20")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "50" } }, [_vm._v("50")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "100" } }, [_vm._v("100")])
+      ]
+    ),
+    _vm._v(" "),
+    _c("span", [_vm._v("записей")])
   ])
 }
 var staticRenderFns = []

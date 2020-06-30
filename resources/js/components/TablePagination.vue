@@ -1,5 +1,6 @@
 <template>
     <nav>
+
         <ul class="pagination">
             <li class="page-item" v-if="pagination.current_page > 1">
                 <a class="page-link" href="javascript:void(0)" aria-label="Назад" v-on:click.prevent="changePage(pagination.current_page - 1)">
@@ -15,6 +16,14 @@
                 </a>
             </li>
         </ul>
+        <label>Показывать</label>
+        <select @change="changePerPage($event.target.value)">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <span>записей</span>
     </nav>
 </template>
 
@@ -53,7 +62,10 @@
         methods : {
             changePage(page) {
                 this.pagination.current_page = page;
-                this.$emit('paginate');
+                this.$emit('paginate', page);
+            },
+            changePerPage(per_page) {
+                this.$emit('changePerPage', per_page)
             }
         }
     }

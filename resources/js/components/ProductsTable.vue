@@ -32,7 +32,8 @@
                 </tr>
                 </tbody>
             </table>
-            <table-pagination :pagination="products" :offset="4" @paginate="getProducts"></table-pagination>
+            <table-pagination :pagination="products" :offset="4" @paginate="getProducts" @changePerPage="changePerPage">
+            </table-pagination>
         </div>
     </div>
 </template>
@@ -78,7 +79,8 @@
                   to: 0,
                   current_page: 1
               },
-              filter_data: []
+              filter_data: [],
+              per_page: 10
           }
         },
         methods: {
@@ -88,7 +90,8 @@
                 axios.get('/api/filterProducts', {
                     params: {
                         page: this.products.current_page,
-                        filter_data: filter_data
+                        filter_data: filter_data,
+                        per_page: this.per_page
                     }
                     }
                 ).then(response => {
@@ -101,22 +104,30 @@
                     'text-success': status
                 }
             },
-            getProducts() {
+            getProducts(page_number) {
                 axios.get('/api/filterProducts', {
                         params: {
-                            page: this.products.current_page,
-                            filter_data: this.filter_data
+                            page: page_number,
+                            filter_data: this.filter_data,
+                            per_page: this.per_page
                         }
                     }
                 ).then(response => {
+                    if(this.per_page > response.data.total) {
+                        if(this.products.current_page !== 1) {
+                            this.getProducts(1)
+                        }
+                    }
                     this.products = response.data;
                 })
+            },
+            changePerPage(per_page) {
+                this.per_page = per_page;
+                this.getProducts(this.products.current_page);
             }
         },
         created() {
-            this.getProducts()
+            this.getProducts(this.products.current_page)
         }
-
-
     }
 </script>

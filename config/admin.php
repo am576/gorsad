@@ -2,7 +2,7 @@
 
 return [
   'menu' => [
-      'product' =>[
+      'product' => [
           'title' => 'товары',
           'singular' => 'товар',
           'route' => 'products',
@@ -20,5 +20,8 @@ return [
           'route' => 'attributes',
           'icon'  => 'google-circles-extended'
       ],
+  ],
+  'per_page' => [
+      'products' => 10
   ]
 ];
