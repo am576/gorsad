@@ -58,15 +58,15 @@
         methods: {
             filterTable(filter_data) {
                 this.filter_data = filter_data;
-                console.log(this.filter_data);
+
                 axios.get('/api/filterProducts', {
                     params: {
                         page: this.products.current_page,
                         filter_data: filter_data,
                         per_page: this.per_page
                     }
-                    }
-                ).then(response => {
+                })
+                .then(response => {
                     this.products = response.data;
                 })
             },
@@ -113,7 +113,6 @@
                             })
                         });
                     })
-                console.log(this.categories);
             }
         },
         computed: {
@@ -135,6 +134,10 @@
                         type:  'select',
                         options:
                             [
+                                {
+                                    label: '-',
+                                    value: ''
+                                },
                                 {
                                     label: 'Активный',
                                     value: 1

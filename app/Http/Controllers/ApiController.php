@@ -51,13 +51,17 @@ class ApiController extends Controller
             $filter_data = $request->filter_data;
 
             foreach ($filter_data as $filter) {
-                $filter = json_decode($filter);
-                $operator = $filter->type == 'input' ? 'like' : '=';
-                $value = $filter->type == 'input' ? '%'.$filter->value.'%'  : $filter->value;
-                array_push($params_where,
-                    [
-                        $filter->name, $operator, $value
-                    ]);
+                if(isset($filter))
+                {
+                    $filter = json_decode($filter);
+                    $operator = $filter->type == 'input' ? 'like' : '=';
+                    $value = $filter->type == 'input' ? '%'.$filter->value.'%'  : $filter->value;
+                    array_push($params_where,
+                        [
+                            $filter->name, $operator, $value
+                        ]);
+                }
+
             }
         }
 

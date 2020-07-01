@@ -29,21 +29,25 @@
         },
         methods: {
             updateFilterData(index, value) {
-                const filter_data = {
-                  name: this.filter_fields[index].name,
-                  value: value,
-                  type:  this.filter_fields[index].type,
-                };
-                this.$set(this.filter_data, index, filter_data);
-                this.emitFilter()
+                console.log(`Before: ${JSON.stringify(this.filter_data)}`);
+                if(value) {
+                    const filter_data = {
+                        name: this.filter_fields[index].name,
+                        value: value,
+                        type:  this.filter_fields[index].type,
+                    };
+                    this.$set(this.filter_data, index, filter_data);
+                    console.log(`After: ${JSON.stringify(this.filter_data)}`);
+                    this.emitFilter()
+                }
             },
             emitFilter() {
-                // let filter_data = new FormData();
-                // filter_data.append('filter_data', JSON.stringify(this.filter_data));
+
                 this.$emit('filter', this.filter_data);
             }
         },
         created() {
+
         }
     }
 </script>

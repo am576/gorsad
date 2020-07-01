@@ -2778,7 +2778,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.filter_data = filter_data;
-      console.log(this.filter_data);
       axios.get('/api/filterProducts', {
         params: {
           page: this.products.current_page,
@@ -2834,7 +2833,6 @@ __webpack_require__.r(__webpack_exports__);
           });
         });
       });
-      console.log(this.categories);
     }
   },
   computed: {
@@ -2852,6 +2850,9 @@ __webpack_require__.r(__webpack_exports__);
         title: 'Статус',
         type: 'select',
         options: [{
+          label: '-',
+          value: ''
+        }, {
           label: 'Активный',
           value: 1
         }, {
@@ -2913,17 +2914,20 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     updateFilterData: function updateFilterData(index, value) {
-      var filter_data = {
-        name: this.filter_fields[index].name,
-        value: value,
-        type: this.filter_fields[index].type
-      };
-      this.$set(this.filter_data, index, filter_data);
-      this.emitFilter();
+      console.log("Before: ".concat(JSON.stringify(this.filter_data)));
+
+      if (value) {
+        var filter_data = {
+          name: this.filter_fields[index].name,
+          value: value,
+          type: this.filter_fields[index].type
+        };
+        this.$set(this.filter_data, index, filter_data);
+        console.log("After: ".concat(JSON.stringify(this.filter_data)));
+        this.emitFilter();
+      }
     },
     emitFilter: function emitFilter() {
-      // let filter_data = new FormData();
-      // filter_data.append('filter_data', JSON.stringify(this.filter_data));
       this.$emit('filter', this.filter_data);
     }
   },
