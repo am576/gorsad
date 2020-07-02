@@ -31,7 +31,7 @@
                                         <td>{{$category->title}}</td>
                                         <td>{{$category->parentCategory()->title ?? '-'}}</td>
                                         <td></td>
-                                        <td></td>
+                                        <td>{{$category->products()->count()}}</td>
                                         <td>@include('admin.macros.table-buttons', ['entity' => $category])</td>
                                     </tr>
                                 @endforeach
