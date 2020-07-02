@@ -2827,11 +2827,15 @@ __webpack_require__.r(__webpack_exports__);
 
       this.getCategories().then(function (categories) {
         $.each(categories, function (index, category) {
-          _this3.$set(_this3.categories, index, {
+          _this3.$set(_this3.categories, index + 1, {
             label: category.title,
             value: category.id
           });
         });
+        _this3.categories[0] = {
+          label: '-',
+          value: '%'
+        };
       });
     }
   },
@@ -2851,7 +2855,7 @@ __webpack_require__.r(__webpack_exports__);
         type: 'select',
         options: [{
           label: '-',
-          value: ''
+          value: '%'
         }, {
           label: 'Активный',
           value: 1
@@ -2909,23 +2913,18 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      filter_data: []
+      filter_data: {}
     };
   },
   methods: {
     updateFilterData: function updateFilterData(index, value) {
-      console.log("Before: ".concat(JSON.stringify(this.filter_data)));
-
-      if (value) {
-        var filter_data = {
-          name: this.filter_fields[index].name,
-          value: value,
-          type: this.filter_fields[index].type
-        };
-        this.$set(this.filter_data, index, filter_data);
-        console.log("After: ".concat(JSON.stringify(this.filter_data)));
-        this.emitFilter();
-      }
+      // if(value) {
+      this.filter_data[this.filter_fields[index].name] = {
+        name: this.filter_fields[index].name,
+        value: value,
+        type: this.filter_fields[index].type
+      };
+      this.emitFilter(); // }
     },
     emitFilter: function emitFilter() {
       this.$emit('filter', this.filter_data);

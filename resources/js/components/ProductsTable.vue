@@ -107,11 +107,15 @@
                 this.getCategories()
                     .then(categories => {
                         $.each(categories, (index, category) => {
-                            this.$set(this.categories, index, {
+                            this.$set(this.categories, index+1, {
                                 label: category.title,
                                 value: category.id
                             })
                         });
+                        this.categories[0] = {
+                            label: '-',
+                            value: '%'
+                        }
                     })
             }
         },
@@ -136,7 +140,7 @@
                             [
                                 {
                                     label: '-',
-                                    value: ''
+                                    value: '%'
                                 },
                                 {
                                     label: 'Активный',

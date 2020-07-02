@@ -24,22 +24,20 @@
         },
         data() {
           return {
-              filter_data: []
+              filter_data: {}
           }
         },
         methods: {
             updateFilterData(index, value) {
-                console.log(`Before: ${JSON.stringify(this.filter_data)}`);
-                if(value) {
-                    const filter_data = {
-                        name: this.filter_fields[index].name,
-                        value: value,
-                        type:  this.filter_fields[index].type,
-                    };
-                    this.$set(this.filter_data, index, filter_data);
-                    console.log(`After: ${JSON.stringify(this.filter_data)}`);
+                // if(value) {
+                    this.filter_data[this.filter_fields[index].name] =
+                        {
+                            name: this.filter_fields[index].name,
+                            value: value,
+                            type:  this.filter_fields[index].type,
+                        };
                     this.emitFilter()
-                }
+                // }
             },
             emitFilter() {
 
