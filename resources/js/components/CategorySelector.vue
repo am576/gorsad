@@ -1,5 +1,5 @@
 <template>
-        <select name="category_id" id="category_id" @change="changeCategory" v-model="category_id">
+        <select :name="select_name" id="category_id" @change="changeCategory" v-model="category_id">
             <option value="0">...</option>
             <option v-for="category in categories" :value="category.id" :key="category.id">{{category.title}}</option>
         </select>
@@ -7,12 +7,15 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Category selector mounted')
-        },
         props: {
-          children_only: Boolean,
+            children_only: Boolean,
+            except_self: Boolean,
             category : 0,
+            parent_id: 0,
+            select_name: {
+                type: String,
+                default: 'category_id',
+            }
         },
         data() {
             return {
@@ -33,6 +36,16 @@
                         this.categories = response.data;
                     })
             },
+            getCategoriesExceptSelf() {
+                axios.get('/api/getCategoriesExceptSelf', {
+                    params: {
+                        id: this.category_id
+                    }
+                })
+                    .then((response) => {
+                        this.categories = response.data;
+                    })
+            },
             changeCategory()
             {
                 this.$eventBus.$emit('changeCategory', this.category_id)
@@ -44,9 +57,21 @@
                 this.category_id = this.category;
             }
             if(this.children_only)
-            this.getChildCategories();
+            {
+                this.getChildCategories();
+            }
+            else if(this.except_self)
+            {
+                this.getCategoriesExceptSelf()
+            }
             else
+            {
                 this.getAllCategories()
+            }
+            if(this.parent_id)
+            {
+                this.category_id = this.parent_id
+            }
         }
     }
 </script>

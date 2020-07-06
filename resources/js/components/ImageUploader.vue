@@ -1,10 +1,10 @@
 <template>
     <div class="product_images">
-        <div v-show="product_images.length" class="card">
+        <div v-show="existing_images.length" class="card">
             <div class="card-header">Сохранённые изображения</div>
             <div class="card-body">
-                <div class="images-preview" v-show="product_images.length">
-                    <div class="img-wrapper" v-for="(image, index) in product_images" :key="index">
+                <div class="images-preview" v-show="existing_images.length">
+                    <div class="img-wrapper" v-for="(image, index) in existing_images" :key="index">
                         <img :src="'/storage/images/products/'+image.icon" :alt="index">
                         <i class="mdi mdi-close-circle-outline" @click.prevent="removeProductImage(image.id, index)"></i>
                     </div>
@@ -53,13 +53,14 @@
 <script>
     export default {
         props: {
-            product_id: 0
+            entity_id: 0,
+            entity_model: '',
         },
         data: () => ({
-          isDragging: false,
-          files: [],
-          images: [],
-          product_images: [],
+            isDragging: false,
+            files: [],
+            images: [],
+            existing_images: [],
         }),
         methods : {
             onInputChange(e) {
@@ -101,7 +102,7 @@
                 this.passImages();
             },
             removeProductImage(image_id, index) {
-                this.$delete(this.product_images, index);
+                this.$delete(this.existing_images, index);
                 this.$emit('removeImage', image_id)
             },
             passImages() {
@@ -109,19 +110,20 @@
             },
             getProductImages()
             {
-                axios.get('/api/getProductImages',{
+                axios.get('/api/getImages',{
                     params: {
-                        id: this.product_id
+                        id: this.entity_id,
+                        model: this.entity_model,
                     }
                 })
                 .then(response => {
-                    this.product_images = response.data;
+                    this.existing_images = response.data;
                 })
             },
 
         },
         created() {
-            if(this.product_id)
+            if(this.entity_id)
             {
                 this.getProductImages()
             }

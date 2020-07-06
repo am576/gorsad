@@ -80,7 +80,7 @@
         </div>
         <div class="row product_images">
             <div class="col-md-8">
-                <image-uploader :product_id="product.id" @removeImage="removeImage"></image-uploader>
+                <image-uploader :entity_id="product.id" :entity_model="'Product'" @removeImage="removeImage"></image-uploader>
             </div>
         </div>
     </form>

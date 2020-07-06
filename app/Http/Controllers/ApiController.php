@@ -23,6 +23,14 @@ class ApiController extends Controller
         return response()->json($data);
     }
 
+    public function getCategoriesExceptSelf(Request $request)
+    {
+        $category = Category::find($request->id);
+        $data = $category->getCategoriesExceptSelf();
+
+        return response()->json($data);
+    }
+
     public function getAttributesForCategory(Request $request)
     {
         $attributes = Attribute::where('category_id',$request->category_id)->get();
@@ -38,9 +46,10 @@ class ApiController extends Controller
         return response()->json($values);
     }
 
-    public function getProductImages(Request $request)
+    public function getImages(Request $request)
     {
-        return Product::find($request->id)->images()->get();
+        $model = 'App\\' . $request->model;
+        return $model::find($request->id)->images()->get();
     }
 
     public function filterProducts(Request $request)
