@@ -16,8 +16,6 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 Vue.prototype.$eventBus = new Vue();
 
 Vue.component('category-selector', require('./components/CategorySelector.vue').default);
@@ -29,6 +27,9 @@ Vue.component('product-edit-form', require('./components/ProductEditForm').defau
 Vue.component('products-table', require('./components/ProductsTable').default);
 Vue.component('table-filter', require('./components/TableFilter').default);
 Vue.component('table-pagination', require('./components/TablePagination').default);
+
+Vue.component('account-links', require('./components/frontend/AccountLinks').default);
+Vue.component('home-slider', require('./components/frontend/HomeSlider').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
