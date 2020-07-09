@@ -80,7 +80,8 @@
         </div>
         <div class="row product_images">
             <div class="col-md-8">
-                <image-uploader :entity_id="product.id" :entity_model="'Product'" @removeImage="removeImage"></image-uploader>
+                <image-uploader :entity="product" :entity_id="product.id" :entity_model="'Product'"
+                                @removeImage="removeImage" :storage="'products/'"></image-uploader>
             </div>
         </div>
     </form>
@@ -172,9 +173,13 @@
                     formData.append(key, this.product[key])
                 });
 
-                this.images.forEach(file => {
-                    formData.append('images[]', file, file.name);
-                });
+                formData.delete('images');
+                if(this.images.length)
+                {
+                    this.images.forEach(file => {
+                        formData.append('images[]', file, file.name);
+                    });
+                }
                 this.product_attributes.forEach(attribute => {
                     if(attribute.id)
                     {
@@ -196,7 +201,7 @@
                 .then(response => {
                     if(response.status == '200')
                     {
-                        window.location.href = '/admin/products'
+                        // window.location.href = '/admin/products'
                     }
                 }).catch(error => {
                     if ([422, 500].includes(error.response.status)) {

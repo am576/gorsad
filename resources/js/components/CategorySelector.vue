@@ -11,6 +11,7 @@
             children_only: Boolean,
             except_self: Boolean,
             category : 0,
+            owner_id: 0,
             parent_id: 0,
             select_name: {
                 type: String,
@@ -19,7 +20,6 @@
         },
         data() {
             return {
-                category_id : 0,
                 categories : []
             }
         },
@@ -39,7 +39,7 @@
             getCategoriesExceptSelf() {
                 axios.get('/api/getCategoriesExceptSelf', {
                     params: {
-                        id: this.category_id
+                        id: this.owner_id
                     }
                 })
                     .then((response) => {
@@ -51,6 +51,7 @@
                 this.$eventBus.$emit('changeCategory', this.category_id)
             }
         },
+
         created: function () {
             if(this.category)
             {

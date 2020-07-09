@@ -85,7 +85,7 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::find($id);
+        $product = Product::with('images')->find($id);
 
         return view('admin.products.edit')->with('product', $product);
     }
@@ -165,7 +165,6 @@ class ProductController extends Controller
             }
             Image::whereIn('id', $request->images_to_delete)
                 ->delete();
-
         }
 
         return redirect()->intended(route('products.index'));

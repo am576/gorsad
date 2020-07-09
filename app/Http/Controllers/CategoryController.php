@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Http\Requests\CategoryUpdate;
+use App\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -15,7 +17,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::with('images')->get();
 
         return  view('admin.categories.index')->with('categories', $categories);
     }
@@ -34,11 +36,21 @@ class CategoryController extends Controller
         ]);
 
         $category = new Category($request->all());
-
         $category->save();
 
-        return redirect(route('categories.index'));
-
+        if (isset($request->images) && count($request->images)) {
+            foreach ($request->images as $index => $file) {
+                $category->images()->create([
+                    'label' => $category->title . '_0' . $index,
+                    'icon' => $file->hashName(),
+                    'small' => $file->hashName(),
+                    'medium' => $file->hashName(),
+                    'large' => $file->hashName(),
+                    'mimetype' => 'lalala'
+                ]);
+                $file->store('categories', 'images');
+            }
+        }
     }
 
     /**
@@ -55,14 +67,47 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        $category = Category::find($id);
+        $category = Category::with('images')->find($id);
 
         return view('admin.categories.edit')->with('category', $category);
     }
 
     public function update(CategoryUpdate $request, $id)
     {
-        Category::whereId($id)->update($request->except(['_token','_method']));
+        $category = Category::findOrFail($id);
+
+        $category->fill($request->all());
+        $category->save();
+
+        if(isset($request->images_to_delete))
+        {
+            foreach ($request->images_to_delete as $image_id) {
+                $images = array_map(
+                    function($el) {
+                        return 'categories/' . $el;
+                    },
+                    array_values(Image::select('icon','small','medium','large')
+                        ->where('id', $image_id)->get()->toArray()[0]));
+
+                Storage::disk('images')->delete($images);
+            }
+            Image::whereIn('id', $request->images_to_delete)
+                ->delete();
+        }
+
+        if (isset($request->images) && count($request->images)) {
+            foreach ($request->images as $index => $file) {
+                $category->images()->create([
+                    'label' => $category->title . '_0' . $index,
+                    'icon' => $file->hashName(),
+                    'small' => $file->hashName(),
+                    'medium' => $file->hashName(),
+                    'large' => $file->hashName(),
+                    'mimetype' => 'lalala'
+                ]);
+                $file->store('categories', 'images');
+            }
+        }
 
         return redirect()->intended(route('categories.index'));
     }
@@ -78,5 +123,10 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect()->intended(route('categories.index'));
+    }
+
+    private function storeImages($images)
+    {
+
     }
 }

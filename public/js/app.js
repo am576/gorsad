@@ -2129,16 +2129,83 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    category_data: {},
+    edit_form: false
+  },
+  data: function data() {
+    return {
+      category: {},
+      images: [],
+      errors: {},
+      category_id: 0,
+      images_to_delete: []
+    };
+  },
   methods: {
+    setCategory: function setCategory() {
+      this.category = this.category_data;
+      this.category_id = this.category.id;
+    },
+    setCategoryImages: function setCategoryImages(images) {
+      this.images = images;
+    },
+    setParentCategory: function setParentCategory(id) {
+      this.category.parent_id = id;
+    },
+    removeImage: function removeImage(image_id) {
+      if (!this.images_to_delete.includes(image_id)) {
+        this.images_to_delete.push(image_id);
+      }
+    },
     submit: function submit() {
-      console.log(1);
+      var _this = this;
+
+      this.errors = {};
+      var formData = new FormData();
+      Object.keys(this.category).forEach(function (key) {
+        formData.append(key, _this.category[key]);
+      });
+      formData["delete"]('images');
+
+      if (this.images.length) {
+        this.images.forEach(function (file) {
+          formData.append('images[]', file, file.name);
+        });
+      }
+
+      var url = '/admin/categories';
+
+      if (this.edit_form) {
+        this.images_to_delete.forEach(function (image_id) {
+          formData.append('images_to_delete[]', image_id);
+        });
+        formData.append('_method', 'PUT');
+        url = '/admin/categories/' + this.category.id;
+      }
+
+      axios.post(url, formData).then(function (response) {
+        if (response.status == '200') {
+          window.location.href = '/admin/categories';
+        }
+      })["catch"](function (error) {
+        if ([422, 500].includes(error.response.status)) {
+          _this.errors = error.response.data.errors || {};
+        }
+      });
     }
   },
   created: function created() {
-    this.$eventBus.$on('changeCategory', function () {
-      console.log('1');
-    });
+    this.$eventBus.$on('changeCategory', this.setParentCategory);
+    this.$eventBus.$on('addImages', this.setCategoryImages);
+    if (this.edit_form) this.setCategory();
   }
 });
 
@@ -2165,6 +2232,7 @@ __webpack_require__.r(__webpack_exports__);
     children_only: Boolean,
     except_self: Boolean,
     category: 0,
+    owner_id: 0,
     parent_id: 0,
     select_name: {
       type: String,
@@ -2173,7 +2241,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      category_id: 0,
       categories: []
     };
   },
@@ -2197,7 +2264,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/api/getCategoriesExceptSelf', {
         params: {
-          id: this.category_id
+          id: this.owner_id
         }
       }).then(function (response) {
         _this3.categories = response.data;
@@ -2289,17 +2356,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     entity_id: 0,
-    entity_model: ''
+    entity_model: '',
+    entity: {},
+    isSingleImage: false,
+    storage: ''
   },
   data: function data() {
     return {
       isDragging: false,
+      disabled: false,
       files: [],
       images: [],
-      existing_images: []
+      existing_images: [],
+      current_image: {}
     };
   },
   methods: {
@@ -2339,11 +2419,24 @@ __webpack_require__.r(__webpack_exports__);
       this.files.push(file);
       var reader = new FileReader();
 
-      reader.onload = function (e) {
-        return _this3.images.push(e.target.result);
-      };
+      if (this.isSingleImage) {
+        reader.onload = function (e) {
+          return _this3.current_image = e.target.result;
+        };
+      } else {
+        reader.onload = function (e) {
+          return _this3.images.push(e.target.result);
+        };
+      }
 
       reader.readAsDataURL(file);
+    },
+    removeSingleImage: function removeSingleImage() {
+      if (typeof this.current_image !== 'string') {
+        this.$emit('removeImage', this.current_image.id);
+      }
+
+      this.current_image = undefined;
     },
     removeUploadedImage: function removeUploadedImage(index) {
       this.$delete(this.files, index);
@@ -2357,7 +2450,7 @@ __webpack_require__.r(__webpack_exports__);
     passImages: function passImages() {
       this.$eventBus.$emit('addImages', this.files);
     },
-    getProductImages: function getProductImages() {
+    getImages: function getImages() {
       var _this4 = this;
 
       axios.get('/api/getImages', {
@@ -2366,13 +2459,22 @@ __webpack_require__.r(__webpack_exports__);
           model: this.entity_model
         }
       }).then(function (response) {
-        _this4.existing_images = response.data;
+        if (_this4.isSingleImage) _this4.current_image = _this4.entity.images[0];else _this4.existing_images = _this4.entity.images;
       });
+    }
+  },
+  computed: {
+    single_image: function single_image() {
+      if (this.entity_id) {
+        return typeof this.current_image === 'string' ? this.current_image : '/storage/images/' + this.storage + this.current_image.large;
+      } else {
+        return this.images[0];
+      }
     }
   },
   created: function created() {
     if (this.entity_id) {
-      this.getProductImages();
+      this.getImages();
     }
   }
 });
@@ -2388,6 +2490,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -2563,9 +2666,14 @@ __webpack_require__.r(__webpack_exports__);
       Object.keys(this.product).forEach(function (key) {
         formData.append(key, _this4.product[key]);
       });
-      this.images.forEach(function (file) {
-        formData.append('images[]', file, file.name);
-      });
+      formData["delete"]('images');
+
+      if (this.images.length) {
+        this.images.forEach(function (file) {
+          formData.append('images[]', file, file.name);
+        });
+      }
+
       this.product_attributes.forEach(function (attribute) {
         if (attribute.id) {
           formData.append('attribute_id[]', attribute.id);
@@ -2582,8 +2690,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       formData.append('_method', 'PUT');
       axios.post('/admin/products/' + this.product.id, formData).then(function (response) {
-        if (response.status == '200') {
-          window.location.href = '/admin/products';
+        if (response.status == '200') {// window.location.href = '/admin/products'
         }
       })["catch"](function (error) {
         if ([422, 500].includes(error.response.status)) {
@@ -7538,7 +7645,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".uploader[data-v-4984bfe4] {\n  width: 100%;\n  background: #00b7ff;\n  color: white;\n  padding: 40px 15px;\n  border-radius: 10px;\n  border: 3px dashed white;\n  text-align: center;\n  font-size: 24px;\n  position: relative;\n}\n.uploader.dragging[data-v-4984bfe4] {\n  background: white;\n  color: #00b7ff;\n  border-color: #00b7ff;\n}\n.uploader .dropin *[data-v-4984bfe4] {\n  pointer-events: none;\n}\n.uploader i[data-v-4984bfe4] {\n  font-size: 85px;\n}\n.uploader .file-input[data-v-4984bfe4] {\n  width: 200px;\n  margin: auto;\n  position: relative;\n  height: 70px;\n}\n.uploader .file-input label[data-v-4984bfe4],\n.uploader .file-input input[data-v-4984bfe4] {\n  background: white;\n  width: 100%;\n  color: #00b7ff;\n  position: absolute;\n  left: 0;\n  top: 0;\n  padding: 10px;\n  border-radius: 4px;\n  margin-top: 15px;\n  cursor: pointer;\n}\n.uploader .file-input input[data-v-4984bfe4] {\n  opacity: 0;\n  z-index: -2;\n}\n.uploader .card[data-v-4984bfe4] {\n  color: #000;\n}\n.uploader .images-preview[data-v-4984bfe4] {\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 20px;\n}\n.uploader .images-preview .img-wrapper[data-v-4984bfe4] {\n  position: relative;\n  width: 150px;\n  display: flex;\n  flex-direction: column;\n  margin: 10px;\n  height: 220px;\n  justify-content: space-between;\n  box-shadow: 5px 5px 20px #000;\n  background: #fff;\n}\n.uploader .images-preview .img-wrapper img[data-v-4984bfe4] {\n  max-height: 150px;\n}\n.uploader .images-preview .img-wrapper i[data-v-4984bfe4] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  line-height: 24px;\n  font-size: 24px;\n  cursor: pointer;\n}\n.uploader .images-preview .img-wrapper i[data-v-4984bfe4]:hover {\n  line-height: 26px;\n  font-size: 26px;\n  color: coral;\n}\n.uploader .images-preview .image-details[data-v-4984bfe4] {\n  width: 100%;\n  height: 60px;\n  background: #fff;\n  color: #000;\n  display: flex;\n  flex-direction: column;\n  align-items: self-start;\n  padding: 3px 6px;\n  font-size: 16px;\n}\n.uploader .images-preview .image-details .image-name[data-v-4984bfe4] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  width: 100%;\n}\n.product_images .images-preview[data-v-4984bfe4] {\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 20px;\n}\n.product_images .images-preview .img-wrapper[data-v-4984bfe4] {\n  position: relative;\n  width: 100px;\n  height: 100px;\n  display: flex;\n  flex-direction: column;\n  margin: 10px;\n  justify-content: space-between;\n  box-shadow: 5px 5px 20px #000;\n  background: #fff;\n}\n.product_images .images-preview .img-wrapper img[data-v-4984bfe4] {\n  max-height: 150px;\n}\n.product_images .images-preview .img-wrapper i[data-v-4984bfe4] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  line-height: 24px;\n  font-size: 24px;\n  cursor: pointer;\n}\n.product_images .images-preview .img-wrapper i[data-v-4984bfe4]:hover {\n  line-height: 26px;\n  font-size: 26px;\n  color: coral;\n}", ""]);
+exports.push([module.i, ".uploader[data-v-4984bfe4] {\n  width: 100%;\n  background: #00b7ff;\n  color: white;\n  padding: 40px 15px;\n  border-radius: 10px;\n  border: 3px dashed white;\n  text-align: center;\n  font-size: 24px;\n  position: relative;\n}\n.uploader.dragging[data-v-4984bfe4] {\n  background: white;\n  color: #00b7ff;\n  border-color: #00b7ff;\n}\n.uploader .dropin *[data-v-4984bfe4] {\n  pointer-events: none;\n}\n.uploader i[data-v-4984bfe4] {\n  font-size: 85px;\n}\n.uploader .file-input[data-v-4984bfe4] {\n  width: 200px;\n  margin: auto;\n  position: relative;\n  height: 70px;\n}\n.uploader .file-input label[data-v-4984bfe4],\n.uploader .file-input input[data-v-4984bfe4] {\n  background: white;\n  width: 100%;\n  color: #00b7ff;\n  position: absolute;\n  left: 0;\n  top: 0;\n  padding: 10px;\n  border-radius: 4px;\n  margin-top: 15px;\n  cursor: pointer;\n}\n.uploader .file-input input[data-v-4984bfe4] {\n  opacity: 0;\n  z-index: -2;\n}\n.uploader .card[data-v-4984bfe4] {\n  color: #000;\n}\n.uploader .images-preview[data-v-4984bfe4] {\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 20px;\n}\n.uploader .images-preview .img-wrapper[data-v-4984bfe4] {\n  position: relative;\n  width: 150px;\n  display: flex;\n  flex-direction: column;\n  margin: 10px;\n  height: 220px;\n  justify-content: space-between;\n  box-shadow: 5px 5px 20px #000;\n  background: #fff;\n}\n.uploader .images-preview .img-wrapper img[data-v-4984bfe4] {\n  max-height: 150px;\n}\n.uploader .images-preview .img-wrapper i[data-v-4984bfe4] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  line-height: 24px;\n  font-size: 24px;\n  cursor: pointer;\n}\n.uploader .images-preview .img-wrapper i[data-v-4984bfe4]:hover {\n  line-height: 26px;\n  font-size: 26px;\n  color: coral;\n}\n.uploader .images-preview .image-details[data-v-4984bfe4] {\n  width: 100%;\n  height: 60px;\n  background: #fff;\n  color: #000;\n  display: flex;\n  flex-direction: column;\n  align-items: self-start;\n  padding: 3px 6px;\n  font-size: 16px;\n}\n.uploader .images-preview .image-details .image-name[data-v-4984bfe4] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  width: 100%;\n}\n.product_images .images-preview[data-v-4984bfe4] {\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 20px;\n}\n.product_images .images-preview .img-wrapper[data-v-4984bfe4] {\n  position: relative;\n  width: 100px;\n  height: 100px;\n  display: flex;\n  flex-direction: column;\n  margin: 10px;\n  justify-content: space-between;\n  box-shadow: 5px 5px 20px #000;\n  background: #fff;\n}\n.product_images .images-preview .img-wrapper img[data-v-4984bfe4] {\n  max-height: 150px;\n}\n.product_images .images-preview .img-wrapper img.single-image[data-v-4984bfe4] {\n  width: 100% !important;\n  height: auto !important;\n  max-height: 100%;\n}\n.product_images .images-preview .img-wrapper i[data-v-4984bfe4] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  line-height: 24px;\n  font-size: 24px;\n  cursor: pointer;\n}\n.product_images .images-preview .img-wrapper i[data-v-4984bfe4]:hover {\n  line-height: 26px;\n  font-size: 26px;\n  color: coral;\n}", ""]);
 
 // exports
 
@@ -39585,7 +39692,31 @@ var render = function() {
     [
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-4" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("Название")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.category.title,
+                  expression: "category.title"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.category.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.category, "title", $event.target.value)
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
           _c(
             "div",
@@ -39593,45 +39724,73 @@ var render = function() {
             [
               _c("label", [_vm._v("Принадлежит")]),
               _vm._v(" "),
-              _c("category-selector", { attrs: { select_name: "parent_id" } })
+              _c("category-selector", {
+                attrs: {
+                  select_name: "parent_id",
+                  owner_id: _vm.category.id ? _vm.category.id : 0,
+                  parent_id: _vm.category.parent_id,
+                  except_self: true
+                }
+              })
             ],
             1
           ),
           _vm._v(" "),
-          _vm._m(1),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("Описание")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.category.description,
+                  expression: "category.description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.category.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.category, "description", $event.target.value)
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
           _c(
             "button",
             { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-            [_vm._v("Создать")]
+            [_vm._v("Сохранить")]
           )
-        ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-md-6" },
+          [
+            _c("image-uploader", {
+              attrs: {
+                entity_id: _vm.category_id,
+                entity_model: "Category",
+                entity: _vm.category,
+                isSingleImage: true,
+                storage: "categories/"
+              },
+              on: { removeImage: _vm.removeImage }
+            })
+          ],
+          1
+        )
       ])
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Название")]),
-      _vm._v(" "),
-      _c("input", { staticClass: "form-control", attrs: { type: "text" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", [_vm._v("Описание")]),
-      _vm._v(" "),
-      _c("input", { staticClass: "form-control", attrs: { type: "text" } })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -39728,8 +39887,8 @@ var render = function() {
           {
             name: "show",
             rawName: "v-show",
-            value: _vm.existing_images.length,
-            expression: "existing_images.length"
+            value: !_vm.isSingleImage && _vm.existing_images.length,
+            expression: "!isSingleImage && existing_images.length"
           }
         ],
         staticClass: "card"
@@ -39781,7 +39940,19 @@ var render = function() {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "uploader", class: { dragging: _vm.isDragging } },
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value:
+              (_vm.isSingleImage && !_vm.current_image) || !_vm.isSingleImage,
+            expression: "(isSingleImage && !current_image) || !isSingleImage"
+          }
+        ],
+        staticClass: "uploader",
+        class: { dragging: _vm.isDragging }
+      },
       [
         _c(
           "div",
@@ -39901,7 +40072,37 @@ var render = function() {
           ]
         )
       ]
-    )
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body" }, [
+      _vm.isSingleImage && _vm.current_image
+        ? _c("div", { staticClass: "images-preview" }, [
+            _c(
+              "div",
+              {
+                staticClass: "img-wrapper",
+                class: [_vm.isSingleImage ? "w-100 h-100" : ""]
+              },
+              [
+                _c("img", {
+                  staticClass: "single-image",
+                  attrs: { src: _vm.single_image }
+                }),
+                _vm._v(" "),
+                _c("i", {
+                  staticClass: "mdi mdi-close-circle-outline",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.removeSingleImage()
+                    }
+                  }
+                })
+              ]
+            )
+          ])
+        : _vm._e()
+    ])
   ])
 }
 var staticRenderFns = [
@@ -40411,7 +40612,12 @@ var render = function() {
           { staticClass: "col-md-8" },
           [
             _c("image-uploader", {
-              attrs: { entity_id: _vm.product.id, entity_model: "Product" },
+              attrs: {
+                entity: _vm.product,
+                entity_id: _vm.product.id,
+                entity_model: "Product",
+                storage: "products/"
+              },
               on: { removeImage: _vm.removeImage }
             })
           ],
@@ -53622,14 +53828,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!**************************************************!*\
   !*** ./resources/js/components/CategoryForm.vue ***!
   \**************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CategoryForm_vue_vue_type_template_id_6d627c66___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CategoryForm.vue?vue&type=template&id=6d627c66& */ "./resources/js/components/CategoryForm.vue?vue&type=template&id=6d627c66&");
 /* harmony import */ var _CategoryForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CategoryForm.vue?vue&type=script&lang=js& */ "./resources/js/components/CategoryForm.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _CategoryForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _CategoryForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -53659,7 +53866,7 @@ component.options.__file = "resources/js/components/CategoryForm.vue"
 /*!***************************************************************************!*\
   !*** ./resources/js/components/CategoryForm.vue?vue&type=script&lang=js& ***!
   \***************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

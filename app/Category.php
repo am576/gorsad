@@ -19,6 +19,11 @@ class Category extends Model
         return $this->hasMany('App\Attribute','category_id','id');
     }
 
+    public function images()
+    {
+        return $this->morphMany('App\Image', 'imageable');
+    }
+
     public static function getChildrenOnly()
     {
         return Category::where('parent_id', '<>', 0)->get();

@@ -30,7 +30,10 @@
                                     <tr>
                                         <td>{{$category->title}}</td>
                                         <td>{{$category->parentCategory()->title ?? '-'}}</td>
-                                        <td></td>
+                                        <td>
+                                            <?php $img =  $category->images()->first()->icon ?? '' ?>
+                                            <img width="100" src="{{URL::asset('storage/images/categories/' . $img)}}" alt="">
+                                        </td>
                                         <td>{{$category->products()->count()}}</td>
                                         <td>@include('admin.macros.table-buttons', ['entity' => $category])</td>
                                     </tr>

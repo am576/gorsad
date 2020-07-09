@@ -1,6 +1,6 @@
 <template>
     <div class="product_images">
-        <div v-show="existing_images.length" class="card">
+        <div v-show="!isSingleImage && existing_images.length" class="card">
             <div class="card-header">Сохранённые изображения</div>
             <div class="card-body">
                 <div class="images-preview" v-show="existing_images.length">
@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <div class="uploader"
+        <div v-show="(isSingleImage && !current_image) || !isSingleImage" class="uploader"
              :class="{dragging: isDragging}"
         >
             <div class="dropin"
@@ -47,6 +47,14 @@
                 </div>
             </div>
         </div>
+        <div class="card-body">
+            <div v-if="isSingleImage && current_image" class="images-preview">
+                <div class="img-wrapper" :class="[isSingleImage ? 'w-100 h-100' : '']">
+                    <img class="single-image" :src="single_image">
+                    <i class="mdi mdi-close-circle-outline" @click.prevent="removeSingleImage()"></i>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -55,12 +63,17 @@
         props: {
             entity_id: 0,
             entity_model: '',
+            entity: {},
+            isSingleImage: false,
+            storage: ''
         },
         data: () => ({
             isDragging: false,
+            disabled: false,
             files: [],
             images: [],
             existing_images: [],
+            current_image: {}
         }),
         methods : {
             onInputChange(e) {
@@ -92,8 +105,24 @@
                 this.files.push(file);
                 const reader = new FileReader();
 
-                reader.onload = (e) => this.images.push(e.target.result);
+                if(this.isSingleImage)
+                {
+                    reader.onload = (e) => this.current_image = e.target.result;
+                }
+                else
+                {
+                    reader.onload = (e) => this.images.push(e.target.result);
+                }
+
                 reader.readAsDataURL(file);
+
+            },
+            removeSingleImage() {
+                if(typeof this.current_image !== 'string')
+                {
+                    this.$emit('removeImage', this.current_image.id);
+                }
+                this.current_image = undefined;
             },
             removeUploadedImage(index) {
                 this.$delete(this.files, index);
@@ -108,7 +137,7 @@
             passImages() {
                 this.$eventBus.$emit('addImages', this.files)
             },
-            getProductImages()
+            getImages()
             {
                 axios.get('/api/getImages',{
                     params: {
@@ -117,15 +146,31 @@
                     }
                 })
                 .then(response => {
-                    this.existing_images = response.data;
+                    if(this.isSingleImage)
+                        this.current_image = this.entity.images[0];
+                    else
+                        this.existing_images = this.entity.images;
                 })
             },
 
         },
+        computed: {
+            single_image() {
+                if (this.entity_id)
+                {
+                    return typeof this.current_image === 'string' ? this.current_image : '/storage/images/' + this.storage + this.current_image.large;
+                }
+                else
+                {
+                    return this.images[0];
+                }
+
+            }
+        },
         created() {
             if(this.entity_id)
             {
-                this.getProductImages()
+                this.getImages()
             }
         }
     }
@@ -269,13 +314,18 @@
                     max-height: 150px;
                 }
 
+                img.single-image {
+                    width: 100% !important;
+                    height: auto !important;
+                    max-height: 100%;
+                }
+
                 i {
                     position: absolute;
                     top: 0;
                     right: 0;
                     line-height: 24px;
                     font-size: 24px;
-
                     cursor: pointer;
 
                     &:hover {
@@ -284,7 +334,6 @@
                         color: coral;
                     }
                 }
-
             }
         }
     }
