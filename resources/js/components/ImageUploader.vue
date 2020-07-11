@@ -294,6 +294,8 @@
     }
 
     .product_images {
+        position: relative;
+
         .images-preview {
             display: flex;
             flex-wrap: wrap;
@@ -336,5 +338,7 @@
                 }
             }
         }
+
+
     }
 </style>

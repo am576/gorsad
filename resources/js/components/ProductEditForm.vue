@@ -1,5 +1,9 @@
 <template>
-    <form @submit.prevent="submit">
+    <form class="product-edit-form" @submit.prevent="submit">
+        <v-overlay :value="overlay">
+            <p class="display-4 d-inline">Сохранение...</p>
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
         <input type="hidden" name="_method" value="put">
         <div class="row">
             <div class="col-md-4">
@@ -51,13 +55,13 @@
                         <option value="0">Неактивный</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <button @click="submit" class="btn btn-primary white--text">Сохранить</button>
             </div>
 
             <div class="col-md-4">
                 <h3>Атрибуты</h3>
                 <div v-if="item === 1" class="form-row" v-for="(item, index) in attribute_rows" :key="index">
-                    <div class="form-group">
+                    <div class="form-group" data-app>
                         <label>Название</label>
                         <select name="attribute_id[]" @change="getAttributeValues($event.target.value, index)" v-model="product_attributes[index].id">
                             <option value="0">...</option>
@@ -74,7 +78,7 @@
                     <button v-if="index > 0" type="button" class="btn btn-danger delete" tabindex="-1" @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
                 </div>
 
-                <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="createAttributeRow()"><i
+                <button type="button" class="btn btn-success  clonspan" tabindex="-1" @click="createAttributeRow()"><i
                     class="mdi mdi-plus"></i></button>
             </div>
         </div>
@@ -103,7 +107,8 @@
                 attribute_values: [],
                 selected_values: [],
                 images_to_delete: [],
-                attributes_to_delete: []
+                attributes_to_delete: [],
+                overlay: false,
             }
         },
         methods: {
@@ -166,6 +171,7 @@
                 }
             },
             submit() {
+                this.overlay = true;
                 this.errors = {};
                 const formData = new FormData();
 
@@ -199,11 +205,13 @@
 
                 axios.post('/admin/products/' + this.product.id, formData)
                 .then(response => {
+                    this.overlay = false;
                     if(response.status == '200')
                     {
-                        // window.location.href = '/admin/products'
+                        window.location.href = '/admin/products'
                     }
                 }).catch(error => {
+                    this.overlay = false;
                     if ([422, 500].includes(error.response.status)) {
                         this.errors = error.response.data.errors || {};
                     }
@@ -217,3 +225,14 @@
         }
     }
 </script>
+<style lang="scss" scoped>
+    .product-edit-form {
+
+        .overlay {
+            opacity: 0.46;
+            background-color: rgb(33, 33, 33);
+            border-color: rgb(33, 33, 33);
+        }
+    }
+
+</style>
