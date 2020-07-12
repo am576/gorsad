@@ -2192,8 +2192,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       axios.post(url, formData).then(function (response) {
-        if (response.status == '200') {
-          window.location.href = '/admin/categories';
+        if (response.status == '200') {// window.location.href = '/admin/categories'
         }
       })["catch"](function (error) {
         if ([422, 500].includes(error.response.status)) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Http\Requests\CategoryUpdate;
 use App\Image;
+use Intervention\Image\Facades\Image as InterventionImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,16 +40,47 @@ class CategoryController extends Controller
         $category->save();
 
         if (isset($request->images) && count($request->images)) {
+
             foreach ($request->images as $index => $file) {
-                $category->images()->create([
-                    'label' => $category->title . '_0' . $index,
-                    'icon' => $file->hashName(),
-                    'small' => $file->hashName(),
-                    'medium' => $file->hashName(),
-                    'large' => $file->hashName(),
-                    'mimetype' => 'lalala'
-                ]);
-                $file->store('categories', 'images');
+                $fullname = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $filename = str_replace(' ', '_', $fullname);
+                $icon_path =  $file->storeAs('categories', $filename . '_icon.' . $file->getClientOriginalExtension(), 'images');
+                $small_path = $file->storeAs('categories', $filename . '_small.' . $file->getClientOriginalExtension(), 'images');
+                $medium_path = $file->storeAs('categories', $filename . '_medium.' . $file->getClientOriginalExtension(), 'images');
+                $large_path = $file->storeAs('categories', $filename . '_large.' . $file->getClientOriginalExtension(), 'images');
+
+                if($icon_path && $small_path && $medium_path && $large_path)
+                {
+                    $icon = public_path('storage/images/' . $icon_path);
+                    $small = public_path('storage/images/' . $small_path);
+                    $medium = public_path('storage/images/' . $medium_path);
+                    $large = public_path('storage/images/' . $large_path);
+
+                    $img_icon = InterventionImage::make($icon)->resize(100,100, function($constraint) {
+                       $constraint->aspectRatio();
+                    });
+
+                    $img_small = InterventionImage::make($small)->resize(200,200, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $img_medium = InterventionImage::make($medium)->resize(300,300, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $img_icon->save($icon);
+                    $img_small->save($small);
+                    $img_medium->save($medium);
+
+                    $category->images()->create([
+                        'label' => $category->title . '_0' . $index,
+                        'icon' => $icon_path,
+                        'small' => $small_path,
+                        'medium' => $medium_path,
+                        'large' => $large_path,
+                        'mimetype' => $file->getClientMimeType()
+                    ]);
+                }
             }
         }
     }

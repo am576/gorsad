@@ -89,7 +89,7 @@
                     .then(response => {
                         if(response.status == '200')
                         {
-                            window.location.href = '/admin/categories'
+                            // window.location.href = '/admin/categories'
                         }
                     }).catch(error => {
                     if ([422, 500].includes(error.response.status)) {
