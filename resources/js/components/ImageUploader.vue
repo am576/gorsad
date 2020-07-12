@@ -158,7 +158,7 @@
             single_image() {
                 if (this.entity_id)
                 {
-                    return typeof this.current_image === 'string' ? this.current_image : '/storage/images/' + this.storage + this.current_image.large;
+                    return typeof this.current_image === 'string' ? this.current_image : '/storage/images/' +  this.current_image.large;
                 }
                 else
                 {

@@ -2192,7 +2192,8 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       axios.post(url, formData).then(function (response) {
-        if (response.status == '200') {// window.location.href = '/admin/categories'
+        if (response.status == '200') {
+          window.location.href = '/admin/categories';
         }
       })["catch"](function (error) {
         if ([422, 500].includes(error.response.status)) {
@@ -2465,7 +2466,7 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     single_image: function single_image() {
       if (this.entity_id) {
-        return typeof this.current_image === 'string' ? this.current_image : '/storage/images/' + this.storage + this.current_image.large;
+        return typeof this.current_image === 'string' ? this.current_image : '/storage/images/' + this.current_image.large;
       } else {
         return this.images[0];
       }
