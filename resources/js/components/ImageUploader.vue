@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <div v-show="(isSingleImage && !current_image) || !isSingleImage" class="uploader"
+        <div v-show="(isSingleImage && isImageEmpty) || !isSingleImage" class="uploader"
              :class="{dragging: isDragging}"
         >
             <div class="dropin"
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div v-if="isSingleImage && current_image" class="images-preview">
+            <div v-if="isSingleImage && !isImageEmpty" class="images-preview">
                 <div class="img-wrapper" :class="[isSingleImage ? 'w-100 h-100' : '']">
                     <img class="single-image" :src="single_image">
                     <i class="mdi mdi-close-circle-outline" @click.prevent="removeSingleImage()"></i>
@@ -122,7 +122,7 @@
                 {
                     this.$emit('removeImage', this.current_image.id);
                 }
-                this.current_image = undefined;
+                this.current_image = {};
             },
             removeUploadedImage(index) {
                 this.$delete(this.files, index);
@@ -162,9 +162,19 @@
                 }
                 else
                 {
-                    return this.images[0];
+                    return this.current_image;
                 }
 
+            },
+            isImageEmpty() {
+                if(typeof this.current_image === 'string')
+                {
+                    return this.current_image.length === 0
+                }
+                else
+                {
+                    return Object.keys(this.current_image).length === 0
+                }
             }
         },
         created() {

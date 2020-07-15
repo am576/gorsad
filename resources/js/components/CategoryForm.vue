@@ -8,7 +8,7 @@
                 </div>
                 <div class="form-group">
                     <label>Принадлежит</label>
-                    <category-selector :select_name="'parent_id'" :owner_id="category.id ? category.id : 0" :parent_id="category.parent_id" :except_self="true"></category-selector>
+                    <category-selector :select_name="'parent_id'" :owner_id="category.id ? category.id : 0" :parent_id="category.parent_id" :except_self="edit_form"></category-selector>
                 </div>
                 <div class="form-group">
                     <label>Описание</label>

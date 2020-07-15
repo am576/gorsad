@@ -2241,7 +2241,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      categories: []
+      categories: [],
+      category_id: 0
     };
   },
   methods: {
@@ -2436,7 +2437,7 @@ __webpack_require__.r(__webpack_exports__);
         this.$emit('removeImage', this.current_image.id);
       }
 
-      this.current_image = undefined;
+      this.current_image = {};
     },
     removeUploadedImage: function removeUploadedImage(index) {
       this.$delete(this.files, index);
@@ -2468,7 +2469,14 @@ __webpack_require__.r(__webpack_exports__);
       if (this.entity_id) {
         return typeof this.current_image === 'string' ? this.current_image : '/storage/images/' + this.current_image.large;
       } else {
-        return this.images[0];
+        return this.current_image;
+      }
+    },
+    isImageEmpty: function isImageEmpty() {
+      if (typeof this.current_image === 'string') {
+        return this.current_image.length === 0;
+      } else {
+        return Object.keys(this.current_image).length === 0;
       }
     }
   },
@@ -39789,7 +39797,7 @@ var render = function() {
                   select_name: "parent_id",
                   owner_id: _vm.category.id ? _vm.category.id : 0,
                   parent_id: _vm.category.parent_id,
-                  except_self: true
+                  except_self: _vm.edit_form
                 }
               })
             ],
@@ -40006,8 +40014,8 @@ var render = function() {
             name: "show",
             rawName: "v-show",
             value:
-              (_vm.isSingleImage && !_vm.current_image) || !_vm.isSingleImage,
-            expression: "(isSingleImage && !current_image) || !isSingleImage"
+              (_vm.isSingleImage && _vm.isImageEmpty) || !_vm.isSingleImage,
+            expression: "(isSingleImage && isImageEmpty) || !isSingleImage"
           }
         ],
         staticClass: "uploader",
@@ -40135,7 +40143,7 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
-      _vm.isSingleImage && _vm.current_image
+      _vm.isSingleImage && !_vm.isImageEmpty
         ? _c("div", { staticClass: "images-preview" }, [
             _c(
               "div",
@@ -40521,6 +40529,7 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-primary white--text",
+              attrs: { type: "button" },
               on: { click: _vm.submit }
             },
             [_vm._v("Сохранить")]

@@ -55,7 +55,7 @@
                         <option value="0">Неактивный</option>
                     </select>
                 </div>
-                <button @click="submit" class="btn btn-primary white--text">Сохранить</button>
+                <button type="button" @click="submit" class="btn btn-primary white--text">Сохранить</button>
             </div>
 
             <div class="col-md-4">
