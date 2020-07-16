@@ -8,7 +8,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import vuetify from './vuetify'
+import vuetify from './vuetify';
+import VueTagsInput from '@johmun/vue-tags-input';
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -32,6 +33,8 @@ Vue.component('table-filter', require('./components/TableFilter').default);
 Vue.component('table-pagination', require('./components/TablePagination').default);
 Vue.component('category-form', require('./components/CategoryForm').default);
 Vue.component('table-buttons', require('./components/TableButtons').default);
+Vue.component('attribute-form', require('./components/AttributeForm').default);
+Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -40,6 +43,7 @@ Vue.component('table-buttons', require('./components/TableButtons').default);
  */
 const app = new Vue({
     vuetify,
+    VueTagsInput,
     el: '#app',
 
 });

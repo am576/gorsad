@@ -35,7 +35,7 @@ class AttributeController extends Controller
         $attribute = new Attribute($request->except(['values']));
         $attribute->save();
 
-        $values = explode(',', str_replace(' ','', $request->values));
+        $values = explode(',', $request->values);
 
         foreach($values as $value)
         {
@@ -70,7 +70,21 @@ class AttributeController extends Controller
 
     public function update(Request $request, $id)
     {
-        Attribute::whereId($id)->update($request->except(['_token','_method']));
+        $attribute = Attribute::findOrFail($id);
+
+        $input = $request->except(['values']);
+        $attribute->fill($input);
+        $attribute->save();
+
+        $values = explode(',', str_replace(' ','', $request->values));
+
+        foreach($values as $value)
+        {
+            DB::table('attributes_values')->updateOrInsert([
+                'attribute_id' => $attribute->id,
+                'value' => $value
+            ]);
+        }
 
         return redirect()->intended(route('attributes.index'));
     }

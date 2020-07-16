@@ -30,8 +30,8 @@
                                         <td>{{$attribute->category->title ?? '-'}}</td>
                                         <td>{{$attribute->name}}</td>
                                         <td>
-                                            @foreach($attribute->values() as $value)
-                                            {{$value->value}};
+                                            @foreach($attribute->valuesLabels() as $label)
+                                                <div class="h-100 badge badge-primary" style="font-size: 100%;">{{$label}}</div>
                                             @endforeach
                                         </td>
                                         <td>@include('admin.macros.table-buttons', ['entity' => $attribute])</td>

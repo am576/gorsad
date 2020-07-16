@@ -23,4 +23,15 @@ class Attribute extends Model
             ->get();
     }
 
+    public function valuesLabels()
+    {
+        $labels = [];
+
+        foreach ($this->values() as $value) {
+            array_push($labels, $value->value);
+        }
+
+        return $labels;
+    }
+
 }

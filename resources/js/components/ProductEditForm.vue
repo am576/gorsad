@@ -113,8 +113,11 @@
         },
         methods: {
             setProductCategory(id) {
-                this.product.category_id = id;
-                this.getAttributesForCategory();
+                if(confirm('Смена категории удалит все созданные атрибуты. Продолжить?'))
+                {
+                    this.product.category_id = id;
+                    this.getAttributesForCategory();
+                }
             },
             getAttributesForCategory()
             {
