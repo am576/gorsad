@@ -2825,11 +2825,12 @@ __webpack_require__.r(__webpack_exports__);
     return {
       product: {
         attribute_id: [],
-        attribute_value_id: []
+        attribute_value_id: [],
+        status: 1
       },
       images: [],
       errors: {},
-      attribute_rows: [1],
+      attribute_rows: [0],
       attributes: [],
       attribute_values: []
     };
@@ -2890,7 +2891,7 @@ __webpack_require__.r(__webpack_exports__);
         formData.append('attribute_value_id[]', value);
       });
       axios.post('/admin/products', formData).then(function (response) {
-        console.log(response);
+        if (response.status == 200) window.location.href = '/admin/products';
       })["catch"](function (error) {
         if (error.response.status === 422) {
           _this3.errors = error.response.data.errors || {};
@@ -2958,6 +2959,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
       categories: [],
       statuses: ['Неактивный', 'Активный'],
       products: {
@@ -3035,6 +3037,9 @@ __webpack_require__.r(__webpack_exports__);
           value: '%'
         };
       });
+    },
+    product_category: function product_category(product) {
+      return product.category === null ? '-' : product.category.title;
     }
   },
   computed: {
@@ -3072,6 +3077,57 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.getProducts(this.products.current_page);
     this.setCategoriesFilter();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TableButtons.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TableButtons.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    table: '',
+    id: 0
+  },
+  methods: {
+    deleteRow: function deleteRow() {
+      if (confirm('Вы уверены, что хотите удалить эту запись?')) {
+        var formData = new FormData();
+        formData.append('_method', 'DELETE');
+        axios.post(this.delete_url, formData).then(function (response) {
+          if (response.status == 200) {
+            window.location.reload();
+          }
+        });
+      }
+    }
+  },
+  computed: {
+    edit_url: function edit_url() {
+      return "".concat(this.table, "/").concat(this.id, "/edit");
+    },
+    delete_url: function delete_url() {
+      return "".concat(this.table, "/").concat(this.id);
+    }
   }
 });
 
@@ -39983,10 +40039,7 @@ var render = function() {
             _vm._l(_vm.existing_images, function(image, index) {
               return _c("div", { key: index, staticClass: "img-wrapper" }, [
                 _c("img", {
-                  attrs: {
-                    src: "/storage/images/products/" + image.icon,
-                    alt: index
-                  }
+                  attrs: { src: "/storage/images/" + image.icon, alt: index }
                 }),
                 _vm._v(" "),
                 _c("i", {
@@ -40662,21 +40715,19 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    index > 0
-                      ? _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-danger delete",
-                            attrs: { type: "button", tabindex: "-1" },
-                            on: {
-                              click: function($event) {
-                                return _vm.removeAttributeRow(index)
-                              }
-                            }
-                          },
-                          [_c("i", { staticClass: "mdi mdi-minus" })]
-                        )
-                      : _vm._e()
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger delete",
+                        attrs: { type: "button", tabindex: "-1" },
+                        on: {
+                          click: function($event) {
+                            return _vm.removeAttributeRow(index)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "mdi mdi-minus" })]
+                    )
                   ])
                 : _vm._e()
             }),
@@ -41257,7 +41308,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(product.code))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(product.category.title))]),
+                    _c("td", [_vm._v(_vm._s(_vm.product_category(product)))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(product.price))]),
                     _vm._v(" "),
@@ -41271,9 +41322,15 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(product.created_at))]),
                     _vm._v(" "),
-                    _c("td", [
-                      _vm._v("\n                    buttons\n                ")
-                    ])
+                    _c(
+                      "td",
+                      [
+                        _c("table-buttons", {
+                          attrs: { table: "products", id: product.id }
+                        })
+                      ],
+                      1
+                    )
                   ])
                 }),
                 0
@@ -41320,6 +41377,60 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TableButtons.vue?vue&type=template&id=703bab84&":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TableButtons.vue?vue&type=template&id=703bab84& ***!
+  \***************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "a",
+      {
+        staticClass: "btn btn-sm btn-primary pull-right edit",
+        attrs: { href: _vm.edit_url, title: "Изменить" }
+      },
+      [
+        _c("i", { staticClass: "mdi mdi-lead-pencil" }),
+        _vm._v(" "),
+        _c("span", { staticClass: "hidden-xs hidden-sm" }, [_vm._v("Изменить")])
+      ]
+    ),
+    _vm._v(" "),
+    _c("form", { staticClass: "table-delete-entity" }, [
+      _c(
+        "button",
+        {
+          staticClass:
+            "btn btn-sm btn-danger pull-right delete hidden-xs hidden-sm",
+          attrs: { type: "button", title: "Удалить", value: "Удалить" },
+          on: {
+            click: function($event) {
+              return _vm.deleteRow()
+            }
+          }
+        },
+        [_vm._v("Удалить")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -97431,6 +97542,7 @@ Vue.component('products-table', __webpack_require__(/*! ./components/ProductsTab
 Vue.component('table-filter', __webpack_require__(/*! ./components/TableFilter */ "./resources/js/components/TableFilter.vue")["default"]);
 Vue.component('table-pagination', __webpack_require__(/*! ./components/TablePagination */ "./resources/js/components/TablePagination.vue")["default"]);
 Vue.component('category-form', __webpack_require__(/*! ./components/CategoryForm */ "./resources/js/components/CategoryForm.vue")["default"]);
+Vue.component('table-buttons', __webpack_require__(/*! ./components/TableButtons */ "./resources/js/components/TableButtons.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -98072,6 +98184,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductsTable_vue_vue_type_template_id_0fd55f6f___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductsTable_vue_vue_type_template_id_0fd55f6f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/TableButtons.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/TableButtons.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TableButtons_vue_vue_type_template_id_703bab84___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TableButtons.vue?vue&type=template&id=703bab84& */ "./resources/js/components/TableButtons.vue?vue&type=template&id=703bab84&");
+/* harmony import */ var _TableButtons_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TableButtons.vue?vue&type=script&lang=js& */ "./resources/js/components/TableButtons.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TableButtons_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TableButtons_vue_vue_type_template_id_703bab84___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TableButtons_vue_vue_type_template_id_703bab84___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/TableButtons.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/TableButtons.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/TableButtons.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TableButtons_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TableButtons.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TableButtons.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TableButtons_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/TableButtons.vue?vue&type=template&id=703bab84&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/TableButtons.vue?vue&type=template&id=703bab84& ***!
+  \*********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TableButtons_vue_vue_type_template_id_703bab84___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./TableButtons.vue?vue&type=template&id=703bab84& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TableButtons.vue?vue&type=template&id=703bab84&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TableButtons_vue_vue_type_template_id_703bab84___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TableButtons_vue_vue_type_template_id_703bab84___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

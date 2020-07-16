@@ -74,7 +74,7 @@ class ApiController extends Controller
             }
         }
 
-        $products = Product::where($params_where)->with('category')->paginate($request->per_page)->toJson();
+        $products = Product::where($params_where)->with('category')->orderBy('id', 'desc')->paginate($request->per_page)->toJson();
 
         $jproducts = json_decode($products);
 
@@ -94,5 +94,10 @@ class ApiController extends Controller
         $products = Product::with('category')->paginate(5);
 
         return response()->json($products);
+    }
+
+    public function getTable(Request $request)
+    {
+        return $request->entity->getTable();
     }
 }

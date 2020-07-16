@@ -9,6 +9,7 @@ use App\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image as InterventionImage;
 
 class ProductController extends Controller
 {
@@ -20,7 +21,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Product::with('category')->get();
+        $products = Product::orderBy('id', 'DESC')->with('category')->get();
 
         return  view('admin.products.index')->with('products', $products);
     }
@@ -44,17 +45,47 @@ class ProductController extends Controller
         $product = new Product($input);
         $product->save();
 
-        if (isset($request->images) && count($request->images)) {
+        if(isset($request->images))
+        {
             foreach ($request->images as $index => $file) {
-                $product->images()->create([
-                    'label' => $product->title . '_0' . $index,
-                    'icon' => $file->hashName(),
-                    'small' => $file->hashName(),
-                    'medium' => $file->hashName(),
-                    'large' => $file->hashName(),
-                    'mimetype' => 'lalala'
-                ]);
-                $file->store('products', 'images');
+                $fullname = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $filename = str_replace(' ', '_', $fullname);
+                $icon_path =  $file->storeAs('products', $filename . '_icon.' . $file->getClientOriginalExtension(), 'images');
+                $small_path = $file->storeAs('products', $filename . '_small.' . $file->getClientOriginalExtension(), 'images');
+                $medium_path = $file->storeAs('products', $filename . '_medium.' . $file->getClientOriginalExtension(), 'images');
+                $large_path = $file->storeAs('products', $filename . '_large.' . $file->getClientOriginalExtension(), 'images');
+
+                if($icon_path && $small_path && $medium_path && $large_path)
+                {
+                    $icon = public_path('storage/images/' . $icon_path);
+                    $small = public_path('storage/images/' . $small_path);
+                    $medium = public_path('storage/images/' . $medium_path);
+
+                    $img_icon = InterventionImage::make($icon)->resize(100,100, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $img_small = InterventionImage::make($small)->resize(200,200, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $img_medium = InterventionImage::make($medium)->resize(300,300, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $img_icon->save($icon);
+                    $img_small->save($small);
+                    $img_medium->save($medium);
+
+                    $product->images()->create([
+                        'label' => $product->title . '_0' . $index,
+                        'icon' => $icon_path,
+                        'small' => $small_path,
+                        'medium' => $medium_path,
+                        'large' => $large_path,
+                        'mimetype' => $file->getClientMimeType()
+                    ]);
+                }
             }
         }
 
@@ -106,35 +137,62 @@ class ProductController extends Controller
         $product->save();
 
 
-        if (isset($request->images) && count($request->images))
+        if(isset($request->images))
         {
-            foreach ($request->images as $index => $file)
-            {
-                $product->images()->create([
-                    'label' => $product->title . '_0' . $index,
-                    'icon' => $file->hashName(),
-                    'small' => $file->hashName(),
-                    'medium' => $file->hashName(),
-                    'large' => $file->hashName(),
-                    'mimetype' => 'lalala'
-                ]);
-                $file->store('products', 'images');
+            foreach ($request->images as $index => $file) {
+                $fullname = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $filename = str_replace(' ', '_', $fullname);
+                $icon_path =  $file->storeAs('products', $filename . '_icon.' . $file->getClientOriginalExtension(), 'images');
+                $small_path = $file->storeAs('products', $filename . '_small.' . $file->getClientOriginalExtension(), 'images');
+                $medium_path = $file->storeAs('products', $filename . '_medium.' . $file->getClientOriginalExtension(), 'images');
+                $large_path = $file->storeAs('products', $filename . '_large.' . $file->getClientOriginalExtension(), 'images');
+
+                if($icon_path && $small_path && $medium_path && $large_path)
+                {
+                    $icon = public_path('storage/images/' . $icon_path);
+                    $small = public_path('storage/images/' . $small_path);
+                    $medium = public_path('storage/images/' . $medium_path);
+
+                    $img_icon = InterventionImage::make($icon)->resize(100,100, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $img_small = InterventionImage::make($small)->resize(200,200, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $img_medium = InterventionImage::make($medium)->resize(300,300, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $img_icon->save($icon);
+                    $img_small->save($small);
+                    $img_medium->save($medium);
+
+                    $product->images()->create([
+                        'label' => $product->title . '_0' . $index,
+                        'icon' => $icon_path,
+                        'small' => $small_path,
+                        'medium' => $medium_path,
+                        'large' => $large_path,
+                        'mimetype' => $file->getClientMimeType()
+                    ]);
+                }
             }
         }
+
 
         if (isset($request->attribute_id) && count($request->attribute_id))
         {
             foreach ($request->attribute_id as $index => $id)
             {
-                DB::table('products_attributes')->updateOrInsert([
+                DB::table('products_attributes')->updateOrInsert(
+                    [
                     'product_id' => $product->id,
                     'attribute_id' => $id,
                     'attribute_value_id' => $request->attribute_value_id[$index]
-                ], [
-                    'product_id' => $product->id,
-                    'attribute_id' => $id,
-                    'attribute_value_id' => $request->attribute_value_id[$index]
-                ]);
+                    ]
+                );
             }
         }
 
@@ -154,12 +212,8 @@ class ProductController extends Controller
         if(isset($request->images_to_delete))
         {
             foreach ($request->images_to_delete as $image_id) {
-                $images = array_map(
-                    function($el) {
-                      return 'products/' . $el;
-                    },
-                    array_values(Image::select('icon','small','medium','large')
-                    ->where('id', $image_id)->get()->toArray()[0]));
+                $images = array_values(Image::select('icon','small','medium','large')
+                    ->where('id', $image_id)->get()->toArray()[0]);
 
                 Storage::disk('images')->delete($images);
             }

@@ -175,7 +175,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
 
         $products = $category->products();
-        $products->update(['status' => 0]);
+        $products->update(['status' => 0, 'category_id' => 0]);
 
         $images = $category->images()->get();
 

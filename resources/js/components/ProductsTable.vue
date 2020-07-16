@@ -20,14 +20,14 @@
                 <tr v-for="(product, index) in products.data" :key="index">
                     <td>{{product.title }}</td>
                     <td>{{product.code}}</td>
-                    <td>{{product.category.title}}</td><!---->
+                    <td>{{product_category(product)}}</td><!---->
                     <td>{{product.price}}</td>
                     <td>{{product.discount}}</td>
                     <td>{{product.quantity}}</td>
                     <td :class="colorStatus(product.status)">{{statuses[product.status]}}</td>
                     <td>{{product.created_at}}</td>
                     <td>
-                        buttons
+                        <table-buttons :table="'products'" :id="product.id"></table-buttons>
                     </td>
                 </tr>
                 </tbody>
@@ -42,6 +42,7 @@
     export default {
         data() {
           return {
+              csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
               categories: [],
               statuses: ['Неактивный', 'Активный'],
               products: {
@@ -117,6 +118,9 @@
                             value: '%'
                         }
                     })
+            },
+            product_category(product) {
+                return product.category === null ? '-' : product.category.title
             }
         },
         computed: {
@@ -159,7 +163,8 @@
                         options: this.categories
                     }
                 ]
-            }
+            },
+
         },
         created() {
             this.getProducts(this.products.current_page);

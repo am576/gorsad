@@ -5,7 +5,7 @@
             <div class="card-body">
                 <div class="images-preview" v-show="existing_images.length">
                     <div class="img-wrapper" v-for="(image, index) in existing_images" :key="index">
-                        <img :src="'/storage/images/products/'+image.icon" :alt="index">
+                        <img :src="'/storage/images/' +image.icon" :alt="index">
                         <i class="mdi mdi-close-circle-outline" @click.prevent="removeProductImage(image.id, index)"></i>
                     </div>
                 </div>

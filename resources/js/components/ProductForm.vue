@@ -89,10 +89,11 @@
                 product: {
                     attribute_id: [],
                     attribute_value_id: [],
+                    status: 1
                 },
                 images: [],
                 errors: {},
-                attribute_rows : [1],
+                attribute_rows : [0],
                 attributes: [],
                 attribute_values: []
             }
@@ -155,7 +156,8 @@
 
                 axios.post('/admin/products', formData)
                 .then(response =>{
-                    console.log(response)
+                    if(response.status == 200)
+                        window.location.href = '/admin/products'
                 }).catch(error => {
                     if (error.response.status === 422) {
                         this.errors = error.response.data.errors || {};

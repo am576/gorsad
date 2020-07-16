@@ -75,7 +75,7 @@
                             <option v-for="value in attribute_values[index]" :value="value.id">{{value.value}}</option>
                         </select>
                     </div>
-                    <button v-if="index > 0" type="button" class="btn btn-danger delete" tabindex="-1" @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
+                    <button type="button" class="btn btn-danger delete" tabindex="-1" @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
                 </div>
 
                 <button type="button" class="btn btn-success  clonspan" tabindex="-1" @click="createAttributeRow()"><i
