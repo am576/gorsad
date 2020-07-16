@@ -161,7 +161,7 @@
             removeAttributeRow(index)
             {
                 this.$set(this.attribute_rows, index, 0);
-                this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.product_attributes[index].id);
+                this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.product_attributes[index].saved_id);
             },
             removeImage(image_id)
             {

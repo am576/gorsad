@@ -201,10 +201,7 @@ class ProductController extends Controller
             foreach ($request->attributes_to_delete as $attr_id)
             {
                 DB::table('products_attributes')
-                    ->where([
-                        ['product_id','=', $product->id],
-                        ['attribute_id','=', $attr_id]
-                    ])
+                    ->where('id', $attr_id)
                     ->delete();
             }
         }
