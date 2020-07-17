@@ -14,18 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
-Route::get('images', function () {
-    return view('admin.images_test');
-});
+Route::get('/','HomeController@index');
 
-Route::get('/home', 'HomeController@index')->name('home');
 
+/*Admin routes*/
 Route::prefix('admin')->group(function(){
 
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');

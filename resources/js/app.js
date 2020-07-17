@@ -18,8 +18,6 @@ import VueTagsInput from '@johmun/vue-tags-input';
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 Vue.prototype.$eventBus = new Vue();
 
 Vue.component('category-selector', require('./components/CategorySelector.vue').default);
@@ -35,6 +33,9 @@ Vue.component('category-form', require('./components/CategoryForm').default);
 Vue.component('table-buttons', require('./components/TableButtons').default);
 Vue.component('attribute-form', require('./components/AttributeForm').default);
 Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
+
+Vue.component('account-links', require('./components/frontend/AccountLinks').default);
+Vue.component('home-slider', require('./components/frontend/HomeSlider').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
