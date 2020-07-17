@@ -89,10 +89,13 @@ class AttributeController extends Controller
         return redirect()->intended(route('attributes.index'));
     }
 
-
     public function destroy($id)
     {
-        $attribute = Attribute::find($id);
+        $attribute = Attribute::findOrFail($id);
+
+        DB::table('attributes_values')
+            ->where('attribute_id', $attribute->id)
+            ->delete();
 
         $attribute->delete();
 
