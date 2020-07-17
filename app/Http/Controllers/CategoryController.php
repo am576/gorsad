@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Http\Requests\CategoryUpdate;
 use App\Image;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image as InterventionImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -175,6 +176,11 @@ class CategoryController extends Controller
         $category = Category::find($id);
 
         $products = $category->products();
+
+        DB::table('products_attributes')
+            ->whereIn('product_id', $products->pluck('id')->toArray())
+            ->delete();
+
         $products->update(['status' => 0, 'category_id' => 0]);
 
         $images = $category->images()->get();

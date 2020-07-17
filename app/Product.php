@@ -36,6 +36,13 @@ class Product extends Model
              ->get();
     }
 
+    public function saved_attributes()
+    {
+        return DB::table('products_attributes')
+            ->where('product_id', $this->id)
+            ->get();
+    }
+
     public function images()
     {
         return $this->morphMany('App\Image', 'imageable');
