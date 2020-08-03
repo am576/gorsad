@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.2.45/css/materialdesignicons.min.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -42,30 +43,7 @@
         {{--end user navigation vue component--}}
 
         {{--site navigation vue component--}}
-        <nav class="navbar">
-            <div class="mr-auto"></div>
-            <ul class="nav nav-pills ml-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Новинки</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Lalalala</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Babababa</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Nananana</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Mamamama</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Kakakaka</a>
-                </li>
-            </ul>
-            <input class="ml-auto d-inline" type="text" placeholder="Поиск">
-        </nav>
+        <site-navigation></site-navigation>
         {{--end site navigation vue component--}}
 
         <main class="py-4">

@@ -57,14 +57,14 @@ class CategoryController extends Controller
                     $medium = public_path('storage/images/' . $medium_path);
 
                     $img_icon = InterventionImage::make($icon)->resize(100,100, function($constraint) {
-                       $constraint->aspectRatio();
-                    });
-
-                    $img_small = InterventionImage::make($small)->resize(200,200, function($constraint) {
                         $constraint->aspectRatio();
                     });
 
-                    $img_medium = InterventionImage::make($medium)->resize(300,300, function($constraint) {
+                    $img_small = InterventionImage::make($small)->resize(250,250, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $img_medium = InterventionImage::make($medium)->resize(450,450, function($constraint) {
                         $constraint->aspectRatio();
                     });
 
@@ -143,11 +143,11 @@ class CategoryController extends Controller
                         $constraint->aspectRatio();
                     });
 
-                    $img_small = InterventionImage::make($small)->resize(200,200, function($constraint) {
+                    $img_small = InterventionImage::make($small)->resize(250,250, function($constraint) {
                         $constraint->aspectRatio();
                     });
 
-                    $img_medium = InterventionImage::make($medium)->resize(300,300, function($constraint) {
+                    $img_medium = InterventionImage::make($medium)->resize(450,450, function($constraint) {
                         $constraint->aspectRatio();
                     });
 
