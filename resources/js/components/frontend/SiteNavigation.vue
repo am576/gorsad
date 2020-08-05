@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar">
+        <nav class="navbar" v-if="!isMobileView">>
             <ul class="nav nav-pills ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Желаемое</a>
@@ -75,6 +75,9 @@
         <div id="links-mobile"  class="mobile-menu" :class="{'open': showLinks}">
             <i class="mdi mdi-close" @click="toggleMobileLinks" ></i>
             <ul class="nav nav-pills ml-auto">
+                <li>
+                    <input type="text" placeholder="Поиск">
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Желаемое</a>
                 </li>
@@ -85,6 +88,7 @@
                     <a class="nav-link" href="#">Войти</a>
                 </li>
             </ul>
+
 
         </div>
 
@@ -167,12 +171,17 @@
             transform: translateX(-1 * $menu_width);
             transition: 0.3s cubic-bezier(0,.12,.14,1) 0s;
         }
+
+        input {
+            width: $menu_width * 0.7;
+            box-sizing: border-box;
+        }
     }
 
     .mobile-menu {
         min-width: $menu_width;
         display: inline-block;
-        position: absolute;
+        position: fixed;
         top: 0;
         z-index: 10;
 
@@ -180,7 +189,7 @@
             display: inline-block;
             background: rgba(0,0,0,0.9);
             list-style: none;
-            padding-left: 40px;
+            padding: 0 2rem;
             li {
                 color: #fff;
                 font-size: 2rem;
@@ -196,7 +205,5 @@
         i {
             font-size: 2rem;
         }
-
-
     }
 </style>

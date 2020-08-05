@@ -3613,6 +3613,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     auth_user: ''
@@ -8132,7 +8136,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "#mobile-logo[data-v-23898406] {\n  font-size: 2rem;\n}\ni[data-v-23898406] {\n  cursor: pointer;\n}\n#navigation-mobile[data-v-23898406] {\n  left: -300px;\n}\n#navigation-mobile ul[data-v-23898406] {\n  float: left;\n}\n#navigation-mobile.open[data-v-23898406] {\n  transform: translateX(300px);\n  transition: 0.3s cubic-bezier(0, 0.12, 0.14, 1) 0s;\n}\n#links-mobile[data-v-23898406] {\n  right: -300px;\n  text-align: right;\n}\n#links-mobile ul[data-v-23898406] {\n  float: right;\n  text-align: left;\n}\n#links-mobile.open[data-v-23898406] {\n  transform: translateX(-300px);\n  transition: 0.3s cubic-bezier(0, 0.12, 0.14, 1) 0s;\n}\n.mobile-menu[data-v-23898406] {\n  min-width: 300px;\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  z-index: 10;\n}\n.mobile-menu ul[data-v-23898406] {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.9);\n  list-style: none;\n  padding-left: 40px;\n}\n.mobile-menu ul li[data-v-23898406] {\n  color: #fff;\n  font-size: 2rem;\n  font-weight: bold;\n  margin-bottom: 20px;\n  cursor: pointer;\n}\n.mobile-menu ul li[data-v-23898406]:hover {\n  color: #111;\n}\n.mobile-menu i[data-v-23898406] {\n  font-size: 2rem;\n}", ""]);
+exports.push([module.i, "#mobile-logo[data-v-23898406] {\n  font-size: 2rem;\n}\ni[data-v-23898406] {\n  cursor: pointer;\n}\n#navigation-mobile[data-v-23898406] {\n  left: -300px;\n}\n#navigation-mobile ul[data-v-23898406] {\n  float: left;\n}\n#navigation-mobile.open[data-v-23898406] {\n  transform: translateX(300px);\n  transition: 0.3s cubic-bezier(0, 0.12, 0.14, 1) 0s;\n}\n#links-mobile[data-v-23898406] {\n  right: -300px;\n  text-align: right;\n}\n#links-mobile ul[data-v-23898406] {\n  float: right;\n  text-align: left;\n}\n#links-mobile.open[data-v-23898406] {\n  transform: translateX(-300px);\n  transition: 0.3s cubic-bezier(0, 0.12, 0.14, 1) 0s;\n}\n#links-mobile input[data-v-23898406] {\n  width: 210px;\n  box-sizing: border-box;\n}\n.mobile-menu[data-v-23898406] {\n  min-width: 300px;\n  display: inline-block;\n  position: fixed;\n  top: 0;\n  z-index: 10;\n}\n.mobile-menu ul[data-v-23898406] {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.9);\n  list-style: none;\n  padding: 0 2rem;\n}\n.mobile-menu ul li[data-v-23898406] {\n  color: #fff;\n  font-size: 2rem;\n  font-weight: bold;\n  margin-bottom: 20px;\n  cursor: pointer;\n}\n.mobile-menu ul li[data-v-23898406]:hover {\n  color: #111;\n}\n.mobile-menu i[data-v-23898406] {\n  font-size: 2rem;\n}", ""]);
 
 // exports
 
@@ -42391,21 +42395,24 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("nav", { staticClass: "navbar" }, [
-      _c("ul", { staticClass: "nav nav-pills ml-auto" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _vm.isGuest
-          ? _c("li", { staticClass: "nav-item" }, [
-              _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-                _vm._v("Войти")
-              ])
-            ])
-          : _vm._e()
-      ])
-    ]),
+    !_vm.isMobileView
+      ? _c("nav", { staticClass: "navbar" }, [
+          _vm._v(">\n        "),
+          _c("ul", { staticClass: "nav nav-pills ml-auto" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._m(1),
+            _vm._v(" "),
+            _vm.isGuest
+              ? _c("li", { staticClass: "nav-item" }, [
+                  _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+                    _vm._v("Войти")
+                  ])
+                ])
+              : _vm._e()
+          ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("nav", { staticClass: "navbar" }, [
       _vm.isMobileView
@@ -42499,6 +42506,8 @@ var render = function() {
           _vm._m(9),
           _vm._v(" "),
           _vm._m(10),
+          _vm._v(" "),
+          _vm._m(11),
           _vm._v(" "),
           _vm.isGuest
             ? _c("li", { staticClass: "nav-item" }, [
@@ -42633,6 +42642,14 @@ var staticRenderFns = [
           _vm._v("Kakakaka")
         ])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("input", { attrs: { type: "text", placeholder: "Поиск" } })
     ])
   },
   function() {
