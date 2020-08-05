@@ -3417,9 +3417,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    guest: false
+  props: ['auth_user'],
+  data: function data() {
+    return {
+      isMobileView: false,
+      showMenu: false,
+      menuOpen: false
+    };
+  },
+  methods: {
+    handleView: function handleView() {
+      this.isMobileView = window.innerWidth <= 600;
+    }
+  },
+  computed: {
+    isGuest: function isGuest() {
+      return this.auth_user == null;
+    }
+  },
+  created: function created() {
+    this.handleView();
+    window.addEventListener('resize', this.handleView);
   }
 });
 
@@ -3545,16 +3582,66 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    auth_user: ''
+  },
   data: function data() {
     return {
       isMobileView: false,
-      showNav: false
+      showNav: false,
+      navOpen: false,
+      showLinks: false,
+      linksOpen: false
     };
   },
   methods: {
     handleView: function handleView() {
       this.isMobileView = window.innerWidth <= 600;
+    },
+    toggleMobileNav: function toggleMobileNav() {
+      this.showNav = !this.showNav;
+      this.navOpen = !this.navOpen;
+    },
+    toggleMobileLinks: function toggleMobileLinks() {
+      this.showLinks = !this.showLinks;
+      this.linksOpen = !this.linksOpen;
+    }
+  },
+  computed: {
+    isGuest: function isGuest() {
+      return this.auth_user == null;
     }
   },
   created: function created() {
@@ -8045,7 +8132,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "#mobile-logo[data-v-23898406] {\n  font-size: 2rem;\n}\ni[data-v-23898406] {\n  cursor: pointer;\n}\n#navigaton-mobile[data-v-23898406] {\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  left: -300px;\n  z-index: 10;\n  transform: translateX(-300px);\n}\n#navigaton-mobile ul[data-v-23898406] {\n  float: left;\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.9);\n  list-style: none;\n  width: 200px;\n  padding-left: 40px;\n}\n#navigaton-mobile ul li[data-v-23898406] {\n  color: #fff;\n  font-size: 2rem;\n  font-weight: bold;\n  margin-bottom: 20px;\n  cursor: pointer;\n}\n#navigaton-mobile ul li[data-v-23898406]:hover {\n  color: #111;\n}\n#navigaton-mobile i[data-v-23898406] {\n  font-size: 2rem;\n}\n#navigaton-mobile.open[data-v-23898406] {\n  transform: translateX(300px);\n  transition: 0.3s cubic-bezier(0, 0.12, 0.14, 1) 0s;\n}", ""]);
+exports.push([module.i, "#mobile-logo[data-v-23898406] {\n  font-size: 2rem;\n}\ni[data-v-23898406] {\n  cursor: pointer;\n}\n#navigation-mobile[data-v-23898406] {\n  left: -300px;\n}\n#navigation-mobile ul[data-v-23898406] {\n  float: left;\n}\n#navigation-mobile.open[data-v-23898406] {\n  transform: translateX(300px);\n  transition: 0.3s cubic-bezier(0, 0.12, 0.14, 1) 0s;\n}\n#links-mobile[data-v-23898406] {\n  right: -300px;\n  text-align: right;\n}\n#links-mobile ul[data-v-23898406] {\n  float: right;\n  text-align: left;\n}\n#links-mobile.open[data-v-23898406] {\n  transform: translateX(-300px);\n  transition: 0.3s cubic-bezier(0, 0.12, 0.14, 1) 0s;\n}\n.mobile-menu[data-v-23898406] {\n  min-width: 300px;\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  z-index: 10;\n}\n.mobile-menu ul[data-v-23898406] {\n  display: inline-block;\n  background: rgba(0, 0, 0, 0.9);\n  list-style: none;\n  padding-left: 40px;\n}\n.mobile-menu ul li[data-v-23898406] {\n  color: #fff;\n  font-size: 2rem;\n  font-weight: bold;\n  margin-bottom: 20px;\n  cursor: pointer;\n}\n.mobile-menu ul li[data-v-23898406]:hover {\n  color: #111;\n}\n.mobile-menu i[data-v-23898406] {\n  font-size: 2rem;\n}", ""]);
 
 // exports
 
@@ -42107,9 +42194,44 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("nav", { staticClass: "navbar" }, [
+    _c("ul", { staticClass: "nav nav-pills ml-auto" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _vm.isGuest
+        ? _c("li", { staticClass: "nav-item" }, [
+            _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+              _vm._v("Войти")
+            ])
+          ])
+        : _vm._e()
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "nav-item" }, [
+      _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+        _vm._v("Желаемое")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "nav-item" }, [
+      _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+        _vm._v("Корзина")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -42269,22 +42391,21 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      { class: { open: _vm.showNav }, attrs: { id: "navigaton-mobile" } },
-      [
+    _c("nav", { staticClass: "navbar" }, [
+      _c("ul", { staticClass: "nav nav-pills ml-auto" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c("i", {
-          staticClass: "mdi mdi-close",
-          on: {
-            click: function($event) {
-              _vm.showNav = false
-            }
-          }
-        })
-      ]
-    ),
+        _vm._m(1),
+        _vm._v(" "),
+        _vm.isGuest
+          ? _c("li", { staticClass: "nav-item" }, [
+              _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+                _vm._v("Войти")
+              ])
+            ])
+          : _vm._e()
+      ])
+    ]),
     _vm._v(" "),
     _c("nav", { staticClass: "navbar" }, [
       _vm.isMobileView
@@ -42293,7 +42414,7 @@ var render = function() {
               staticClass: "mdi mdi-menu mdi-36px",
               on: {
                 click: function($event) {
-                  _vm.showNav = true
+                  return _vm.toggleMobileNav()
                 }
               }
             })
@@ -42310,8 +42431,6 @@ var render = function() {
       _vm._v(" "),
       !_vm.isMobileView
         ? _c("ul", { staticClass: "nav nav-pills ml-auto" }, [
-            _vm._m(1),
-            _vm._v(" "),
             _vm._m(2),
             _vm._v(" "),
             _vm._m(3),
@@ -42320,7 +42439,9 @@ var render = function() {
             _vm._v(" "),
             _vm._m(5),
             _vm._v(" "),
-            _vm._m(6)
+            _vm._m(6),
+            _vm._v(" "),
+            _vm._m(7)
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -42332,10 +42453,63 @@ var render = function() {
       _vm._v(" "),
       _vm.isMobileView
         ? _c("div", { attrs: { id: "navigation-icon-right" } }, [
-            _c("i", { staticClass: "mdi mdi-dots-horizontal mdi-36px" })
+            _c("i", {
+              staticClass: "mdi mdi-dots-horizontal mdi-36px",
+              on: { click: _vm.toggleMobileLinks }
+            })
           ])
         : _vm._e()
-    ])
+    ]),
+    _vm._v(" "),
+    _vm.isMobileView
+      ? _c(
+          "div",
+          {
+            staticClass: "mobile-menu",
+            class: { open: _vm.showNav },
+            attrs: { id: "navigation-mobile" }
+          },
+          [
+            _vm._m(8),
+            _vm._v(" "),
+            _vm.navOpen
+              ? _c("i", {
+                  staticClass: "mdi mdi-close",
+                  on: { click: _vm.toggleMobileNav }
+                })
+              : _vm._e()
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "mobile-menu",
+        class: { open: _vm.showLinks },
+        attrs: { id: "links-mobile" }
+      },
+      [
+        _c("i", {
+          staticClass: "mdi mdi-close",
+          on: { click: _vm.toggleMobileLinks }
+        }),
+        _vm._v(" "),
+        _c("ul", { staticClass: "nav nav-pills ml-auto" }, [
+          _vm._m(9),
+          _vm._v(" "),
+          _vm._m(10),
+          _vm._v(" "),
+          _vm.isGuest
+            ? _c("li", { staticClass: "nav-item" }, [
+                _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+                  _vm._v("Войти")
+                ])
+              ])
+            : _vm._e()
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -42343,41 +42517,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "nav nav-pills ml-auto" }, [
-      _c("li", { staticClass: "nav-item" }, [
-        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-          _vm._v("Новинки")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "nav-item" }, [
-        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-          _vm._v("Lalalala")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "nav-item" }, [
-        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-          _vm._v("Babababa")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "nav-item" }, [
-        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-          _vm._v("Nananana")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "nav-item" }, [
-        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-          _vm._v("Mamamama")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "nav-item" }, [
-        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-          _vm._v("Kakakaka")
-        ])
+    return _c("li", { staticClass: "nav-item" }, [
+      _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+        _vm._v("Желаемое")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "nav-item" }, [
+      _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+        _vm._v("Корзина")
       ])
     ])
   },
@@ -42438,6 +42590,68 @@ var staticRenderFns = [
     return _c("li", { staticClass: "nav-item" }, [
       _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
         _vm._v("Kakakaka")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "nav nav-pills ml-auto" }, [
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+          _vm._v("Новинки")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+          _vm._v("Lalalala")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+          _vm._v("Babababa")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+          _vm._v("Nananana")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+          _vm._v("Mamamama")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "nav-item" }, [
+        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+          _vm._v("Kakakaka")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "nav-item" }, [
+      _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+        _vm._v("Желаемое")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "nav-item" }, [
+      _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+        _vm._v("Корзина")
       ])
     ])
   }

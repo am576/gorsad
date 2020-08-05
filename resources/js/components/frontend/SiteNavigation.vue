@@ -1,31 +1,21 @@
 <template>
     <div>
-        <div id="navigaton-mobile"  :class="{'open': showNav}">
-            <ul class="nav nav-pills ml-auto" >
+        <nav class="navbar">
+            <ul class="nav nav-pills ml-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Новинки</a>
+                    <a class="nav-link" href="#">Желаемое</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Lalalala</a>
+                    <a class="nav-link" href="#">Корзина</a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Babababa</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Nananana</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Mamamama</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Kakakaka</a>
+                <li class="nav-item" v-if="isGuest">
+                    <a class="nav-link" href="#">Войти</a>
                 </li>
             </ul>
-            <i class="mdi mdi-close" @click="showNav = false"></i>
-        </div>
+        </nav>
         <nav class="navbar">
             <div id="navigation-icon-left" v-if="isMobileView">
-                <i class="mdi mdi-menu mdi-36px" @click="showNav = true"></i>
+                <i class="mdi mdi-menu mdi-36px" @click="toggleMobileNav()"></i>
             </div>
 
             <div class="mr-auto" v-if="!isMobileView"></div>
@@ -54,25 +44,85 @@
                 <input type="text" placeholder="Поиск">
             </div>
             <div id="navigation-icon-right" v-if="isMobileView">
-                <i class="mdi mdi-dots-horizontal mdi-36px"></i>
+                <i class="mdi mdi-dots-horizontal mdi-36px" @click="toggleMobileLinks"></i>
             </div>
         </nav>
+
+        <div id="navigation-mobile" class="mobile-menu" :class="{'open': showNav}" v-if="isMobileView">
+            <ul class="nav nav-pills ml-auto" >
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Новинки</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Lalalala</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Babababa</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Nananana</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Mamamama</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Kakakaka</a>
+                </li>
+            </ul>
+            <i class="mdi mdi-close" @click="toggleMobileNav" v-if="navOpen"></i>
+        </div>
+
+        <div id="links-mobile"  class="mobile-menu" :class="{'open': showLinks}">
+            <i class="mdi mdi-close" @click="toggleMobileLinks" ></i>
+            <ul class="nav nav-pills ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Желаемое</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Корзина</a>
+                </li>
+                <li class="nav-item" v-if="isGuest">
+                    <a class="nav-link" href="#">Войти</a>
+                </li>
+            </ul>
+
+        </div>
+
     </div>
 
 </template>
 
 <script>
     export default {
+        props: {
+            auth_user: ''
+        },
         data() {
             return {
                 isMobileView: false,
                 showNav: false,
+                navOpen : false,
+                showLinks: false,
+                linksOpen: false
             }
         },
         methods: {
             handleView() {
                 this.isMobileView = window.innerWidth <= 600;
             },
+            toggleMobileNav() {
+                this.showNav = !this.showNav;
+                this.navOpen = !this.navOpen;
+            },
+            toggleMobileLinks() {
+                this.showLinks = !this.showLinks;
+                this.linksOpen = !this.linksOpen;
+            }
+        },
+        computed: {
+            isGuest() {
+                return this.auth_user == null;
+            }
         },
         created() {
             this.handleView();
@@ -90,21 +140,46 @@
         cursor: pointer;
     }
 
-    #navigaton-mobile {
-        $width : 300px;
+    $menu_width : 300px;
+
+    #navigation-mobile {
+        left: -$menu_width;
+        ul {
+            float: left;
+        }
+
+        &.open {
+            transform: translateX($menu_width);
+            transition: 0.3s cubic-bezier(0,.12,.14,1) 0s;
+        }
+    }
+
+    #links-mobile {
+        right: -$menu_width;
+        text-align: right;
+
+        ul {
+            float: right;
+            text-align: left;
+        }
+
+        &.open {
+            transform: translateX(-1 * $menu_width);
+            transition: 0.3s cubic-bezier(0,.12,.14,1) 0s;
+        }
+    }
+
+    .mobile-menu {
+        min-width: $menu_width;
         display: inline-block;
         position: absolute;
         top: 0;
-        left: -300px;
         z-index: 10;
-        transform: translateX(-$width);
 
         ul {
-            float: left;
             display: inline-block;
             background: rgba(0,0,0,0.9);
             list-style: none;
-            width: 200px;
             padding-left: 40px;
             li {
                 color: #fff;
@@ -122,10 +197,6 @@
             font-size: 2rem;
         }
 
-        &.open {
-            transform: translateX($width);
-            transition: 0.3s cubic-bezier(0,.12,.14,1) 0s;
-        }
 
     }
 </style>

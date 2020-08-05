@@ -10933,6 +10933,11 @@ a.text-dark:focus {
   }
 }
 
+#app {
+  position: relative !important;
+  overflow-x: hidden !important;
+}
+
 .theme--dark.v-overlay {
   color: #fff;
 }

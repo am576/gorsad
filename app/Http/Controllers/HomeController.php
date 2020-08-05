@@ -23,6 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('frontend/index');
+        return view('frontend/index')->with('auth_user',  auth()->user());
     }
 }

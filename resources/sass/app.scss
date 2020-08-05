@@ -7,6 +7,11 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+#app {
+    position: relative !important;
+    overflow-x: hidden !important;
+}
+
 .theme--dark.v-overlay {
   color: #fff;
 }
