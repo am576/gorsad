@@ -14,6 +14,10 @@
                     <label>Описание</label>
                     <input type="text" class="form-control" v-model="category.description">
                 </div>
+                <div class="form-group">
+                    <label>URL-title </label><i class="mdi mdi-help-circle"></i>
+                    <input type="text" class="form-control" v-model="category.url_title">
+                </div>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
             </div>
             <div class="col-md-6">
@@ -106,3 +110,11 @@
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    i {
+        margin: 0 5px;
+        cursor: pointer;
+        color: #1b4b72;
+    }
+</style>

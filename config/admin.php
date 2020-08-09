@@ -20,6 +20,18 @@ return [
           'route' => 'attributes',
           'icon'  => 'google-circles-extended'
       ],
+      'order' => [
+          'title' => 'заказы',
+          'singular' => 'заказ',
+          'route' => 'orders',
+          'icon' => 'currency-usd-circle-outline'
+      ],
+      'clients' => [
+          'title' => 'клиенты',
+          'singular' => 'клиенты',
+          'route' => 'clients',
+          'icon' => 'human-handsdown'
+      ]
   ],
   'per_page' => [
       'products' => 10

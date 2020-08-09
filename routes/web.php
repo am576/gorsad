@@ -37,5 +37,3 @@ Route::prefix('admin')->group(function(){
     Route::post('/images-upload', 'ImagesController@upload');
 });
 
-
-

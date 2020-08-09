@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar" v-if="!isMobileView">>
+        <nav class="navbar" v-if="!isMobileView">
             <ul class="nav nav-pills ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Желаемое</a>

@@ -8,7 +8,7 @@ class Category extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['title', 'parent_id', 'description'];
+    protected $fillable = ['title', 'parent_id', 'url_title', 'description'];
 
     public function products() {
         return $this->hasMany('App\Product','category_id','id');
