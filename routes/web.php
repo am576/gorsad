@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/','HomeController@index');
-
+Route::get('/categories/{url_title}', ['uses' => 'HomeController@categoryPage']);
 
 /*Admin routes*/
 Route::prefix('admin')->group(function(){

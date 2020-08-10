@@ -24,6 +24,11 @@ class Category extends Model
         return $this->morphMany('App\Image', 'imageable');
     }
 
+    public function image()
+    {
+        return $this->hasOne('App\Image', 'imageable_id', 'id')->first();
+    }
+
     public static function getChildrenOnly()
     {
         return Category::where('parent_id', '<>', 0)->get();
@@ -32,6 +37,11 @@ class Category extends Model
     public function parentCategory()
     {
         return Category::find($this->parent_id);
+    }
+
+    public function getChildrenCategories()
+    {
+        return Category::where('parent_id', $this->id)->get();
     }
 
     public function getCategoriesExceptSelf()

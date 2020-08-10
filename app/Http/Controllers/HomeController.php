@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -16,13 +17,28 @@ class HomeController extends Controller
 //        $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        return view('frontend/index')->with('auth_user',  auth()->user());
+        $root_category = Category::where('url_title', '')->first();
+        $categories = $root_category->getChildrenCategories();
+
+        return view('frontend/index')
+            ->with('categories', $categories)
+            ->with('auth_user',  auth()->user());
+    }
+
+    public function categoryPage($url_title)
+    {
+        $view_data = [];
+        $category = Category::where('url_title', $url_title)->first();
+        $child_categories = $category->getChildrenCategories();
+
+        $view_data['category'] = (object)$category;
+
+        if(!$child_categories->isEmpty())
+        {
+            $view_data['child_categories'] = $child_categories;
+        }
+        return view('frontend.category-page', $view_data);
     }
 }
