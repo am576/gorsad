@@ -27,11 +27,17 @@ class HomeController extends Controller
             ->with('auth_user',  auth()->user());
     }
 
+    public function maintenance()
+    {
+        return view('frontend.maintenance');
+    }
+
     public function categoryPage($url_title)
     {
         $view_data = [];
         $category = Category::where('url_title', $url_title)->first();
         $child_categories = $category->getChildrenCategories();
+        $products = $category->products()->with('images')->get();
 
         $view_data['category'] = (object)$category;
 
@@ -39,6 +45,12 @@ class HomeController extends Controller
         {
             $view_data['child_categories'] = $child_categories;
         }
+
+        if(!$products->isEmpty())
+        {
+            $view_data['products'] = $products;
+        }
+
         return view('frontend.category-page', $view_data);
     }
 }

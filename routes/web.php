@@ -17,15 +17,19 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/','HomeController@index');
+Route::get('/','HomeController@maintenance');
+//Route::get('/','HomeController@index');
 Route::get('/categories/{url_title}', ['uses' => 'HomeController@categoryPage']);
+Route::get('/admin/orders', 'OrderController@index');
+Route::get('/admin/orders/{id}', 'OrderController@show');
+Route::get('/admin/clients', 'ClientController@index');
 
 /*Admin routes*/
 Route::prefix('admin')->group(function(){
 
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
     Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
-    Route::post('logout/', 'Auth\AdminLoginController@logout')->name('admin.logout');
+    Route::get('logout/', 'Auth\AdminLoginController@logout')->name('admin.logout');
     Route::get('/','Auth\AdminController@index')->name('admin.dashboard');
 
     Route::resources([

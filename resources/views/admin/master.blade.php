@@ -32,9 +32,9 @@
                 <ul class="nav navbar-nav  navbar-right ">
 
                 <li>
-                    <form action="http://127.0.0.1:8000/admin/logout" method="POST">
+                    <form action="/admin/logout" method="GET">
                         @csrf
-                        <button type="submit" class="btn btn-danger btn-block">
+                        <button type="submit" class="btn btn-danger btn-block" style="cursor:pointer;">
                             <i class="voyager-power"></i>
                             Выход
                         </button>

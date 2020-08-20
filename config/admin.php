@@ -26,7 +26,7 @@ return [
           'route' => 'orders',
           'icon' => 'currency-usd-circle-outline'
       ],
-      'clients' => [
+      'client' => [
           'title' => 'клиенты',
           'singular' => 'клиенты',
           'route' => 'clients',

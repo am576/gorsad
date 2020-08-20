@@ -16,7 +16,7 @@
                     v-model="tag"
                     :tags="tags"
                     @tags-changed="newTags => tags = newTags"
-                    :placeholder="'Введите значение и намите Enter'"
+                    :placeholder="'Введите значение и нажмите Enter'"
             />
         </div>
         <div class="form-group">
@@ -71,8 +71,9 @@
                 })
 
                 formData.append('values', values);
+                formData.append('_method', 'PUT');
 
-                axios.post('/admin/attributes', formData)
+                axios.post(`/admin/attributes/${this.attribute.id}`, formData)
                     .then(response =>{
                         if(response.status == 200)
                         {
