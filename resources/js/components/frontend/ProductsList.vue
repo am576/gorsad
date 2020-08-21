@@ -5,10 +5,8 @@
         </section>
         <section class="col-10">
             <div class="row">
-                <div class="col-lg-4 col-md-3" v-for="product in products">
-                    <a href="#">
-                        <img :src="'/storage/images/' + product.images[0].medium" alt="">
-                    </a>
+                <div class="product-link col-lg-4 col-md-3 text-center" v-for="product in products">
+                    <product-bar :product="product"></product-bar>
                 </div>
             </div>
         </section>
@@ -33,6 +31,11 @@
             img {
 
             }
+        }
+
+        .row {
+            display: inline-flex;
+            justify-content: center;
         }
     }
 </style>

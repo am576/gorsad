@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/','HomeController@maintenance');
-//Route::get('/','HomeController@index');
+//Route::get('/','HomeController@maintenance');
+Route::get('/','HomeController@index');
 Route::get('/categories/{url_title}', ['uses' => 'HomeController@categoryPage']);
 Route::get('/admin/orders', 'OrderController@index');
 Route::get('/admin/orders/{id}', 'OrderController@show');
