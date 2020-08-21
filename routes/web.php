@@ -20,6 +20,8 @@ Auth::routes();
 //Route::get('/','HomeController@maintenance');
 Route::get('/','HomeController@index');
 Route::get('/categories/{url_title}', ['uses' => 'HomeController@categoryPage']);
+Route::get('/products/{product_code}', ['uses' => 'HomeController@productPage']);
+
 Route::get('/admin/orders', 'OrderController@index');
 Route::get('/admin/orders/{id}', 'OrderController@show');
 Route::get('/admin/clients', 'ClientController@index');

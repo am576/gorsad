@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Product;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -52,5 +53,14 @@ class HomeController extends Controller
         }
 
         return view('frontend.category-page', $view_data);
+    }
+
+    public function productPage($product_code)
+    {
+        $product = Product::where('code', $product_code)
+            ->with('images')
+            ->first();
+
+        return view('frontend.product-page')->with('product', $product);
     }
 }

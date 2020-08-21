@@ -1,5 +1,5 @@
 <template>
-    <a class="product-bar m-2" href="#" @mouseenter="mouseover"   @mouseleave="mouseleave">
+    <a class="product-bar m-2" :href="'/products/' + product.code" @mouseenter="mouseover"   @mouseleave="mouseleave">
         <div class="product-details" v-show="hover" @mouseenter.stop @mouseover.stop>
             <p>{{product.title}}</p>
             <p>{{product.price}} грн.</p>

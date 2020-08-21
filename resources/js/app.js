@@ -39,6 +39,7 @@ Vue.component('account-links', require('./components/frontend/AccountLinks').def
 Vue.component('home-slider', require('./components/frontend/HomeSlider').default);
 Vue.component('products-list', require('./components/frontend/ProductsList').default);
 Vue.component('product-bar', require('./components/frontend/ProductBar').default);
+Vue.component('product-images', require('./components/frontend/ProductImages').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

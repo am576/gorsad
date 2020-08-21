@@ -8,8 +8,14 @@
 @import '~bootstrap/scss/bootstrap';
 
 #app {
+    max-width: 1200px;
+    margin: auto;
     position: relative !important;
     overflow-x: hidden !important;
+}
+
+#app.frontend {
+    overflow-x: visible !important;
 }
 
 .theme--dark.v-overlay {
