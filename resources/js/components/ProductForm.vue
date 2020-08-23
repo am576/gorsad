@@ -1,7 +1,9 @@
 <template>
     <form @submit.prevent="submit">
         <div class="row">
+
             <div class="col-md-4">
+
                 <div class="form-group">
                     <label for="title">Название</label>
                     <input type="text" class="form-control" id="title" name="title" autocomplete="off"
@@ -16,8 +18,7 @@
                 </div>
                 <div class="form-group">
                     <label for="description">Описание</label>
-                    <input type="text" class="form-control" id="description" name="description" autocomplete="off"
-                           v-model="product.description">
+                    <ckeditor :editor="editor" :config="editorConfig" v-model="product.description"></ckeditor>
                     <div v-if="errors && errors.description" class="text-danger">{{errors.description[0]}}</div>
                 </div>
                 <div class="form-group">
@@ -83,9 +84,28 @@
 </template>
 
 <script>
+    import CKEditor from '@ckeditor/ckeditor5-vue';
+    import ClassicEditor from '@ckeditor/custom/build/ckeditor.js';
+
     export default {
+        components: {
+            ckeditor: CKEditor.component
+        },
         data() {
             return {
+                editor: ClassicEditor,
+                editorConfig: {
+                    fontSize: {
+                        options: [
+                            'tiny',
+                            'default',
+                            'big'
+                        ]
+                    },
+                    toolbar: [
+                        'heading', 'bulletedList', 'numberedList', 'fontSize', 'undo', 'redo'
+                    ],
+                },
                 product: {
                     attribute_id: [],
                     attribute_value_id: [],
@@ -171,3 +191,8 @@
         }
     }
 </script>
+
+<style lang="scss">
+
+    .ck-content { height:300px; }
+</style>

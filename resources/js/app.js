@@ -10,6 +10,7 @@ window.Vue = require('vue');
 
 import vuetify from './vuetify';
 import VueTagsInput from '@johmun/vue-tags-input';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -19,6 +20,8 @@ import VueTagsInput from '@johmun/vue-tags-input';
  */
 
 Vue.prototype.$eventBus = new Vue();
+
+Vue.use( CKEditor );
 
 Vue.component('category-selector', require('./components/CategorySelector.vue').default);
 Vue.component('attribute-selector', require('./components/AttributeSelector.vue').default);
