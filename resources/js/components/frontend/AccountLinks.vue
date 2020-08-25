@@ -10,7 +10,7 @@
                 <a class="nav-link" href="#">Желаемое</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Корзина</a>
+                <a class="nav-link" href="/cart">Корзина</a>
             </li>
             <li class="nav-item" v-if="isGuest">
                 <a class="nav-link" href="#">Войти</a>

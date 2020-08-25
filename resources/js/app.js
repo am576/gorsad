@@ -43,6 +43,8 @@ Vue.component('home-slider', require('./components/frontend/HomeSlider').default
 Vue.component('products-list', require('./components/frontend/ProductsList').default);
 Vue.component('product-bar', require('./components/frontend/ProductBar').default);
 Vue.component('product-images', require('./components/frontend/ProductImages').default);
+Vue.component('product-page', require('./components/frontend/ProductPage').default);
+Vue.component('shopping-cart', require('./components/frontend/ShoppingCart').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -63,4 +63,11 @@ class HomeController extends Controller
 
         return view('frontend.product-page')->with('product', $product);
     }
+
+    public function showCart()
+    {
+        $cart = session()->get('cart');
+
+        return view('frontend.cart')->with('cart',json_encode($cart));
+    }
 }

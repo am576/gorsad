@@ -17,10 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-//Route::get('/','HomeController@maintenance');
 Route::get('/','HomeController@index');
 Route::get('/categories/{url_title}', ['uses' => 'HomeController@categoryPage']);
 Route::get('/products/{product_code}', ['uses' => 'HomeController@productPage']);
+
+Route::get('/cart', 'HomeController@showCart');
+Route::get('/cart/add/', 'CartController@addProduct');
+Route::get('/cart/totalprice', 'CartController@getTotalPrice');
+Route::get('/cart/removeproduct', 'CartController@removeProduct');
 
 Route::get('/admin/orders', 'OrderController@index');
 Route::get('/admin/orders/{id}', 'OrderController@show');
