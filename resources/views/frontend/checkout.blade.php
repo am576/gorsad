@@ -1,5 +1,5 @@
 @extends('frontend.layouts.app')
 @section('title', 'Интернет-магазин канцтоваров "Карандаш"')
 @section('content')
-    <shopping-cart :cart_products="{{$cart}}"></shopping-cart>
+    <checkout-page :order_products="{{$order_products}}"></checkout-page>
 @endsection

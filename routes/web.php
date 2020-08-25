@@ -26,6 +26,8 @@ Route::get('/cart/add/', 'CartController@addProduct');
 Route::get('/cart/totalprice', 'CartController@getTotalPrice');
 Route::get('/cart/removeproduct', 'CartController@removeProduct');
 
+Route::get('/checkout', 'HomeController@showCheckoutPage');
+
 Route::get('/admin/orders', 'OrderController@index');
 Route::get('/admin/orders/{id}', 'OrderController@show');
 Route::get('/admin/clients', 'ClientController@index');

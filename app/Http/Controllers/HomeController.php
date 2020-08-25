@@ -70,4 +70,11 @@ class HomeController extends Controller
 
         return view('frontend.cart')->with('cart',json_encode($cart));
     }
+
+    public function showCheckoutPage()
+    {
+        $order_products = session()->get('cart');
+
+        return view('frontend.checkout')->with('order_products',json_encode($order_products));
+    }
 }

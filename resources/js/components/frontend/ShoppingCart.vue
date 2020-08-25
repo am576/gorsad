@@ -12,7 +12,7 @@
                 </div>
                 <div>Сумма: {{price_total}} грн.</div>
                 <div class="text-center">
-                    <button class="btn btn-primary btn-lg">Оформить заказ</button>
+                    <button class="btn btn-primary btn-lg" @click="goToCheckout">Оформить заказ</button>
                 </div>
             </div>
         </div>
@@ -54,6 +54,9 @@
                     })
                 }
 
+            },
+            goToCheckout() {
+                window.location.href = "/checkout"
             }
         },
         created() {
