@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -89,5 +90,24 @@ class CartController extends Controller
             session()->flash('success', 'Product has been removed');
             return response('OK', 200);
         }
+
+        return response('Not found', 404);
     }
+
+    public function doCheckout(Request $request)
+    {
+        $order_data = $request->all();
+
+        $order = new Order([
+           'client_name' => $order_data['client_name'],
+           'client_phone' => $order_data['client_phone'],
+           'delivery' => $order_data['delivery'],
+           'sum_total' => $order_data['sum_total']
+        ]);
+
+        $order->save();
+
+        return response()->json(['order' => $order], 300);
+    }
+
 }

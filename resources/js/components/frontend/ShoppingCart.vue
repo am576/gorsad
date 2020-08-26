@@ -56,7 +56,7 @@
 
             },
             goToCheckout() {
-                window.location.href = "/checkout"
+                window.location.href = "/cart/checkout"
             }
         },
         created() {

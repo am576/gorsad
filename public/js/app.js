@@ -3575,7 +3575,9 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       products: {},
-      price_total: 0
+      price_total: 0,
+      client: {},
+      delivery: 1
     };
   },
   methods: {
@@ -3586,7 +3588,29 @@ __webpack_require__.r(__webpack_exports__);
         _this.price_total = response.data;
       });
     },
-    doCheckout: function doCheckout() {}
+    doCheckout: function doCheckout() {
+      var _this2 = this;
+
+      var formData = new FormData();
+      console.log(this.client.name);
+      formData.append('client_name', this.client.name);
+      formData.append('client_phone', this.client.phone);
+      formData.append('sum_total', this.price_total);
+      formData.append('delivery', this.delivery);
+      Object.keys(this.products).forEach(function (key) {
+        formData.append(key, _this2.products[key]);
+      });
+      axios.post('/cart/checkout', formData).then(function (response) {
+        console.log(response);
+
+        if (response.status == 200) {
+          window.location.href = "/";
+        }
+      })["catch"](function (error) {
+        console.log(error.response);
+        alert('Ошибка обработки заказа');
+      });
+    }
   },
   created: function created() {
     this.products = this.order_products;
@@ -3891,7 +3915,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     goToCheckout: function goToCheckout() {
-      window.location.href = "/checkout";
+      window.location.href = "/cart/checkout";
     }
   },
   created: function created() {
@@ -43101,7 +43125,61 @@ var render = function() {
       _c("div", { staticClass: "col-6" }, [
         _c("h3", [_vm._v("Оформление заказа")]),
         _vm._v(" "),
-        _vm._m(0),
+        _c("div", { staticClass: "client-details" }, [
+          _c("h4", [_vm._v("Контактные данные")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("Имя")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.client.name,
+                  expression: "client.name"
+                }
+              ],
+              staticClass: "form-text",
+              attrs: { type: "text" },
+              domProps: { value: _vm.client.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.client, "name", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("Телефон")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.client.phone,
+                  expression: "client.phone"
+                }
+              ],
+              staticClass: "form-text",
+              attrs: { type: "text" },
+              domProps: { value: _vm.client.phone },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.client, "phone", $event.target.value)
+                }
+              }
+            })
+          ])
+        ]),
         _vm._v(" "),
         _c("h4", [_vm._v("Сумма: " + _vm._s(_vm.price_total) + " грн.")]),
         _vm._v(" "),
@@ -43138,61 +43216,61 @@ var render = function() {
           2
         ),
         _vm._v(" "),
-        _vm._m(1),
+        _c("div", [
+          _c("h4", [_vm._v("Доставка")]),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.delivery,
+                  expression: "delivery"
+                }
+              ],
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.delivery = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            [
+              _c("option", { attrs: { value: "1" } }, [_vm._v("Кнопочка")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "2" } }, [_vm._v("Карандаш")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "3" } }, [_vm._v("Дижон")])
+            ]
+          )
+        ]),
         _vm._v(" "),
-        _vm._m(2)
+        _c("div", { staticClass: "text-center" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary btn-lg",
+              on: { click: _vm.doCheckout }
+            },
+            [_vm._v("Подтвердить заказ")]
+          )
+        ])
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "client-details" }, [
-      _c("h4", [_vm._v("Контактные данные")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", [_vm._v("Имя")]),
-        _vm._v(" "),
-        _c("input", { staticClass: "form-text", attrs: { type: "text" } })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", [_vm._v("Телефон")]),
-        _vm._v(" "),
-        _c("input", { staticClass: "form-text", attrs: { type: "text" } })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("h4", [_vm._v("Доставка")]),
-      _vm._v(" "),
-      _c("select", { attrs: { name: "", id: "" } }, [
-        _c("option", { attrs: { value: "1" } }, [_vm._v("Кнопочка")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "2" } }, [_vm._v("Карандаш")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "3" } }, [_vm._v("Дижон")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-center" }, [
-      _c("button", { staticClass: "btn btn-primary btn-lg" }, [
-        _vm._v("Подтвердить заказ")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

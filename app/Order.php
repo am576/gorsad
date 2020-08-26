@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
-    protected $fillable = ['status'];
+    protected $guarded = ['id'];
 
     public function products()
     {

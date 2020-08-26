@@ -15,8 +15,11 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('client_id')->nullable();
+            $table->string('client_name');
+            $table->string('client_phone');
             $table->enum('status',['new','accepted','canceled','closed']);
+            $table->unsignedTinyInteger('delivery');
+            $table->unsignedInteger('sum_total');
             $table->timestamps();
         });
     }

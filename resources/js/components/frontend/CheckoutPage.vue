@@ -7,11 +7,11 @@
                     <h4>Контактные данные</h4>
                     <div class="form-group">
                         <label>Имя</label>
-                        <input type="text" class="form-text">
+                        <input type="text" class="form-text" v-model="client.name">
                     </div>
                     <div class="form-group">
                         <label>Телефон</label>
-                        <input type="text" class="form-text">
+                        <input type="text" class="form-text" v-model="client.phone">
                     </div>
                 </div>
                 <h4>Сумма: {{price_total}} грн.</h4>
@@ -27,14 +27,14 @@
                 </div>
                 <div>
                     <h4>Доставка</h4>
-                    <select name="" id="">
+                    <select v-model="delivery">
                         <option value="1">Кнопочка</option>
                         <option value="2">Карандаш</option>
                         <option value="3">Дижон</option>
                     </select>
                 </div>
                 <div class="text-center">
-                    <button class="btn btn-primary btn-lg">Подтвердить заказ</button>
+                    <button class="btn btn-primary btn-lg" @click="doCheckout">Подтвердить заказ</button>
                 </div>
             </div>
         </div>
@@ -49,7 +49,9 @@
         data() {
             return {
                 products: {},
-                price_total: 0
+                price_total: 0,
+                client: {},
+                delivery: 1,
             }
         },
         methods: {
@@ -60,7 +62,29 @@
                 })
             },
             doCheckout() {
+                const formData = new FormData();
+                console.log(this.client.name)
+                formData.append('client_name', this.client.name);
+                formData.append('client_phone', this.client.phone);
+                formData.append('sum_total', this.price_total);
+                formData.append('delivery', this.delivery);
 
+                Object.keys(this.products).forEach(key => {
+                    formData.append(key, this.products[key])
+                });
+
+                axios.post('/cart/checkout', formData)
+                .then(response => {
+                    console.log(response);
+                    if(response.status == 200)
+                    {
+                        window.location.href = "/"
+                    }
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    alert('Ошибка обработки заказа');
+                })
             }
         },
         created() {
