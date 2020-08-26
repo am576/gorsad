@@ -62,18 +62,20 @@
                 })
             },
             doCheckout() {
-                const formData = new FormData();
-                console.log(this.client.name)
-                formData.append('client_name', this.client.name);
-                formData.append('client_phone', this.client.phone);
-                formData.append('sum_total', this.price_total);
-                formData.append('delivery', this.delivery);
+                const order_data = {
+                    products: []
+                };
 
                 Object.keys(this.products).forEach(key => {
-                    formData.append(key, this.products[key])
+                    order_data['products'].push(key)
                 });
 
-                axios.post('/cart/checkout', formData)
+                order_data['client'] = this.client;
+                order_data['delivery'] = this.delivery;
+                order_data['sum_total'] = this.price_total;
+
+
+                axios.post('/cart/checkout', order_data)
                 .then(response => {
                     console.log(response);
                     if(response.status == 200)

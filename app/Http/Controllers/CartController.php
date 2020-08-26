@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Order;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -99,15 +100,24 @@ class CartController extends Controller
         $order_data = $request->all();
 
         $order = new Order([
-           'client_name' => $order_data['client_name'],
-           'client_phone' => $order_data['client_phone'],
+           'client_name' => $order_data['client']['name'],
+           'client_phone' => $order_data['client']['phone'],
            'delivery' => $order_data['delivery'],
            'sum_total' => $order_data['sum_total']
         ]);
 
-        $order->save();
+        if($order->save())
+        {
+            foreach ($order_data['products'] as $product_id) {
+                DB::table('orders_products')
+                    ->insert([
+                        'order_id' => $order->id,
+                        'product_id' => $product_id
+                    ]);
+            }
+        }
 
-        return response()->json(['order' => $order], 300);
+        return response()->json(['order' => $order_data], 300);
     }
 
 }
