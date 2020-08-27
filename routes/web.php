@@ -28,6 +28,7 @@ Route::get('/cart/removeproduct', 'CartController@removeProduct');
 
 Route::get('/cart/checkout', 'HomeController@showCheckoutPage');
 Route::post('/cart/checkout', 'CartController@doCheckout');
+Route::post('/cart/clear','CartController@clearCart');
 
 Route::get('/admin/orders', 'OrderController@index');
 Route::get('/admin/orders/{id}', 'OrderController@show');

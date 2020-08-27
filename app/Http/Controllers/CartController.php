@@ -115,9 +115,18 @@ class CartController extends Controller
                         'product_id' => $product_id
                     ]);
             }
+
+            return response('OK', 200);
         }
 
-        return response()->json(['order' => $order_data], 300);
+        return response('Unexpected error', 300);
+    }
+
+    public function clearCart()
+    {
+        session()->forget('cart');
+
+        return response('OK',200);
     }
 
 }

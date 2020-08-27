@@ -3602,7 +3602,10 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response);
 
         if (response.status == 200) {
-          window.location.href = "/";
+          alert('Заказ успешно создан');
+          axios.post('/cart/clear').then(function () {
+            window.location.href = "/";
+          });
         }
       })["catch"](function (error) {
         console.log(error.response);
