@@ -26,17 +26,19 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @foreach($orders as $order)
                                 <tr>
-                                    <td>0000001</td>
-                                    <td class="text-success">Закрыт</td>
-                                    <td class="text-right">01.01.2019 14:54</td>
-                                    <td class="text-right">31.12.2020 23:59</td>
+                                    <td>{{sprintf('%08d', $order->id)}}</td>
+                                    <td class="text-success">{{$order->status}}</td>
+                                    <td class="text-right">{{$order->created_at}}</td>
+                                    <td class="text-right">{{$order->updated_at}}</td>
                                     <td>
-                                        <a class="btn btn-primary" href="/admin/orders/1">
+                                        <a class="btn btn-primary" href="/admin/orders/{{$order->id}}">
                                             <i class="mdi mdi-arrow-right-bold mdi-18px"></i>
                                         </a>
                                     </td>
                                 </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                     </div>

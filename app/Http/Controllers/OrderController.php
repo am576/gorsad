@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -13,11 +14,15 @@ class OrderController extends Controller
 
     public function index()
     {
-        return view('admin.orders.index');
+        $orders = Order::all();
+
+        return view('admin.orders.index')->with(['orders' => $orders]);
     }
 
-    public function show(Request $request)
+    public function show($id)
     {
-        return view('admin.orders.show');
+        $order = Order::findOrFail($id);
+
+        return view('admin.orders.show')->with(['order'=>$order]);
     }
 }
