@@ -19,6 +19,16 @@ class Category extends Model
         return $this->hasMany('App\Attribute','category_id','id');
     }
 
+    public function attributesWithValues()
+    {
+        $attributes = Attribute::where('category_id',$this->id)->get();
+        foreach ($attributes as $attribute) {
+            $attribute['values'] = $attribute->values();
+        }
+
+        return $attributes;
+    }
+
     public function images()
     {
         return $this->morphMany('App\Image', 'imageable');

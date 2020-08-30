@@ -1,7 +1,15 @@
 <template>
     <div id="products-list" class="row">
         <section class="col-2">
-            Фильтры
+            <h3>Фильтры</h3>
+            <div v-for="attribute in attributes">
+                <h5>{{attribute.name}}</h5>
+                <div v-for="value in attribute.values">
+                    <input type="checkbox">
+                    <label>{{value.value}}</label>
+                </div>
+            </div>
+            <button class="btn btn-primary">Применить</button>
         </section>
         <section class="col-10">
             <div class="row">
@@ -17,7 +25,11 @@
 <script>
     export default {
         props: {
-            products: {}
+            products: {},
+            attributes: {},
+        },
+        created() {
+            console.log(this.attributes)
         }
     }
 </script>

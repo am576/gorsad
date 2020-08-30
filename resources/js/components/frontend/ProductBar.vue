@@ -21,11 +21,9 @@
         methods: {
             mouseover() {
                 this.hover=true;
-                console.log(this.hover)
             },
             mouseleave() {
                 this.hover=false;
-                console.log(this.hover)
             }
         }
     }

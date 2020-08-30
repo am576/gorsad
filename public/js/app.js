@@ -3700,11 +3700,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     mouseover: function mouseover() {
       this.hover = true;
-      console.log(this.hover);
     },
     mouseleave: function mouseleave() {
       this.hover = false;
-      console.log(this.hover);
     }
   }
 });
@@ -3842,9 +3840,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    products: {}
+    products: {},
+    attributes: {}
+  },
+  created: function created() {
+    console.log(this.attributes);
   }
 });
 
@@ -43626,9 +43636,34 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row", attrs: { id: "products-list" } }, [
-    _c("section", { staticClass: "col-2" }, [
-      _vm._v("\n        Фильтры\n    ")
-    ]),
+    _c(
+      "section",
+      { staticClass: "col-2" },
+      [
+        _c("h3", [_vm._v("Фильтры")]),
+        _vm._v(" "),
+        _vm._l(_vm.attributes, function(attribute) {
+          return _c(
+            "div",
+            [
+              _c("h5", [_vm._v(_vm._s(attribute.name))]),
+              _vm._v(" "),
+              _vm._l(attribute.values, function(value) {
+                return _c("div", [
+                  _c("input", { attrs: { type: "checkbox" } }),
+                  _vm._v(" "),
+                  _c("label", [_vm._v(_vm._s(value.value))])
+                ])
+              })
+            ],
+            2
+          )
+        }),
+        _vm._v(" "),
+        _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Применить")])
+      ],
+      2
+    ),
     _vm._v(" "),
     _c("section", { staticClass: "col-10" }, [
       _c(

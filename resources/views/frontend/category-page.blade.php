@@ -16,7 +16,7 @@
                         @endforeach
                     </div>
                 @else
-                    <products-list :products="{{$products}}"></products-list>
+                    <products-list :products="{{$products}}" :attributes="{{$category->attributesWithValues()}}"></products-list>
                 @endif
             </div>
 
