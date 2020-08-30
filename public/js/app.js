@@ -2027,16 +2027,29 @@ __webpack_require__.r(__webpack_exports__);
         values.push(Object.values(tag)[0]);
       });
       formData.append('values', values);
-      formData.append('_method', 'PUT');
-      axios.post("/admin/attributes/".concat(this.attribute.id), formData).then(function (response) {
-        if (response.status == 200) {
-          window.location.href = '/admin/attributes';
-        }
-      })["catch"](function (error) {
-        if (error.response.status === 422) {
-          _this2.errors = error.response.data.errors || {};
-        }
-      });
+
+      if (this.is_edit_form) {
+        formData.append('_method', 'PUT');
+        axios.post("/admin/attributes/".concat(this.attribute.id), formData).then(function (response) {
+          if (response.status == 200) {
+            window.location.href = '/admin/attributes';
+          }
+        })["catch"](function (error) {
+          if (error.response.status === 422) {
+            _this2.errors = error.response.data.errors || {};
+          }
+        });
+      } else {
+        axios.post("/admin/attributes/", formData).then(function (response) {
+          if (response.status == 200) {
+            window.location.href = '/admin/attributes';
+          }
+        })["catch"](function (error) {
+          if (error.response.status === 422) {
+            _this2.errors = error.response.data.errors || {};
+          }
+        });
+      }
     }
   },
   computed: {
@@ -101783,9 +101796,9 @@ var opts = {};
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/am/Work/karandash/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /home/am/Work/karandash/resources/sass/app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! /home/am/Work/karandash/resources/sass/admin.scss */"./resources/sass/admin.scss");
+__webpack_require__(/*! /home/am/Work/www/karandash/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/am/Work/www/karandash/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /home/am/Work/www/karandash/resources/sass/admin.scss */"./resources/sass/admin.scss");
 
 
 /***/ })

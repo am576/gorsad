@@ -71,20 +71,40 @@
                 })
 
                 formData.append('values', values);
-                formData.append('_method', 'PUT');
 
-                axios.post(`/admin/attributes/${this.attribute.id}`, formData)
-                    .then(response =>{
-                        if(response.status == 200)
-                        {
-                            window.location.href = '/admin/attributes'
+                if(this.is_edit_form)
+                {
+                    formData.append('_method', 'PUT');
+
+                    axios.post(`/admin/attributes/${this.attribute.id}`, formData)
+                        .then(response =>{
+                            if(response.status == 200)
+                            {
+                                window.location.href = '/admin/attributes'
+                            }
+
+                        }).catch(error => {
+                        if (error.response.status === 422) {
+                            this.errors = error.response.data.errors || {};
                         }
+                    });
+                }
+                else
+                {
+                    axios.post(`/admin/attributes/`, formData)
+                        .then(response =>{
+                            if(response.status == 200)
+                            {
+                                window.location.href = '/admin/attributes'
+                            }
 
-                    }).catch(error => {
-                    if (error.response.status === 422) {
-                        this.errors = error.response.data.errors || {};
-                    }
-                });
+                        }).catch(error => {
+                        if (error.response.status === 422) {
+                            this.errors = error.response.data.errors || {};
+                        }
+                    });
+                }
+
             }
         },
         computed: {
