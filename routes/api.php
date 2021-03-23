@@ -24,6 +24,7 @@ Route::get('getCategoriesExceptSelf','ApiController@getCategoriesExceptSelf');
 Route::get('getProductCategory','ApiController@getProductCategory');
 Route::get('getAttributesForCategory','ApiController@getAttributesForCategory');
 Route::get('getAttributeValues', 'ApiController@getAttributeValues');
+Route::get('getAttributesGroups', 'ApiController@getAttributesGroups');
 Route::get('getImages', 'ApiController@getImages');
 Route::get('filterProducts', 'ApiController@filterProducts');
 Route::get('getProducts', 'ApiController@getProducts');

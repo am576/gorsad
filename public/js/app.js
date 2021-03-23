@@ -1979,6 +1979,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     attribute_data: {},
@@ -1987,9 +1995,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       attribute: {},
+      groups: [],
       tag: '',
       tags: [],
-      errors: {}
+      errors: {},
+      group_id: 0
     };
   },
   methods: {
@@ -2015,12 +2025,19 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    submit: function submit() {
+    getAttributesGroups: function getAttributesGroups() {
       var _this2 = this;
+
+      axios.get('/api/getAttributesGroups').then(function (response) {
+        _this2.groups = response.data;
+      });
+    },
+    submit: function submit() {
+      var _this3 = this;
 
       var formData = new FormData();
       Object.keys(this.attribute).forEach(function (key) {
-        formData.append(key, _this2.attribute[key]);
+        formData.append(key, _this3.attribute[key]);
       });
       var values = [];
       this.tags.forEach(function (tag) {
@@ -2036,7 +2053,7 @@ __webpack_require__.r(__webpack_exports__);
           }
         })["catch"](function (error) {
           if (error.response.status === 422) {
-            _this2.errors = error.response.data.errors || {};
+            _this3.errors = error.response.data.errors || {};
           }
         });
       } else {
@@ -2046,7 +2063,7 @@ __webpack_require__.r(__webpack_exports__);
           }
         })["catch"](function (error) {
           if (error.response.status === 422) {
-            _this2.errors = error.response.data.errors || {};
+            _this3.errors = error.response.data.errors || {};
           }
         });
       }
@@ -2058,6 +2075,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    this.getAttributesGroups();
     this.$eventBus.$on('changeCategory', this.setAttributeCategory);
 
     if (this.is_edit_form) {
@@ -40842,6 +40860,60 @@ var render = function() {
         ],
         1
       ),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", [_vm._v("Группа")]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.attribute.group_id,
+                expression: "attribute.group_id"
+              }
+            ],
+            attrs: { name: "group_id", id: "group_id" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.$set(
+                  _vm.attribute,
+                  "group_id",
+                  $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                )
+              }
+            }
+          },
+          [
+            _c("option", { attrs: { value: "0" } }, [_vm._v("...")]),
+            _vm._v(" "),
+            _vm._l(_vm.groups, function(group) {
+              return _c(
+                "option",
+                { key: group.id, domProps: { value: group.id } },
+                [_vm._v(_vm._s(group.title))]
+              )
+            })
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _vm.errors && _vm.errors.category_id
+          ? _c("div", { staticClass: "text-danger" }, [
+              _vm._v(_vm._s(_vm.errors.group_id[0]))
+            ])
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "name" } }, [_vm._v("Название")]),
@@ -101796,9 +101868,9 @@ var opts = {};
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/am/Work/www/karandash/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /home/am/Work/www/karandash/resources/sass/app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! /home/am/Work/www/karandash/resources/sass/admin.scss */"./resources/sass/admin.scss");
+__webpack_require__(/*! /home/am/Work/lgshop/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/am/Work/lgshop/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /home/am/Work/lgshop/resources/sass/admin.scss */"./resources/sass/admin.scss");
 
 
 /***/ })

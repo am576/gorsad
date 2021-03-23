@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Karandash - Admin</title>
+    <title>Gorsad - Панель администратора</title>
 
     <script src="{{ asset('js/app.js') }}" defer></script>
 
@@ -51,6 +51,15 @@
                             <span class="mdi mdi-{{$menu_item['icon']}}"></span>
                             <span class="title">{{Str::ucfirst($menu_item['title'])}}</span>
                         </a>
+                        @if(array_key_exists(('submenu'),$menu_item))
+
+                            @foreach($menu_item['submenu'] as $submenu_item)
+                                <a class="submenu-link" href="{{ url('/admin/'.$submenu_item['route']) }}">
+                                    <span class="menu-icon mdi mdi-{{$submenu_item['icon']}}"></span>
+                                    <span class="title">{{Str::ucfirst($submenu_item['title'])}}</span>
+                                </a>
+                            @endforeach
+                        @endif
                     </li>
                 @endforeach
             </ul>

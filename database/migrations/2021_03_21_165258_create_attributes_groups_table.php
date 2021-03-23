@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAttributesTable extends Migration
+class CreateAttributesGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateAttributesTable extends Migration
      */
     public function up()
     {
-        Schema::create('attributes', function (Blueprint $table) {
+        Schema::create('attributes_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('name',120);
-            $table->smallInteger('category_id')->unsigned();
-            $table->smallInteger('group_id')->unsigned();
+            $table->string("title");
         });
     }
 
@@ -28,6 +26,6 @@ class CreateAttributesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attributes');
+        Schema::dropIfExists('attributes_groups');
     }
 }

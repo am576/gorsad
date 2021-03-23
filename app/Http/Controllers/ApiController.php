@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Attribute;
+use App\AttributesGroup;
 use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
@@ -44,6 +45,11 @@ class ApiController extends Controller
         $values = $attribute->values();
 
         return response()->json($values);
+    }
+
+    public function getAttributesGroups()
+    {
+        return response()->json(AttributesGroup::all());
     }
 
     public function getImages(Request $request)

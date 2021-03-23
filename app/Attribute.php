@@ -9,11 +9,16 @@ class Attribute extends Model
 {
     public $timestamps = false;
 
-    protected $fillable  = ['name', 'value', 'category_id'];
+    protected $fillable  = ['name', 'value', 'category_id', 'group_id'];
 
     public function category()
     {
         return $this->belongsTo('App\Category','category_id');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo('App\AttributesGroup', 'group_id');
     }
 
     public function values()

@@ -2,7 +2,7 @@
 @section('page_header')
     @include('admin.partials.page_header',
                 [
-                    'entity' => 'attribute',
+                    'entity' => 'attribute.submenu.0',
                     'mode' => 'index',
                     'with_buttons' => true
                 ]
@@ -18,25 +18,17 @@
                             <table id="dataTable" class="table table-hover">
                                 <thead>
                                 <tr>
-                                    <th>Категория</th>
                                     <th>Название</th>
-                                    <th>Группа</th>
-                                    <th>Значения</th>
+                                    <th>Количество атрибутов</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($attributes as $attribute)
+                                @foreach($groups as $group)
                                     <tr>
-                                        <td>{{$attribute->category->title ?? '-'}}</td>
-                                        <td>{{$attribute->name}}</td>
-                                        <td>{{$attribute->group->title ?? '-'}}</td>
-                                        <td>
-                                            @foreach($attribute->valuesLabels() as $label)
-                                                <div class="h-100 badge badge-primary" style="font-size: 100%;">{{$label}}</div>
-                                            @endforeach
-                                        </td>
-                                        <td>@include('admin.macros.table-buttons', ['entity' => $attribute])</td>
+                                        <td>{{$group->title ?? '-'}}</td>
+                                        <td>{{$group->attributes->count()}}</td>
+                                        <td>@include('admin.macros.table-buttons', ['entity' => $group])</td>
                                     </tr>
                                 @endforeach
                                 </tbody>

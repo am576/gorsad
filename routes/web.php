@@ -45,7 +45,8 @@ Route::prefix('admin')->group(function(){
     Route::resources([
         'products'    => 'ProductController',
         'categories'  => 'CategoryController',
-        'attributes'  => 'AttributeController'
+        'attributes'  => 'AttributeController',
+        'attributes_groups'  => 'AttributesGroupController',
     ]);
 
     Route::post('/images-upload', 'ImagesController@upload');

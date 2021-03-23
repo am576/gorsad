@@ -105,3 +105,15 @@ form.table-delete-entity {
   display: inline-block;
 }
 
+.submenu-link {
+  height: 25px !important;
+  line-height: 25px !important;
+  padding-left: 50px !important;
+  display: flex !important;
+  font-size: 13px !important;
+}
+
+.submenu-link .menu-icon {
+  width: 30px !important;
+}
+

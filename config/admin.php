@@ -8,7 +8,7 @@ return [
           'route' => 'products',
           'icon'  => 'cart'
       ],
-      'category' =>[
+      'category' => [
           'title' => 'категории',
           'singular' => 'категория',
           'route' => 'categories',
@@ -18,7 +18,15 @@ return [
           'title' => 'атрибуты',
           'singular' => 'атрибут',
           'route' => 'attributes',
-          'icon'  => 'google-circles-extended'
+          'icon'  => 'google-circles-extended',
+          'submenu' => [
+              [
+              'title' => 'группы атрибутов',
+              'singular' => 'группа атрибутов',
+              'route' => 'attributes_groups',
+              'icon'  => 'menu-right-outline'
+              ]
+          ]
       ],
       'order' => [
           'title' => 'заказы',

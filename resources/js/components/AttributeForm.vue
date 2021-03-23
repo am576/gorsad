@@ -6,6 +6,14 @@
             <div v-if="errors && errors.category_id" class="text-danger">{{errors.category_id[0]}}</div>
         </div>
         <div class="form-group">
+            <label>Группа</label>
+            <select name="group_id" id="group_id" v-model="attribute.group_id">
+                <option value="0">...</option>
+                <option v-for="group in groups" :value="group.id" :key="group.id">{{group.title}}</option>
+            </select>
+            <div v-if="errors && errors.category_id" class="text-danger">{{errors.group_id[0]}}</div>
+        </div>
+        <div class="form-group">
             <label for="name">Название</label>
             <input type="text" id="name" name="name" v-model="attribute.name">
             <div v-if="errors && errors.name" class="text-danger">{{errors.name[0]}}</div>
@@ -34,9 +42,11 @@
         data() {
             return {
                 attribute: {},
+                groups: [],
                 tag: '',
                 tags: [],
-                errors: {}
+                errors: {},
+                group_id: 0
             }
         },
         methods: {
@@ -57,6 +67,12 @@
                         });
                     }
                 })
+            },
+            getAttributesGroups() {
+                axios.get('/api/getAttributesGroups')
+                    .then((response) => {
+                        this.groups = response.data;
+                    })
             },
             submit() {
                 const formData = new FormData();
@@ -113,6 +129,7 @@
             }
         },
         created() {
+            this.getAttributesGroups();
             this.$eventBus.$on('changeCategory', this.setAttributeCategory);
             if(this.is_edit_form)
             {

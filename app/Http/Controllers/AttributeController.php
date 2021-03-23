@@ -67,7 +67,6 @@ class AttributeController extends Controller
         return view('admin.attributes.edit')->with(['attribute' => $attribute]);
     }
 
-
     public function update(Request $request, $id)
     {
         $attribute = Attribute::findOrFail($id);
@@ -76,7 +75,11 @@ class AttributeController extends Controller
         $attribute->fill($input);
         $attribute->save();
 
-        $values = explode(',', str_replace(' ','', $request->values));
+        $values = explode(',', $request->values);
+
+        DB::table('attributes_values')
+            ->where('attribute_id', $attribute->id)
+            ->delete();
 
         foreach($values as $value)
         {
