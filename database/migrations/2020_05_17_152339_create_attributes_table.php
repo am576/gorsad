@@ -18,6 +18,7 @@ class CreateAttributesTable extends Migration
             $table->string('name',120);
             $table->smallInteger('category_id')->unsigned();
             $table->smallInteger('group_id')->unsigned();
+            $table->enum('type', ['text', 'list', 'range', 'bool', 'color', 'icon']);
         });
     }
 

@@ -30,6 +30,7 @@
         "@johmun/vue-tags-input": "^2.1.0",
         "bootstrap-icons": "^1.0.0-alpha3",
         "qs": "^6.9.4",
+        "verte": "0.0.12",
         "vuejs-datatable": "^2.0.0-alpha.7",
         "vuetify": "^2.3.4"
     }

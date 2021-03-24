@@ -29,20 +29,22 @@ class AttributeController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'values' => 'required'
         ]);
 
         $attribute = new Attribute($request->except(['values']));
         $attribute->save();
 
-        $values = explode(',', $request->values);
-
-        foreach($values as $value)
+        if(isset($request->values))
         {
-            DB::table('attributes_values')->insert([
-                'attribute_id' => $attribute->id,
-                'value' => $value
-            ]);
+            $values = explode(',', $request->values);
+
+            foreach($values as $value)
+            {
+                DB::table('attributes_values')->insert([
+                    'attribute_id' => $attribute->id,
+                    'value' => $value
+                ]);
+            }
         }
 
         return redirect(route('attributes.index'));
@@ -89,7 +91,7 @@ class AttributeController extends Controller
             ]);
         }
 
-        return redirect()->intended(route('attributes.index'));
+//        return redirect()->intended(route('attributes.index'));
     }
 
     public function destroy($id)

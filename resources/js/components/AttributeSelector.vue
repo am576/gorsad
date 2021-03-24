@@ -25,11 +25,6 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Attribute selector mounted')
-
-        },
-
         data() {
             return {
                 rows: [1],

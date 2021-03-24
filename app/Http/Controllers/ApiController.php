@@ -52,6 +52,11 @@ class ApiController extends Controller
         return response()->json(AttributesGroup::all());
     }
 
+    public function getAttributesTypes()
+    {
+        return response()->json(config('admin.attributes_types'));
+    }
+
     public function getImages(Request $request)
     {
         $model = 'App\\' . $request->model;

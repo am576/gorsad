@@ -35,6 +35,8 @@ Vue.component('table-pagination', require('./components/TablePagination').defaul
 Vue.component('category-form', require('./components/CategoryForm').default);
 Vue.component('table-buttons', require('./components/TableButtons').default);
 Vue.component('attribute-form', require('./components/AttributeForm').default);
+Vue.component('attribute-values', require('./components/AttributeValues').default);
+
 Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 
 Vue.component('site-navigation', require('./components/frontend/SiteNavigation').default);

@@ -9,7 +9,7 @@ class Attribute extends Model
 {
     public $timestamps = false;
 
-    protected $fillable  = ['name', 'value', 'category_id', 'group_id'];
+    protected $fillable  = ['name', 'value', 'category_id', 'group_id', 'type'];
 
     public function category()
     {

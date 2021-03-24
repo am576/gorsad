@@ -1,6 +1,6 @@
 @extends('admin.master')
 @section('content')
-    <form action="/admin/attributes_groups" method="put">
+    <form action="/admin/attributes_groups" method="post">
         @csrf
         <div class="form-group">
             <label>Название</label>

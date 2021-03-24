@@ -29,3 +29,4 @@ Route::get('getImages', 'ApiController@getImages');
 Route::get('filterProducts', 'ApiController@filterProducts');
 Route::get('getProducts', 'ApiController@getProducts');
 Route::get('getTable', 'ApiController@getTable');
+Route::get('getAttributesTypes', 'ApiController@getAttributesTypes');

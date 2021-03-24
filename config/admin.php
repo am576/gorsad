@@ -43,5 +43,14 @@ return [
   ],
   'per_page' => [
       'products' => 10
+  ],
+  'attributes_types' => [
+      'text' => 'Текст',
+      'list' => 'Список',
+      'range' => 'Слайдер',
+      'bool' => 'Да/Нет',
+      'color' => 'Цвет',
+      'icon' => 'Иконка'
   ]
+
 ];

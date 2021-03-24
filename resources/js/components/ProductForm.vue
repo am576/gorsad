@@ -1,86 +1,97 @@
 <template>
-    <form @submit.prevent="submit">
-        <div class="row">
-
-            <div class="col-md-4">
-
-                <div class="form-group">
-                    <label for="title">Название</label>
-                    <input type="text" class="form-control" id="title" name="title" autocomplete="off"
-                           v-model="product.title">
-                    <div v-if="errors && errors.title" class="text-danger">{{errors.title[0]}}</div>
-                </div>
-                <div class="form-group">
-                    <label for="code">Код товара</label>
-                    <input type="text" class="form-control" id="code" name="code" autocomplete="off"
-                           v-model="product.code">
-                    <div v-if="errors && errors.code" class="text-danger">{{errors.code[0]}}</div>
-                </div>
-                <div class="form-group">
-                    <label for="description">Описание</label>
-                    <ckeditor :editor="editor" :config="editorConfig" v-model="product.description"></ckeditor>
-                    <div v-if="errors && errors.description" class="text-danger">{{errors.description[0]}}</div>
-                </div>
-                <div class="form-group">
-                    <label for="category_id">Категория</label>
-                    <category-selector :children_only="true"></category-selector>
-                    <div v-if="errors && errors.category_id" class="text-danger">{{errors.category_id[0]}}</div>
-                </div>
-                <div class="form-group">
-                    <label for="price">Цена</label>
-                    <input type="text" class="form-control" id="price" name="price" autocomplete="off"
-                           v-model="product.price">
-                    <div v-if="errors && errors.price" class="text-danger">{{errors.price[0]}}</div>
-                </div>
-                <div class="form-group">
-                    <label for="discount">Скидка</label>
-                    <input type="text" class="form-control" id="discount" name="discount" autocomplete="off"
-                           v-model="product.discount">
-                    <div v-if="errors && errors.discount" class="text-danger">{{errors.discount[0]}}</div>
-                </div>
-                <div class="form-group">
-                    <label for="quantity">Количество</label>
-                    <input type="text" class="form-control" id="quantity" name="quantity" autocomplete="off"
-                           v-model="product.quantity">
-                    <div v-if="errors && errors.quantity" class="text-danger">{{errors.quantity[0]}}</div>
-                </div>
-                <div class="form-group">
-                    <label for="status">Статус</label>
-                    <select name="status" id="status" v-model="product.status">
-                        <option value="1">Активный</option>
-                        <option value="0">Неактивный</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Создать</button>
+    <div>
+        <nav>
+            <div class="nav nav-tabs product-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#product-description" role="tab" aria-controls="nav-home" aria-selected="true">Описание</a>
+                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#product-attributes" role="tab" aria-controls="nav-profile" aria-selected="false">Атрибуты</a>
+                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#product-photo" role="tab" aria-controls="nav-contact" aria-selected="false">Фото</a>
             </div>
-            <div class="col-md-4">
-                <image-uploader></image-uploader>
-            </div>
-            <div class="col-md-4">
-                <h3>Атрибуты</h3>
-                <div v-if="item === 1" class="form-row" v-for="(item, index) in attribute_rows" :key="index">
-                    <div class="form-group">
-                        <label>Название</label>
-                        <select name="attribute_id[]" @change="getAttributeValues($event.target.value, index)" v-model="product.attribute_id[index]">
-                            <option value="0">...</option>
-                            <option v-for="attribute in attributes" :value="attribute.id">{{attribute.name}}</option>
-                        </select>
+        </nav>
+        <form @submit.prevent="submit">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="product-description" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="title">Название</label>
+                                <input type="text" class="form-control" id="title" name="title" autocomplete="off"
+                                       v-model="product.title">
+                                <div v-if="errors && errors.title" class="text-danger">{{errors.title[0]}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="code">Код товара</label>
+                                <input type="text" class="form-control" id="code" name="code" autocomplete="off"
+                                       v-model="product.code">
+                                <div v-if="errors && errors.code" class="text-danger">{{errors.code[0]}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Описание</label>
+                                <ckeditor :editor="editor" :config="editorConfig" v-model="product.description"></ckeditor>
+                                <div v-if="errors && errors.description" class="text-danger">{{errors.description[0]}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="category_id">Категория</label>
+                                <category-selector :children_only="true"></category-selector>
+                                <div v-if="errors && errors.category_id" class="text-danger">{{errors.category_id[0]}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Цена</label>
+                                <input type="text" class="form-control" id="price" name="price" autocomplete="off"
+                                       v-model="product.price">
+                                <div v-if="errors && errors.price" class="text-danger">{{errors.price[0]}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="discount">Скидка</label>
+                                <input type="text" class="form-control" id="discount" name="discount" autocomplete="off"
+                                       v-model="product.discount">
+                                <div v-if="errors && errors.discount" class="text-danger">{{errors.discount[0]}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Количество</label>
+                                <input type="text" class="form-control" id="quantity" name="quantity" autocomplete="off"
+                                       v-model="product.quantity">
+                                <div v-if="errors && errors.quantity" class="text-danger">{{errors.quantity[0]}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Статус</label>
+                                <select name="status" id="status" v-model="product.status">
+                                    <option value="1">Активный</option>
+                                    <option value="0">Неактивный</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Значение</label>
-                        <select name="attribute_value_id[]" v-model="product.attribute_value_id[index]">
-                            <option value="0">...</option>
-                            <option v-for="value in attribute_values[index]" :value="value.id">{{value.value}}</option>
-                        </select>
-                    </div>
-                    <button v-if="index > 0" type="button" class="btn btn-danger delete" tabindex="-1"
-                            @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
                 </div>
-                <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="createAttributeRow()"><i
-                    class="mdi mdi-plus"></i></button>
+                <div class="tab-pane fade" id="product-attributes" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="col-md-8">
+                        <div class="attributes-list">
+                            <h3>Атрибуты</h3>
+                            <div v-if="item === 1" class="form-row" v-for="(item, index) in attribute_rows" :key="index">
+                                <div class="form-group">
+                                    <label>Название</label>
+                                    <select name="attribute_id[]" @change="getAttributeValues($event.target, index)" v-model="product.attribute_id[index]">
+                                        <option value="0">...</option>
+                                        <option v-for="attribute in attributes" :value="attribute.id" :data-type="attribute.type">{{attribute.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <attribute-values :type="attribute_types[index]" :index="index" :values="attribute_values"></attribute-values>
+                                </div>
+                                <button v-if="index > 0" type="button" class="btn btn-danger delete" tabindex="-1"
+                                        @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
+                            </div>
+                            <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="createAttributeRow()"><i
+                                class="mdi mdi-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="product-photo" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <image-uploader></image-uploader>
+                </div>
             </div>
-        </div>
-    </form>
+            <button type="submit" class="btn btn-primary">Создать</button>
+        </form>
+    </div>
 </template>
 
 <script>
@@ -115,7 +126,8 @@
                 errors: {},
                 attribute_rows : [0],
                 attributes: [],
-                attribute_values: []
+                attribute_values: [],
+                attribute_types: []
             }
         },
         methods: {
@@ -133,15 +145,22 @@
                     this.attributes = response.data;
                 })
             },
-            getAttributeValues(attribute_id, index)
+            getAttributeValues(select, index)
             {
+                const selected = select.options[select.options.selectedIndex].dataset;
+                this.$set(this.attribute_types, index, selected.type)
+
                 axios.get('/api/getAttributeValues', {
                     params: {
-                        attribute_id: attribute_id
+                        attribute_id: select.value
                     }
                 }).then(response => {
                     this.$set(this.attribute_values, index, response.data)
                 })
+            },
+            setAttributeValue(index, value) {
+                this.product.attribute_value_id[index] = value;
+                console.log(this.product.attribute_value_id);
             },
             setProductImages(images) {
                 this.images = images;
@@ -188,6 +207,7 @@
         created: function () {
             this.$eventBus.$on('changeCategory', this.setProductCategory);
             this.$eventBus.$on('addImages', this.setProductImages)
+            this.$eventBus.$on('changeAttributeValue', this.setAttributeValue)
         }
     }
 </script>

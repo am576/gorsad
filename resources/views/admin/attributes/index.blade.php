@@ -32,9 +32,18 @@
                                         <td>{{$attribute->name}}</td>
                                         <td>{{$attribute->group->title ?? '-'}}</td>
                                         <td>
+                                            @if($attribute->type === 'text' || $attribute->type === 'list')
                                             @foreach($attribute->valuesLabels() as $label)
                                                 <div class="h-100 badge badge-primary" style="font-size: 100%;">{{$label}}</div>
                                             @endforeach
+                                            @elseif($attribute->type === 'range')
+                                                @php($range = $attribute->valuesLabels())
+                                                @if(count($range))
+                                                {{$range[0]}} &mdash; {{$range[1]}}
+                                                @endif
+                                            @elseif($attribute->type === 'bool')
+                                                Да / Нет
+                                            @endif
                                         </td>
                                         <td>@include('admin.macros.table-buttons', ['entity' => $attribute])</td>
                                     </tr>
