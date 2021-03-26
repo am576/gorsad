@@ -77,6 +77,7 @@
                 groups: [],
                 attr_types: [],
                 attr_colors: [],
+                attributes_values: [],
                 tag: '',
                 tags: [],
                 errors: {},
@@ -132,6 +133,15 @@
             addColor() {
                 this.$set(this.tags, this.tags.length, '#ffccbb');
             },
+            setRangeValues() {
+                this.tags.forEach(tag => {
+                    this.attributes_values.push(tag)
+                })
+                for (let i = Number(this.attributes_values[0]); i <= Number(this.attributes_values[1]) ; i+= Number(this.attributes_values[2])) {
+                    this.attributes_values.push(i);
+                }
+
+            },
             submit() {
                 const formData = new FormData();
 
@@ -139,17 +149,24 @@
                     formData.append(key, this.attribute[key])
                 });
 
-                let values = [];
-                this.tags.forEach(tag => {
-                    if(this.attribute.type === 'text' || this.attribute.type === 'list')
-                    {
-                        values.push(Object.values(tag)[0])
-                    }
-                    else
-                        values.push(tag)
-                })
+                if(this.attribute.type === 'text' || this.attribute.type === 'list')
+                {
+                    this.tags.forEach(tag => {
+                        this.attributes_values.push(Object.values(tag)[0])
+                    });
+                }
+                else if(this.attribute.type === 'range')
+                {
+                    this.setRangeValues();
+                }
+                else
+                {
+                    this.tags.forEach(tag => {
+                        this.attributes_values.push(tag)
+                    });
+                }
 
-                formData.append('values', values);
+                formData.append('values', this.attributes_values);
 
                 if(this.is_edit_form)
                 {

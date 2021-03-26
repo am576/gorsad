@@ -9,6 +9,7 @@
         </nav>
         <form @submit.prevent="submit">
             <div class="tab-content" id="nav-tabContent">
+
                 <div class="tab-pane fade show active" id="product-description" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="row">
                         <div class="col-md-4">
@@ -74,8 +75,8 @@
                                         <option v-for="attribute in attributes" :value="attribute.id" :data-type="attribute.type">{{attribute.name}}</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <attribute-values :type="attribute_types[index]" :index="index" :values="attribute_values"></attribute-values>
+                                <div class="form-group" style="width:200px" v-if="product.attribute_id[index]">
+                                    <attribute-values  :type="attribute_types[index]" :index="index" :values="attribute_values"></attribute-values>
                                 </div>
                                 <button v-if="index > 0" type="button" class="btn btn-danger delete" tabindex="-1"
                                         @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
@@ -156,11 +157,11 @@
                     }
                 }).then(response => {
                     this.$set(this.attribute_values, index, response.data)
+                    console.log(this.attribute_values[1])
                 })
             },
             setAttributeValue(index, value) {
                 this.product.attribute_value_id[index] = value;
-                console.log(this.product.attribute_value_id);
             },
             setProductImages(images) {
                 this.images = images;
