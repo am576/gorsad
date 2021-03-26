@@ -36,6 +36,7 @@ Vue.component('category-form', require('./components/CategoryForm').default);
 Vue.component('table-buttons', require('./components/TableButtons').default);
 Vue.component('attribute-form', require('./components/AttributeForm').default);
 Vue.component('attribute-values', require('./components/AttributeValues').default);
+Vue.component('iconset-form', require('./components/IconsetForm').default);
 
 Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 

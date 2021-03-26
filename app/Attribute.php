@@ -39,4 +39,9 @@ class Attribute extends Model
         return $labels;
     }
 
+    public function icon()
+    {
+        return $this->morphOne('App\Image', 'imageable');
+    }
+
 }

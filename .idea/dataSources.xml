@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/gorsad</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="karandash" uuid="5da10d73-bb7e-4a89-a6d0-f06f9a2b27d4">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/karandash_shop</jdbc-url>
+    </data-source>
   </component>
 </project>

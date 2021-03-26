@@ -21,10 +21,16 @@ return [
           'icon'  => 'google-circles-extended',
           'submenu' => [
               [
-              'title' => 'группы атрибутов',
-              'singular' => 'группа атрибутов',
-              'route' => 'attributes_groups',
-              'icon'  => 'menu-right-outline'
+                  'title' => 'группы атрибутов',
+                  'singular' => 'группа атрибутов',
+                  'route' => 'attributes_groups',
+                  'icon'  => 'menu-right-outline'
+              ],
+              [
+                  'title' => 'наборы иконок',
+                  'singular' => 'набор иконок',
+                  'route' => 'icon_sets',
+                  'icon'  => 'image'
               ]
           ]
       ],
