@@ -31,6 +31,7 @@
         "bootstrap-icons": "^1.0.0-alpha3",
         "qs": "^6.9.4",
         "verte": "0.0.12",
+        "vue-select": "^3.11.2",
         "vue-slider-component": "^3.2.11",
         "vuejs-datatable": "^2.0.0-alpha.7",
         "vuetify": "^2.3.4"

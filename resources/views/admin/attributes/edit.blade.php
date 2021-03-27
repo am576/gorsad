@@ -3,5 +3,5 @@
     @include('admin.partials.page_header', ['entity' => 'attribute', 'mode' => 'edit'])
 @endsection
 @section('content')
-<attribute-form :is_edit_form="true" :attribute_data="{{$attribute}}"></attribute-form>
+<attribute-form :is_edit_form="true" attribute_data="{{$attribute}}"></attribute-form>
 @endsection

@@ -28,6 +28,13 @@ class Attribute extends Model
             ->get();
     }
 
+    public function icons()
+    {
+        return DB::table('attribute_icons')
+            ->where('attribute_id', $this->id)
+            ->get();
+    }
+
     public function valuesLabels()
     {
         $labels = [];

@@ -142,3 +142,7 @@ form.table-delete-entity {
   display: none !important;
 }
 
+.v-select {
+  min-width: 150px !important;
+}
+

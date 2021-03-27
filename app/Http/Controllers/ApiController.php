@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Attribute;
 use App\AttributesGroup;
 use App\Category;
+use App\IconSet;
+use App\Image;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -47,6 +49,16 @@ class ApiController extends Controller
         return response()->json($values);
     }
 
+    public function getAttributeIcons(Request $request)
+    {
+        $attribute = Attribute::find($request->attribute_id);
+        $icons = $attribute->icons()->pluck('image_id');
+
+        $images = Image::whereIn('id', $icons)->get();
+
+        return response()->json($images);
+    }
+
     public function getAttributesGroups()
     {
         return response()->json(AttributesGroup::all());
@@ -61,6 +73,13 @@ class ApiController extends Controller
     {
         $model = 'App\\' . $request->model;
         return $model::find($request->id)->images()->get();
+    }
+
+    public function getIconsets()
+    {
+        $iconsets = IconSet::with('images')->get();
+
+        return IconSet::with('images')->get();
     }
 
     public function filterProducts(Request $request)

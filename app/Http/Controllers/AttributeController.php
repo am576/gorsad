@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Attribute;
+use App\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -38,14 +39,37 @@ class AttributeController extends Controller
         {
             $values = explode(',', $request->values);
 
-            foreach($values as $value)
+            if(isset($request->icons))
             {
-                DB::table('attributes_values')->insert([
-                    'attribute_id' => $attribute->id,
-                    'value' => $value
-                ]);
+                $icons = explode(',', $request->icons);
+                foreach($values as $key=>$value)
+                {
+                    $value_id = DB::table('attributes_values')->insertGetId([
+                        'attribute_id' => $attribute->id,
+                        'value' => $value,
+                    ]);
+
+                    DB::table('attribute_icons')->insert([
+                       'attribute_id' => $attribute->id,
+                       'attribute_value_id' => $value_id,
+                       'image_id' => $icons[$key],
+                       'iconset_id' => $request->iconset_id
+                    ]);
+                }
             }
+            else {
+                foreach($values as $key=>$value)
+                {
+                    $value_id = DB::table('attributes_values')->insert([
+                        'attribute_id' => $attribute->id,
+                        'value' => $value
+                    ]);
+                }
+            }
+
         }
+
+
 
         return redirect(route('attributes.index'));
     }
@@ -61,12 +85,16 @@ class AttributeController extends Controller
         //
     }
 
-
     public function edit($id)
     {
         $attribute = Attribute::find($id);
+        $icons = $attribute->icons()->pluck('image_id');
 
-        return view('admin.attributes.edit')->with(['attribute' => $attribute]);
+        $images = Image::whereIn('id', $icons)->get();
+        return view('admin.attributes.edit')->with([
+            'attribute' => $attribute,
+            'images' => $images
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -83,15 +111,38 @@ class AttributeController extends Controller
             ->where('attribute_id', $attribute->id)
             ->delete();
 
-        foreach($values as $value)
-        {
-            DB::table('attributes_values')->updateOrInsert([
-                'attribute_id' => $attribute->id,
-                'value' => $value
-            ]);
+        DB::table('attribute_icons')
+            ->where('attribute_id', $attribute->id)
+            ->delete();
+
+        if(isset($request->icons)) {
+            $icons = explode(',', $request->icons);
+
+            foreach ($values as $key => $value) {
+                $value_id = DB::table('attributes_values')->insertGetId([
+                    'attribute_id' => $attribute->id,
+                    'value' => $value
+                ]);
+
+                DB::table('attribute_icons')->insert([
+                    'attribute_id' => $attribute->id,
+                    'attribute_value_id' => $value_id,
+                    'image_id' => $icons[$key],
+                    'iconset_id' => $request->iconset_id
+                ]);
+            }
+        }
+        else {
+            foreach($values as $key=>$value)
+            {
+                DB::table('attributes_values')->insert([
+                    'attribute_id' => $attribute->id,
+                    'value' => $value
+                ]);
+            }
         }
 
-//        return redirect()->intended(route('attributes.index'));
+        return redirect()->intended(route('attributes.index'));
     }
 
     public function destroy($id)
