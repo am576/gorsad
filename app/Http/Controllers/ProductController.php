@@ -142,7 +142,6 @@ class ProductController extends Controller
         $product->fill($input);
         $product->save();
 
-
         if(isset($request->images))
         {
             foreach ($request->images as $index => $file) {

@@ -176,12 +176,23 @@
                         this.$set(this.product.attributes[index], 'values', []);
                         this.$eventBus.$emit('getAttributeValues', this.attribute_values[index]);
                     }
+                    else if(this.attribute_types[index] === 'icon') {
+                        this.$set(this.product.attributes[index], 'values', []);
+                        axios.get('/api/getAttributeIcons', {
+                            params: {
+                                attribute_id: this.product.attributes[index].id
+                            }
+                        }).then(response => {
+                            this.$eventBus.$emit('getAttributeValues', {'values':this.attribute_values[index],'options':response.data},);
+                        })
+                    }
                 })
             },
             setAttributeValues(index, values) {
-                if(this.attribute_types[index] === 'range' || 'color') {
+                if(this.attribute_types[index] === 'range' || 'color' || 'icon') {
                     this.$set(this.product.attributes[index], 'values', values);
                 }
+
             },
             setProductImages(images) {
                 this.images = images;

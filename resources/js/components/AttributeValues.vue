@@ -19,6 +19,21 @@
                 @change="changeAttributeValue()"
             ></vue-slider>
         </div>
+        <div v-if="type === 'icon'">
+            <v-select v-model="icons[index]" :options="options" @option:selected="changeAttributeIcon">
+                <template #selected-option="{ icon }">
+                    <div style="display: flex; align-items: baseline;">
+                        <span>{{icons[index].label}}</span>
+                        <img height="50px" :src="'/storage/images/' + icons[index].icon"/>
+                    </div>
+                </template>
+
+                <template slot="option" slot-scope="option">
+                    <span>{{option.label}}</span>
+                    <img height="50px" :src="'/storage/images/' + option.icon"/>
+                </template>
+            </v-select>
+        </div>
 
     </div>
 </template>
@@ -26,9 +41,12 @@
 <script>
     import VueSlider from 'vue-slider-component'
     import 'vue-slider-component/theme/default.css'
+    import vSelect from 'vue-select'
+    import 'vue-select/dist/vue-select.css';
     export default {
         components: {
-            VueSlider
+            VueSlider,
+            vSelect
         },
         props: {
             type: '',
@@ -40,11 +58,13 @@
         },
         data() {
             return {
-                value_id: 1,
+                value_id: 0,
                 isSelected: false,
                 range_ids: [],
                 colors: [],
-                colors_ids: []
+                colors_ids: [],
+                icons: [],
+                options: []
             }
         },
         methods: {
@@ -53,6 +73,9 @@
             },
             changeAttributeRange() {
                 this.$eventBus.$emit('changeAttributeValue', this.index, this.range)
+            },
+            changeAttributeIcon() {
+                this.$eventBus.$emit('changeAttributeValue', this.index, [this.icons[this.index].value_id])
             },
             changeSelectedColor(id) {
                 this.value_id = id;
@@ -72,6 +95,12 @@
                     if(this.colors.length === 0) {
                         this.colors = values;
                     }
+                }
+                else if (this.type === 'icon') {
+                    this.options = values.options;
+                    values.values.forEach((value, index) => {
+                        this.$set(this.options[index], 'value_id', value.id);
+                    })
                 }
             },
             setRangeValues(va) {
