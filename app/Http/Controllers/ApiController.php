@@ -36,9 +36,19 @@ class ApiController extends Controller
 
     public function getAttributesForCategory(Request $request)
     {
-        $attributes = Attribute::where('category_id',$request->category_id)->get();
+        $category = Category::find($request->category_id);
 
-        return response()->json($attributes);
+        return response()->json($category->attributes());
+    }
+
+    public function getCategoryParams(Request $request)
+    {
+        $category = Category::find($request->category_id);
+
+        return response()->json([
+            'attributes' => $category->attributes(),
+            'additional_fields' => $category->additional_fields()
+        ]);
     }
 
     public function getAttributeValues(Request $request)

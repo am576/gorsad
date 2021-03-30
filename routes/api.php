@@ -32,3 +32,4 @@ Route::get('getTable', 'ApiController@getTable');
 Route::get('getAttributesTypes', 'ApiController@getAttributesTypes');
 Route::get('getIconsets', 'ApiController@getIconsets');
 Route::get('getAttributeIcons', 'ApiController@getAttributeIcons');
+Route::get('getCategoryParams', 'ApiController@getCategoryParams');

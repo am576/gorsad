@@ -16,7 +16,7 @@ class Category extends Model
 
     public function attributes()
     {
-        return $this->hasMany('App\Attribute','category_id','id');
+        return $this->hasMany('App\Attribute','category_id','id')->get();
     }
 
     public function attributesWithValues()
@@ -37,6 +37,11 @@ class Category extends Model
     public function image()
     {
         return $this->hasOne('App\Image', 'imageable_id', 'id')->first();
+    }
+
+    public function additional_fields()
+    {
+        return (array)json_decode($this->additional_fields);
     }
 
     public static function getChildrenOnly()

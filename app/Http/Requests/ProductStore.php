@@ -27,7 +27,7 @@ class ProductStore extends FormRequest
         return [
             'title' => 'required',
             'category_id' => 'required | numeric',
-            'code'  =>  'required | unique:App\Product',
+//            'code'  =>  'required | unique:App\Product',
             'description'  =>  'required',
             'price' =>  'required | numeric | max:1000000',
             'discount' => 'numeric | max:100',

@@ -14,9 +14,20 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
+                                <label for="category_id">Категория</label>
+                                <category-selector :children_only="true"></category-selector>
+                                <div v-if="errors && errors.category_id" class="text-danger">{{errors.category_id[0]}}</div>
+                            </div>
+                            <div class="form-group">
                                 <label for="title">Название</label>
                                 <input type="text" class="form-control" id="title" name="title" autocomplete="off"
                                        v-model="product.title">
+                                <div v-if="errors && errors.title" class="text-danger">{{errors.title[0]}}</div>
+                            </div>
+                            <div class="form-group" v-for="(field,index) in category_fields" :key="index">
+                                <label for="title">{{field.title}}</label>
+                                <input type="text" class="form-control" :id="field.name" :name="field.name" autocomplete="off"
+                                       v-model="additional_info[field.name]">
                                 <div v-if="errors && errors.title" class="text-danger">{{errors.title[0]}}</div>
                             </div>
                             <div class="form-group">
@@ -24,16 +35,6 @@
                                 <input type="text" class="form-control" id="code" name="code" autocomplete="off"
                                        v-model="product.code">
                                 <div v-if="errors && errors.code" class="text-danger">{{errors.code[0]}}</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Описание</label>
-                                <ckeditor :editor="editor" :config="editorConfig" v-model="product.description"></ckeditor>
-                                <div v-if="errors && errors.description" class="text-danger">{{errors.description[0]}}</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="category_id">Категория</label>
-                                <category-selector :children_only="true"></category-selector>
-                                <div v-if="errors && errors.category_id" class="text-danger">{{errors.category_id[0]}}</div>
                             </div>
                             <div class="form-group">
                                 <label for="price">Цена</label>
@@ -59,6 +60,13 @@
                                     <option value="1">Активный</option>
                                     <option value="0">Неактивный</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="description">Описание</label>
+                                <ckeditor :editor="editor" :config="editorConfig" v-model="product.description"></ckeditor>
+                                <div v-if="errors && errors.description" class="text-danger">{{errors.description[0]}}</div>
                             </div>
                         </div>
                     </div>
@@ -128,22 +136,25 @@
                 attribute_rows : [0],
                 attributes: [],
                 attribute_values: [],
-                attribute_types: []
+                attribute_types: [],
+                category_fields: [],
+                additional_info:{}
             }
         },
         methods: {
             setProductCategory(id) {
                 this.product.category_id = id;
-                this.getAttributesForCategory();
+                this.getCategoryParams();
             },
-            getAttributesForCategory()
+            getCategoryParams()
             {
-                axios.get('/api/getAttributesForCategory', {
+                axios.get('/api/getCategoryParams', {
                     params: {
                         category_id: this.product.category_id
                     }
                 }).then(response => {
-                    this.attributes = response.data;
+                    this.attributes = response.data.attributes;
+                    this.category_fields = response.data.additional_fields;
                 })
             },
             getAttributeValues(select, index)
@@ -157,7 +168,6 @@
                     }
                 }).then(response => {
                     this.$set(this.attribute_values, index, response.data)
-                    console.log(this.attribute_values[1])
                 })
             },
             setAttributeValue(index, value) {
@@ -184,6 +194,7 @@
 
                 formData.delete('attribute_id');
                 formData.delete('attribute_value_id');
+                formData.append('additional_info', JSON.stringify(this.additional_info));
                 this.images.forEach(file => {
                     formData.append('images[]', file, file.name);
                 });

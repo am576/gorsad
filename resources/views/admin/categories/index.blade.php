@@ -23,6 +23,7 @@
                                     <th>Картинка</th>
                                     <th>Количество товаров</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -35,6 +36,10 @@
                                             <img width="100" src="{{URL::asset('storage/images/' . $img)}}" alt="">
                                         </td>
                                         <td>{{$category->products()->count()}}</td>
+                                        <td>@foreach($category->additional_fields() as $af)
+                                                {{var_dump($af->name)}}
+                                            @endforeach
+                                            </td>
                                         <td>@include('admin.macros.table-buttons', ['entity' => $category])</td>
                                     </tr>
                                 @endforeach

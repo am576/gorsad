@@ -21,7 +21,8 @@
         data() {
             return {
                 categories : [],
-                category_id: 0
+                category_id: 0,
+                selected_category: {}
             }
         },
         methods:{
@@ -49,6 +50,7 @@
             },
             changeCategory()
             {
+                console.log(this.categories)
                 this.$eventBus.$emit('changeCategory', this.category_id)
             }
         },

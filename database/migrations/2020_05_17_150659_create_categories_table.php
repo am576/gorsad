@@ -18,6 +18,7 @@ class CreateCategoriesTable extends Migration
             $table->string('title', 250)->unique();
             $table->smallInteger('parent_id')->unsigned()->default(0);
             $table->text('description');
+            $table->text('additional_fields')->nullable();
         });
     }
 

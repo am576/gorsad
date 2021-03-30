@@ -23,6 +23,7 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('discount')->unsigned()->default(0);
             $table->tinyInteger('status')->unsigned()->default(1);
             $table->mediumInteger('quantity')->unsigned()->default(1);
+            $table->text('additional_info')->nullable();
             $table->timestamps();
         });
     }
