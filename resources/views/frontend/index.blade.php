@@ -1,5 +1,5 @@
 @extends('frontend.layouts.app')
-@section('title', 'Интернет-магазин канцтоваров "Карандаш"')
+@section('title', 'Gorsad')
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">

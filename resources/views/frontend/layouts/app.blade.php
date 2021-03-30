@@ -22,7 +22,7 @@
 </head>
 <body>
     <div id="app" class="frontend">
-        <site-navigation></site-navigation>
+        <site-navigation @if(isset($auth_user)):auth_user="{{$auth_user}}"@endif></site-navigation>
         <main class="py-4">
             @yield('content')
         </main>

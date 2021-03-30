@@ -3,13 +3,19 @@
         <nav class="navbar" v-if="!isMobileView">
             <ul class="nav nav-pills ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Желаемое</a>
+                    <a class="nav-link" v-if="!isGuest" href="#">Желаемое</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/cart">Корзина</a>
+                    <a class="nav-link" v-if="!isGuest" href="/cart">Корзина</a>
+                </li>
+                <li class="nav-item">
+                    <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
+                        <input type="hidden" name="_token" :value="csrf">
+                    </form>
+                    <a class="nav-link" v-if="!isGuest" @click="logout"> logout </a>
                 </li>
                 <li class="nav-item" v-if="isGuest">
-                    <a class="nav-link" href="#">Войти</a>
+                    <a class="nav-link" href="/login">Выход</a>
                 </li>
             </ul>
         </nav>
@@ -107,7 +113,8 @@
                 showNav: false,
                 navOpen : false,
                 showLinks: false,
-                linksOpen: false
+                linksOpen: false,
+                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         },
         methods: {
@@ -121,6 +128,9 @@
             toggleMobileLinks() {
                 this.showLinks = !this.showLinks;
                 this.linksOpen = !this.linksOpen;
+            },
+            logout() {
+                this.$refs.logout.submit()
             }
         },
         computed: {
@@ -130,6 +140,7 @@
         },
         created() {
             this.handleView();
+            console.log(this.auth_user);
             window.addEventListener('resize', this.handleView);
         }
     }
