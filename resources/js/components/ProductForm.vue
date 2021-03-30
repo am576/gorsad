@@ -86,7 +86,7 @@
                                 <div class="form-group" style="width:200px" v-if="product.attributes[index]">
                                     <attribute-values :type="attribute_types[index]" :index="index" :values="attribute_values[index]"></attribute-values>
                                 </div>
-                                <button v-if="index > 0" type="button" class="btn btn-danger delete" tabindex="-1"
+                                <button type="button" class="btn btn-danger delete" tabindex="-1"
                                         @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
                             </div>
                             <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="createAttributeRow()"><i
@@ -201,11 +201,11 @@
             {
                 this.$set(this.product.attributes, this.attribute_rows.length, {})
                 this.$set(this.attribute_rows, this.attribute_rows.length, 1)
-
             },
             removeAttributeRow(index)
             {
                 this.$set(this.attribute_rows, index, 0)
+                Vue.delete(this.product.attributes, index);
             },
             submit() {
                 this.errors = {};
