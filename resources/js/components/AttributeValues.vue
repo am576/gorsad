@@ -7,7 +7,7 @@
             </select>
         </div>
         <div v-if="type === 'color'">
-            <span class="attribute-color" v-for="value in values[index]" v-bind:class="{selected: value.id === value_id}" v-bind:style="{background: value.value}" @click="changeSelectedColor(value.id)"></span>
+            <span class="attribute-color" v-for="color in colors" v-bind:class="{selected: colors_ids.includes(color.id)}" v-bind:style="{background: color.value}" @click="changeSelectedColor(color.id)"></span>
         </div>
         <div v-if="type === 'range'">
             <vue-slider
@@ -42,7 +42,9 @@
             return {
                 value_id: 1,
                 isSelected: false,
-                range_ids: []
+                range_ids: [],
+                colors: [],
+                colors_ids: []
             }
         },
         methods: {
@@ -54,13 +56,32 @@
             },
             changeSelectedColor(id) {
                 this.value_id = id;
-                this.$eventBus.$emit('changeAttributeValue', this.index, this.range_ids)
+                if(!this.colors_ids.includes(id)) {
+                    this.colors_ids.push(id)
+                }
+                else {
+                    this.colors_ids.splice(this.colors_ids.indexOf(id), 1);
+                }
+                this.$eventBus.$emit('changeAttributeValue', this.index, this.colors_ids)
+            },
+            getAttributeValues(values) {
+                if (this.type === 'range') {
+                    this.setRangeValues(values)
+                }
+                else if(this.type === 'color') {
+                    if(this.colors.length === 0) {
+                        this.colors = values;
+                    }
+                }
             },
             setRangeValues(va) {
-                if (this.type === 'range' && this.range_ids.length === 0) {
+                if (this.range_ids.length === 0) {
                     this.$set(this.range_ids, 0, va[0].id);
                     this.$set(this.range_ids, 1, va[1].id);
                 }
+            },
+            setColorValues(values) {
+
             },
         },
         computed: {
@@ -75,10 +96,10 @@
                     this.$set(this.range, 0, newValue[0]);
                     this.$set(this.range, 1, newValue[1]);
                 }
-            }
+            },
         },
         created() {
-            this.$eventBus.$on('getAttributeValues', this.setRangeValues)
+            this.$eventBus.$on('getAttributeValues', this.getAttributeValues)
         }
 
     }

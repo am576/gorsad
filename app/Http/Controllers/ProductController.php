@@ -95,7 +95,6 @@ class ProductController extends Controller
             {
                 foreach ($attribute->values as $attribute_value)
                 {
-                    var_dump($attribute_value);
                     DB::table('products_attributes')->insert([
                         'product_id' => $product->id,
                         'attribute_id' => $attribute->id,

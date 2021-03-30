@@ -132,7 +132,7 @@
                 },
                 images: [],
                 errors: {},
-                attribute_rows : [0],
+                attribute_rows : [],
                 attributes: [],
                 attribute_types: [],
                 attribute_values: [],
@@ -167,16 +167,21 @@
                     }
                 }).then(response => {
                     this.$set(this.attribute_values, index, response.data);
-                    this.$set(this.product.attributes[index], 'values', [response.data[0].id,response.data[response.data.length-1].id]);
-                    this.$eventBus.$emit('getAttributeValues', [this.attribute_values[1][0],this.attribute_values[1][this.attribute_values[1].length-1]]);
+
+                    if(this.attribute_types[index] === 'range') {
+                        this.$set(this.product.attributes[index], 'values', [response.data[0].id,response.data[response.data.length-1].id]);
+                        this.$eventBus.$emit('getAttributeValues', [this.attribute_values[index][0],this.attribute_values[index][this.attribute_values[index].length-1]]);
+                    }
+                    else if(this.attribute_types[index] === 'color') {
+                        this.$set(this.product.attributes[index], 'values', []);
+                        this.$eventBus.$emit('getAttributeValues', this.attribute_values[index]);
+                    }
                 })
             },
             setAttributeValues(index, values) {
-                if(this.attribute_types[index] === 'range')
-                {
+                if(this.attribute_types[index] === 'range' || 'color') {
                     this.$set(this.product.attributes[index], 'values', values);
                 }
-
             },
             setProductImages(images) {
                 this.images = images;
