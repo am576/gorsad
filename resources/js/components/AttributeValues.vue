@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="type === 'text'">
-            <select name="attribute_value_id[]" v-model="value_id" @change="changeAttributeValue">
+            <select name="attribute_value_id[]" v-model="value_id" @change="changeAttributeRange">
                 <option value="0">...</option>
                 <option v-for="value in values[index]" :value="value.id">{{value.value}}</option>
             </select>
@@ -11,14 +11,13 @@
         </div>
         <div v-if="type === 'range'">
             <vue-slider
-                v-model="range_values"
-                :interval="Number(values[index][2].value)"
+                v-model="range_ids"
+                :data="values"
                 :data-value="'id'"
                 :data-label="'value'"
                 :tooltip="'always'"
                 @change="changeAttributeValue()"
             ></vue-slider>
-            <div @click="test">QQQ </div>
         </div>
 
     </div>
@@ -35,7 +34,7 @@
             type: '',
             values: {
                 type: Array,
-                default:  []
+                default:  function() {return []}
             },
             index: 0
         },
@@ -43,23 +42,24 @@
             return {
                 value_id: 1,
                 isSelected: false,
-                range: [],
+                range_ids: []
             }
         },
         methods: {
             changeAttributeValue() {
-                this.$eventBus.$emit('changeAttributeValue', this.index, this.value_id)
+                this.$eventBus.$emit('changeAttributeValue', this.index, this.range_ids)
+            },
+            changeAttributeRange() {
+                this.$eventBus.$emit('changeAttributeValue', this.index, this.range)
             },
             changeSelectedColor(id) {
                 this.value_id = id;
-                this.$eventBus.$emit('changeAttributeValue', this.index, this.value_id)
+                this.$eventBus.$emit('changeAttributeValue', this.index, this.range_ids)
             },
-            test() {
-                this.range_values= [0,50]
-            },
-            setRangeValues(values) {
-                if (this.type === 'range') {
-                    this.range_values = [values[0].value, values[1].value]
+            setRangeValues(va) {
+                if (this.type === 'range' && this.range_ids.length === 0) {
+                    this.$set(this.range_ids, 0, va[0].id);
+                    this.$set(this.range_ids, 1, va[1].id);
                 }
             },
         },
@@ -67,7 +67,7 @@
             range_values: {
                 cache: false,
                 get: function() {
-                    if (this.type === 'range') {
+                    if (this.type === 'range' ) {
                         return [this.range[0], this.range[1]];
                     }
                 },

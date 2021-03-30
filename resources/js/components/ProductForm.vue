@@ -30,12 +30,12 @@
                                        v-model="additional_info[field.name]">
                                 <div v-if="errors && errors.title" class="text-danger">{{errors.title[0]}}</div>
                             </div>
-                            <div class="form-group">
+                            <!--<div class="form-group">
                                 <label for="code">Код товара</label>
                                 <input type="text" class="form-control" id="code" name="code" autocomplete="off"
                                        v-model="product.code">
                                 <div v-if="errors && errors.code" class="text-danger">{{errors.code[0]}}</div>
-                            </div>
+                            </div>-->
                             <div class="form-group">
                                 <label for="price">Цена</label>
                                 <input type="text" class="form-control" id="price" name="price" autocomplete="off"
@@ -78,13 +78,13 @@
                             <div v-if="item === 1" class="form-row" v-for="(item, index) in attribute_rows" :key="index">
                                 <div class="form-group">
                                     <label>Название</label>
-                                    <select name="attribute_id[]" @change="getAttributeValues($event.target, index)" v-model="product.attribute_id[index]">
+                                    <select name="attribute_id[]" @change="getAttributeValues($event.target, index)" v-model="product.attributes[index].id">
                                         <option value="0">...</option>
                                         <option v-for="attribute in attributes" :value="attribute.id" :data-type="attribute.type">{{attribute.name}}</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="width:200px" v-if="product.attribute_id[index]">
-                                    <attribute-values  :type="attribute_types[index]" :index="index" :values="attribute_values"></attribute-values>
+                                <div class="form-group" style="width:200px" v-if="product.attributes[index]">
+                                    <attribute-values :type="attribute_types[index]" :index="index" :values="attribute_values[index]"></attribute-values>
                                 </div>
                                 <button v-if="index > 0" type="button" class="btn btn-danger delete" tabindex="-1"
                                         @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
@@ -127,16 +127,15 @@
                     ],
                 },
                 product: {
-                    attribute_id: [],
-                    attribute_value_id: [],
+                    attributes: {},
                     status: 1
                 },
                 images: [],
                 errors: {},
                 attribute_rows : [0],
                 attributes: [],
-                attribute_values: [],
                 attribute_types: [],
+                attribute_values: [],
                 category_fields: [],
                 additional_info:{}
             }
@@ -168,18 +167,25 @@
                     }
                 }).then(response => {
                     this.$set(this.attribute_values, index, response.data);
-                    this.$eventBus.$emit('getAttributeValues', response.data)
+                    this.$set(this.product.attributes[index], 'values', [response.data[0].id,response.data[response.data.length-1].id]);
+                    this.$eventBus.$emit('getAttributeValues', [this.attribute_values[1][0],this.attribute_values[1][this.attribute_values[1].length-1]]);
                 })
             },
-            setAttributeValue(index, value) {
-                this.product.attribute_value_id[index] = value;
+            setAttributeValues(index, values) {
+                if(this.attribute_types[index] === 'range')
+                {
+                    this.$set(this.product.attributes[index], 'values', values);
+                }
+
             },
             setProductImages(images) {
                 this.images = images;
             },
             createAttributeRow()
             {
+                this.$set(this.product.attributes, this.attribute_rows.length, {})
                 this.$set(this.attribute_rows, this.attribute_rows.length, 1)
+
             },
             removeAttributeRow(index)
             {
@@ -193,23 +199,18 @@
                     formData.append(key, this.product[key])
                 });
 
-                formData.delete('attribute_id');
-                formData.delete('attribute_value_id');
+                formData.delete('attributes');
                 formData.append('additional_info', JSON.stringify(this.additional_info));
+                formData.append('attributes', JSON.stringify(this.product.attributes));
                 this.images.forEach(file => {
                     formData.append('images[]', file, file.name);
-                });
-                this.product.attribute_id.forEach(id => {
-                    formData.append('attribute_id[]', id);
-                });
-                this.product.attribute_value_id.forEach(value => {
-                    formData.append('attribute_value_id[]', value);
                 });
 
                 axios.post('/admin/products', formData)
                 .then(response =>{
-                    if(response.status == 200)
-                        window.location.href = '/admin/products'
+                    if(response.status == 200) {
+                        // window.location.href = '/admin/products'
+                    }
                 }).catch(error => {
                     if (error.response.status === 422) {
                         this.errors = error.response.data.errors || {};
@@ -217,10 +218,13 @@
                 });
             }
         },
+        computed: {
+
+        },
         created: function () {
             this.$eventBus.$on('changeCategory', this.setProductCategory);
             this.$eventBus.$on('addImages', this.setProductImages)
-            this.$eventBus.$on('changeAttributeValue', this.setAttributeValue)
+            this.$eventBus.$on('changeAttributeValue', this.setAttributeValues)
         }
     }
 </script>

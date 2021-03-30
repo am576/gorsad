@@ -35,7 +35,7 @@ class ProductController extends Controller
 
     public function store(ProductStore $request)
     {
-        $input = $request->except(['attribute_id', 'attribute_value_id']);
+        $input = $request->except(['attribute_id', 'attribute_value_id','attributes']);
         foreach ($input as $field => $value) {
             if ($value == '') {
                 $input[$field] = 0;
@@ -88,30 +88,21 @@ class ProductController extends Controller
                 }
             }
         }
-
         if(isset($request->attributes))
         {
-            foreach ($request->attributes as $attribute_id => $attribute_values)
+            $attributes = json_decode($request->get('attributes'));
+            foreach ($attributes as $attribute)
             {
-                foreach ($attribute_values as $attribute_value)
+                foreach ($attribute->values as $attribute_value)
                 {
+                    var_dump($attribute_value);
                     DB::table('products_attributes')->insert([
                         'product_id' => $product->id,
-                        'attribute_id' => $attribute_id,
+                        'attribute_id' => $attribute->id,
                         'attribute_value_id' => $attribute_value
                     ]);
                 }
 
-            }
-        }
-
-        if (isset($request->attribute_id) && count($request->attribute_id)) {
-            foreach ($request->attribute_id as $index => $id) {
-                DB::table('products_attributes')->insert([
-                    'product_id' => $product->id,
-                    'attribute_id' => $id,
-                    'attribute_value_id' => $request->attribute_value_id[$index]
-                ]);
             }
         }
 
