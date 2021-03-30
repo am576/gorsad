@@ -5,10 +5,11 @@
         </div>
         <div class="col-6">
             <div class="p-3" style="border: 1px solid #2a9055; height: 100% ">
-                <h3>{{product.title}}({{product.code}})</h3>
-                <div>{{product.price}}.00 грн</div>
+                <h5 class="text-success">{{product.additional_info.family}}</h5>
+                <h3>{{product.title}}</h3>
+                <h5 class="text-muted">{{product.additional_info.common_name}}</h5>
                 <div>----</div>
-                <div contenteditable="true">
+                <div>
                     {{product.description}}
                 </div>
                 <button class="btn btn-primary" @click="addToCart">Купить</button>
@@ -51,6 +52,7 @@
         },
         created() {
             this.setCurrentImage(this.product.images[0]);
+            this.$set(this.product, 'additional_info', JSON.parse(this.product.additional_info));
         }
     }
 </script>

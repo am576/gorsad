@@ -167,7 +167,8 @@
                         attribute_id: select.value
                     }
                 }).then(response => {
-                    this.$set(this.attribute_values, index, response.data)
+                    this.$set(this.attribute_values, index, response.data);
+                    this.$eventBus.$emit('getAttributeValues', response.data)
                 })
             },
             setAttributeValue(index, value) {

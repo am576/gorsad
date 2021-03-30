@@ -11,15 +11,16 @@
         </div>
         <div v-if="type === 'range'">
             <vue-slider
-                v-model="value_id"
+                v-model="range_values"
                 :interval="Number(values[index][2].value)"
-                :data="values[index]"
                 :data-value="'id'"
                 :data-label="'value'"
                 :tooltip="'always'"
                 @change="changeAttributeValue()"
             ></vue-slider>
+            <div @click="test">QQQ </div>
         </div>
+
     </div>
 </template>
 
@@ -42,6 +43,7 @@
             return {
                 value_id: 1,
                 isSelected: false,
+                range: [],
             }
         },
         methods: {
@@ -51,7 +53,33 @@
             changeSelectedColor(id) {
                 this.value_id = id;
                 this.$eventBus.$emit('changeAttributeValue', this.index, this.value_id)
+            },
+            test() {
+                this.range_values= [0,50]
+            },
+            setRangeValues(values) {
+                if (this.type === 'range') {
+                    this.range_values = [values[0].value, values[1].value]
+                }
+            },
+        },
+        computed: {
+            range_values: {
+                cache: false,
+                get: function() {
+                    if (this.type === 'range') {
+                        return [this.range[0], this.range[1]];
+                    }
+                },
+                set: function(newValue) {
+                    this.$set(this.range, 0, newValue[0]);
+                    this.$set(this.range, 1, newValue[1]);
+                }
             }
+        },
+        created() {
+            this.$eventBus.$on('getAttributeValues', this.setRangeValues)
         }
+
     }
 </script>

@@ -50,7 +50,6 @@
             },
             changeCategory()
             {
-                console.log(this.categories)
                 this.$eventBus.$emit('changeCategory', this.category_id)
             }
         },

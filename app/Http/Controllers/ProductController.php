@@ -89,6 +89,22 @@ class ProductController extends Controller
             }
         }
 
+        if(isset($request->attributes))
+        {
+            foreach ($request->attributes as $attribute_id => $attribute_values)
+            {
+                foreach ($attribute_values as $attribute_value)
+                {
+                    DB::table('products_attributes')->insert([
+                        'product_id' => $product->id,
+                        'attribute_id' => $attribute_id,
+                        'attribute_value_id' => $attribute_value
+                    ]);
+                }
+
+            }
+        }
+
         if (isset($request->attribute_id) && count($request->attribute_id)) {
             foreach ($request->attribute_id as $index => $id) {
                 DB::table('products_attributes')->insert([
