@@ -9,7 +9,6 @@
         </nav>
         <form @submit.prevent="submit">
             <div class="tab-content" id="nav-tabContent">
-
                 <div class="tab-pane fade show active" id="product-description" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="row">
                         <div class="col-md-4">
