@@ -107,15 +107,15 @@ class AttributeController extends Controller
 
         $values = explode(',', $request->values);
 
-        DB::table('attributes_values')
-            ->where('attribute_id', $attribute->id)
-            ->delete();
-
-        DB::table('attribute_icons')
-            ->where('attribute_id', $attribute->id)
-            ->delete();
-
         if(isset($request->icons)) {
+            DB::table('attributes_values')
+                ->where('attribute_id', $attribute->id)
+                ->delete();
+
+            DB::table('attribute_icons')
+                ->where('attribute_id', $attribute->id)
+                ->delete();
+
             $icons = explode(',', $request->icons);
 
             foreach ($values as $key => $value) {
@@ -135,7 +135,7 @@ class AttributeController extends Controller
         else {
             foreach($values as $key=>$value)
             {
-                DB::table('attributes_values')->insert([
+                DB::table('attributes_values')->updateOrInsert([
                     'attribute_id' => $attribute->id,
                     'value' => $value
                 ]);

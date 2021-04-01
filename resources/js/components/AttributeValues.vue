@@ -65,7 +65,8 @@
                 colors: [],
                 colors_ids: [],
                 icons: [],
-                options: []
+                options: [],
+                attr_id: 0
             }
         },
         methods: {
@@ -90,26 +91,26 @@
                 this.$eventBus.$emit('changeAttributeValue', this.index, this.colors_ids)
             },
             getAttributeValues(values) {
-                if(values.length || Object.keys(values).length) {
-                    if (values.length && this.type === 'range') {
-                        this.setRangeValues(values)
-                        this.attribute_id = values[0].id;
-                    }
-                    else if(values.length && this.type === 'color') {
-                        if(this.colors.length === 0) {
-                            this.colors = values;
-                            this.attribute_id = values[0].id;
+                    if(values.length || Object.keys(values).length) {
+                        if (values.length && this.type === 'range') {
+                            if (this.range_ids.length === 0) {
+                                this.setRangeValues(values)
+                                this.attr_id = values[0].id;
+                            }
                         }
+                        else if(values.length && this.type === 'color') {
+                            if(this.colors.length === 0) {
+                                this.colors = values;
+                            }
+                        }
+                        /*else if(this.type === 'icon') {
+                            this.options = values.options;
+                            values.values.forEach((value, index) => {
+                                this.$set(this.options[index], 'value_id', value.id);
+                            })
+                            this.attribute_id = values.values[0].id;
+                        }*/
                     }
-                    else if(this.type === 'icon') {
-                        this.options = values.options;
-                        values.values.forEach((value, index) => {
-                            this.$set(this.options[index], 'value_id', value.id);
-                        })
-                        this.attribute_id = values.values[0].id;
-                    }
-                }
-
             },
             setAttributeValues(id, values) {
                 if (id === this.attribute_id){

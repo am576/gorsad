@@ -86,9 +86,9 @@
                             <div class="form-row" v-for="(item, index) in attrs" :key="index">
                                 <div class="form-group" data-app>
                                     <label>Название</label>
-                                    <select name="attribute_id[]" @change="getAttributeValues($event.target.value, index)" v-model="product_attributes[index].id">
+                                    <select name="attribute_id[]" @change="getAttributeValues($event.target, index)" v-model="product_attributes[index].id">
                                         <option value="0">...</option>
-                                        <option v-for="attribute in attributes" :value="attribute.id">{{attribute.name}}</option>
+                                        <option v-for="attribute in attributes" :data-type="attribute.type" :value="attribute.id">{{attribute.name}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group" style="width:200px">
@@ -166,9 +166,36 @@
             {
 
             },
-            getAttributeValues(attribute_id, index)
+            getAttributeValues(select, index)
             {
-
+                const selected = select.options[select.options.selectedIndex].dataset;
+                this.$set(this.product_attributes[index], 'type', selected.type)
+                this.$set(this.new_attribute_values[index], 'id', select.value)
+                axios.get('/api/getAttributeValues', {
+                    params: {
+                        attribute_id: select.value
+                    }
+                }).then(response => {
+                    this.$set(this.attribute_values, index, response.data);
+                    if(selected.type === 'range') {
+                        this.$set(this.new_attribute_values[index], 'values', [response.data[0].id,response.data[response.data.length-1].id]);
+                        this.$eventBus.$emit('getAttributeValues', [this.attribute_values[index][0],this.attribute_values[index][this.attribute_values[index].length-1]]);
+                    }
+                    else if(selected.type === 'color') {
+                        this.$set(this.new_attribute_values[index], 'values', []);
+                        this.$eventBus.$emit('getAttributeValues', this.attribute_values[index]);
+                    }
+                    else if(selected.type === 'icon') {
+                        this.$set(this.product.attributes[index], 'values', []);
+                        axios.get('/api/getAttributeIcons', {
+                            params: {
+                                attribute_id: this.product.attributes[index].id
+                            }
+                        }).then(response => {
+                            this.$eventBus.$emit('getAttributeValues', {'values':this.attribute_values[index],'options':response.data},);
+                        })
+                    }
+                })
             },
             setProductImages(images) {
                 this.images = images;
@@ -236,14 +263,15 @@
             },
             createAttributeRow()
             {
-                this.$set(this.product_attributes, this.attribute_rows.length, {id:0});
-                this.$set(this.attribute_rows, this.attribute_rows.length, 1);
-
+                this.$set(this.new_attribute_values, this.attrs.length, {})
+                this.$set(this.product_attributes, this.attrs.length, {})
             },
             removeAttributeRow(index)
             {
-                this.$set(this.attribute_rows, index, 0);
-                this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.product_attributes[index].saved_id);
+                this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.product_attributes[index].attribute_id);
+                Vue.delete(this.product_attributes, index);
+                Vue.delete(this.new_attribute_values, index);
+
             },
             removeImage(image_id)
             {
