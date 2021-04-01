@@ -191,7 +191,6 @@
                 if(this.attribute_types[index] === 'range' || 'color' || 'icon') {
                     this.$set(this.product.attributes[index], 'values', values);
                 }
-
             },
             setProductImages(images) {
                 this.images = images;

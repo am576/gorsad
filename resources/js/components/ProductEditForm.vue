@@ -129,6 +129,7 @@
         },
         data() {
             return {
+                new_attribute_values: [],
                 images: [],
                 errors: {},
                 attribute_rows : [],
@@ -181,37 +182,57 @@
                     this.attributes = response.data;
                     if (this.attrs.length > 0) {
                         this.attrs.forEach((attribute, index) => {
-                            if (attribute.type === 'range' || attribute.type === 'color') {
-                                axios.get('/api/getAttributeValues', {
-                                    params: {
-                                        attribute_id: attribute.attribute_id
-                                    }
-                                }).then(values => {
+                            this.setDefaultAttributeValues(attribute,index);
+                            axios.get('/api/getAttributeValues', {
+                                params: {
+                                    attribute_id: attribute.attribute_id
+                                }
+                            }).then(values => {
+                                if (attribute.type === 'range') {
                                     this.$set(this.attribute_values, index, values.data);
                                     this.$eventBus.$emit('setAttributeValues', attribute.attribute_id, attribute.selected_values);
-                                })
-                            }
-                            else if (attribute.type === 'icon') {
+                                }
+                                else if(attribute.type === 'color') {
+                                    this.$set(this.attribute_values, index, values.data);
+                                    this.$eventBus.$emit('setAttributeValues', attribute.attribute_id, {
+                                        'colors' : values.data,
+                                        'selected': attribute.selected_values
+                                    });
+                                }
+                                else if(attribute.type === 'icon') {
                                     axios.get('/api/getAttributeIcons', {
                                         params: {
                                             attribute_id: attribute.attribute_id
                                         }
                                     }).then(icons => {
-                                        let icon_id;
                                         icons.data.forEach(icon => {
                                             if(icon.icon_id === attribute.selected_values[0].icon_id){
                                                 this.$eventBus.$emit('setAttributeValues', attribute.attribute_id, {
-                                                    'values': icon,
+                                                    'values': [icon, values.data],
                                                     'options': icons.data
                                                 });
-                                        }
+                                            }
                                         })
-
-                                })
-                            }
+                                    })
+                                }
+                            })
                         })
                     }
                 })
+            },
+            setDefaultAttributeValues(attribute, index) {
+                this.$set(this.new_attribute_values, index, {})
+                this.$set(this.new_attribute_values[index], 'id', attribute.attribute_id)
+                let values = [];
+                attribute.selected_values.forEach(value => {
+                    values.push(value.id)
+                })
+                this.setAttributeValues(index, values)
+            },
+            setAttributeValues(index, values) {
+                if(this.product_attributes[index] === 'range' || 'color' || 'icon') {
+                    this.$set(this.new_attribute_values[index], 'values', values);
+                }
             },
             createAttributeRow()
             {
@@ -247,15 +268,9 @@
                         formData.append('images[]', file, file.name);
                     });
                 }
-                this.product_attributes.forEach(attribute => {
-                    if(attribute.id)
-                    {
-                        formData.append('attribute_id[]', attribute.id);
-                    }
-                });
-                this.selected_values.forEach(value => {
-                    formData.append('attribute_value_id[]', value);
-                });
+                formData.append('additional_info', JSON.stringify(this.additional_info));
+                formData.append('attributes', JSON.stringify(this.new_attribute_values));
+
                 this.attributes_to_delete.forEach(attr_id => {
                     formData.append('attributes_to_delete[]', attr_id)
                 });
@@ -284,6 +299,7 @@
             this.attrs = this.product_attributes;
             this.$eventBus.$on('changeCategory', this.setProductCategory);
             this.$eventBus.$on('addImages', this.setProductImages);
+            this.$eventBus.$on('changeAttributeValue', this.setAttributeValues);
             this.populateAttributes();
             this.getCategoryParams();
         }

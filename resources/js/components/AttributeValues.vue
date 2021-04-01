@@ -76,6 +76,7 @@
                 this.$eventBus.$emit('changeAttributeValue', this.index, this.range)
             },
             changeAttributeIcon() {
+                console.log(this.icons[this.index])
                 this.$eventBus.$emit('changeAttributeValue', this.index, [this.icons[this.index].value_id])
             },
             changeSelectedColor(id) {
@@ -119,14 +120,17 @@
                         }
                     }
                     else if(this.type === 'color') {
-                        this.colors = values;
+                        this.colors = values.colors;
+                        values.selected.forEach(color => {
+                            this.colors_ids.push(color.id)
+                        })
                     }
                     else if(this.type === 'icon') {
                         this.options = values.options;
-                        // values.values.forEach((value, index) => {
-                        //     this.$set(this.options[index], 'value_id', value.id);
-                        // })
-                        this.icons[this.index] = values.values;
+                        this.icons[this.index] = values.values[0];
+                        values.values[1].forEach((value, index) => {
+                            this.$set(this.options[index], 'value_id', value.id);
+                        })
                     }
                 }
             },

@@ -35,7 +35,7 @@ class ProductController extends Controller
 
     public function store(ProductStore $request)
     {
-        $input = $request->except(['attribute_id', 'attribute_value_id','attributes']);
+        $input = $request->except(['attribute_id', 'attribute_value_id', 'attributes']);
         foreach ($input as $field => $value) {
             if ($value == '') {
                 $input[$field] = 0;
@@ -132,7 +132,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        $input = $request->except(['attribute_id', 'attribute_value_id']);
+        $input = $request->except(['attribute_id', 'attribute_value_id', 'attributes']);
         foreach ($input as $field => $value) {
             if ($value == '') {
                 $input[$field] = 0;
@@ -186,18 +186,25 @@ class ProductController extends Controller
             }
         }
 
-
-        if (isset($request->attribute_id) && count($request->attribute_id))
+        if(isset($request->attributes))
         {
-            foreach ($request->attribute_id as $index => $id)
+            $attributes = json_decode($request->get('attributes'));
+            foreach ($attributes as $attribute)
             {
-                DB::table('products_attributes')->updateOrInsert(
-                    [
-                    'product_id' => $product->id,
-                    'attribute_id' => $id,
-                    'attribute_value_id' => $request->attribute_value_id[$index]
-                    ]
-                );
+                DB::table('products_attributes')
+                    ->where('attribute_id','=', $attribute->id)
+                    ->where('product_id','=', $id)
+                    ->delete();
+                foreach ($attribute->values as $attribute_value)
+                {
+
+                    DB::table('products_attributes')->insert([
+                        'product_id' => $product->id,
+                        'attribute_id' => $attribute->id,
+                        'attribute_value_id' => $attribute_value
+                    ]);
+                }
+
             }
         }
 
