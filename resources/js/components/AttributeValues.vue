@@ -49,6 +49,7 @@
             vSelect
         },
         props: {
+            attribute_id: 0,
             type: '',
             values: {
                 type: Array,
@@ -88,19 +89,45 @@
                 this.$eventBus.$emit('changeAttributeValue', this.index, this.colors_ids)
             },
             getAttributeValues(values) {
-                if (this.type === 'range') {
-                    this.setRangeValues(values)
-                }
-                else if(this.type === 'color') {
-                    if(this.colors.length === 0) {
-                        this.colors = values;
+                if(values.length || Object.keys(values).length) {
+                    if (values.length && this.type === 'range') {
+                        this.setRangeValues(values)
+                        this.attribute_id = values[0].id;
+                    }
+                    else if(values.length && this.type === 'color') {
+                        if(this.colors.length === 0) {
+                            this.colors = values;
+                            this.attribute_id = values[0].id;
+                        }
+                    }
+                    else if(this.type === 'icon') {
+                        this.options = values.options;
+                        values.values.forEach((value, index) => {
+                            this.$set(this.options[index], 'value_id', value.id);
+                        })
+                        this.attribute_id = values.values[0].id;
                     }
                 }
-                else if (this.type === 'icon') {
-                    this.options = values.options;
-                    values.values.forEach((value, index) => {
-                        this.$set(this.options[index], 'value_id', value.id);
-                    })
+
+            },
+            setAttributeValues(id, values) {
+                if (id === this.attribute_id){
+                    if(this.type === 'range') {
+                        if (this.range_ids.length === 0) {
+                            this.$set(this.range_ids, 0, Number(values[0].id));
+                            this.$set(this.range_ids, 1, Number(values[1].id));
+                        }
+                    }
+                    else if(this.type === 'color') {
+                        this.colors = values;
+                    }
+                    else if(this.type === 'icon') {
+                        this.options = values.options;
+                        // values.values.forEach((value, index) => {
+                        //     this.$set(this.options[index], 'value_id', value.id);
+                        // })
+                        this.icons[this.index] = values.values;
+                    }
                 }
             },
             setRangeValues(va) {
@@ -112,6 +139,9 @@
             setColorValues(values) {
 
             },
+            initFields() {
+
+            }
         },
         computed: {
             range_values: {
@@ -128,7 +158,8 @@
             },
         },
         created() {
-            this.$eventBus.$on('getAttributeValues', this.getAttributeValues)
+            this.$eventBus.$on('getAttributeValues', this.getAttributeValues);
+            this.$eventBus.$on('setAttributeValues', this.setAttributeValues);
         }
 
     }

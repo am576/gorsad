@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <nav>
             <div class="nav nav-tabs product-tabs" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#product-description" role="tab" aria-controls="nav-home" aria-selected="true">Описание</a>
@@ -82,7 +83,7 @@
                     <div class="col-md-8">
                         <div class="attributes-list">
                             <h3>Атрибуты</h3>
-                            <div v-if="item === 1" class="form-row" v-for="(item, index) in attribute_rows" :key="index">
+                            <div class="form-row" v-for="(item, index) in attrs" :key="index">
                                 <div class="form-group" data-app>
                                     <label>Название</label>
                                     <select name="attribute_id[]" @change="getAttributeValues($event.target.value, index)" v-model="product_attributes[index].id">
@@ -90,12 +91,8 @@
                                         <option v-for="attribute in attributes" :value="attribute.id">{{attribute.name}}</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label>Значение</label>
-                                    <select name="attribute_value_id[]" v-model="selected_values[index]">
-                                        <option value="0">...</option>
-                                        <option v-for="value in attribute_values[index]" :value="value.id">{{value.value}}</option>
-                                    </select>
+                                <div class="form-group" style="width:200px">
+                                    <attribute-values :attribute_id="product_attributes[index].attribute_id" :type="product_attributes[index].type" :index="index" :values="attribute_values[index]"></attribute-values>
                                 </div>
                                 <button type="button" class="btn btn-danger delete" tabindex="-1" @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
                             </div>
@@ -121,8 +118,13 @@
 <script>
     export default {
         props: {
-            product: {},
-            product_attributes: [],
+            product: {
+                attributes:{}
+            },
+            product_attributes: {
+                type: Array,
+                default:  function() {return []}
+            },
             product_images: []
         },
         data() {
@@ -131,6 +133,7 @@
                 errors: {},
                 attribute_rows : [],
                 attributes: [],
+                attrs:[],
                 attribute_values: [],
                 selected_values: [],
                 images_to_delete: [],
@@ -160,39 +163,55 @@
             },
             getAttributesForCategory()
             {
+
+            },
+            getAttributeValues(attribute_id, index)
+            {
+
+            },
+            setProductImages(images) {
+                this.images = images;
+            },
+            populateAttributes() {
                 axios.get('/api/getAttributesForCategory', {
                     params: {
                         category_id: this.product.category_id
                     }
                 }).then(response => {
                     this.attributes = response.data;
-                })
-            },
-            getAttributeValues(attribute_id, index)
-            {
-                axios.get('/api/getAttributeValues', {
-                    params: {
-                        attribute_id: attribute_id
+                    if (this.attrs.length > 0) {
+                        this.attrs.forEach((attribute, index) => {
+                            if (attribute.type === 'range' || attribute.type === 'color') {
+                                axios.get('/api/getAttributeValues', {
+                                    params: {
+                                        attribute_id: attribute.attribute_id
+                                    }
+                                }).then(values => {
+                                    this.$set(this.attribute_values, index, values.data);
+                                    this.$eventBus.$emit('setAttributeValues', attribute.attribute_id, attribute.selected_values);
+                                })
+                            }
+                            else if (attribute.type === 'icon') {
+                                    axios.get('/api/getAttributeIcons', {
+                                        params: {
+                                            attribute_id: attribute.attribute_id
+                                        }
+                                    }).then(icons => {
+                                        let icon_id;
+                                        icons.data.forEach(icon => {
+                                            if(icon.icon_id === attribute.selected_values[0].icon_id){
+                                                this.$eventBus.$emit('setAttributeValues', attribute.attribute_id, {
+                                                    'values': icon,
+                                                    'options': icons.data
+                                                });
+                                        }
+                                        })
+
+                                })
+                            }
+                        })
                     }
-                }).then(response => {
-                    this.$set(this.attribute_values, index, response.data)
                 })
-            },
-            setProductImages(images) {
-                this.images = images;
-            },
-            populateAttributes()
-            {
-                this.getAttributesForCategory();
-                if(this.product_attributes.length > 0)
-                {
-                    this.attributes = this.product_attributes;
-                    this.attributes.forEach((attribute, index) => {
-                        this.getAttributeValues(attribute.id, index);
-                        this.$set(this.selected_values, index, attribute.value_id);
-                        this.$set(this.attribute_rows, this.attribute_rows.length, 1);
-                    })
-                }
             },
             createAttributeRow()
             {
@@ -262,6 +281,7 @@
         },
         created: function () {
             this.additional_info = JSON.parse(this.product.additional_info)
+            this.attrs = this.product_attributes;
             this.$eventBus.$on('changeCategory', this.setProductCategory);
             this.$eventBus.$on('addImages', this.setProductImages);
             this.populateAttributes();

@@ -62,9 +62,13 @@ class ApiController extends Controller
     public function getAttributeIcons(Request $request)
     {
         $attribute = Attribute::find($request->attribute_id);
-        $icons = $attribute->icons()->pluck('image_id');
+        $icons = $attribute->icons();
 
-        $images = Image::whereIn('id', $icons)->get();
+        $images = Image::whereIn('id', $icons->pluck('image_id'))->get();
+
+        foreach ($images as $index => $image) {
+            $image->icon_id = $icons[$index]->id;
+        }
 
         return response()->json($images);
     }
