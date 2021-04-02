@@ -29,7 +29,6 @@
             attributes: {},
         },
         created() {
-            console.log(this.attributes)
         }
     }
 </script>

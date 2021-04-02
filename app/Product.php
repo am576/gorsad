@@ -71,9 +71,10 @@ class Product extends Model
             }
             if($attribute->type == 'icon')
             {
-                $icon_id = DB::table('attribute_icons')
-                    ->join('products_attributes', 'products_attributes.attribute_value_id','=','attribute_icons.id')
-                    ->select('attribute_icons.id as value_id')
+                $icon_id = DB::table('products_attributes')
+                    ->select('attribute_value_id as value_id')
+                    ->where('product_id',$this->id)
+                    ->where('attribute_id',$attribute->id)
                     ->get()->pluck('value_id');
                 $attribute->selected_values = $icon_id;
 

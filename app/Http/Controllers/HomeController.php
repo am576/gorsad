@@ -28,6 +28,13 @@ class HomeController extends Controller
             ->with('auth_user',  auth()->user());
     }
 
+    public function showShopPage()
+    {
+        $products = Product::all();
+
+        return view('frontend.shop.index')->with('products', $products);
+    }
+
     public function maintenance()
     {
         return view('frontend.maintenance');

@@ -9,6 +9,7 @@ use App\IconSet;
 use App\Image;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
@@ -68,6 +69,7 @@ class ApiController extends Controller
 
         foreach ($images as $index => $image) {
             $image->icon_id = $icons[$index]->id;
+            $image->icon_label = DB::table('attributes_values')->where('id',$icons[$index]->attribute_value_id)->get()->pluck('value')[0];
         }
 
         return response()->json($images);

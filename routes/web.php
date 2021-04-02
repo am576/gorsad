@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('/','HomeController@index');
 Route::get('/categories/{url_title}', ['uses' => 'HomeController@categoryPage']);
 Route::get('/products/{product_code}', ['uses' => 'HomeController@productPage']);
+Route::get('/shop', 'HomeController@showShopPage');
 
 Route::get('/cart', 'HomeController@showCart');
 Route::get('/cart/add/', 'CartController@addProduct');

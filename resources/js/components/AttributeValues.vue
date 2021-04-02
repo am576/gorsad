@@ -20,13 +20,13 @@
             <v-select v-model="selected[0]" :options="values.icons" @option:selected="changeAttributeIcon">
                 <template #selected-option="{ icon }">
                     <div style="display: flex; align-items: baseline;">
-                        <span>{{selected.label}}</span>
+                        <span>{{selected.icon_label}}</span>
                         <img height="50px" :src="'/storage/images/' + selected[0].icon"/>
                     </div>
                 </template>
 
                 <template slot="option" slot-scope="option">
-                    <span>{{option.label}}</span>
+                    <span>{{option.icon_label}}</span>
                     <img height="50px" :src="'/storage/images/' + option.icon"/>
                 </template>
             </v-select>

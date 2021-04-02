@@ -8,7 +8,7 @@
 @import '~bootstrap/scss/bootstrap';
 
 #app {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: auto;
     position: relative !important;
     overflow-x: hidden !important;
@@ -138,4 +138,21 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column-reverse;
+    height: 250px;
+    background-size:cover;
+    background-position: center;
+
+    .description {
+        font-size: 20px;
+        color: #ffffff;
+        text-align: center;
+        background: rgba(10,10,10,0.5);
+        margin-bottom: 0!important;
+        line-height: 50px;
+    }
 }

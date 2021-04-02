@@ -3,16 +3,13 @@
         <nav class="navbar" v-if="!isMobileView">
             <ul class="nav nav-pills ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" v-if="!isGuest" href="#">Желаемое</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" v-if="!isGuest" href="/cart">Корзина</a>
                 </li>
                 <li class="nav-item">
                     <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
                         <input type="hidden" name="_token" :value="csrf">
                     </form>
-                    <a class="nav-link" v-if="!isGuest" @click="logout"> logout </a>
+                    <a class="nav-link" v-if="!isGuest" @click="logout"> Выход </a>
                 </li>
                 <li class="nav-item" v-if="isGuest">
                     <a class="nav-link" href="/login">Выход</a>
@@ -23,32 +20,27 @@
             <div id="navigation-icon-left" v-if="isMobileView">
                 <i class="mdi mdi-menu mdi-36px" @click="toggleMobileNav()"></i>
             </div>
-
-            <div class="mr-auto" v-if="!isMobileView"></div>
             <div id="mobile-logo" class="m-auto" v-if="isMobileView">Какое-то ЛоГо</div>
-            <ul class="nav nav-pills ml-auto" v-if="!isMobileView">
+            <ul class="nav nav-pills m-auto" v-if="!isMobileView">
                 <li class="nav-item">
                     <a href="#" class="nav-link">Новинки</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Lalalala</a>
+                    <a href="shop" class="nav-link">Каталог</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Babababa</a>
+                    <a href="#" class="nav-link">Страница_1</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Nananana</a>
+                    <a href="#" class="nav-link">Страница_2</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Mamamama</a>
+                    <a href="#" class="nav-link">Страница_3</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Kakakaka</a>
+                    <a href="#" class="nav-link">Страница_4</a>
                 </li>
             </ul>
-            <div  class="ml-auto d-inline" v-if="!isMobileView">
-                <input type="text" placeholder="Поиск">
-            </div>
             <div id="navigation-icon-right" v-if="isMobileView">
                 <i class="mdi mdi-dots-horizontal mdi-36px" @click="toggleMobileLinks"></i>
             </div>
@@ -81,12 +73,6 @@
         <div id="links-mobile"  class="mobile-menu" :class="{'open': showLinks}">
             <i class="mdi mdi-close" @click="toggleMobileLinks" ></i>
             <ul class="nav nav-pills ml-auto">
-                <li>
-                    <input type="text" placeholder="Поиск">
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Желаемое</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Корзина</a>
                 </li>
@@ -140,7 +126,6 @@
         },
         created() {
             this.handleView();
-            console.log(this.auth_user);
             window.addEventListener('resize', this.handleView);
         }
     }
