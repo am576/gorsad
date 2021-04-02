@@ -47,32 +47,39 @@ class Product extends Model
             ->where('products_attributes.product_id', '=',$this->id)
             ->groupBy('products_attributes.attribute_id')->get();
 
-        $attrs = DB::table('attributes_values')
+        $selected_values = DB::table('attributes_values')
             ->join('products_attributes','products_attributes.attribute_value_id','=','attributes_values.id')
-            ->select('attributes_values.id', 'attributes_values.value', 'attributes_values.attribute_id')
+            ->where('products_attributes.product_id','=', $this->id)
+            ->select(DB::raw('group_concat(attributes_values.id) as svalues'), 'attributes_values.attribute_id')
+            ->groupBy('attributes_values.attribute_id')
             ->get();
 
-        $selected_values = [];
-        foreach ($attrs as $key => $value) {
-            $selected_values[$value->attribute_id][] = [
-              'attribute_id' => $value->attribute_id,
-              'id' => $value->id,
-              'value' => $value->value
-            ];
-        }
+
+        $product_attributes = DB::table('products_attributes')
+            ->select('attribute_value_id')
+            ->where('product_id',$this->id)
+            ->get()->toArray();
+
+        $icon_id=0;
         foreach ($attributes as $index => $attribute) {
             $attribute->values = array_values(array_unique(explode(',',$attribute->values)));
-            $attribute->selected_values = $selected_values[$attribute->id];
+            foreach ($selected_values as $i => $values) {
+                if($values->attribute_id == $attribute->id)
+                {
+                    $attribute->selected_values = explode(',',$values->svalues);
+                }
+            }
             if($attribute->type == 'icon')
             {
                 $icon_id = DB::table('attribute_icons')
-                    ->where('attribute_value_id','=', $selected_values[$attribute->id][0]['id'])
-                    ->pluck('attribute_icons.id');
-                $attribute->selected_values[0]['icon_id'] = $icon_id[0];
+                    ->join('products_attributes', 'products_attributes.attribute_value_id','=','attribute_icons.id')
+                    ->select('attribute_icons.id as value_id')
+                    ->get()->pluck('value_id');
+                $attribute->selected_values = $icon_id;
 
             }
         }
-        return ($attributes);
+        return $attributes;
     }
 
     public function saved_attributes()

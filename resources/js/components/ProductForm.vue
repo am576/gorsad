@@ -74,16 +74,16 @@
                     <div class="col-md-8">
                         <div class="attributes-list">
                             <h3>Атрибуты</h3>
-                            <div v-if="item === 1" class="form-row" v-for="(item, index) in attribute_rows" :key="index">
+                            <div class="form-row" v-for="(product_attribute, index) in product.attributes" :key="index">
                                 <div class="form-group">
                                     <label>Название</label>
-                                    <select name="attribute_id[]" @change="getAttributeValues($event.target, index)" v-model="product.attributes[index].id">
+                                    <select name="attribute_id[]" @change="getAttributeValues($event.target, index)" v-model="product_attribute.id">
                                         <option value="0">...</option>
                                         <option v-for="attribute in attributes" :value="attribute.id" :data-type="attribute.type">{{attribute.name}}</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="width:200px" v-if="product.attributes[index]">
-                                    <attribute-values :type="attribute_types[index]" :index="index" :values="attribute_values[index]"></attribute-values>
+                                <div class="form-group" style="width:200px" v-if="product_attribute">
+                                    <attribute-values :attribute_id="product_attribute.id" :type="attribute_types[index]" :index="index" :values="product_attribute.attribute_values" :selected="selected_values[index]"></attribute-values>
                                 </div>
                                 <button type="button" class="btn btn-danger delete" tabindex="-1"
                                         @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
@@ -126,7 +126,7 @@
                     ],
                 },
                 product: {
-                    attributes: {},
+                    attributes: [],
                     status: 1
                 },
                 images: [],
@@ -134,9 +134,10 @@
                 attribute_rows : [],
                 attributes: [],
                 attribute_types: [],
-                attribute_values: [],
                 category_fields: [],
-                additional_info:{}
+                additional_info:{},
+                text_options: {},
+                selected_values: [],
             }
         },
         methods: {
@@ -165,15 +166,14 @@
                         attribute_id: select.value
                     }
                 }).then(response => {
-                    this.$set(this.attribute_values, index, response.data);
-
+                    this.$set(this.product.attributes[index], 'id', select.value);
+                    this.$set(this.product.attributes[index], 'attribute_values', response.data);
                     if(this.attribute_types[index] === 'range') {
                         this.$set(this.product.attributes[index], 'values', [response.data[0].id,response.data[response.data.length-1].id]);
-                        this.$eventBus.$emit('getAttributeValues', [this.attribute_values[index][0],this.attribute_values[index][this.attribute_values[index].length-1]]);
+                        this.$set(this.product.attributes[index].attribute_values, 'range', [response.data[0].id,response.data[response.data.length-1].id]);
                     }
                     else if(this.attribute_types[index] === 'color') {
                         this.$set(this.product.attributes[index], 'values', []);
-                        this.$eventBus.$emit('getAttributeValues', this.attribute_values[index]);
                     }
                     else if(this.attribute_types[index] === 'icon') {
                         this.$set(this.product.attributes[index], 'values', []);
@@ -182,14 +182,20 @@
                                 attribute_id: this.product.attributes[index].id
                             }
                         }).then(response => {
-                            this.$eventBus.$emit('getAttributeValues', {'values':this.attribute_values[index],'options':response.data},);
+                            this.$set(this.product.attributes[index].attribute_values, 'icons', response.data);
                         })
                     }
+
                 })
             },
             setAttributeValues(index, values) {
-                if(this.attribute_types[index] === 'range' || 'color' || 'icon') {
-                    this.$set(this.product.attributes[index], 'values', values);
+                this.$set(this.product.attributes[index], 'values', values);
+                if(this.attribute_types[index] === 'color' || this.attribute_types[index] === 'text') {
+                    this.$set(this.selected_values, index, values)
+                }
+                else if(this.attribute_types[index] === 'icon') {
+                    this.$set(this.selected_values, index, values);
+                    this.$set(this.product.attributes[index],'values',[values[0].icon_id])
                 }
             },
             setProductImages(images) {
@@ -197,13 +203,14 @@
             },
             createAttributeRow()
             {
-                this.$set(this.product.attributes, this.attribute_rows.length, {})
-                this.$set(this.attribute_rows, this.attribute_rows.length, 1)
+                this.$set(this.product.attributes, this.product.attributes.length, {})
             },
             removeAttributeRow(index)
             {
-                this.$set(this.attribute_rows, index, 0)
-                Vue.delete(this.product.attributes, index);
+                Vue.delete(this.attribute_types, index);
+                Vue.delete(this.selected_values, index);
+                this.$delete(this.product.attributes, index);
+                this.$forceUpdate();
             },
             submit() {
                 this.errors = {};

@@ -90,21 +90,26 @@ class ProductController extends Controller
         }
         if(isset($request->attributes))
         {
+
             $attributes = json_decode($request->get('attributes'));
+            $ids = [];
+
             foreach ($attributes as $attribute)
             {
-                foreach ($attribute->values as $attribute_value)
+                if(!in_array($attribute->id,$ids))
                 {
-                    DB::table('products_attributes')->insert([
-                        'product_id' => $product->id,
-                        'attribute_id' => $attribute->id,
-                        'attribute_value_id' => $attribute_value
-                    ]);
+                    array_push($ids, $attribute->id);
+                    foreach ($attribute->values as $attribute_value)
+                    {
+                        DB::table('products_attributes')->insert([
+                            'product_id' => $product->id,
+                            'attribute_id' => $attribute->id,
+                            'attribute_value_id' => $attribute_value
+                        ]);
+                    }
                 }
-
             }
         }
-
         return redirect()->intended(route('products.index'));
     }
 
@@ -191,20 +196,21 @@ class ProductController extends Controller
             $attributes = json_decode($request->get('attributes'));
             foreach ($attributes as $attribute)
             {
-                DB::table('products_attributes')
-                    ->where('attribute_id','=', $attribute->id)
-                    ->where('product_id','=', $id)
-                    ->delete();
-                foreach ($attribute->values as $attribute_value)
+                if(!is_null($attribute))
                 {
-
-                    DB::table('products_attributes')->insert([
-                        'product_id' => $product->id,
-                        'attribute_id' => $attribute->id,
-                        'attribute_value_id' => $attribute_value
-                    ]);
+                    DB::table('products_attributes')
+                        ->where('attribute_id','=', $attribute->id)
+                        ->where('product_id','=', $id)
+                        ->delete();
+                    foreach ($attribute->values as $attribute_value)
+                    {
+                        DB::table('products_attributes')->insert([
+                            'product_id' => $product->id,
+                            'attribute_id' => $attribute->id,
+                            'attribute_value_id' => $attribute_value
+                        ]);
+                    }
                 }
-
             }
         }
 

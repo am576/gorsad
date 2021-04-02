@@ -1,30 +1,27 @@
 <template>
     <div>
         <div v-if="type === 'text'">
-            <select name="attribute_value_id[]" v-model="value_id" @change="changeAttributeRange">
-                <option value="0">...</option>
-                <option v-for="value in values[index]" :value="value.id">{{value.value}}</option>
-            </select>
+            <v-select multiple v-model="selected" :reduce="value => value.id" label="value" :options="values" @option:selected="changeAttributeValue"/>
         </div>
         <div v-if="type === 'color'">
-            <span class="attribute-color" v-for="color in colors" v-bind:class="{selected: colors_ids.includes(color.id)}" v-bind:style="{background: color.value}" @click="changeSelectedColor(color.id)"></span>
+            <span class="attribute-color"  v-for="(color) in values" v-bind:class="{selected: selected.includes(color.id)}" v-bind:style="{background: color.value}" @click="changeSelectedColor(color.id)"></span>
         </div>
         <div v-if="type === 'range'">
             <vue-slider
-                v-model="range_ids"
+                v-model="values.range"
                 :data="values"
                 :data-value="'id'"
                 :data-label="'value'"
                 :tooltip="'always'"
-                @change="changeAttributeValue()"
+                @change="changeAttributeRange()"
             ></vue-slider>
         </div>
         <div v-if="type === 'icon'">
-            <v-select v-model="icons[index]" :options="options" @option:selected="changeAttributeIcon">
+            <v-select v-model="selected[0]" :options="values.icons" @option:selected="changeAttributeIcon">
                 <template #selected-option="{ icon }">
                     <div style="display: flex; align-items: baseline;">
-                        <span>{{icons[index].label}}</span>
-                        <img height="50px" :src="'/storage/images/' + icons[index].icon"/>
+                        <span>{{selected.label}}</span>
+                        <img height="50px" :src="'/storage/images/' + selected[0].icon"/>
                     </div>
                 </template>
 
@@ -55,6 +52,10 @@
                 type: Array,
                 default:  function() {return []}
             },
+            selected: {
+                type: Array,
+                default:  function() {return []}
+            },
             index: 0
         },
         data() {
@@ -66,19 +67,22 @@
                 colors_ids: [],
                 icons: [],
                 options: [],
-                attr_id: 0
+                text_options: [],
+                attr_id: 0,
+                selected_id:0,
+                selected_text_options: [],
+                i: 0
             }
         },
         methods: {
-            changeAttributeValue() {
-                this.$eventBus.$emit('changeAttributeValue', this.index, this.range_ids)
-            },
             changeAttributeRange() {
-                this.$eventBus.$emit('changeAttributeValue', this.index, this.range)
+                this.$eventBus.$emit('changeAttributeValue', this.index, this.values.range)
+            },
+            changeAttributeValue() {
+                this.$eventBus.$emit('changeAttributeValue', this.index, this.selected)
             },
             changeAttributeIcon() {
-                console.log(this.icons[this.index])
-                this.$eventBus.$emit('changeAttributeValue', this.index, [this.icons[this.index].value_id])
+                this.$eventBus.$emit('changeAttributeValue', this.index, this.selected)
             },
             changeSelectedColor(id) {
                 this.value_id = id;
@@ -95,58 +99,63 @@
                         if (values.length && this.type === 'range') {
                             if (this.range_ids.length === 0) {
                                 this.setRangeValues(values)
-                                this.attr_id = values[0].id;
                             }
                         }
                         else if(values.length && this.type === 'color') {
                             if(this.colors.length === 0) {
+                                this.attr_id = values[0].attribute_id;
+                                this.colors_ids = selected;
                                 this.colors = values;
                             }
                         }
-                        /*else if(this.type === 'icon') {
+                        else if(this.type === 'icon') {
                             this.options = values.options;
                             values.values.forEach((value, index) => {
                                 this.$set(this.options[index], 'value_id', value.id);
                             })
-                            this.attribute_id = values.values[0].id;
-                        }*/
+                        }
+                        else {
+                            if(this.text_options.length === 0) {
+                                this.attr_id = values[0].attribute_id;
+                                this.text_options = values;
+                                this.selected_text_options = this.selected;
+                            }
+                        }
                     }
             },
             setAttributeValues(id, values) {
                 if (id === this.attribute_id){
                     if(this.type === 'range') {
                         if (this.range_ids.length === 0) {
-                            this.$set(this.range_ids, 0, Number(values[0].id));
-                            this.$set(this.range_ids, 1, Number(values[1].id));
+                            this.values = values;
                         }
                     }
                     else if(this.type === 'color') {
-                        this.colors = values.colors;
-                        values.selected.forEach(color => {
-                            this.colors_ids.push(color.id)
-                        })
+                        this.values = values;
+                        this.colors_ids = this.selected;
                     }
                     else if(this.type === 'icon') {
-                        this.options = values.options;
-                        this.icons[this.index] = values.values[0];
-                        values.values[1].forEach((value, index) => {
-                            this.$set(this.options[index], 'value_id', value.id);
-                        })
+                        this.values = values.icons;
+                        this.selected = values.selected;
+                        // this.options = values.options;
+                        // this.icons[this.index] = values.values[0];
+                        // values.values[1].forEach((value, index) => {
+                        //     this.$set(this.options[index], 'value_id', value.id);
+                        // })
+                    }
+                    else if(this.type === 'text') {
+                        this.values = values;
+                       this.text_options = values;
                     }
                 }
             },
             setRangeValues(va) {
                 if (this.range_ids.length === 0) {
-                    this.$set(this.range_ids, 0, va[0].id);
-                    this.$set(this.range_ids, 1, va[1].id);
+                    this.$set(this.range_ids, 0, va[0]);
+                    this.$set(this.range_ids, 1, va[1]);
                 }
             },
-            setColorValues(values) {
 
-            },
-            initFields() {
-
-            }
         },
         computed: {
             range_values: {
@@ -165,6 +174,7 @@
         created() {
             this.$eventBus.$on('getAttributeValues', this.getAttributeValues);
             this.$eventBus.$on('setAttributeValues', this.setAttributeValues);
+            // this.$eventBus.$on('setTextValues', this.setTextValues);
         }
 
     }
