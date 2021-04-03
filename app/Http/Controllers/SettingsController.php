@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Attribute;
+use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class SettingsController extends Controller
@@ -48,6 +50,34 @@ class SettingsController extends Controller
                 {
                     return Redirect::back()->withErrors(['Пожалуйста, укажите 3 разных атрибута']);
                 }
+            }
+        }
+
+        return redirect()->intended(route('admin.dashboard'));
+    }
+
+    public function SaveAndApplyExtraPrice(Request $request)
+    {
+        $type = $request->type;
+        $amount = $request->amount;
+        $ep = DB::table('extra_charges')->insertGetId([
+           'type' => $type,
+           'amount' => $amount
+        ]);
+
+        $products = Product::all();
+
+        if ($type == 'fixed')
+        {
+            foreach ($products as $product) {
+                $product->price += $amount;
+                $product->save();
+            }
+        }
+        else if($type == 'percent'){
+            foreach ($products as $product) {
+                $product->price += $product->price * ($amount / 100);
+                $product->save();
             }
         }
 

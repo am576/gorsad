@@ -44,6 +44,12 @@ return [
           'title' => 'заказы',
           'singular' => 'заказ',
           'route' => 'orders',
+          'icon' => 'download-box'
+      ],
+      'price' => [
+          'title' => 'наценка',
+          'singular' => 'заказ',
+          'route' => 'prices',
           'icon' => 'currency-usd-circle-outline'
       ],
       'client' => [

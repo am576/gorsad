@@ -48,7 +48,10 @@ Route::prefix('admin')->group(function(){
     Route::get('/filter', 'SettingsController@showFilerSettingsPage');
     Route::post('/filter', 'SettingsController@saveFilterSettings');
 
-
+    Route::get('/prices', function () {
+        return view('admin.settings.prices');
+    });
+    Route::post('/prices','SettingsController@SaveAndApplyExtraPrice');
 
     Route::resources([
         'products'    => 'ProductController',
