@@ -25,14 +25,6 @@
                     </div>
                     <div>Сумма: {{price_total}} грн.</div>
                 </div>
-                <div>
-                    <h4>Доставка</h4>
-                    <select v-model="delivery">
-                        <option value="1">Кнопочка</option>
-                        <option value="2">Карандаш</option>
-                        <option value="3">Дижон</option>
-                    </select>
-                </div>
                 <div class="text-center">
                     <button class="btn btn-primary btn-lg" @click="doCheckout">Подтвердить заказ</button>
                 </div>
@@ -51,7 +43,6 @@
                 products: {},
                 price_total: 0,
                 client: {},
-                delivery: 1,
             }
         },
         methods: {
@@ -71,13 +62,11 @@
                 });
 
                 order_data['client'] = this.client;
-                order_data['delivery'] = this.delivery;
                 order_data['sum_total'] = this.price_total;
 
 
                 axios.post('/cart/checkout', order_data)
                 .then(response => {
-                    console.log(response);
                     if(response.status == 200)
                     {
                         alert('Заказ успешно создан');
@@ -88,7 +77,6 @@
                     }
                 })
                 .catch(error => {
-                    console.log(error.response);
                     alert('Ошибка обработки заказа');
                 })
             }

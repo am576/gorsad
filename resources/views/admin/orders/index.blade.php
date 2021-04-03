@@ -31,11 +31,11 @@
                                     <td>{{sprintf('%08d', $order->id)}}</td>
                                     <td class="text-success">{{$order->status}}</td>
                                     <td class="text-right">{{$order->created_at}}</td>
-                                    <td class="text-right">{{$order->updated_at}}</td>
+                                    <td class="text-right">@if($order->status!='new'){{$order->updated_at}}@else&mdash;@endif</td>
                                     <td>
-                                        <a class="btn btn-primary" href="/admin/orders/{{$order->id}}">
+                                        {{--<a class="btn btn-primary" href="/admin/orders/{{$order->id}}">
                                             <i class="mdi mdi-arrow-right-bold mdi-18px"></i>
-                                        </a>
+                                        </a>--}}
                                     </td>
                                 </tr>
                                 @endforeach

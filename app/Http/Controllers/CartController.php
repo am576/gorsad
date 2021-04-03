@@ -26,10 +26,20 @@ class CartController extends Controller
             $cart = [
                 $product_id => [
                     'title' => $product->title,
-                    'quantity' => 1,
+                    'quantity' => 0,
                     'price' => $product->price,
                     'image' => $product->images[0]->icon
                 ]
+            ];
+        }
+        else
+        {
+            $cart[$product_id] = [
+                'title' => $product->title,
+                'quantity' => 1,
+                'price' => $product->price,
+                'image' => $product->images[0]->icon
+
             ];
         }
 
@@ -47,16 +57,7 @@ class CartController extends Controller
                 return response()->json(['cart'=>$cart]);
             }
 
-
         }
-
-        $cart[$product_id] = [
-            'title' => $product->title,
-            'quantity' => 1,
-            'price' => $product->price,
-            'image' => $product->images[0]->icon
-
-        ];
 
         session()->put('cart', $cart);
 
@@ -102,7 +103,6 @@ class CartController extends Controller
         $order = new Order([
            'client_name' => $order_data['client']['name'],
            'client_phone' => $order_data['client']['phone'],
-           'delivery' => $order_data['delivery'],
            'sum_total' => $order_data['sum_total']
         ]);
 

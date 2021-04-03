@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-<!--                <button class="btn btn-primary" @click="addToCart">Купить</button>-->
+                <button class="btn btn-primary" @click="addToCart">Купить</button>
             </div>
         </div>
     </div>

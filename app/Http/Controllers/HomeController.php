@@ -95,9 +95,9 @@ class HomeController extends Controller
         return view('frontend.category-page', $view_data);
     }
 
-    public function productPage($product_code)
+    public function productPage($product_id)
     {
-        $product = Product::where('code', $product_code)
+        $product = Product::where('id', $product_id)
             ->with('images')
             ->first();
 

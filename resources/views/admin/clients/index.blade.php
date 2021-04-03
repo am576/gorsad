@@ -19,18 +19,20 @@
                                 <thead>
                                 <tr>
                                     <th>Имя</th>
-                                    <th>Телефон</th>
+                                    <th>E-Mail</th>
                                     <th>Заказы</th>
+                                    <th>Дата регистрации</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @foreach($clients as $client)
                                 <tr>
-                                    <td>Высилий Иванович</td>
-                                    <td>0951231231</td>
-                                    <td>
-                                        <a href="#" onclick="alert('Заглушка')">Список заказов</a>
-                                    </td>
+                                   <td>{{$client->name}}</td>
+                                   <td>{{$client->email}}</td>
+                                   <td></td>
+                                   <td>{{$client->created_at}}</td>
                                 </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                     </div>

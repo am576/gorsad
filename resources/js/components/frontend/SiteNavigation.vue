@@ -12,7 +12,7 @@
                     <a class="nav-link" v-if="!isGuest" @click="logout"> Выход </a>
                 </li>
                 <li class="nav-item" v-if="isGuest">
-                    <a class="nav-link" href="/login">Выход</a>
+                    <a class="nav-link" href="/login">Вход</a>
                 </li>
             </ul>
         </nav>
