@@ -43,6 +43,9 @@ Route::prefix('admin')->group(function(){
     Route::get('logout/', 'Auth\AdminLoginController@logout')->name('admin.logout');
     Route::get('/','Auth\AdminController@index')->name('admin.dashboard');
 
+    Route::get('/filter', 'SettingsController@showFilerSettingsPage');
+    Route::post('/filter', 'SettingsController@saveFilterSettings');
+
     Route::resources([
         'products'    => 'ProductController',
         'categories'  => 'CategoryController',

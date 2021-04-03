@@ -34,6 +34,12 @@ return [
               ]
           ]
       ],
+      'filter' => [
+          'title' => 'фильтр',
+          'singular' => 'фильтр',
+          'route' => 'filter',
+          'icon'  => 'filter'
+      ],
       'order' => [
           'title' => 'заказы',
           'singular' => 'заказ',
