@@ -20,7 +20,9 @@ Auth::routes();
 Route::get('/','HomeController@index');
 Route::get('/categories/{url_title}', ['uses' => 'HomeController@categoryPage']);
 Route::get('/products/{product_code}', ['uses' => 'HomeController@productPage']);
-Route::get('/shop', 'HomeController@showShopPage');
+//Route::get('/shop', 'HomeController@showShopPage')->name('shop');
+Route::get('/shop', 'HomeController@showShopPage')->name('shop');
+Route::post('/search', 'HomeController@ApplyFilter');
 
 Route::get('/cart', 'HomeController@showCart');
 Route::get('/cart/add/', 'CartController@addProduct');
@@ -45,6 +47,8 @@ Route::prefix('admin')->group(function(){
 
     Route::get('/filter', 'SettingsController@showFilerSettingsPage');
     Route::post('/filter', 'SettingsController@saveFilterSettings');
+
+
 
     Route::resources([
         'products'    => 'ProductController',

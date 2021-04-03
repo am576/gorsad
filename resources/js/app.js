@@ -43,6 +43,7 @@ Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 Vue.component('site-navigation', require('./components/frontend/SiteNavigation').default);
 Vue.component('account-links', require('./components/frontend/AccountLinks').default);
 Vue.component('home-slider', require('./components/frontend/HomeSlider').default);
+Vue.component('filter-small', require('./components/frontend/FilterSmall').default);
 Vue.component('products-list', require('./components/frontend/ProductsList').default);
 Vue.component('product-bar', require('./components/frontend/ProductBar').default);
 Vue.component('product-images', require('./components/frontend/ProductImages').default);

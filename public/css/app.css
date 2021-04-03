@@ -10906,6 +10906,7 @@ a.text-dark:focus {
 
 #app {
   max-width: 1400px;
+  min-height: 2000px;
   margin: auto;
   position: relative !important;
   overflow-x: hidden !important;

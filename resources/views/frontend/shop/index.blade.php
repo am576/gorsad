@@ -12,8 +12,10 @@
                                 <p class="description">{{$product->title}}</p>
                             </div>
                         </div>
-
                     @endforeach
+                    @if(!count($products))
+                        По вашему запросу ничего не найдено.
+                    @endif
                 </div>
             </div>
         </div>

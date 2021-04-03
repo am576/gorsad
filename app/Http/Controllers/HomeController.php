@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Attribute;
 use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
@@ -22,10 +23,42 @@ class HomeController extends Controller
     {
         $root_category = Category::where('url_title', '')->first();
         $categories = $root_category->getChildrenCategories();
+        $filter_attributes = Attribute::smallFilterAttributes();
 
         return view('frontend/index')
             ->with('categories', $categories)
-            ->with('auth_user',  auth()->user());
+            ->with('auth_user',  auth()->user())
+            ->with('filter_attributes',$filter_attributes);
+    }
+
+    public function ApplyFilter(Request $request)
+    {
+
+        $product_name = $request->get('product_name');
+        $filter_options = json_decode($request->get('filter_options'));
+        $filter_values = [];
+
+        foreach ($filter_options as $attribute) {
+            foreach ($attribute as $value) {
+                array_push($filter_values, $value);
+            }
+        }
+
+        if(count($filter_values) == 0)
+        {
+            $products = Product::where('title','like', '%'.$product_name.'%')->get();
+
+            return view('frontend.shop.index')->with('products', $products);
+        }
+
+        $products = Product::where('title','like', '%'.$product_name.'%')
+            ->join('products_attributes', 'products.id','=','products_attributes.product_id')
+            ->select('products.*', 'products_attributes.attribute_value_id')
+            ->whereIn('products_attributes.attribute_value_id',$filter_values)
+            ->groupBy('products.id')
+            ->get();
+
+        return view('frontend.shop.index')->with('products', $products);
     }
 
     public function showShopPage()
