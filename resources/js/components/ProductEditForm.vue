@@ -72,8 +72,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="description">Описание</label>
-                                <input type="text" class="form-control" id="description" name="description" autocomplete="off"
-                                       v-model="product.description">
+                                <ckeditor :editor="editor" :config="editorConfig" v-model="product.description"></ckeditor>
                                 <div v-if="errors && errors.description" class="text-danger">{{errors.description[0]}}</div>
                             </div>
                         </div>
@@ -116,8 +115,15 @@
 </template>
 
 <script>
+    import CKEditor from '@ckeditor/ckeditor5-vue';
+    import ClassicEditor from '@ckeditor/custom/build/ckeditor.js';
+
     export default {
+        components: {
+            ckeditor: CKEditor.component
+        },
         props: {
+
             product: {
                 attributes:{}
             },
@@ -142,8 +148,22 @@
                 text_options: {},
                 additional_info:{},
                 overlay: false,
+                editor: ClassicEditor,
+                editorConfig: {
+                    fontSize: {
+                        options: [
+                            'tiny',
+                            'default',
+                            'big'
+                        ]
+                    },
+                    toolbar: [
+                        'heading', 'bulletedList', 'numberedList', 'fontSize', 'undo', 'redo'
+                    ],
+                },
             }
         },
+
         methods: {
             setProductCategory(id) {
                 if(confirm('Смена категории удалит все созданные атрибуты. Продолжить?'))
@@ -239,7 +259,6 @@
                                             'icons': icons.data,
                                             'selected': this.attrs[index].selected_values[0]
                                         });
-
                                     })
                                 }
                                 else {
@@ -269,6 +288,14 @@
             {
                 this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.attrs[index].attribute_id);
                 Vue.delete(this.attrs, index);
+                /*this.$set(this.attrs[index].selected_values, 0, this.attrs[index].selected_values[0]);
+                if (this.attrs[index] === 'icon') {
+                    this.$eventBus.$emit('setAttributeValues',this.attrs[index].attribute_id, {
+                        'icons': this.attrs[index].attribute_values,
+                        'selected': this.attrs[index].selected_values[0]
+                    });
+                }*/
+
             },
             removeImage(image_id)
             {
@@ -323,7 +350,7 @@
                     this.overlay = false;
                     if(response.status == '200')
                     {
-                        // window.location.href = '/admin/products'
+                        window.location.href = '/admin/products'
                     }
                 }).catch(error => {
                     this.overlay = false;
@@ -353,5 +380,6 @@
             border-color: rgb(33, 33, 33);
         }
     }
+    .ck-content { height:300px; }
 
 </style>

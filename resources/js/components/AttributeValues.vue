@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="type === 'text'">
-            <v-select multiple v-model="selected" :reduce="value => value.id" label="value" :options="values" @option:selected="changeAttributeValue"/>
+            <v-select multiple v-model="selected" :reduce="value => value.id" label="value" :options="values" @option:selected="changeAttributeValue" @option:deselected="changeAttributeValue"/>
         </div>
         <div v-if="type === 'color'">
             <span class="attribute-color"  v-for="(color) in values" v-bind:class="{selected: selected.includes(color.id)}" v-bind:style="{background: color.value}" @click="changeSelectedColor(color.id)"></span>
@@ -13,11 +13,12 @@
                 :data-value="'id'"
                 :data-label="'value'"
                 :tooltip="'always'"
+                :tooltip-placement="'bottom'"
                 @change="changeAttributeRange()"
             ></vue-slider>
         </div>
         <div v-if="type === 'icon'">
-            <v-select v-model="selected[0]" :options="values.icons" @option:selected="changeAttributeIcon">
+            <v-select v-model="selected[0]" :options="values.icons" @option:selected="changeAttributeIcon" @option:deselected="changeAttributeIcon">
                 <template #selected-option="{ icon }">
                     <div style="display: flex; align-items: baseline;">
                         <span>{{selected.icon_label}}</span>
@@ -61,7 +62,6 @@
         data() {
             return {
                 value_id: 0,
-                isSelected: false,
                 range_ids: [],
                 colors: [],
                 colors_ids: [],

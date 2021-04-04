@@ -1,8 +1,8 @@
 <template>
     <div class="row">
-        <div class="thumbs row col-3 justify-content-between flex-column">
+        <div class="thumbs row col-3 justify-content-start  flex-column">
             <div class="thumb-link m-2" v-for="image in product.images" @click="setCurrentImage(image)">
-                <img :src="'/storage/images/' + image.icon" alt="">
+                <span class="thumb-image" v-bind:style="{'background-image':'url(/storage/images/' + image.icon +')'}"></span>
             </div>
         </div>
         <div class="preview col-9">
@@ -38,6 +38,12 @@
         .thumb-link {
             cursor: pointer;
             border: 1px solid #1b4b72;
+        }
+        .thumb-image {
+            height: 100px;
+            display: block;
+            background-size: cover;
+            background-position: center;
         }
     }
 

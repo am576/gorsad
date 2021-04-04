@@ -23,10 +23,10 @@
             <div id="mobile-logo" class="m-auto" v-if="isMobileView">Какое-то ЛоГо</div>
             <ul class="nav nav-pills m-auto" v-if="!isMobileView">
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Новинки</a>
+                    <a href="/" class="nav-link">Главная</a>
                 </li>
                 <li class="nav-item">
-                    <a href="shop" class="nav-link">Каталог</a>
+                    <a href="/shop" class="nav-link">Каталог</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Страница_1</a>

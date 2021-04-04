@@ -100,37 +100,67 @@ class AttributeController extends Controller
     public function update(Request $request, $id)
     {
         $attribute = Attribute::findOrFail($id);
-
         $input = $request->except(['values']);
         $attribute->fill($input);
         $attribute->save();
 
         $values = explode(',', $request->values);
 
-        if(isset($request->icons)) {
+        if($attribute->type == 'icon')
+        {
+            if(isset($request->icons)) {
+                DB::table('attributes_values')
+                    ->where('attribute_id', $attribute->id)
+                    ->delete();
+
+                DB::table('attribute_icons')
+                    ->where('attribute_id', $attribute->id)
+                    ->delete();
+
+                $icons = explode(',', $request->icons);
+
+                foreach ($values as $key => $value) {
+                    $value_id = DB::table('attributes_values')->insertGetId([
+                        'attribute_id' => $attribute->id,
+                        'value' => $value
+                    ]);
+
+                    DB::table('attribute_icons')->insert([
+                        'attribute_id' => $attribute->id,
+                        'attribute_value_id' => $value_id,
+                        'image_id' => $icons[$key],
+                        'iconset_id' => $request->iconset_id
+                    ]);
+                }
+
+                return redirect()->intended(route('attributes.index'));
+            }
+        }
+        else if($attribute->type == 'range')
+        {
             DB::table('attributes_values')
                 ->where('attribute_id', $attribute->id)
                 ->delete();
-
-            DB::table('attribute_icons')
-                ->where('attribute_id', $attribute->id)
-                ->delete();
-
-            $icons = explode(',', $request->icons);
-
-            foreach ($values as $key => $value) {
-                $value_id = DB::table('attributes_values')->insertGetId([
+            DB::table('attributes_values')->insert([
+                'attribute_id' => $attribute->id,
+                'value' => $values[0]
+            ]);
+            DB::table('attributes_values')->insert([
+                'attribute_id' => $attribute->id,
+                'value' => $values[1]
+            ]);
+            DB::table('attributes_values')->insert([
+                'attribute_id' => $attribute->id,
+                'value' => $values[2]
+            ]);
+            for ($i = $values[0]; $i <= $values[1]; $i+= $values[2])
+            {
+                DB::table('attributes_values')->insert([
                     'attribute_id' => $attribute->id,
-                    'value' => $value
-                ]);
-
-                DB::table('attribute_icons')->insert([
-                    'attribute_id' => $attribute->id,
-                    'attribute_value_id' => $value_id,
-                    'image_id' => $icons[$key],
-                    'iconset_id' => $request->iconset_id
+                    'value' => $i
                 ]);
             }
+            return redirect()->intended(route('attributes.index'));
         }
         else {
             foreach($values as $key=>$value)
@@ -140,9 +170,8 @@ class AttributeController extends Controller
                     'value' => $value
                 ]);
             }
+            return redirect()->intended(route('attributes.index'));
         }
-
-        return redirect()->intended(route('attributes.index'));
     }
 
     public function destroy($id)

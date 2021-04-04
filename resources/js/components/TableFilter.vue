@@ -4,7 +4,7 @@
             <div class="col-auto" v-for="(field, index) in filter_fields" :key="index">
                 <label class="sr-only" :for="field.name">{{field.title}}</label>
                 <input v-if="field.type === 'input'" type="text" class="form-control" :id="field.name" :name="field.name"
-                       :placeholder="field.title" @keyup="updateFilterData(index, $event.target.value)">
+                       :placeholder="field.title" @keyup="updateFilterData(index, $event.target.value)" autocomplete="off">
                 <select v-else-if="field.type === 'select'" :name="field.name" :id="field.name"
                         @change="updateFilterData(index, $event.target.value)">
                     <option v-for="option in field.options" :value="option.value">{{option.label}}</option>

@@ -24,6 +24,7 @@ $sidebar-width : 60px;
 .side-menu.sidebar {
     position: fixed;
     height: 100%;
+    width: 250px;
     background-image: linear-gradient(45deg, rgb(53, 61, 71), rgb(33, 41, 46));
     transition: width .5s cubic-bezier(.19,1,.22,1);
 }
@@ -96,7 +97,12 @@ $sidebar-width : 60px;
 .app-container .content-container .side-menu .navbar-nav li a {
     height: 50px;
     line-height: 50px;
-    display: block;
+    display: inline-flex;
+}
+
+.app-container .content-container .side-menu .navbar-nav li a.submenu-link {
+    display: inline-flex;
+    white-space: nowrap;
 }
 
 .app-container .content-container .side-menu .navbar-nav li a:hover {
@@ -113,6 +119,7 @@ form.table-delete-entity {
     padding-left: 50px !important;
     display: flex !important;
     font-size: 13px !important;
+    margin: 5px 0;
 }
 
 .submenu-link .menu-icon {

@@ -29,6 +29,7 @@
         "@ckeditor/ckeditor5-vue": "^1.0.1",
         "@johmun/vue-tags-input": "^2.1.0",
         "bootstrap-icons": "^1.0.0-alpha3",
+        "moment": "^2.29.1",
         "qs": "^6.9.4",
         "verte": "0.0.12",
         "vue-select": "^3.11.2",

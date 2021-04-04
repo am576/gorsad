@@ -41,15 +41,15 @@
         <div class="form-group" v-show="attribute.type === 'range'">
             <div class="form-group row">
                 <label for="range_min">Мин. значение</label>
-                <input type="text" name="range_min" id="range_min" class="col-sm-2" v-model="tags[0]">
+                <input type="text" name="range_min" id="range_min" class="col-sm-2" v-model="range_min">
             </div>
             <div class="form-group row">
                 <label for="range_max">Макс. значение</label>
-                <input type="text" name="range_max" id="range_max" class="col-sm-2" v-model="tags[1]">
+                <input type="text" name="range_max" id="range_max" class="col-sm-2" v-model="range_max">
             </div>
             <div class="form-group row">
                 <label for="range_step">Шаг слайдера</label>
-                <input type="text" name="range_step" id="range_step" class="col-sm-2" v-model="tags[2]">
+                <input type="text" name="range_step" id="range_step" class="col-sm-2" v-model="range_step">
             </div>
         </div>
         <div class="form-group" v-if="attribute.type === 'color'">
@@ -114,6 +114,9 @@
                 selected_icons: [],
                 selected_icon: '',
                 tag: '',
+                range_min:0,
+                range_max:0,
+                range_step:0,
                 tags: [],
                 errors: {},
                 group_id: 0,
@@ -134,20 +137,22 @@
                 }).then(response => {
                     if(response.status == 200)
                     {
-                        if(this.attribute.type === 'range' || 'color')
-                        {
+                        if(this.attribute.type === 'color') {
                             response.data.forEach(value => {
                                 this.tags.push(value.value)
                             });
                         }
-                        else if(this.attribute.type === 'icon')
-                        {
+                        else if(this.attribute.type === 'icon') {
                             response.data.forEach(value => {
                                 this.tags.push(value.value)
                             });
                         }
-                        else
-                        {
+                        else if(this.attribute.type === 'range') {
+                            this.range_min = response.data[0].value;
+                            this.range_max = response.data[1].value;
+                            this.range_step = response.data[2].value;
+                        }
+                        else {
                             response.data.forEach(value => {
                                 this.tags.push({"text":value.value,"tiClasses":["ti-valid"]})
                             });
@@ -203,19 +208,15 @@
                 }
             },
             addColor() {
-                this.$set(this.tags, this.tags.length, '#ffccbb');
+                this.$set(this.tags, this.tags.length, '#498230');
             },
             addIcon() {
                 this.$set(this.tags, this.tags.length, '');
             },
             setRangeValues() {
-                this.tags.forEach(tag => {
-                    this.attributes_values.push(tag)
-                })
-                for (let i = Number(this.attributes_values[0]); i <= Number(this.attributes_values[1]) ; i+= Number(this.attributes_values[2])) {
-                    this.attributes_values.push(i);
-                }
-
+                this.$set(this.attributes_values, 0, this.range_min);
+                this.$set(this.attributes_values, 1, this.range_max);
+                this.$set(this.attributes_values, 2, this.range_step);
             },
             submit() {
                 const formData = new FormData();
@@ -237,6 +238,7 @@
 
                 else
                 {
+                    console.log(1)
                     this.tags.forEach(tag => {
                         this.attributes_values.push(tag)
                     });
@@ -297,7 +299,6 @@
             this.getAttributesGroups();
             this.getAttributesTypes();
             this.$eventBus.$on('changeCategory', this.setAttributeCategory);
-            this.$eventBus.$on("option:selected", this.test);
 
             if(this.is_edit_form)
             {

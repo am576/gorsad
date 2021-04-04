@@ -1,13 +1,13 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="filter-small col-md-10">
+            <div class="filter-small col-md-11">
                 <div class="filter-attributes">
                     <div class="filter-seg logo w-50">
                         Логотип
                     </div>
                     <div class="filter-seg">
-                        <input class="form-control" v-model="product_name" placeholder="Искать по названию" type="text">
+                        <input class="form-control" v-model="product_name" placeholder="Искать по названию" type="text" @keyup.enter="submit">
                     </div>
                     <div class="filter-seg" v-for="attribute in filter_attributes">
                         <button class="form-control" @click="setSelectedAttribute(attribute)">{{attribute.name}}</button>
@@ -17,7 +17,7 @@
                             <input type="hidden" name="_token" :value="csrf">
                             <input name="product_name" type="hidden" v-model="product_name">
                             <textarea name="filter_options" type="hidden" class="hidden" style="display: none">{{selected_filter_options}}</textarea>
-                            <button type="submit" class="btn btn-success w-100">Искать</button>
+                            <button ref="submitButton" type="submit" class="btn btn-success w-100" >Искать</button>
                         </form>
 
                     </div>
@@ -26,9 +26,10 @@
                     <div v-if="attribute.id === selected_attribute.id" class="attribute-values" v-for="attribute in filter_attributes">
                         <div class="attribute-value" v-for="value in attribute.values" v-bind:class="{selected: selected_filter_options[attribute.id].includes(value.id)}">
                             <div class="form-check">
-                                <input v-if="attribute.type !== 'icon'" type="checkbox" class="form-check-input" style="width:25px; height:25px" :value="value.id" v-model="selected_filter_options[selected_attribute.id]">
+                                <span v-if="attribute.type === 'color'" class="attribute-color"  v-bind:style="{background: value.value}" @click="setSelectedValue(attribute.id, value.id)"></span>
+                                <input v-if="attribute.type === 'text'" type="checkbox" class="form-check-input" style="width:25px; height:25px" :value="value.id" v-model="selected_filter_options[selected_attribute.id]">
                                 <img v-if="attribute.type === 'icon'" :src="'/storage/images/' + value.icon" @click="setSelectedValue(attribute.id, value.id)">
-                                <label class="form-check-label">{{value.value}}</label>
+                                <label v-if="attribute.type !== 'color'" class="form-check-label">{{value.value}}</label>
                             </div>
                         </div>
                     </div>
@@ -71,6 +72,9 @@
                 // this.$router.push({path: '/search', query:formData})
                 // axios.post('/search', formData)
 
+            },
+            submit() {
+                this.$refs.submitButton.click();
             }
         },
         created() {
@@ -106,6 +110,14 @@
                 .attribute-value.selected {
                     border: 1px solid #ffffff;
                 }
+            }
+            .attribute-color {
+                height: 30px;
+                width: 30px;
+                display: inline-block;
+                margin: 0 4px;
+                cursor: pointer;
+                border-radius: 20px;
             }
         }
         .filter-seg {

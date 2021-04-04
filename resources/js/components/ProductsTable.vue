@@ -25,7 +25,7 @@
                     <td>{{product.discount}}</td>
                     <td>{{product.quantity}}</td>
                     <td :class="colorStatus(product.status)">{{statuses[product.status]}}</td>
-                    <td>{{product.created_at}}</td>
+                    <td>{{ moment(product.created_at).format("DD-MM-YYYY hh:mm") }}</td>
                     <td>
                         <table-buttons :table="'products'" :id="product.id"></table-buttons>
                     </td>
@@ -39,10 +39,12 @@
 </template>
 
 <script>
+    import moment from "moment";
     export default {
         data() {
           return {
               csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+              moment: moment,
               categories: [],
               statuses: ['Неактивный', 'Активный'],
               products: {
