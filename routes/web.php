@@ -30,7 +30,7 @@ Route::get('/cart/totalprice', 'CartController@getTotalPrice');
 Route::get('/cart/removeproduct', 'CartController@removeProduct');
 
 Route::get('/cart/checkout', 'HomeController@showCheckoutPage');
-Route::post('/cart/checkout', 'CartController@doCheckout');
+Route::post('/cart/checkout', 'CartController@createQuery');
 Route::post('/cart/clear','CartController@clearCart');
 
 Route::get('/profile', 'UserController@showProfilePage');

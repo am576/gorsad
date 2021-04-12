@@ -27,17 +27,9 @@
             </ul>
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                    <!--                    <a class="nav-link" v-if="!isGuest" href="/cart">Корзина</a>-->
-                    <div v-if="!isGuest">
-                        <b-dropdown size="lg"  variant="link" toggle-class="text-decoration-none" no-caret>
-                            <template #button-content>
-                                <span class="mdi mdi-cart mdi-24px"></span>
-                            </template>
-                            <b-dropdown-item href="#">Action</b-dropdown-item>
-                            <b-dropdown-item href="#">Another action</b-dropdown-item>
-                            <b-dropdown-item href="#">Something else here...</b-dropdown-item>
-                        </b-dropdown>
-                    </div>
+                    <a class="nav-link" v-if="!isGuest" href="/cart">
+                        <span class="mdi mdi-cart mdi-24px"></span>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <div v-if="!isGuest">

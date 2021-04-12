@@ -26,7 +26,6 @@ class HomeController extends Controller
         $categories = $root_category->getChildrenCategories();
         $filter_attributes = Attribute::smallFilterAttributes();
         $user = User::where('id',auth()->user()->id)->with(['user_notifications', 'companies'])->first();
-//        return dd(auth()->user()->id);
 
         return view('frontend/index')
             ->with('categories', $categories)

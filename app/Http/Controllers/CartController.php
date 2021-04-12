@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\Product;
+use App\UserQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -94,6 +95,33 @@ class CartController extends Controller
         }
 
         return response('Not found', 404);
+    }
+
+    public function createQuery(Request $request)
+    {
+        $query_data = $request->all();
+
+        $query = new UserQuery([
+           'user_id' => auth()->user()->id,
+           'status' => 'new',
+           'quote_file_link' => 'some/location/file.pdf'
+        ]);
+
+        if($query->save())
+        {
+            foreach ($query_data['products'] as $product) {
+                DB::table('queries_products')
+                    ->insert([
+                        'query_id' => $query->id,
+                        'product_id' => $product['id'],
+                        'quantity' => $product['quantity']
+                    ]);
+            }
+
+            return response('OK', 200);
+        }
+
+        return response('Ошибка создания предложения', 300);
     }
 
     public function doCheckout(Request $request)

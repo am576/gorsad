@@ -3,17 +3,6 @@
         <div class="row justify-content-center">
             <div class="col-6">
                 <h3>Оформление заказа</h3>
-                <div class="client-details">
-                    <h4>Контактные данные</h4>
-                    <div class="form-group">
-                        <label>Имя</label>
-                        <input type="text" class="form-text" v-model="client.name">
-                    </div>
-                    <div class="form-group">
-                        <label>Телефон</label>
-                        <input type="text" class="form-text" v-model="client.phone">
-                    </div>
-                </div>
                 <h4>Сумма: {{price_total}} грн.</h4>
                 <h4>Товары</h4>
                 <div class="products">
@@ -58,12 +47,11 @@
                 };
 
                 Object.keys(this.products).forEach(key => {
-                    order_data['products'].push(key)
+                    order_data['products'].push({
+                        'id': key,
+                        'quantity': this.products[key].quantity
+                    })
                 });
-
-                order_data['client'] = this.client;
-                order_data['sum_total'] = this.price_total;
-
 
                 axios.post('/cart/checkout', order_data)
                 .then(response => {
