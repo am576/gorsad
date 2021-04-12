@@ -263,7 +263,7 @@
                         .then(response =>{
                             if(response.status == 200)
                             {
-                                // window.location.href = '/admin/attributes'
+                                window.location.href = '/admin/attributes'
                             }
 
                         }).catch(error => {

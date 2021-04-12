@@ -90,7 +90,7 @@
                                         <option v-for="attribute in attributes" :data-type="attribute.type" :value="attribute.id">{{attribute.name}}</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="width:200px">
+                                <div class="form-group" style="width:300px">
                                     <attribute-values :attribute_id="attrs[index].id" :type="attrs[index].type" :index="index" :selected="attrs[index].selected_values" :values="attrs[index].attribute_values"></attribute-values>
                                 </div>
                                 <button type="button" class="btn btn-danger delete" tabindex="-1" @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
@@ -274,10 +274,10 @@
 
             },
             setAttributeValues(index, values) {
-                if(this.attrs[index].type !== 'icon') {
+                // if(this.attrs[index].type !== 'icon') {
                     this.$set(this.attrs[index], 'selected_values', values);
                     this.$set(this.selected_values, index, values)
-                }
+                // }
 
             },
             createAttributeRow()
@@ -287,15 +287,7 @@
             removeAttributeRow(index)
             {
                 this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.attrs[index].attribute_id);
-                Vue.delete(this.attrs, index);
-                /*this.$set(this.attrs[index].selected_values, 0, this.attrs[index].selected_values[0]);
-                if (this.attrs[index] === 'icon') {
-                    this.$eventBus.$emit('setAttributeValues',this.attrs[index].attribute_id, {
-                        'icons': this.attrs[index].attribute_values,
-                        'selected': this.attrs[index].selected_values[0]
-                    });
-                }*/
-
+                this.$delete(this.attrs, index);
             },
             removeImage(image_id)
             {

@@ -26,7 +26,7 @@
                         <div class="col-md-4">Скорость роста</div>
                         <div class="col-md-8">{{speed[0]}}</div>
                     </div>
-                    <div class="attr-row row">
+                    <div class="attr-row row" v-if="leaf_color.length">
                         <div class="col-md-4">Цвет листа</div>
                         <div class="col-md-8">
                             <span class="attr-color" v-for="color in leaf_color" v-bind:style="{background: color}"></span>

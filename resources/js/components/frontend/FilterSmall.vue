@@ -25,10 +25,10 @@
                 <div class="filter-attribute-values">
                     <div v-if="attribute.id === selected_attribute.id" class="attribute-values" v-for="attribute in filter_attributes">
                         <div class="attribute-value" v-for="value in attribute.values" v-bind:class="{selected: selected_filter_options[attribute.id].includes(value.id)}">
-                            <div class="form-check">
-                                <span v-if="attribute.type === 'color'" class="attribute-color"  v-bind:style="{background: value.value}" @click="setSelectedValue(attribute.id, value.id)"></span>
-                                <input v-if="attribute.type === 'text'" type="checkbox" class="form-check-input" style="width:25px; height:25px" :value="value.id" v-model="selected_filter_options[selected_attribute.id]">
-                                <img v-if="attribute.type === 'icon'" :src="'/storage/images/' + value.icon" @click="setSelectedValue(attribute.id, value.id)">
+                            <div class="form-check" @click="setSelectedValue(attribute.id, value.id)">
+                                <span v-if="attribute.type === 'color'" class="attribute-color"  v-bind:style="{background: value.value}" ></span>
+                                <input  v-if="attribute.type === 'text'" type="checkbox" class="form-check-input" style="width:25px; height:25px" :value="value.id" v-model="selected_filter_options[selected_attribute.id]">
+                                <img v-if="attribute.type === 'icon'" :src="'/storage/images/' + value.icon">
                                 <label v-if="attribute.type !== 'color'" class="form-check-label">{{value.value}}</label>
                             </div>
                         </div>

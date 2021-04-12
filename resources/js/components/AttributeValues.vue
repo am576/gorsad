@@ -21,7 +21,7 @@
             <v-select v-model="selected[0]" :options="values.icons" @option:selected="changeAttributeIcon" @option:deselected="changeAttributeIcon">
                 <template #selected-option="{ icon }">
                     <div style="display: flex; align-items: baseline;">
-                        <span>{{selected.icon_label}}</span>
+                        <span>{{selected[0].icon_label}}</span>
                         <img height="50px" :src="'/storage/images/' + selected[0].icon"/>
                     </div>
                 </template>
@@ -136,7 +136,7 @@
                     }
                     else if(this.type === 'icon') {
                         this.values = values.icons;
-                        this.selected = values.selected;
+                        this.selected = [values.selected];
                         // this.options = values.options;
                         // this.icons[this.index] = values.values[0];
                         // values.values[1].forEach((value, index) => {
