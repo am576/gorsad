@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Attribute;
 use App\Category;
 use App\Product;
+use App\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,10 +25,13 @@ class HomeController extends Controller
         $root_category = Category::where('url_title', '')->first();
         $categories = $root_category->getChildrenCategories();
         $filter_attributes = Attribute::smallFilterAttributes();
+        $user = User::where('id',auth()->user()->id)->with(['user_notifications', 'companies'])->first();
+//        return dd(auth()->user()->id);
 
         return view('frontend/index')
             ->with('categories', $categories)
             ->with('auth_user',  auth()->user())
+            ->with('user', $user)
             ->with('filter_attributes',$filter_attributes);
     }
 

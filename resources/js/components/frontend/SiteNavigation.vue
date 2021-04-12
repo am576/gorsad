@@ -1,22 +1,6 @@
 <template>
     <div>
-        <nav class="navbar" v-if="!isMobileView">
-            <ul class="nav nav-pills ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" v-if="!isGuest" href="/cart">Корзина</a>
-                </li>
-                <li class="nav-item">
-                    <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
-                        <input type="hidden" name="_token" :value="csrf">
-                    </form>
-                    <a class="nav-link" v-if="!isGuest" @click="logout"> Выход </a>
-                </li>
-                <li class="nav-item" v-if="isGuest">
-                    <a class="nav-link" href="/login">Вход</a>
-                </li>
-            </ul>
-        </nav>
-        <nav class="navbar">
+        <nav class="navbar" style="margin-top: 40px;">
             <div id="navigation-icon-left" v-if="isMobileView">
                 <i class="mdi mdi-menu mdi-36px" @click="toggleMobileNav()"></i>
             </div>
@@ -39,6 +23,57 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Страница_4</a>
+                </li>
+            </ul>
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <!--                    <a class="nav-link" v-if="!isGuest" href="/cart">Корзина</a>-->
+                    <div v-if="!isGuest">
+                        <b-dropdown size="lg"  variant="link" toggle-class="text-decoration-none" no-caret>
+                            <template #button-content>
+                                <span class="mdi mdi-cart mdi-24px"></span>
+                            </template>
+                            <b-dropdown-item href="#">Action</b-dropdown-item>
+                            <b-dropdown-item href="#">Another action</b-dropdown-item>
+                            <b-dropdown-item href="#">Something else here...</b-dropdown-item>
+                        </b-dropdown>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div v-if="!isGuest">
+                        <b-dropdown size="lg"  variant="link" toggle-class="text-decoration-none" no-caret>
+                            <template #button-content>
+                                <span class="mdi mdi-account mdi-24px"></span>
+                            </template>
+                            <b-dropdown-text>
+                                <div>{{auth_user.name}}</div>
+                                <a href="/profile" class="text-small">Личный кабинет</a>
+                            </b-dropdown-text>
+                            <b-dropdown-item href="#">Ваши баллы</b-dropdown-item>
+                            <b-dropdown-item href="#">
+                                Уведомления <span v-if="unreadNotificationsAmount" class="text-danger">{{unreadNotificationsAmount}}</span>
+                            </b-dropdown-item>
+                            <b-dropdown-item href="#">Мои предложения</b-dropdown-item>
+                            <b-dropdown-item href="#">Загрузить список растений</b-dropdown-item>
+                            <b-dropdown-item href="#">
+                                <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
+                                    <input type="hidden" name="_token" :value="csrf">
+                                </form>
+                                <a class="nav-link" @click="logout"> Выход </a>
+                            </b-dropdown-item>
+                            <b-dd-divider></b-dd-divider>
+                            <b-dropdown-item href="#">
+                                <div>
+                                    <span class="mdi mdi-briefcase-plus mdi-24px"></span>
+                                    <p class="d-inline-block">Добавить компанию</p>
+                                </div>
+                            </b-dropdown-item>
+                        </b-dropdown>
+                    </div>
+
+                </li>
+                <li class="nav-item" v-if="isGuest">
+                    <a class="nav-link" href="/login">Вход</a>
                 </li>
             </ul>
             <div id="navigation-icon-right" v-if="isMobileView">
@@ -91,7 +126,8 @@
 <script>
     export default {
         props: {
-            auth_user: ''
+            auth_user: '',
+            user: {}
         },
         data() {
             return {
@@ -122,6 +158,15 @@
         computed: {
             isGuest() {
                 return this.auth_user == null;
+            },
+            unreadNotificationsAmount() {
+                let amount = 0;
+                this.user.user_notifications.forEach(notification => {
+                    if(notification.status === 'unread')
+                        amount++;
+                })
+
+                return amount;
             }
         },
         created() {
@@ -202,4 +247,6 @@
             font-size: 2rem;
         }
     }
+
+
 </style>

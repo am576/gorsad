@@ -33,11 +33,15 @@ Route::get('/cart/checkout', 'HomeController@showCheckoutPage');
 Route::post('/cart/checkout', 'CartController@doCheckout');
 Route::post('/cart/clear','CartController@clearCart');
 
+Route::get('/profile', 'UserController@showProfilePage');
+
+
+/*Admin routes*/
 Route::get('/admin/orders', 'OrderController@index');
 Route::get('/admin/orders/{id}', 'OrderController@show');
 Route::get('/admin/clients', 'ClientController@index');
 
-/*Admin routes*/
+
 Route::prefix('admin')->group(function(){
 
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
