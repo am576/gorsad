@@ -15,7 +15,35 @@
             <div class="tab-pane fade show active" role="tabpanel" id="profile_dashboard">
                 <h1>ДОБРО ПОЖАЛОВАТЬ, {{$user->name}}</h1>
             </div>
-            <div class="tab-pane fade" role="tabpanel" id="profile_queries">Мои предложения</div>
+            <div class="tab-pane fade" role="tabpanel" id="profile_queries">
+                <h4>Мои предложения</h4>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Номер заказа</th>
+                        <th>Дата</th>
+                        <th>Количество</th>
+                        <th>Статус</th>
+                        <th>Файл</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($user->queries as $query)
+                        <tr>
+                            <td>{{$query->id}}</td>
+                            <td>{{date('d.m.y', strtotime($query->created_at))}}</td>
+                            <td>{{$query->products_quantity()}}</td>
+                            <td>{{$query->status}}</td>
+                            <td>
+                                <a href="{{$query->quote_file_link}}">
+                                    <span class="mdi mdi-file-document"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
             <div class="tab-pane fade" role="tabpanel" id="profile_orders">Мои заказы</div>
             <div class="tab-pane fade" role="tabpanel" id="profile_account">Личный кабинет</div>
         </div>

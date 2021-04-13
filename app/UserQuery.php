@@ -16,4 +16,11 @@ class UserQuery extends Model
             ->groupBy('product_id')
             ->get();
     }
+
+    public function products_quantity()
+    {
+        return DB::table('queries_products')
+            ->where('query_id', $this->id)
+            ->count();
+    }
 }

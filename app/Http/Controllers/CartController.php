@@ -110,12 +110,15 @@ class CartController extends Controller
         if($query->save())
         {
             foreach ($query_data['products'] as $product) {
-                DB::table('queries_products')
-                    ->insert([
-                        'query_id' => $query->id,
-                        'product_id' => $product['id'],
-                        'quantity' => $product['quantity']
-                    ]);
+                for ($i = 1; $i <= $product['quantity']; $i++)
+                {
+                    DB::table('queries_products')
+                        ->insert([
+                            'query_id' => $query->id,
+                            'product_id' => $product['id'],
+                        ]);
+                }
+
             }
 
             return response('OK', 200);

@@ -25,8 +25,11 @@
         <?php
         use Illuminate\Support\Facades\Auth;
         use App\User;
-        $auth_user = Auth::user();
-        $user = User::where('id',auth()->user()->id)->with(['user_notifications', 'companies'])->first();
+        $user = $auth_user = Auth::user();
+        if(isset($user))
+            {
+                $user = User::where('id',auth()->user()->id)->with(['user_notifications', 'companies'])->first();
+            }
         ?>
         <site-navigation @if(isset($auth_user)):auth_user="{{$auth_user}}" :user="{{json_encode($user)}}"@endif></site-navigation>
         <main class="py-4">

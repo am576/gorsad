@@ -17,7 +17,6 @@ class CreateQueriesProductsTable extends Migration
             $table->id();
             $table->unsignedInteger('query_id');
             $table->unsignedInteger('product_id');
-            $table->unsignedSmallInteger('quantity');
         });
     }
 
