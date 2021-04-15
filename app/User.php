@@ -42,6 +42,13 @@ class User extends Authenticatable
         return $this->hasMany('App\UserNotification', 'user_id','id');
     }
 
+    public function unreadNotifications()
+    {
+        return $this->user_notifications()
+            ->where('status','unread')
+            ->get();
+    }
+
     public function companies()
     {
         return $this->hasMany('App\UserCompany', 'user_id','id');

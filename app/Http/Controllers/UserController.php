@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\UserNotification;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -19,5 +20,25 @@ class UserController extends Controller
             ->first();
 
         return view('frontend/user.profile')->with('user', $user);
+    }
+
+    public function readNotification(Request $request)
+    {
+        if(isset($request->id))
+        {
+            $notification = UserNotification::findOrFail($request->id);
+            if($notification->status == 'unread')
+            {
+                $notification->status = 'read';
+                $notification->save();
+            }
+        }
+    }
+
+    public function readAllNotifications()
+    {
+        UserNotification::where('user_id',auth()->user()->id)
+            ->where('status','unread')
+            ->update(['status' => 'read']);
     }
 }

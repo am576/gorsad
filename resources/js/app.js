@@ -1,9 +1,3 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -11,13 +5,7 @@ window.Vue = require('vue');
 import vuetify from './vuetify';
 import VueTagsInput from '@johmun/vue-tags-input';
 import CKEditor from '@ckeditor/ckeditor5-vue';
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -25,7 +13,6 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 
-// Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -36,6 +23,7 @@ Vue.use( vSelect );
 
 Vue.component('v-select', vSelect)
 
+                                            /* Admin side components */
 Vue.component('category-selector', require('./components/CategorySelector.vue').default);
 Vue.component('attribute-selector', require('./components/AttributeSelector.vue').default);
 Vue.component('attribute-selector-edit', require('./components/AttributeSelectorEdit.vue').default);
@@ -54,6 +42,7 @@ Vue.component('user-query-editor', require('./components/UserQueryEditor').defau
 
 Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 
+                                            /*Client side components*/
 Vue.component('site-navigation', require('./components/frontend/SiteNavigation').default);
 Vue.component('account-links', require('./components/frontend/AccountLinks').default);
 Vue.component('home-slider', require('./components/frontend/HomeSlider').default);
@@ -65,14 +54,12 @@ Vue.component('product-page', require('./components/frontend/ProductPage').defau
 Vue.component('shopping-cart', require('./components/frontend/ShoppingCart').default);
 Vue.component('checkout-page', require('./components/frontend/CheckoutPage').default);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+                                            /* Account page components */
+Vue.component('user-profile', require('./components/frontend/profile/UserProfile').default);
+Vue.component('notifications-list', require('./components/frontend/profile/NotificationsList').default);
+
 const app = new Vue({
     vuetify,
     VueTagsInput,
     el: '#app',
-
 });

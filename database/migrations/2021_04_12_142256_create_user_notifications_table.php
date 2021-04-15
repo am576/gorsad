@@ -16,7 +16,7 @@ class CreateUserNotificationsTable extends Migration
         Schema::create('user_notifications', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('message');
+            $table->text('message');
             $table->enum('tag', ['important', 'info', 'proposition']);
             $table->enum('status', ['read', 'unread']);
             $table->unsignedInteger('user_id');

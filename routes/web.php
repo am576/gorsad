@@ -36,6 +36,8 @@ Route::post('/cart/checkout', 'CartController@createQuery');
 Route::post('/cart/clear','CartController@clearCart');
 
 Route::get('/profile', 'UserController@showProfilePage');
+Route::get('/profile/notification', 'UserController@readNotification');
+Route::get('/profile/notification/readall', 'UserController@readAllNotifications');
 
 
 /*Admin routes*/
