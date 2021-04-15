@@ -11,10 +11,18 @@ class UserQuery extends Model
 
     public function products()
     {
-        return DB::table('queries_products')
-            ->where('query_id', $this->id)
-            ->groupBy('product_id')
+        $products = Product::whereIn('id', DB::table('queries_products')
+            ->select('product_id')
+            ->where('query_id', $this->id))
             ->get();
+
+        foreach ($products as $product) {
+            $product->quantity = DB::table('queries_products')
+                ->where('product_id', $product->id)
+                ->count();;
+        }
+
+        return $products;
     }
 
     public function products_quantity()
@@ -22,5 +30,10 @@ class UserQuery extends Model
         return DB::table('queries_products')
             ->where('query_id', $this->id)
             ->count();
+    }
+
+    public function user()
+    {
+        return User::where('id',$this->user_id)->first();
     }
 }

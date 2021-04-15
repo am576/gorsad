@@ -98,6 +98,19 @@ class ApiController extends Controller
         return IconSet::with('images')->get();
     }
 
+    public function searchProducts(Request $request)
+    {
+        if(isset($request->q))
+        {
+            $products = Product::where('title', 'like', '%'.$request->q.'%')
+                ->get();
+
+            return response()->json($products);
+        }
+
+        return response()->json();
+    }
+
     public function filterProducts(Request $request)
     {
         $params_where = [];
@@ -145,5 +158,10 @@ class ApiController extends Controller
     public function getTable(Request $request)
     {
         return $request->entity->getTable();
+    }
+
+    public function getCart()
+    {
+        return response()->json(session()->get('cart'));
     }
 }

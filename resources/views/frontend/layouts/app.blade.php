@@ -21,7 +21,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app" class="frontend">
+    <div id="app" data-app class="frontend">
         <?php
         use Illuminate\Support\Facades\Auth;
         use App\User;

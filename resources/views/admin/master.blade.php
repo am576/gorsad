@@ -64,7 +64,7 @@
                 @endforeach
             </ul>
         </div>
-        <div id="app" class="container-fluid">
+        <div id="app" data-app class="container-fluid">
             <div class="side-body padding-top">
                 @yield('page_header')
                 @yield('content')

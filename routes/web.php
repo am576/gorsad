@@ -26,8 +26,10 @@ Route::post('/search', 'HomeController@ApplyFilter');
 
 Route::get('/cart', 'HomeController@showCart');
 Route::get('/cart/add/', 'CartController@addProduct');
+Route::get('/cart/changequantity', 'CartController@changeProductQuantity');
 Route::get('/cart/totalprice', 'CartController@getTotalPrice');
 Route::get('/cart/removeproduct', 'CartController@removeProduct');
+Route::get('/cart/getCart', 'ApiController@getCart');
 
 Route::get('/cart/checkout', 'HomeController@showCheckoutPage');
 Route::post('/cart/checkout', 'CartController@createQuery');
@@ -39,6 +41,7 @@ Route::get('/profile', 'UserController@showProfilePage');
 /*Admin routes*/
 Route::get('/admin/orders', 'OrderController@index');
 Route::get('/admin/orders/{id}', 'OrderController@show');
+Route::get('/admin/queries/{id}', 'OrderController@showUserQuery');
 Route::get('/admin/clients', 'ClientController@index');
 
 

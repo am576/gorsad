@@ -1,16 +1,40 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-6">
-                <p>Корзина</p>
-                <div v-for="(product, id) in products" class="product-details">
-                    <i class="remove-product mdi mdi-close mdi-24px" @click="removeProduct(id)"></i>
-                    <div>Название: {{product['title']}}</div>
-                    <div>Цена: {{product['price']}}</div>
-                    <div>Количество: {{product['quantity']}}</div>
-                    <div>Фото: <img :src="'/storage/images/' + product['image']" alt=""></div>
+            <div class="col-6 order-details">
+                <h3>Обзор заказа</h3>
+                <v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
+                    <template slot="no-options">
+                        быстрый поиск растений...
+                    </template>
+                    <template slot="option" slot-scope="option">
+                        <div class="d-flex justify-content-between">
+                            <p>{{ option.title }}</p>
+                            <p>{{ option.price }} &#8381</p>
+                        </div>
+                    </template>
+                    <template slot="selected-option" slot-scope="option">
+                        <div class="selected d-center">
+                            {{ option.title }}
+                        </div>
+                    </template>
+                </v-select>
+                <div class="product-row row align-items-center" v-for="(product, id) in products">
+                    <div class="col-2">
+                        <img :src="'/storage/images/' + product['image']" alt="">
+                    </div>
+                    <div class="col-4">
+                        {{product['title']}}
+                    </div>
+                    <div class="col-3 d-flex align-items-center">
+                        <input type="number" min="1" oninput="validity.valid||(value='1');" class="form-control" v-model="product['quantity']" @change="changeQuantity(id, product['quantity'])">
+                        <span class="remove-product mdi mdi-trash-can-outline mdi-24px" @click="removeProduct(id)"></span>
+                     </div>
+                    <div class="col-3">
+                        {{product['price'] * product['quantity']}} &#8381;
+                    </div>
                 </div>
-                <div>Сумма: {{price_total}} грн.</div>
+                <div>Сумма: {{totalPrice}} &#8381;</div>
                 <div class="text-center">
                     <button class="btn btn-primary btn-lg" @click="goToCheckout">Оформить заказ</button>
                 </div>
@@ -27,15 +51,50 @@
         data() {
             return {
                 products: {},
-                price_total: 0
+                options: [],
+                selectedOption: {}
             }
         },
         methods: {
-            getTotalPrice() {
-                axios.get('/cart/totalprice')
-                .then(response => {
-                    this.price_total = response.data
+            onSearch(search, loading) {
+                if(search.length) {
+                    loading(true);
+                    this.search(search, loading, this);
+                }
+            },
+            search(search, loading, vm)  {
+                axios({
+                    method: 'GET',
+                    url:`/api/searchProduct`,
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    },
+                    params: {
+                        q: search
+                    }})
+                    .then(res => {
+                        this.options = res.data;
+                        loading(false);
+                    })
+            },
+            clearSearch() {
+                this.options = [];
+            },
+            addProduct(){
+                axios.get('/cart/add', {
+                    params: {
+                        'product_id': this.selectedOption.id
+                    }
                 })
+                    .then(response => {
+                        if(response.status == 200)
+                        {
+                            axios.get('/cart/getCart')
+                            .then(response => {
+                                this.products = response.data;
+                            })
+                        }
+                    })
             },
             removeProduct(id) {
                 if(confirm('Действительно удалить товар из корзины?'))
@@ -49,39 +108,54 @@
                         if(response.status == 200)
                         {
                             this.$delete(this.products, id)
-                            this.getTotalPrice();
                         }
                     })
                 }
 
             },
+            changeQuantity(id, quantity) {
+                quantity = quantity === '' ? 1 : quantity;
+                axios.get('/cart/changequantity', {
+                    params : {
+                        product_id: id,
+                        quantity: quantity
+                    }
+                })
+            },
             goToCheckout() {
                 window.location.href = "/cart/checkout"
             }
         },
+        computed: {
+          totalPrice() {
+              let price = 0;
+              Object.keys(this.products).forEach(key => {
+                  price += this.products[key]['price'] * this.products[key]['quantity']
+              })
+
+              return price;
+          }
+        },
         created() {
             this.products = this.cart_products;
-            this.getTotalPrice();
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .product-details {
-        position: relative;
-        border: 1px solid;
-        margin: 20px;
-        border-radius: 10px;
-        -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.42);
-        -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.42);
-        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.42);
+    .order-details {
+        border: 1px solid #000000;
+        padding: 15px;
+    }
+    .product-row {
+        padding: 10px 0;
+        border-top: 1px solid #ececec;
     }
 
     .remove-product {
-        position: absolute;
         cursor: pointer;
-        top: 0;
-        right: 10px;
-        color: #000;
+        &:hover {
+            color: #1a9aef;
+        }
     }
 </style>

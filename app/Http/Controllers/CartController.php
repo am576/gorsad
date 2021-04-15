@@ -22,12 +22,28 @@ class CartController extends Controller
 
         $cart = session()->get('cart');
 
+        if(isset($cart[$product_id])) {
+
+            try {
+                $cart[$product_id]['quantity']++;
+
+                session()->put('cart', $cart);
+
+                return response($cart[$product_id], 200);
+            }
+            catch (\Exception $e)
+            {
+                return response()->json(['cart'=>$cart]);
+            }
+
+        }
+
         if(!$cart)
         {
             $cart = [
                 $product_id => [
                     'title' => $product->title,
-                    'quantity' => 0,
+                    'quantity' => 1,
                     'price' => $product->price,
                     'image' => $product->images[0]->icon
                 ]
@@ -44,25 +60,19 @@ class CartController extends Controller
             ];
         }
 
-        if(isset($cart[$product_id])) {
-
-            try {
-                $cart[$product_id]['quantity']++;
-
-                session()->put('cart', $cart);
-
-                return response('OK', 200);
-            }
-            catch (\Exception $e)
-            {
-                return response()->json(['cart'=>$cart]);
-            }
-
-        }
-
         session()->put('cart', $cart);
 
-        return response('OK', 200);
+        return response($cart[$product_id], 200);
+    }
+
+    public function changeProductQuantity(Request $request)
+    {
+        $cart = session()->get('cart');
+        if(isset($cart[$request->product_id]))
+        {
+            $cart[$request->product_id]['quantity'] = $request->quantity;
+            session()->put('cart', $cart);
+        }
     }
 
     public function getTotalPrice()
@@ -159,5 +169,7 @@ class CartController extends Controller
 
         return response('OK',200);
     }
+
+
 
 }
