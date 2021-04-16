@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\Product;
+use App\UserNotification;
 use App\UserQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -130,6 +131,16 @@ class CartController extends Controller
                 }
 
             }
+
+            $notification = new UserNotification([
+                'user_id' => auth()->user()->id,
+                'title' => "Ваш запрос #{$query->id} отправлен и ожидает обработки",
+                'message' => "Ваш запрос {$query->id} отправлен и ожидает обработки",
+                'tag' => 'info',
+                'status' => 'unread'
+            ]);
+
+            $notification->save();
 
             return response('OK', 200);
         }

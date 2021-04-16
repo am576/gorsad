@@ -179,7 +179,7 @@
                         category_id: this.product.category_id
                     }
                 }).then(response => {
-                    this.category_fields = response.data.additional_fields;
+                    this.category_fields = JSON.parse(response.data.additional_fields);
                 })
             },
             getAttributeValues(select, index)

@@ -56,6 +56,11 @@ class User extends Authenticatable
 
     public function queries()
     {
-        return $this->hasMany('App\UserQuery', 'user_id', 'id');
+        $queries = $this->hasMany('App\UserQuery', 'user_id', 'id')->get();
+        foreach ($queries as $query) {
+            $query->products_count = $query->products_quantity();
+        }
+
+        return $queries;
     }
 }

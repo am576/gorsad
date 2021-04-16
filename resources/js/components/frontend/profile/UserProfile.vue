@@ -33,8 +33,8 @@
                     <tbody>
                     <tr v-for="query in user.queries">
                         <td>{{query.id}}</td>
-                        <td>{{query.created_at}}</td>
-                        <td>{{}}</td>
+                        <td>{{moment(query.created_at).format('DD.MM.YY')}}</td>
+                        <td>{{query.products_count}}</td>
                         <td>{{query.status}}</td>
                         <td>
                             <a :href="query.quote_file_link">
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+    import moment from "moment";
     export default {
         props: {
             data: {
@@ -64,6 +65,7 @@
         },
         data() {
             return {
+                moment: moment,
                 user: {}
             }
         },

@@ -16,9 +16,10 @@ class UserController extends Controller
     public function showProfilePage()
     {
         $user = User::where('id',auth()->user()->id)
-            ->with(['queries', 'user_notifications', 'companies'])
+            ->with(['user_notifications', 'companies'])
             ->first();
 
+        $user->queries = $user->queries();
         return view('frontend/user.profile')->with('user', $user);
     }
 

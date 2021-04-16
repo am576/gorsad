@@ -41,7 +41,7 @@ class Category extends Model
 
     public function additional_fields()
     {
-        return (array)json_decode($this->additional_fields);
+        return $this->additional_fields;
     }
 
     public static function getChildrenOnly()

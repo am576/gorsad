@@ -27,7 +27,6 @@ class ProductUpdate extends ProductStore
         return [
             'title' => 'required',
             'category_id' => 'required | numeric',
-            'code'  =>  'required',
             'description'  =>  'required',
             'price' =>  'required | numeric | max:1000000',
             'discount' => 'numeric | max:100',

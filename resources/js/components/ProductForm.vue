@@ -153,7 +153,7 @@
                     }
                 }).then(response => {
                     this.attributes = response.data.attributes;
-                    this.category_fields = response.data.additional_fields;
+                    this.category_fields = JSON.parse(response.data.additional_fields);
                 })
             },
             getAttributeValues(select, index)
