@@ -44,6 +44,7 @@ Route::get('/profile/notification/readall', 'UserController@readAllNotifications
 Route::get('/admin/orders', 'OrderController@index');
 Route::get('/admin/orders/{id}', 'OrderController@show');
 Route::get('/admin/queries/{id}', 'OrderController@showUserQuery');
+Route::post('/admin/queries/{id}/approve', 'OrderController@createOrderFromQuery');
 Route::get('/admin/clients', 'ClientController@index');
 
 

@@ -15,4 +15,9 @@ class Order extends Model
             DB::table('orders_products')->select('product_id')->where('order_id', $this->id))
             ->get();
     }
+
+    public function user()
+    {
+        return User::where('id',$this->user_id)->first();
+    }
 }

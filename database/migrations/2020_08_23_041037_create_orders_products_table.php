@@ -17,6 +17,7 @@ class CreateOrdersProductsTable extends Migration
             $table->id();
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('product_id');
+            $table->string('custom_name')->nullable();
         });
     }
 

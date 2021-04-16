@@ -148,39 +148,10 @@ class CartController extends Controller
         return response('Ошибка создания предложения', 300);
     }
 
-    public function doCheckout(Request $request)
-    {
-        $order_data = $request->all();
-
-        $order = new Order([
-           'client_name' => $order_data['client']['name'],
-           'client_phone' => $order_data['client']['phone'],
-           'sum_total' => $order_data['sum_total']
-        ]);
-
-        if($order->save())
-        {
-            foreach ($order_data['products'] as $product_id) {
-                DB::table('orders_products')
-                    ->insert([
-                        'order_id' => $order->id,
-                        'product_id' => $product_id
-                    ]);
-            }
-
-            return response('OK', 200);
-        }
-
-        return response('Unexpected error', 300);
-    }
-
     public function clearCart()
     {
         session()->forget('cart');
 
         return response('OK',200);
     }
-
-
-
 }

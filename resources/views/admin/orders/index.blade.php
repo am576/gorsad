@@ -7,7 +7,7 @@
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
-                            <h1 class="page-title">Предложения</h1>
+                            <h1 class="page-title">Запросы</h1>
                         </a>
                         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">
                             <h1 class="page-title">Заказы</h1>
@@ -22,9 +22,10 @@
                                     <table id="dataTable" class="table table-hover">
                                         <thead>
                                         <tr>
-                                            <th>ID предложения</th>
+                                            <th>ID запроса</th>
                                             <th>Клиент</th>
                                             <th>Статус</th>
+                                            <th>PDF</th>
                                             <th class="text-right">Создан</th>
                                             <th class="text-right">Завершён</th>
                                             <th width="10"></th>
@@ -36,6 +37,11 @@
                                                 <td>{{sprintf('%08d', $query->id)}}</td>
                                                 <td>{{$query->user()->name}}</td>
                                                 <td class="text-success">{{$query->status}}</td>
+                                                <td>
+                                                    <a href="{{$query->quote_file_link}}">
+                                                        <span class="mdi mdi-file-document mdi-24px text-primary"></span>
+                                                    </a>
+                                                </td>
                                                 <td class="text-right">{{$query->created_at}}</td>
                                                 <td class="text-right">@if($query->status!='new'){{$query->updated_at}}@else&mdash;@endif</td>
                                                 <td>
@@ -59,7 +65,9 @@
                                         <thead>
                                         <tr>
                                             <th>ID заказа</th>
+                                            <th>Клиент</th>
                                             <th>Статус</th>
+                                            <th>PDF</th>
                                             <th class="text-right">Создан</th>
                                             <th class="text-right">Завершён</th>
                                             <th width="10"></th>
@@ -69,7 +77,13 @@
                                         @foreach($orders as $order)
                                             <tr>
                                                 <td>{{sprintf('%08d', $order->id)}}</td>
+                                                <td>{{$order->user()->name}}</td>
                                                 <td class="text-success">{{$order->status}}</td>
+                                                <td>
+                                                    <a href="{{$order->order_file_link}}">
+                                                        <span class="mdi mdi-file-document mdi-24px text-primary"></span>
+                                                    </a>
+                                                </td>
                                                 <td class="text-right">{{$order->created_at}}</td>
                                                 <td class="text-right">@if($order->status!='new'){{$order->updated_at}}@else&mdash;@endif</td>
                                                 <td>
