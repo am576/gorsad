@@ -42,10 +42,10 @@
                                 <a href="/profile" class="text-small">Личный кабинет</a>
                             </b-dropdown-text>
                             <b-dropdown-item href="#">Ваши баллы</b-dropdown-item>
-                            <b-dropdown-item href="#">
+                            <b-dropdown-item href="/profile?tab=3">
                                 Уведомления <span v-if="unreadNotificationsAmount" class="text-danger">{{unreadNotificationsAmount}}</span>
                             </b-dropdown-item>
-                            <b-dropdown-item href="#">Мои предложения</b-dropdown-item>
+                            <b-dropdown-item href="profile?tab=1">Мои запросы</b-dropdown-item>
                             <b-dropdown-item href="#">Загрузить список растений</b-dropdown-item>
                             <b-dropdown-item href="#">
                                 <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">

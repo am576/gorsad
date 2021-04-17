@@ -1,17 +1,7 @@
 <template>
     <div class="row justify-content-center">
         <b-card no-body class="col-12 p-0">
-            <!--<div class="nav nav-tabs flex-column"  id="nav-tab" role="tablist">
-                <a class="nav-item nav-item nav-link active" data-toggle="tab" href="#profile_dashboard">МОЙ DASHBOARD</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#profile_queries">ЗАПРОСЫ</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#profile_orders">ЗАКАЗЫ</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#profile_notifications">
-                    УВЕДОМЛЕНИЯ
-
-                </a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#profile_account">ЛИЧНЫЙ КАБИНЕТ</a>
-            </div>-->
-            <b-tabs pills card vertical nav-wrapper-class="w-25">
+            <b-tabs pills card vertical nav-wrapper-class="w-25" v-model="tabIndex">
                 <b-tab title="МОЙ DASHBOARD" active><b-card-text></b-card-text></b-tab>
                 <b-tab title="ЗАПРОСЫ">
                     <b-card-text>
@@ -84,7 +74,8 @@
         props: {
             data: {
                 type: Object
-            }
+            },
+            tab: 0
         },
         data() {
             return {
@@ -93,6 +84,7 @@
                 perPage: 5,
                 currentOrdersPage: 1,
                 currentQueriesPage: 1,
+                tabIndex: this.tab
             }
         },
         methods: {
@@ -171,10 +163,14 @@
                     fields: labels,
                     items: orders
                 }
-            }
+            },
+        },
+        mounted() {
+            this.$nextTick(() => this.tabIndex = this.tab)
         },
         created() {
             this.user = this.data;
+            // this.tabIndex = this.tab;
             this.$eventBus.$on('setNotificationRead', this.setNotificationRead);
             this.$eventBus.$on('setAllNotificationsRead', this.setAllNotificationsRead);
         }

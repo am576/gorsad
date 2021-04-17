@@ -13,7 +13,7 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    public function showProfilePage()
+    public function showProfilePage(Request $request)
     {
         $user = User::where('id',auth()->user()->id)
             ->with(['user_notifications', 'companies'])
@@ -21,7 +21,14 @@ class UserController extends Controller
 
         $user->queries = $user->queries();
         $user->orders = $user->orders();
-        return view('frontend/user.profile')->with('user', $user);
+
+        $params_with = ['user' => $user];
+        if(isset($request->all()['tab']))
+        {
+            $params_with['tabIndex'] = $request->all()['tab'];
+        }
+
+        return view('frontend/user.profile')->with($params_with);
     }
 
     public function readNotification(Request $request)

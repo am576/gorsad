@@ -2,6 +2,6 @@
 @section('title', 'Gorsad')
 @section('content')
 <div class="container-fluid">
-    <user-profile :data="{{$user}}"></user-profile>
+    <user-profile :data="{{$user}}" :tab="{{$tabIndex ?? 0}}"></user-profile>
 </div>
 @endsection
