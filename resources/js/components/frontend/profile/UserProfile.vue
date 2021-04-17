@@ -1,61 +1,80 @@
 <template>
     <div class="row justify-content-center">
-        <nav class="col-4">
-            <div class="nav nav-tabs flex-column"  id="nav-tab" role="tablist">
+        <b-card no-body class="col-12 p-0">
+            <!--<div class="nav nav-tabs flex-column"  id="nav-tab" role="tablist">
                 <a class="nav-item nav-item nav-link active" data-toggle="tab" href="#profile_dashboard">МОЙ DASHBOARD</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#profile_queries">ЗАПРОСЫ</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#profile_orders">ЗАКАЗЫ</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#profile_notifications">
                     УВЕДОМЛЕНИЯ
-                    <span v-if="unreadNotificationsCount()" class="text-danger">
-                        {{unreadNotificationsCount()}}
-                    </span>
+
                 </a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#profile_account">ЛИЧНЫЙ КАБИНЕТ</a>
-            </div>
-        </nav>
-        <div class="tab-content col-8" id="nav-tabContent">
+            </div>-->
+            <b-tabs pills card vertical nav-wrapper-class="w-25">
+                <b-tab title="МОЙ DASHBOARD" active><b-card-text></b-card-text></b-tab>
+                <b-tab title="ЗАПРОСЫ">
+                    <b-card-text>
+                        <h4>Мои запросы</h4>
+                        <b-table :fields="queries_table_data.fields" :items="queries_table_data.items" :per-page="perPage"
+                                 :current-page="currentQueriesPage">
+                            <template #cell(file)="data">
+                                <a :href="data.value">
+                                    <span class="mdi mdi-file-document"></span>
+                                </a>
+                            </template>
+                        </b-table>
+                        <b-pagination
+                            v-model="currentQueriesPage"
+                            :total-rows="queries_table_data.items.length"
+                            :per-page="perPage"
+                        ></b-pagination>
+                    </b-card-text>
+                </b-tab>
+                <b-tab title="ЗАКАЗЫ">
+                    <b-card-text>
+                        <h4>Мои заказы</h4>
+                        <b-table :fields="orders_table_data.fields" :items="orders_table_data.items" :per-page="perPage"
+                                 :current-page="currentOrdersPage">
+                            <template #cell(file)="data">
+                                <a :href="data.value">
+                                    <span class="mdi mdi-file-document"></span>
+                                </a>
+                            </template>
+                        </b-table>
+                        <b-pagination
+                            v-model="currentOrdersPage"
+                            :total-rows="orders_table_data.items.length"
+                            :per-page="perPage"
+                        ></b-pagination>
+                    </b-card-text>
+                </b-tab>
+                <b-tab>
+                    <template #title>
+                        УВЕДОМЛЕНИЯ
+                        <span v-if="unreadNotificationsCount()" class="text-danger">
+                        {{unreadNotificationsCount()}}
+                    </span>
+                    </template>
+                    <b-card-text>
+                        <h4>Уведомления</h4>
+                        <notifications-list :data="user.user_notifications"></notifications-list>
+                    </b-card-text>
+                </b-tab>
+                <b-tab title="ЛИЧНЫЙ КАБИНЕТ"><b-card-text>Tab contents 3</b-card-text></b-tab>
+            </b-tabs>
+        </b-card>
+        <!--<div class="tab-content col-8" id="nav-tabContent">
             <div class="tab-pane fade show active" role="tabpanel" id="profile_dashboard">
                 <h1>ДОБРО ПОЖАЛОВАТЬ, {{user.name}}</h1>
             </div>
-            <div class="tab-pane fade" role="tabpanel" id="profile_queries">
-                <h4>Мои запросы</h4>
-                <b-table :fields="queries_table_data.fields" :items="queries_table_data.items" :per-page="perPage"
-                         :current-page="currentQueriesPage">
-                    <template #cell(file)="data">
-                        <a :href="data.value">
-                            <span class="mdi mdi-file-document"></span>
-                        </a>
-                    </template>
-                </b-table>
-                <b-pagination
-                    v-model="currentQueriesPage"
-                    :total-rows="queries_table_data.items.length"
-                    :per-page="perPage"
-                ></b-pagination>
-            </div>
-            <div class="tab-pane fade" role="tabpanel" id="profile_orders">
-                <h4>Мои заказы</h4>
-                <b-table :fields="orders_table_data.fields" :items="orders_table_data.items" :per-page="perPage"
-                         :current-page="currentOrdersPage">
-                    <template #cell(file)="data">
-                        <a :href="data.value">
-                            <span class="mdi mdi-file-document"></span>
-                        </a>
-                    </template>
-                </b-table>
-                <b-pagination
-                    v-model="currentOrdersPage"
-                    :total-rows="orders_table_data.items.length"
-                    :per-page="perPage"
-                ></b-pagination>
-            </div>
+
             <div class="tab-pane fade" role="tabpanel" id="profile_notifications">
                 <h3>Уведомления</h3>
                 <notifications-list :data="user.user_notifications"></notifications-list>
             </div>
             <div class="tab-pane fade" role="tabpanel" id="profile_account">Личный кабинет</div>
-        </div>
+        </div>-->
     </div>
 </template>
 
