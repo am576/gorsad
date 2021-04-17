@@ -5,17 +5,30 @@
                 <ins>Отметить все прочитанными</ins>
             </a>
         </div>
-        <div v-if="Object.keys(viewed_notification).length === 0" class="notification-row d-flex flex-column"
-             v-for="notification in data" @click="viewNotification(notification)">
-            <div>
-                <span v-if="notification.status === 'unread'" class="mdi mdi-alert-circle mdi-24px text-primary"></span>
-                <strong>{{notification.title}}</strong>
+        <div v-if="Object.keys(viewed_notification).length === 0">
+            <div class="notification-row d-flex flex-column"
+                 v-for="(notification, index) in paginatedNotifications" @click="viewNotification(notification)"
+                 :key="index">
+                <div>
+                    <span v-if="notification.status === 'unread'"
+                          class="mdi mdi-alert-circle mdi-24px text-primary"></span>
+                    <strong>{{notification.title}}</strong>
+                </div>
+                <div>{{truncateMessage(notification.message, 200)}}</div>
+                <div class="d-flex">
+                    <div class="text-light" v-bind:class="'bg-'+tags[notification.tag].class">
+                        {{tags[notification.tag].title}}
+                    </div>
+                    <div>{{moment(notification.created_at).format('DD.MM.YY')}}</div>
+                </div>
             </div>
-            <div>{{truncateMessage(notification.message, 200)}}</div>
-            <div class="d-flex">
-                <div class="text-light" v-bind:class="'bg-'+tags[notification.tag].class">{{tags[notification.tag].title}}</div>
-                <div>{{moment(notification.created_at).format('DD.MM.YY')}}</div>
-            </div>
+            <b-pagination
+                @change="onPageChanged"
+                :total-rows="total_rows"
+                :per-page="perPage"
+                v-model="currentPage"
+                class="my-0"
+            />
         </div>
         <div v-if="Object.keys(viewed_notification).length" class="notification-full d-flex flex-column">
             <div>
@@ -47,6 +60,9 @@
             return {
                 moment: moment,
                 notifications: [],
+                paginatedNotifications: [],
+                currentPage: 1,
+                perPage: 3,
                 viewed_notification: {},
                 tags: {
                     'important' : {
@@ -66,7 +82,7 @@
         },
         methods: {
             truncateMessage(msg, max_chars) {
-                return String(msg).substring(0, max_chars) + ' . . .';
+                return msg.length >= max_chars ? String(msg).substring(0, max_chars) + ' . . .' : msg;
             },
             viewNotification(notification) {
                 this.viewed_notification = notification;
@@ -89,10 +105,25 @@
             },
             clearViewedNotification() {
                 this.viewed_notification = {};
+            },
+            paginate(per_page, page_number) {
+                let itemsToParse = this.notifications;
+                this.paginatedNotifications = itemsToParse.slice(
+                    (page_number - 1) * per_page,
+                     page_number  * per_page
+                );
+            },
+            onPageChanged(page_number) {
+                this.paginate(this.perPage, page_number);
             }
         },
         computed: {
-
+            total_rows() {
+                return this.notifications.length;
+            }
+        },
+        mounted() {
+            this.paginate(this.perPage, 1);
         },
         created() {
             this.notifications = this.data;
