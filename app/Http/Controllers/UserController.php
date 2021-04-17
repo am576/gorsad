@@ -20,6 +20,7 @@ class UserController extends Controller
             ->first();
 
         $user->queries = $user->queries();
+        $user->orders = $user->orders();
         return view('frontend/user.profile')->with('user', $user);
     }
 

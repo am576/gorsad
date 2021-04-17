@@ -3,7 +3,7 @@
         <nav class="col-4">
             <div class="nav nav-tabs flex-column"  id="nav-tab" role="tablist">
                 <a class="nav-item nav-item nav-link active" data-toggle="tab" href="#profile_dashboard">МОЙ DASHBOARD</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#profile_queries">ПРЕДЛОЖЕНИЯ</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#profile_queries">ЗАПРОСЫ</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#profile_orders">ЗАКАЗЫ</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#profile_notifications">
                     УВЕДОМЛЕНИЯ
@@ -19,33 +19,37 @@
                 <h1>ДОБРО ПОЖАЛОВАТЬ, {{user.name}}</h1>
             </div>
             <div class="tab-pane fade" role="tabpanel" id="profile_queries">
-                <h4>Мои предложения</h4>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Номер заказа</th>
-                        <th>Дата</th>
-                        <th>Количество</th>
-                        <th>Статус</th>
-                        <th>Файл</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="query in user.queries">
-                        <td>{{query.id}}</td>
-                        <td>{{moment(query.created_at).format('DD.MM.YY')}}</td>
-                        <td>{{query.products_count}}</td>
-                        <td>{{query.status}}</td>
-                        <td>
-                            <a :href="query.quote_file_link">
-                                <span class="mdi mdi-file-document"></span>
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Мои запросы</h4>
+                <b-table :fields="queries_table_data.fields" :items="queries_table_data.items" :per-page="perPage"
+                         :current-page="currentQueriesPage">
+                    <template #cell(file)="data">
+                        <a :href="data.value">
+                            <span class="mdi mdi-file-document"></span>
+                        </a>
+                    </template>
+                </b-table>
+                <b-pagination
+                    v-model="currentQueriesPage"
+                    :total-rows="queries_table_data.items.length"
+                    :per-page="perPage"
+                ></b-pagination>
             </div>
-            <div class="tab-pane fade" role="tabpanel" id="profile_orders">Мои заказы</div>
+            <div class="tab-pane fade" role="tabpanel" id="profile_orders">
+                <h4>Мои заказы</h4>
+                <b-table :fields="orders_table_data.fields" :items="orders_table_data.items" :per-page="perPage"
+                         :current-page="currentOrdersPage">
+                    <template #cell(file)="data">
+                        <a :href="data.value">
+                            <span class="mdi mdi-file-document"></span>
+                        </a>
+                    </template>
+                </b-table>
+                <b-pagination
+                    v-model="currentOrdersPage"
+                    :total-rows="orders_table_data.items.length"
+                    :per-page="perPage"
+                ></b-pagination>
+            </div>
             <div class="tab-pane fade" role="tabpanel" id="profile_notifications">
                 <h3>Уведомления</h3>
                 <notifications-list :data="user.user_notifications"></notifications-list>
@@ -66,7 +70,10 @@
         data() {
             return {
                 moment: moment,
-                user: {}
+                user: {},
+                perPage: 5,
+                currentOrdersPage: 1,
+                currentQueriesPage: 1,
             }
         },
         methods: {
@@ -97,7 +104,55 @@
                 return count;
             }
         },
-        mounted() {
+        computed: {
+            queries_table_data() {
+                let labels = [
+                    {key: 'id', label: 'Номер заказа', sortable: true},
+                    {key: 'products_count', 'label': 'Количество'},
+                    {key: 'status', 'label': 'Статус'},
+                    {key: 'file', 'label': 'PDF'},
+                    {key: 'created_at', label: 'Дата', sortable: true},
+                ];
+                let queries = [];
+                this.user.queries.forEach(query => {
+                    queries.push({
+                        id: String(query.id).padStart(8, '0'),
+                        products_count: query.products_count,
+                        status: query.status,
+                        file: query.quote_file_link,
+                        created_at: moment(query.created_at).format('DD.MM.YY'),
+                    })
+                })
+
+                return {
+                    fields: labels,
+                    items: queries
+                }
+            },
+            orders_table_data() {
+                let labels = [
+                    {key: 'id', label: 'Номер заказа', sortable: true},
+                    {key: 'products_count', 'label': 'Количество'},
+                    {key: 'status', 'label': 'Статус'},
+                    {key: 'file', 'label': 'PDF'},
+                    {key: 'created_at', label: 'Дата', sortable: true},
+                ];
+                let orders = [];
+                this.user.orders.forEach(order => {
+                    orders.push({
+                        id: String(order.query_id).padStart(8, '0'),
+                        products_count: order.products_count,
+                        status: order.status,
+                        file: order.order_file_link,
+                        created_at: moment(order.created_at).format('DD.MM.YY'),
+                    })
+                })
+
+                return {
+                    fields: labels,
+                    items: orders
+                }
+            }
         },
         created() {
             this.user = this.data;

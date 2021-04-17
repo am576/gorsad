@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -62,5 +63,16 @@ class User extends Authenticatable
         }
 
         return $queries;
+    }
+
+    public function orders()
+    {
+        $orders = $this->hasMany('App\Order','user_id','id')->get();
+
+        foreach ($orders as $order) {
+            $order->products_count = DB::table('orders_products')->where('order_id', $order->id)->count();
+        }
+
+        return $orders;
     }
 }
