@@ -9,7 +9,7 @@
                         <b-table :fields="queries_table_data.fields" :items="queries_table_data.items" :per-page="perPage"
                                  :current-page="currentQueriesPage">
                             <template #cell(file)="data">
-                                <a :href="data.value">
+                                <a :href="'/querypdf?id='+data.value">
                                     <span class="mdi mdi-file-document"></span>
                                 </a>
                             </template>
@@ -27,7 +27,7 @@
                         <b-table :fields="orders_table_data.fields" :items="orders_table_data.items" :per-page="perPage"
                                  :current-page="currentOrdersPage">
                             <template #cell(file)="data">
-                                <a :href="data.value">
+                                <a :href="'/querypdf?'+data.value">
                                     <span class="mdi mdi-file-document"></span>
                                 </a>
                             </template>
@@ -130,7 +130,7 @@
                         id: String(query.id).padStart(8, '0'),
                         products_count: query.products_count,
                         status: query.status,
-                        file: query.quote_file_link,
+                        file: query.id,
                         created_at: moment(query.created_at).format('DD.MM.YY'),
                     })
                 })

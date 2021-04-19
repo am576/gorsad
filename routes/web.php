@@ -38,6 +38,7 @@ Route::post('/cart/clear','CartController@clearCart');
 Route::get('/profile/{tab?}', 'UserController@showProfilePage');
 Route::get('/profile/notification', 'UserController@readNotification');
 Route::get('/profile/notification/readall', 'UserController@readAllNotifications');
+Route::get('/querypdf','UserController@getQueryPdf');
 
 
 /*Admin routes*/

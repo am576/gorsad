@@ -36,4 +36,17 @@ class UserQuery extends Model
     {
         return User::where('id',$this->user_id)->first();
     }
+
+    public function sumTotal()
+    {
+        $total = 0;
+
+        $products = $this->products();
+
+        foreach ($products as $product) {
+            $total += ($product->price * $product->quantity);
+        }
+
+        return $total;
+    }
 }

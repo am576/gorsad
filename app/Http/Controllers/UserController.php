@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\UserNotification;
 use Illuminate\Http\Request;
+use PDF;
 
 class UserController extends Controller
 {
@@ -49,5 +50,15 @@ class UserController extends Controller
         UserNotification::where('user_id',auth()->user()->id)
             ->where('status','unread')
             ->update(['status' => 'read']);
+    }
+
+    public function getQueryPdf(Request $request)
+    {
+        $user = auth()->user();
+        $query = $user->queries()->where('id', $request->id)->first();
+
+        return PDF::loadView('frontend.shop.query', compact('query'))->stream();
+
+        return $pdf->download('query.pdf');
     }
 }
