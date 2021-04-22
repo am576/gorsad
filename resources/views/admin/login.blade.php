@@ -18,7 +18,7 @@
 <body>
 <div class="container" style="margin-top:200px">
     <div class="row justify-content-center">
-        <div class="row col-4 text-center">
+        <div class="row col-4 justify-content-center">
             <form id="sign_in_adm" method="POST" action="{{ route('admin.login.submit') }}" style="padding: 20px;border-radius: 20px; background: #1f3339;">
                 {{ csrf_field() }}
                 <p class="text-light">Gorsad - панель администратора</p>

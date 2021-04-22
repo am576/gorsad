@@ -27,7 +27,7 @@
                         <b-table :fields="orders_table_data.fields" :items="orders_table_data.items" :per-page="perPage"
                                  :current-page="currentOrdersPage">
                             <template #cell(file)="data">
-                                <a :href="'/querypdf?'+data.value">
+                                <a :href="'/orderpdf?id='+data.value">
                                     <span class="mdi mdi-file-document"></span>
                                 </a>
                             </template>
@@ -154,7 +154,7 @@
                         id: String(order.query_id).padStart(8, '0'),
                         products_count: order.products_count,
                         status: order.status,
-                        file: order.order_file_link,
+                        file: order.id,
                         created_at: moment(order.created_at).format('DD.MM.YY'),
                     })
                 })

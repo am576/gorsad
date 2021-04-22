@@ -61,4 +61,14 @@ class UserController extends Controller
 
         return $pdf->download('query.pdf');
     }
+
+    public function getOrderPdf(Request $request)
+    {
+        $user = auth()->user();
+        $order = $user->orders()->where('id', $request->id)->first();
+
+        return PDF::loadView('frontend.shop.order', compact('order'))->stream();
+
+        return $pdf->download('order.pdf');
+    }
 }
