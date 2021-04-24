@@ -30,6 +30,7 @@ class HomeController extends Controller
         if(isset($user))
         {
             $user = User::where('id',auth()->user()->id)->with(['user_notifications', 'companies'])->first();
+            $user->favorites = $user->favorites();
         }
 
         return view('frontend/index')
@@ -71,7 +72,9 @@ class HomeController extends Controller
 
     public function showShopPage()
     {
-        $products = Product::all();
+        $products = Product::select('*')
+            ->with('images')
+            ->get();
 
         return view('frontend.shop.index')->with('products', $products);
     }

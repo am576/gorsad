@@ -1,52 +1,70 @@
 <template>
-    <div id="products-list" class="row">
-        <section class="col-2">
-            <h3>Фильтры</h3>
-            <div v-for="attribute in attributes">
-                <h5>{{attribute.name}}</h5>
-                <div v-for="value in attribute.values">
-                    <input type="checkbox">
-                    <label>{{value.value}}</label>
+    <div class="row">
+        <div v-for="product in products" style="width: 20%; padding: 10px">
+            <a :href="'/products/'+product.id">
+                <div class="product-card" v-bind:style="{'background-image':'url(/storage/images/' + product.images[0].medium +')'}">
+                    <span class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
+                    <p class="description">{{product.title}}</p>
                 </div>
-            </div>
-            <button class="btn btn-primary">Применить</button>
-        </section>
-        <section class="col-10">
-            <div class="row">
-                <div class="product-link col-lg-4 col-md-3 text-center" v-for="product in products">
-                    <product-bar :product="product"></product-bar>
-                </div>
-            </div>
-        </section>
-
+            </a>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
         props: {
-            products: {},
-            attributes: {},
+            products: {
+                type: Array
+            },
+        },
+        data() {
+            return {
+                favorites: []
+            }
+        },
+        methods: {
+            toggleProductFavorite(id) {
+                axios.post('/favorite', {
+                    product_id : id
+                })
+                .then(res => {
+                    if(this.favorites.includes(id)) {
+                        this.$delete(this.favorites, this.favorites.indexOf(id))
+                    }
+                    else {
+                        this.favorites.push(id);
+                    }
+                })
+            },
+            getUserFavorites() {
+                axios.get('/getfavorites')
+                .then(res => {
+                    this.favorites = res.data;
+                })
+            },
+            isProductFavorite(id) {
+                return {
+                    'mdi-heart' : this.favorites.includes(id),
+                    'mdi-heart-outline' : !this.favorites.includes(id),
+                }
+            }
+        },
+        computed: {
+
         },
         created() {
+            this.getUserFavorites();
         }
     }
 </script>
-
 <style lang="scss" scoped>
-    #products-list {
-        section
-        {
-            border: 1px solid;
-
-            img {
-
-            }
-        }
-
-        .row {
-            display: inline-flex;
-            justify-content: center;
-        }
+    .product-card {
+        position: relative;
+    }
+    .favorite {
+        position: absolute;
+        top: 5px;
+        right: 5px;
     }
 </style>

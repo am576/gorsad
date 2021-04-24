@@ -23,6 +23,8 @@ Route::get('/products/{product_id}', ['uses' => 'HomeController@productPage']);
 //Route::get('/shop', 'HomeController@showShopPage')->name('shop');
 Route::get('/shop', 'HomeController@showShopPage')->name('shop');
 Route::post('/search', 'HomeController@ApplyFilter');
+Route::get('/getfavorites','UserController@getUserFavorites');
+Route::post('/favorite', 'UserController@toggleProductFavorite');
 
 Route::get('/cart', 'HomeController@showCart');
 Route::get('/cart/add/', 'CartController@addProduct');

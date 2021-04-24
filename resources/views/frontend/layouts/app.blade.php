@@ -29,6 +29,7 @@
         if(isset($user))
             {
                 $user = User::where('id',auth()->user()->id)->with(['user_notifications', 'companies'])->first();
+                $user->favorites = $user->favorites();
             }
         ?>
         <site-navigation @if(isset($auth_user)):auth_user="{{$auth_user}}" :user="{{json_encode($user)}}"@endif></site-navigation>

@@ -5,25 +5,12 @@
     <div class="row justify-content-center">
         <div class="col-md-12 pr-5 pl-5">
             <div class="pt-3 border-bottom">
-                <div class="row">
-                    @foreach($products as $product)
-
-                        <div style="width: 20%; padding: 10px">
-                            <a href="/products/{{$product->id}}">
-                            <div class="product-card" style=" background-image: url({{'storage/images/'.$product->images[0]->medium}}">
-                                <p class="description">{{$product->title}}</p>
-                            </div>
-                            </a>
-                        </div>
-
-                    @endforeach
-                    @if(!count($products))
-                        По вашему запросу ничего не найдено.
-                    @endif
-                </div>
+                <products-list :products="{{$products}}"></products-list>
             </div>
         </div>
+        @if(!count($products))
+            По вашему запросу ничего не найдено.
+        @endif
     </div>
 </div>
-
 @endsection

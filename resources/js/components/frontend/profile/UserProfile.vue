@@ -39,6 +39,11 @@
                         ></b-pagination>
                     </b-card-text>
                 </b-tab>
+                <b-tab title="ИЗБРАННОЕ">
+                    <b-card-text>
+                        <favorites-list :data="user.favorites"></favorites-list>
+                    </b-card-text>
+                </b-tab>
                 <b-tab>
                     <template #title>
                         УВЕДОМЛЕНИЯ

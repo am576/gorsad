@@ -150,4 +150,15 @@ class Product extends Model
         return json_encode($leafColor);
     }
 
+    public function isFavorite()
+    {
+        $user = auth()->user();
+
+        $fav = DB::table('user_favorites')
+            ->where('user_id', $user->id)
+            ->where('product->id', $this->id)
+            ->select('id')
+            ->first();
+    }
+
 }

@@ -75,4 +75,14 @@ class User extends Authenticatable
 
         return $orders;
     }
+
+    public function favorites()
+    {
+        return Product::whereIn('id', DB::table('user_favorites')
+            ->select('product_id')
+            ->where('user_id', $this->id)
+            ->groupBy('product_id'))
+            ->with('images')
+            ->get();
+    }
 }

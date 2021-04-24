@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\UserNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class UserController extends Controller
@@ -22,6 +23,7 @@ class UserController extends Controller
 
         $user->queries = $user->queries();
         $user->orders = $user->orders();
+        $user->favorites = $user->favorites();
 
         $params_with = ['user' => $user];
         if(isset($request->all()['tab']))
@@ -83,5 +85,38 @@ class UserController extends Controller
     {
         $user = auth()->user();
         $user->companies()->update(['is_active' => 0]);
+    }
+
+    public function getUserFavorites()
+    {
+        $user = auth()->user();
+        return $user->favorites()->pluck('id');
+    }
+
+    public function toggleProductFavorite(Request $request)
+    {
+        $user = auth()->user();
+        $product_id = $request->product_id;
+
+        $res = DB::table('user_favorites')
+            ->where('user_id', $user->id)
+            ->where('product_id', $product_id)
+            ->get();
+
+        if(count($res))
+        {
+            DB::table('user_favorites')
+                ->where('user_id', $user->id)
+                ->where('product_id', $product_id)
+                ->delete();
+        }
+        else
+        {
+            DB::table('user_favorites')
+                ->insert([
+                   'user_id' => $user->id,
+                   'product_id' => $product_id
+                ]);
+        }
     }
 }
