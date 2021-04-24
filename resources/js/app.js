@@ -57,6 +57,7 @@ Vue.component('checkout-page', require('./components/frontend/CheckoutPage').def
                                             /* Account page components */
 Vue.component('user-profile', require('./components/frontend/profile/UserProfile').default);
 Vue.component('notifications-list', require('./components/frontend/profile/NotificationsList').default);
+Vue.component('user-cabinet', require('./components/frontend/profile/UserCabinet').default);
 
 const app = new Vue({
     vuetify,

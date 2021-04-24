@@ -51,7 +51,11 @@
                         <notifications-list :data="user.user_notifications"></notifications-list>
                     </b-card-text>
                 </b-tab>
-                <b-tab title="ЛИЧНЫЙ КАБИНЕТ"><b-card-text>Tab contents 3</b-card-text></b-tab>
+                <b-tab title="ЛИЧНЫЙ КАБИНЕТ">
+                    <b-card-text>
+                        <user-cabinet :data="user.companies"></user-cabinet>
+                    </b-card-text>
+                </b-tab>
             </b-tabs>
         </b-card>
         <!--<div class="tab-content col-8" id="nav-tabContent">
