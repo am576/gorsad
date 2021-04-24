@@ -36,7 +36,7 @@ class UserController extends Controller
     {
         if(isset($request->id))
         {
-            $notification = UserNotification::findOrFail($request->id);
+            $notification = UserNotification::where('user_id',auth()->user()->id)->where('id', $request->id)->first();
             if($notification->status == 'unread')
             {
                 $notification->status = 'read';

@@ -87,10 +87,8 @@
             viewNotification(notification) {
                 this.viewed_notification = notification;
                 if(notification.status === 'unread') {
-                    axios.get('/profile/notification', {
-                        params: {
+                    axios.post('/profile/notification', {
                             id: notification.id
-                        }
                     }).then(res =>{
                         notification.status = 'read';
                         this.$eventBus.$emit('setNotificationRead', notification.id)
