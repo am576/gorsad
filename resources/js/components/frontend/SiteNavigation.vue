@@ -49,7 +49,8 @@
                                 Уведомления <span v-if="unreadNotificationsAmount" class="text-danger">{{unreadNotificationsAmount}}</span>
                             </b-dropdown-item>
                             <b-dropdown-item href="profile?tab=1">Мои запросы</b-dropdown-item>
-                            <b-dropdown-item href="#">Загрузить список растений</b-dropdown-item>
+                            <b-dropdown-item href="profile?tab=2">Мои заказы</b-dropdown-item>
+<!--                            <b-dropdown-item href="#">Загрузить список растений</b-dropdown-item>-->
                             <b-dropdown-item href="#">
                                 <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
                                     <input type="hidden" name="_token" :value="csrf">
