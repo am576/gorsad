@@ -71,4 +71,17 @@ class UserController extends Controller
 
         return $pdf->download('order.pdf');
     }
+
+    public function setCompanyActive(Request $request)
+    {
+        $user = auth()->user();
+        $user->companies()->update(['is_active' => 0]);
+        $company = $user->companies()->where('id', $request->company_id)->update(['is_active' => 1]);
+    }
+
+    public function setCompaniesNotActive()
+    {
+        $user = auth()->user();
+        $user->companies()->update(['is_active' => 0]);
+    }
 }

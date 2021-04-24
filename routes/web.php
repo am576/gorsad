@@ -40,6 +40,8 @@ Route::get('/profile/notification', 'UserController@readNotification');
 Route::get('/profile/notification/readall', 'UserController@readAllNotifications');
 Route::get('/querypdf','UserController@getQueryPdf');
 Route::get('/orderpdf','UserController@getOrderPdf');
+Route::get('/logascompany','UserController@setCompanyActive');
+Route::get('/logasuser','UserController@setCompaniesNotActive');
 
 
 /*Admin routes*/

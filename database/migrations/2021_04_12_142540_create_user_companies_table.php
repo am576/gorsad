@@ -20,6 +20,7 @@ class CreateUserCompaniesTable extends Migration
             $table->string('kpp');
             $table->string('address');
             $table->unsignedInteger('user_id');
+            $table->unsignedTinyInteger('is_active')->default(0);
             $table->timestamps();
         });
     }

@@ -35,10 +35,13 @@
                     <div v-if="!isGuest">
                         <b-dropdown size="lg"  variant="link" toggle-class="text-decoration-none" no-caret>
                             <template #button-content>
-                                <span class="mdi mdi-account mdi-24px"></span>
+                                <span class="mdi mdi-24px"
+                                      v-bind:class="{'mdi-account':company_id === 0, 'mdi-briefcase':company_id !== 0}"
+                                ></span>
                             </template>
                             <b-dropdown-text>
-                                <div>{{auth_user.name}}</div>
+                                <div v-if="company_id === 0">{{auth_user.name}}</div>
+                                <div v-if="company_id !== 0">{{user.companies[0].name}}</div>
                                 <a href="/profile" class="text-small">Личный кабинет</a>
                             </b-dropdown-text>
                             <b-dropdown-item href="#">Ваши баллы</b-dropdown-item>
@@ -54,6 +57,14 @@
                                 <a class="nav-link" @click="logout"> Выход </a>
                             </b-dropdown-item>
                             <b-dd-divider></b-dd-divider>
+                            <b-dropdown-item v-if="company_id === 0" href="#" @click.prevent="logAsCompany(user.companies[0].id)">
+                                <span class="mdi mdi-briefcase mdi-24px"></span>
+                                {{user.companies[0].name}}
+                            </b-dropdown-item>
+                            <b-dropdown-item v-if="company_id !== 0" href="#" @click.prevent="logAsUser()">
+                                <span class="mdi mdi-account mdi-24px"></span>
+                                {{auth_user.name}}
+                            </b-dropdown-item>
                             <b-dropdown-item href="#">
                                 <div>
                                     <span class="mdi mdi-briefcase-plus mdi-24px"></span>
@@ -128,7 +139,8 @@
                 navOpen : false,
                 showLinks: false,
                 linksOpen: false,
-                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                company_id: 0
             }
         },
         methods: {
@@ -145,7 +157,30 @@
             },
             logout() {
                 this.$refs.logout.submit()
+            },
+            logAsCompany(company_id) {
+                axios.get('/logascompany', {
+                    params: {
+                        company_id: company_id
+                    }
+                }).then(res => {
+                    this.company_id = company_id;
+                })
+            },
+            logAsUser() {
+                axios.get('/logascompany'
+                ).then(res => {
+                    this.company_id = 0;
+                })
+            },
+            checkActiveCompany() {
+                this.user.companies.forEach((company) => {
+                    if(company.is_active) {
+                        this.company_id = company.id;
+                    }
+                })
             }
+
         },
         computed: {
             isGuest() {
@@ -159,10 +194,12 @@
                 })
 
                 return amount;
-            }
+            },
+
         },
         created() {
             this.handleView();
+            this.checkActiveCompany();
             window.addEventListener('resize', this.handleView);
         }
     }
@@ -239,6 +276,4 @@
             font-size: 2rem;
         }
     }
-
-
 </style>
