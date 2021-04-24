@@ -8,7 +8,7 @@
                     </div>
                 </b-button>
             </b-card-header>
-            <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel">
+            <b-collapse id="accordion-1"  accordion="my-accordion" role="tabpanel">
                 <b-card-body>
                     <b-card style="margin-bottom: 25px;">
                         <b-card-body class="d-flex">
@@ -48,9 +48,9 @@
                         </b-card-body>
                     </b-card>
                     <b-card class="w-50">
-                        <b-card-text><strong>{{companies[0].name}}</strong></b-card-text>
-                        <b-card-text>ИНН: {{companies[0].inn}} КПП: {{companies[0].kpp}}</b-card-text>
-                        <b-card-text>{{companies[0].address}}</b-card-text>
+                        <b-card-text><strong>{{user.companies[0].name}}</strong></b-card-text>
+                        <b-card-text>ИНН: {{user.companies[0].inn}} КПП: {{user.companies[0].kpp}}</b-card-text>
+                        <b-card-text>{{user.companies[0].address}}</b-card-text>
                     </b-card>
                 </b-card-body>
             </b-collapse>
@@ -79,9 +79,24 @@
                     </div>
                 </b-button>
             </b-card-header>
-            <b-collapse id="accordion-3" accordion="my-accordion" role="tabpanel">
+            <b-collapse id="accordion-3" visible accordion="my-accordion" role="tabpanel">
                 <b-card-body>
-                    <b-card-text>123</b-card-text>
+                    <b-card-text style="margin-bottom: 5px;">
+                        <h3>{{user.suggested_products.length}} товара ожидают оценки</h3>
+                    </b-card-text>
+                    <b-card-text>
+                        Оставьте отзыв, чтобы помочь другим покупателям сделать выбор
+                        <div class="row mt-3">
+                            <div v-for="product in user.suggested_products" class="suggested-product col-4 mr-3">
+                                <div class="d-flex justify-content-around align-items-center" @click="showReviewForm(product.id)" style="cursor:pointer;">
+                                    <img :src="'/storage/images/' + product.images[0].icon">
+                                    <p><strong>{{product.title}}</strong></p>
+                                    <review-form :modal_id="'product_modal-'+product.id" :product="product"></review-form>
+                                </div>
+                                <a href="" @click.prevent="doNotReview(product)">Не оставлять отзыв</a>
+                            </div>
+                        </div>
+                    </b-card-text>
                 </b-card-body>
             </b-collapse>
         </b-card>
@@ -92,16 +107,33 @@
     export default {
         props: {
             data: {
-                type: Array
+                type: Object
             }
         },
         data() {
             return {
-                companies: {}
+                user: {}
+            }
+        },
+        methods: {
+            showReviewForm(product_id) {
+                this.$bvModal.show('product_modal-'+product_id)
+            },
+            doNotReview(product) {
+                axios.post('/donotreview', {
+                    'product_id': product.id
+                })
+                .then(res => {
+                    this.deleteProductFromSuggested(product);
+                })
+            },
+            deleteProductFromSuggested(product) {
+                this.$delete(this.user.suggested_products, this.user.suggested_products.indexOf(product));
             }
         },
         created() {
-            this.companies = this.data
+            this.user = this.data;
+            this.$eventBus.$on('postReview', this.deleteProductFromSuggested);
         }
     }
 </script>
@@ -112,5 +144,13 @@
 
     .card-description-text {
         font-size: 14px !important;
+    }
+
+    .suggested-product {
+        border-radius: 10px;
+        padding: 15px;
+        -webkit-box-shadow: 0px 0px 36px 0px rgba(0,0,0,0.35);
+        -moz-box-shadow: 0px 0px 36px 0px rgba(0,0,0,0.35);
+        box-shadow: 0px 0px 36px 0px rgba(0,0,0,0.35);
     }
 </style>

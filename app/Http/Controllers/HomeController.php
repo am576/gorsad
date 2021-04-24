@@ -31,6 +31,7 @@ class HomeController extends Controller
         {
             $user = User::where('id',auth()->user()->id)->with(['user_notifications', 'companies'])->first();
             $user->favorites = $user->favorites();
+
         }
 
         return view('frontend/index')
@@ -42,7 +43,6 @@ class HomeController extends Controller
 
     public function ApplyFilter(Request $request)
     {
-
         $product_name = $request->get('product_name');
         $filter_options = json_decode($request->get('filter_options'));
         $filter_values = [];
@@ -110,6 +110,7 @@ class HomeController extends Controller
     {
         $product = Product::where('id', $product_id)
             ->with('images')
+            ->with('reviews')
             ->first();
 
         return view('frontend.product-page')->with('product', $product);

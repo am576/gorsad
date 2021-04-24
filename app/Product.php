@@ -161,4 +161,9 @@ class Product extends Model
             ->first();
     }
 
+    public function reviews()
+    {
+        return $this->hasMany('App\UserReview', 'product_id','id')->with('user');
+    }
+
 }

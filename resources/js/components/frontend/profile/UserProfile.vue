@@ -58,7 +58,7 @@
                 </b-tab>
                 <b-tab title="ЛИЧНЫЙ КАБИНЕТ">
                     <b-card-text>
-                        <user-cabinet :data="user.companies"></user-cabinet>
+                        <user-cabinet :data="user"></user-cabinet>
                     </b-card-text>
                 </b-tab>
             </b-tabs>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\UserNotification;
+use App\UserReview;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
@@ -24,6 +25,7 @@ class UserController extends Controller
         $user->queries = $user->queries();
         $user->orders = $user->orders();
         $user->favorites = $user->favorites();
+        $user->suggested_products = $user->suggestedReviews();
 
         $params_with = ['user' => $user];
         if(isset($request->all()['tab']))
@@ -118,5 +120,40 @@ class UserController extends Controller
                    'product_id' => $product_id
                 ]);
         }
+    }
+
+    public function postReview(Request $request)
+    {
+        $user = auth()->user();
+        $review = new UserReview([
+           'user_id' => $user->id,
+           'product_id' => $request->product_id,
+           'order_id' => $request->order_id,
+           'pluses' => $request->pluses,
+           'minuses' => $request->minuses,
+           'comment' => $request->comment,
+        ]);
+
+        if($review->save())
+        {
+            $order_product = DB::table('orders_products')
+                ->where('order_id', $request->order_id)
+                ->where('product_id', $request->product_id)
+                ->update([
+                    'do_not_review' => 1
+                ]);
+        }
+    }
+
+    public function doNotReview(Request $request)
+    {
+        $user = auth()->user();
+        $product_id = $request->product_id;
+        $order_products = DB::table('orders_products')
+            ->whereIn('order_id', $user->orders()->pluck('id'))
+            ->where('product_id', $product_id)
+            ->update([
+               'do_not_review' => 1
+            ]);
     }
 }

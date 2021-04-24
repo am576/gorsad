@@ -18,6 +18,7 @@ class CreateOrdersProductsTable extends Migration
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('product_id');
             $table->string('custom_name')->nullable();
+            $table->boolean('do_not_review')->default(false);
         });
     }
 

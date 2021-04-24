@@ -1,45 +1,56 @@
 <template>
-    <div class="row justify-content-center">
-        <div class="col-6">
-            <product-images :product="product"></product-images>
-        </div>
-        <div class="col-6">
-            <div class="p-3" style="border: 1px solid #2a9055; height: 100% ">
-                <h5 class="text-success">{{product.additional_info.family}}</h5>
-                <h3>{{product.title}}</h3>
-                <h5 class="text-muted">{{product.additional_info.common_name}}</h5>
-                <div>----</div>
-                <div>
-                    <p v-html="product.description"></p>
-                    <h5>Характеристики</h5>
-                    <div class="attr-row row">
-                        <div class="col-md-4">Высота</div>
-                        <div class="col-md-8">{{height[0]}} - {{height[1]}} м.</div>
-                    </div>
-                    <div class="attr-row row">
-                        <div class="col-md-4">Тип почвы</div>
-                        <div class="col-md-8">
-                            <span class="attr-tag" v-for="attr in soil">{{attr}}</span>
-                        </div>
-                    </div>
-                    <div class="attr-row row">
-                        <div class="col-md-4">Скорость роста</div>
-                        <div class="col-md-8">{{speed[0]}}</div>
-                    </div>
-                    <div class="attr-row row" v-if="leaf_color.length">
-                        <div class="col-md-4">Цвет листа</div>
-                        <div class="col-md-8">
-                            <span class="attr-color" v-for="color in leaf_color" v-bind:style="{background: color}"></span>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn btn-primary" @click="addToCart">Купить</button>
+    <div>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <product-images :product="product"></product-images>
             </div>
+            <div class="col-6">
+                <div class="p-3" style="border: 1px solid #2a9055; height: 100% ">
+                    <h5 class="text-success">{{product.additional_info.family}}</h5>
+                    <h3>{{product.title}}</h3>
+                    <h5 class="text-muted">{{product.additional_info.common_name}}</h5>
+                    <div>----</div>
+                    <div>
+                        <p v-html="product.description"></p>
+                        <h5>Характеристики</h5>
+                        <div class="attr-row row">
+                            <div class="col-md-4">Высота</div>
+                            <div class="col-md-8">{{height[0]}} - {{height[1]}} м.</div>
+                        </div>
+                        <div class="attr-row row">
+                            <div class="col-md-4">Тип почвы</div>
+                            <div class="col-md-8">
+                                <span class="attr-tag" v-for="attr in soil">{{attr}}</span>
+                            </div>
+                        </div>
+                        <div class="attr-row row">
+                            <div class="col-md-4">Скорость роста</div>
+                            <div class="col-md-8">{{speed[0]}}</div>
+                        </div>
+                        <div class="attr-row row" v-if="leaf_color.length">
+                            <div class="col-md-4">Цвет листа</div>
+                            <div class="col-md-8">
+                                <span class="attr-color" v-for="color in leaf_color" v-bind:style="{background: color}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" @click="addToCart">Купить</button>
+                </div>
+            </div>
+        </div>
+        <div class="user-reviews mt-5">
+            <h2>Отзывы</h2>
+            <b-card v-for="(review,index) in product.reviews" :key="index" :title="review.user.name" :sub-title="moment(product.created_at).format('DD.MM.YYYY hh:mm')" class="mt-4">
+                <b-card-text>Достоинства: {{review.pluses}}</b-card-text>
+                <b-card-text>Недостатки: {{review.minuses}}</b-card-text>
+                <b-card-text>Комментарий: {{review.comment}}</b-card-text>
+            </b-card>
         </div>
     </div>
 </template>
 
 <script>
+    import moment from "moment";
     export default {
         props: {
             product: {},
@@ -50,6 +61,7 @@
         },
         data() {
             return {
+                moment: moment,
                 current_image: '',
                 product_attributes: {}
             }

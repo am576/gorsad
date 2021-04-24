@@ -59,6 +59,7 @@ Vue.component('user-profile', require('./components/frontend/profile/UserProfile
 Vue.component('notifications-list', require('./components/frontend/profile/NotificationsList').default);
 Vue.component('user-cabinet', require('./components/frontend/profile/UserCabinet').default);
 Vue.component('favorites-list', require('./components/frontend/profile/FavoritesList').default);
+Vue.component('review-form', require('./components/frontend/ReviewForm').default)
 
 const app = new Vue({
     vuetify,

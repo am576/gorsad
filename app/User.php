@@ -85,4 +85,24 @@ class User extends Authenticatable
             ->with('images')
             ->get();
     }
+
+    public function reviews()
+    {
+        return $this->hasMany('App\UserReview', 'user_id', 'id');
+    }
+
+    public function suggestedReviews()
+    {
+        $suggested_order_products = DB::table('orders_products')
+            ->whereIn('order_id', $this->orders()->pluck('id'))
+            ->where('do_not_review', '=',0)
+            ->whereNotIn('product_id', $this->reviews()->pluck('product_id'))
+            ->get();
+        $suggested_products = Product::whereIn('id',$suggested_order_products->pluck('product_id'))->with('images')->get();
+        foreach ($suggested_products as $suggested_product) {
+            $suggested_product->order_id = $suggested_order_products->pluck('order_id')[0];
+        }
+
+        return $suggested_products;
+    }
 }

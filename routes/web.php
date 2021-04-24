@@ -25,6 +25,8 @@ Route::get('/shop', 'HomeController@showShopPage')->name('shop');
 Route::post('/search', 'HomeController@ApplyFilter');
 Route::get('/getfavorites','UserController@getUserFavorites');
 Route::post('/favorite', 'UserController@toggleProductFavorite');
+Route::post('/postreview','UserController@postReview');
+Route::post('/donotreview','UserController@doNotReview');
 
 Route::get('/cart', 'HomeController@showCart');
 Route::get('/cart/add/', 'CartController@addProduct');
