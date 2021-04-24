@@ -17,6 +17,7 @@ class Order extends Model
 
         foreach ($products as $product) {
             $product->quantity = DB::table('orders_products')
+                ->where('order_id', $this->id)
                 ->where('product_id', $product->id)
                 ->count();
             $product->custom_name = DB::table('orders_products')

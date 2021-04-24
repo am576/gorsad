@@ -18,6 +18,7 @@ class UserQuery extends Model
 
         foreach ($products as $product) {
             $product->quantity = DB::table('queries_products')
+                ->where('query_id', $this->id)
                 ->where('product_id', $product->id)
                 ->count();;
         }
