@@ -61,9 +61,9 @@ class UserController extends Controller
         $user = auth()->user();
         $query = $user->queries()->where('id', $request->id)->first();
 
-        return PDF::loadView('frontend.shop.query', compact('query'))->stream();
-
-        return $pdf->download('query.pdf');
+        return  PDF::loadView('frontend.shop.query', compact('query'))->stream();
+//        $pdf = PDF::loadView('frontend.shop.query', compact('query'));
+//        return $pdf->download('query.pdf');
     }
 
     public function getOrderPdf(Request $request)
@@ -73,7 +73,8 @@ class UserController extends Controller
 
         return PDF::loadView('frontend.shop.order', compact('order'))->stream();
 
-        return $pdf->download('order.pdf');
+//        $pdf = PDF::loadView('frontend.shop.order', compact('order'));
+//        return $pdf->download('order.pdf');
     }
 
     public function setCompanyActive(Request $request)

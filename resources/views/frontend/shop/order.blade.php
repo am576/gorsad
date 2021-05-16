@@ -85,13 +85,14 @@
             </thead>
             <tbody>
             @foreach($order->products() as $index => $product)
+                {{$price = $product->custom_price == null ? $product->price : $product->custom_price}}
                 <tr>
                     <td>{{$index + 1}}</td>
                     <td style="text-align:center;">{{$product->custom_name == null ? $product->title : $product->custom_name}}</td>
                     <td style="text-align:center;">{{$product->quantity}}</td>
                     <td style="text-align:center;">шт.</td>
-                    <td style="text-align:right;">{{$product->price}},00</td>
-                    <td style="text-align: right;">{{$product->price * $product->quantity}},00</td>
+                    <td style="text-align:right;">{{$price}},00</td>
+                    <td style="text-align: right;">{{$price * $product->quantity}},00</td>
                 </tr>
             @endforeach
             <tr>

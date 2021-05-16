@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-6 order-details">
+            <div v-if="!isCartEmpty" class="col-6 order-details">
                 <h3>Обзор заказа</h3>
                 <v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
                     <template slot="no-options">
@@ -19,6 +19,7 @@
                         </div>
                     </template>
                 </v-select>
+
                 <div class="product-row row align-items-center" v-for="(product, id) in products">
                     <div class="col-2">
                         <img :src="'/storage/images/' + product['image']" alt="">
@@ -38,6 +39,9 @@
                 <div class="text-center">
                     <button class="btn btn-primary btn-lg" @click="goToCheckout">Оформить заказ</button>
                 </div>
+            </div>
+            <div v-else>
+                <h3>Ваша корзина пуста</h3>
             </div>
         </div>
     </div>
@@ -134,10 +138,13 @@
               })
 
               return price;
+          },
+          isCartEmpty() {
+              return Object.keys(this.products).length === 0
           }
         },
         created() {
-            this.products = this.cart_products;
+            this.products = this.cart_products == null ? {} : this.cart_products;
         }
     }
 </script>

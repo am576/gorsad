@@ -38,12 +38,12 @@
                                                 <td>{{$query->user()->name}}</td>
                                                 <td class="text-success">{{$query->status}}</td>
                                                 <td>
-                                                    <a href="{{$query->quote_file_link}}">
+                                                    <a href="{{'/admin/querypdf?user_id='.$query->user_id.'&query_id='.$query->id}}">
                                                         <span class="mdi mdi-file-document mdi-24px text-primary"></span>
                                                     </a>
                                                 </td>
-                                                <td class="text-right">{{$query->created_at}}</td>
-                                                <td class="text-right">@if($query->status!='new'){{$query->updated_at}}@else&mdash;@endif</td>
+                                                <td class="text-right">{{date('d.m.Y', strtotime($query->created_at))}}</td>
+                                                <td class="text-right">@if($query->status!='new'){{date('d.m.Y', strtotime($query->updated_at))}}@else&mdash;@endif</td>
                                                 <td>
                                                     <a class="btn btn-primary" href="/admin/queries/{{$query->id}}">
                                                         <i class="mdi mdi-arrow-right-bold mdi-18px"></i>
@@ -80,12 +80,12 @@
                                                 <td>{{$order->user()->name}}</td>
                                                 <td class="text-success">{{$order->status}}</td>
                                                 <td>
-                                                    <a href="{{$order->order_file_link}}">
+                                                    <a href="{{'/admin/orderpdf?user_id='.$order->user_id.'&order_id='.$order->id}}">
                                                         <span class="mdi mdi-file-document mdi-24px text-primary"></span>
                                                     </a>
                                                 </td>
-                                                <td class="text-right">{{$order->created_at}}</td>
-                                                <td class="text-right">@if($order->status!='new'){{$order->updated_at}}@else&mdash;@endif</td>
+                                                <td class="text-right">{{date('d.m.Y', strtotime($order->created_at))}}</td>
+                                                <td class="text-right">@if($order->status!='new'){{date('d.m.Y', strtotime($order->updated_at))}}@else&mdash;@endif</td>
                                                 <td>
                                                     {{--<a class="btn btn-primary" href="/admin/orders/{{$order->id}}">
                                                         <i class="mdi mdi-arrow-right-bold mdi-18px"></i>

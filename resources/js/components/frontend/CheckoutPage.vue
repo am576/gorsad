@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-6">
                 <h3>Оформление заказа</h3>
-                <h4>Сумма: {{price_total}} грн.</h4>
+                <h4>Сумма: {{price_total}} р.</h4>
                 <h4>Товары</h4>
                 <div class="products">
                         <div v-for="(product, id) in products" class="product-details">
@@ -12,7 +12,7 @@
                         <div>Количество: {{product['quantity']}}</div>
                         <div>Фото: <img :src="'/storage/images/' + product['image']" alt=""></div>
                     </div>
-                    <div>Сумма: {{price_total}} грн.</div>
+                    <div>Сумма: {{price_total}} р.</div>
                 </div>
                 <div class="text-center">
                     <button class="btn btn-primary btn-lg" @click="doCheckout">Подтвердить заказ</button>

@@ -105,4 +105,9 @@ class User extends Authenticatable
 
         return $suggested_products;
     }
+
+    public function activeCompany()
+    {
+        return $this->companies()->where('is_active', 1)->first();
+    }
 }

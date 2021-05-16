@@ -24,6 +24,10 @@ class Order extends Model
                 ->where('product_id', $product->id)
                 ->get()
                 ->pluck('custom_name')[0];
+            $product->custom_price = DB::table('orders_products')
+                ->where('product_id', $product->id)
+                ->get()
+                ->pluck('custom_price')[0];
         }
 
         return $products;
@@ -36,7 +40,8 @@ class Order extends Model
         $products = $this->products();
 
         foreach ($products as $product) {
-            $total += ($product->price * $product->quantity);
+            $price = $product->custom_price == null ? $product->price : $product->custom_price;
+            $total += ($price * $product->quantity);
         }
 
         return $total;

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\User;
 use App\UserNotification;
 use App\UserQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class OrderController extends Controller
 {
@@ -59,7 +61,8 @@ class OrderController extends Controller
                         ->insert([
                             'order_id' => $order['id'],
                             'product_id' => $product['id'],
-                            'custom_name' => $custom_name
+                            'custom_name' => $custom_name,
+                            'custom_price' => $product['price']
                         ]);
                 }
             }
@@ -84,5 +87,25 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
 
         return view('admin.orders.show')->with(['order'=>$order]);
+    }
+
+    public function getQueryPdf(Request $request)
+    {
+        $user = User::where('id',$request->user_id)->first();
+        $query = $user->queries()->where('id', $request->query_id)->first();
+
+        return PDF::loadView('frontend.shop.query', compact('query'))->stream();
+
+        return $pdf->download('order.pdf');
+    }
+
+    public function getOrderPdf(Request $request)
+    {
+        $user = User::where('id',$request->user_id)->first();
+        $order = $user->orders()->where('id', $request->order_id)->first();
+
+        return PDF::loadView('frontend.shop.order', compact('order'))->stream();
+
+        return $pdf->download('order.pdf');
     }
 }

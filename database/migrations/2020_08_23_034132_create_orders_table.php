@@ -16,6 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('company_id')->default(0);
             $table->unsignedInteger('query_id');
             $table->enum('status',['new','accepted','canceled','closed']);
             $table->string('order_file_link');

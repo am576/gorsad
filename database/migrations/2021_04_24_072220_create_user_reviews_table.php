@@ -16,6 +16,7 @@ class CreateUserReviewsTable extends Migration
         Schema::create('user_reviews', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('company_id')->default(0);
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('order_id');
             $table->string('pluses', 500);

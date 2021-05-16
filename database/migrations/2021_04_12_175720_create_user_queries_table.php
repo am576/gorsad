@@ -16,6 +16,7 @@ class CreateUserQueriesTable extends Migration
         Schema::create('user_queries', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('company_id')->default(0);
             $table->enum('status',['new', 'processing', 'cancelled', 'approved']);
             $table->string('quote_file_link');
             $table->timestamps();

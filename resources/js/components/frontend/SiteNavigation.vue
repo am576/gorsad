@@ -45,7 +45,7 @@
                                 <a href="/profile" class="text-small">Личный кабинет</a>
                             </b-dropdown-text>
                             <b-dropdown-item href="#">Ваши баллы</b-dropdown-item>
-                            <b-dropdown-item href="/profile?tab=3">
+                            <b-dropdown-item href="/profile?tab=4">
                                 Уведомления <span v-if="unreadNotificationsAmount" class="text-danger">{{unreadNotificationsAmount}}</span>
                             </b-dropdown-item>
                             <b-dropdown-item href="profile?tab=1">Мои запросы</b-dropdown-item>

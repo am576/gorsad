@@ -2,7 +2,67 @@
     <div class="row justify-content-center">
         <b-card no-body class="col-12 p-0">
             <b-tabs pills card vertical nav-wrapper-class="w-25" v-model="tabIndex">
-                <b-tab title="МОЙ DASHBOARD" active><b-card-text></b-card-text></b-tab>
+                <b-tab title="МОЙ DASHBOARD" active>
+                    <b-card-text>
+                        <h2>ДОБРО ПОЖАЛОВАТЬ, {{user.name}}</h2>
+                    </b-card-text>
+                    <b-card-text v-if="this.user.queries.length">
+                        <h4>Запросы</h4>
+                        <table  class="table">
+                            <thead>
+                            <tr>
+                                <th>Номер заказа</th>
+                                <th>Количество</th>
+                                <th>Статус</th>
+                                <th>PDF</th>
+                                <th>Дата</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{String(this.user.queries[0].id).padStart(8, '0')}}</td>
+                                <td>{{this.user.queries[0].products_count}}</td>
+                                <td>{{this.user.queries[0].status}}</td>
+                                <td><a :href="'/querypdf?id='+this.user.queries[0].id">
+                                    <span class="mdi mdi-file-document"></span>
+                                </a></td>
+                                <td>{{moment(this.user.queries[0].created_at).format('DD.MM.YY')}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="row justify-content-end pr-5">
+                            <a href="/profile?tab=1"><b-button variant="danger">Посмотреть больше</b-button></a>
+                        </div>
+                    </b-card-text>
+                    <b-card-text v-if="this.user.orders.length">
+                        <h4>Заказы</h4>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Номер заказа</th>
+                                <th>Количество</th>
+                                <th>Статус</th>
+                                <th>PDF</th>
+                                <th>Дата</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{String(this.user.orders[0].id).padStart(8, '0')}}</td>
+                                <td>{{this.user.orders[0].products_count}}</td>
+                                <td>{{this.user.orders[0].status}}</td>
+                                <td><a :href="'/orderpdf?id='+this.user.orders[0].id">
+                                    <span class="mdi mdi-file-document"></span>
+                                </a></td>
+                                <td>{{moment(this.user.orders[0].created_at).format('DD.MM.YY')}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="row justify-content-end pr-5">
+                            <a href="/profile?tab=2"><b-button variant="danger">Посмотреть больше</b-button></a>
+                        </div>
+                    </b-card-text>
+                </b-tab>
                 <b-tab title="ЗАПРОСЫ">
                     <b-card-text>
                         <h4>Мои запросы</h4>
@@ -63,17 +123,6 @@
                 </b-tab>
             </b-tabs>
         </b-card>
-        <!--<div class="tab-content col-8" id="nav-tabContent">
-            <div class="tab-pane fade show active" role="tabpanel" id="profile_dashboard">
-                <h1>ДОБРО ПОЖАЛОВАТЬ, {{user.name}}</h1>
-            </div>
-
-            <div class="tab-pane fade" role="tabpanel" id="profile_notifications">
-                <h3>Уведомления</h3>
-                <notifications-list :data="user.user_notifications"></notifications-list>
-            </div>
-            <div class="tab-pane fade" role="tabpanel" id="profile_account">Личный кабинет</div>
-        </div>-->
     </div>
 </template>
 

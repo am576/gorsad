@@ -71,6 +71,9 @@ Route::prefix('admin')->group(function(){
     });
     Route::post('/prices','SettingsController@SaveAndApplyExtraPrice');
 
+    Route::get('/querypdf','OrderController@getQueryPdf');
+    Route::get('/orderpdf','OrderController@getOrderPdf');
+
     Route::resources([
         'products'    => 'ProductController',
         'categories'  => 'CategoryController',

@@ -66,7 +66,7 @@
             </b-card-header>
             <b-collapse id="accordion-2" accordion="my-accordion" role="tabpanel">
                 <b-card-body>
-                    <b-card-text>123</b-card-text>
+                    <b-card-text>Вы ещё не совершали покупок с помощью платёжных карт.</b-card-text>
                 </b-card-body>
             </b-collapse>
         </b-card>
@@ -81,11 +81,12 @@
             </b-card-header>
             <b-collapse id="accordion-3" visible accordion="my-accordion" role="tabpanel">
                 <b-card-body>
-                    <b-card-text style="margin-bottom: 5px;">
+                    <b-card-text v-if="user.suggested_products.length" style="margin-bottom: 5px;">
                         <h3>{{user.suggested_products.length}} товара ожидают оценки</h3>
+                        Оставьте отзыв, чтобы помочь другим покупателям сделать выбор
                     </b-card-text>
                     <b-card-text>
-                        Оставьте отзыв, чтобы помочь другим покупателям сделать выбор
+
                         <div class="row mt-3">
                             <div v-for="product in user.suggested_products" class="suggested-product col-4 mr-3">
                                 <div class="d-flex justify-content-around align-items-center" @click="showReviewForm(product.id)" style="cursor:pointer;">
