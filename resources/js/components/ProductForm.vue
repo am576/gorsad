@@ -104,7 +104,6 @@
 
 <script>
     import CKEditor from '@ckeditor/ckeditor5-vue';
-    import ClassicEditor from '@ckeditor/custom/build/ckeditor.js';
 
     export default {
         components: {

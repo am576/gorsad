@@ -10,8 +10,10 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 Vue.prototype.$eventBus = new Vue();
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-import vSelect from 'vue-select'
+import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
+
+import * as ClassicEditor from '/public/ckcustom/build/ckeditor.js';
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -20,6 +22,7 @@ Vue.use( CKEditor );
 Vue.use( BootstrapVue );
 Vue.use( IconsPlugin );
 Vue.use( vSelect );
+Vue.use( ClassicEditor );
 
 Vue.component('v-select', vSelect)
 
