@@ -38,6 +38,40 @@
                 </div>
             </div>
         </div>
+        <nav class="mt-3">
+            <b-tabs  horizontal nav-wrapper-class="w-75">
+                <b-tab title="Штамб(St)" active>
+                    <b-table :fields="variants_table_data('st').fields" :items="variants_table_data('st').items">
+                        <template #cell(quantity)="data">
+                            <input type="text" :value="data.value">
+                        </template>
+                        <template #cell(buy)="data">
+                            <button>Buy</button>
+                        </template>
+                    </b-table>
+                </b-tab>
+                <b-tab title="Мультиштамб(MtSt)">
+                    <b-table :fields="variants_table_data('mtst').fields" :items="variants_table_data('mtst').items">
+                        <template #cell(quantity)="data">
+                            <input type="text" :value="data.value">
+                        </template>
+                        <template #cell(buy)="data">
+                            <button>Buy</button>
+                        </template>
+                    </b-table>
+                </b-tab>
+                <b-tab title="Солитер(Sol)">
+                    <b-table :fields="variants_table_data('sol').fields" :items="variants_table_data('sol').items">
+                        <template #cell(quantity)="data">
+                            <input type="text" :value="data.value">
+                        </template>
+                        <template #cell(buy)="data">
+                            <button>Buy</button>
+                        </template>
+                    </b-table>
+                </b-tab>
+            </b-tabs>
+        </nav>
         <div class="user-reviews mt-5">
             <h2>Отзывы</h2>
             <b-card v-for="(review,index) in product.reviews" :key="index" :title="review.user.name" :sub-title="moment(product.created_at).format('DD.MM.YYYY hh:mm')" class="mt-4">
@@ -63,7 +97,8 @@
             return {
                 moment: moment,
                 current_image: '',
-                product_attributes: {}
+                product_attributes: {},
+                variants_fields: ['Высота', 'Обхват ствола',]
             }
         },
         methods: {
@@ -87,12 +122,42 @@
                     }
                 })
             },
+            variants_table_data(type) {
+                const labels = [
+                    {key: 'height', 'label': 'Высота'},
+                    {key: 'width', 'label': 'Обхват ствола'},
+                    {key: 'price', 'label': 'Цена'},
+                    {key: 'quantity', 'label': 'Количество'},
+                    {key: 'buy', 'label': ''},
+                ];
+                let rows = [];
+
+                this.product.variants[type].forEach(variant => {
+                    rows.push(
+                        {
+                            height: variant.height,
+                            width: variant.width,
+                            price: variant.price,
+                            quantity: 1,
+                            buy: ''
+                        }
+                    )
+                })
+
+                return {
+                    fields: labels,
+                    items: rows
+                }
+            },
+
+        },
+        computed: {
+
 
         },
         created() {
             this.setCurrentImage(this.product.images[0]);
             this.$set(this.product, 'additional_info', JSON.parse(this.product.additional_info));
-
         }
     }
 </script>

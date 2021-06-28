@@ -113,6 +113,16 @@ class HomeController extends Controller
             ->with('reviews')
             ->first();
 
+        $variants_types = ['st','mtst','sol'];
+
+        foreach ($variants_types as $type) {
+            $product_variants[$type] = $product->variants()
+                ->where('type', $type)
+                ->get();
+        }
+
+        $product['variants'] = $product_variants;
+
         return view('frontend.product-page')->with('product', $product);
     }
 
