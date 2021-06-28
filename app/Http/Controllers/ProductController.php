@@ -6,6 +6,7 @@ use App\Http\Requests\ProductStore;
 use App\Http\Requests\ProductUpdate;
 use App\Image;
 use App\Product;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class ProductController extends Controller
 
     public function store(ProductStore $request)
     {
-        $input = $request->except(['attribute_id', 'attribute_value_id', 'attributes']);
+        $input = $request->except(['attribute_id', 'attribute_value_id', 'attributes', 'variants']);
         foreach ($input as $field => $value) {
             if ($value == '') {
                 $input[$field] = 0;
@@ -44,6 +45,24 @@ class ProductController extends Controller
 
         $product = new Product($input);
         $product->save();
+
+        if(isset($request->variants))
+        {
+            $variants = json_decode($request->get('variants'));
+            foreach ($variants as $variant) {
+                DB::table('product_variants')->insert(
+                    [
+                        'product_id' => $product->id,
+                        'type' => $variant->type,
+                        'height' => implode(',',$variant->height),
+                        'width' => implode(',',$variant->width),
+                        'price' => $variant->price,
+                        "created_at" =>  Carbon::now(),
+                        "updated_at" =>  Carbon::now(),
+                    ]
+                );
+            }
+        }
 
         if(isset($request->images))
         {
@@ -113,12 +132,7 @@ class ProductController extends Controller
         return redirect()->intended(route('products.index'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         //

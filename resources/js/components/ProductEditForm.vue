@@ -6,6 +6,7 @@
                 <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#product-description" role="tab" aria-controls="nav-home" aria-selected="true">Описание</a>
                 <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#product-attributes" role="tab" aria-controls="nav-profile" aria-selected="false">Атрибуты</a>
                 <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#product-photo" role="tab" aria-controls="nav-contact" aria-selected="false">Фото</a>
+                <a class="nav-item nav-link" id="nav-variants-tab" data-toggle="tab" href="#product-variants" role="tab" aria-controls="nav-contact" aria-selected="false">Варианты</a>
             </div>
         </nav>
 
@@ -107,6 +108,8 @@
                                             @removeImage="removeImage" :storage="'products/'"></image-uploader>
                         </div>
                     </div>
+                </div>
+                <div class="tab-pane fade" id="product-variants" role="tabpanel" aria-labelledby="nav-contact-tab">
                 </div>
             </div>
             <button type="button" @click="submit" class="btn btn-primary white--text">Сохранить</button>

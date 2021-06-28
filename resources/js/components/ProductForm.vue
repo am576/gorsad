@@ -2,9 +2,10 @@
     <div>
         <nav>
             <div class="nav nav-tabs product-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#product-description" role="tab" aria-controls="nav-home" aria-selected="true">Описание</a>
-                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#product-attributes" role="tab" aria-controls="nav-profile" aria-selected="false">Атрибуты</a>
-                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#product-photo" role="tab" aria-controls="nav-contact" aria-selected="false">Фото</a>
+                <a class="nav-item nav-link active" id="nav-description-tab" data-toggle="tab" href="#product-description" role="tab" aria-controls="nav-home" aria-selected="true">Описание</a>
+                <a class="nav-item nav-link" id="nav-attributes-tab" data-toggle="tab" href="#product-attributes" role="tab" aria-controls="nav-profile" aria-selected="false">Атрибуты</a>
+                <a class="nav-item nav-link" id="nav-photo-tab" data-toggle="tab" href="#product-photo" role="tab" aria-controls="nav-contact" aria-selected="false">Фото</a>
+                <a class="nav-item nav-link" id="nav-variants-tab" data-toggle="tab" href="#product-variants" role="tab" aria-controls="nav-contact" aria-selected="false">Варианты</a>
             </div>
         </nav>
         <form @submit.prevent="submit">
@@ -96,6 +97,9 @@
                 <div class="tab-pane fade" id="product-photo" role="tabpanel" aria-labelledby="nav-contact-tab">
                     <image-uploader></image-uploader>
                 </div>
+                <div class="tab-pane fade" id="product-variants" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <product-variants @changeVariant="updateVariant"></product-variants>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Создать</button>
         </form>
@@ -126,7 +130,8 @@
                 },
                 product: {
                     attributes: [],
-                    status: 1
+                    status: 1,
+                    variants: []
                 },
                 images: [],
                 errors: {},
@@ -211,6 +216,12 @@
                 this.$delete(this.product.attributes, index);
                 this.$forceUpdate();
             },
+
+            updateVariant(index, variant) {
+                console.log(index)
+                this.$set(this.product.variants, index, variant);
+            },
+
             submit() {
                 this.errors = {};
                 const formData = new FormData();
@@ -220,8 +231,10 @@
                 });
 
                 formData.delete('attributes');
+                formData.delete('variants');
                 formData.append('additional_info', JSON.stringify(this.additional_info));
                 formData.append('attributes', JSON.stringify(this.product.attributes));
+                formData.append('variants', JSON.stringify(this.product.variants));
                 this.images.forEach(file => {
                     formData.append('images[]', file, file.name);
                 });

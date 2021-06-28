@@ -26,14 +26,17 @@ Vue.use( ClassicEditor );
 
 Vue.component('v-select', vSelect)
 
-                                            /* Admin side components */
+/* Admin side components */
 Vue.component('category-selector', require('./components/CategorySelector.vue').default);
 Vue.component('attribute-selector', require('./components/AttributeSelector.vue').default);
 Vue.component('attribute-selector-edit', require('./components/AttributeSelectorEdit.vue').default);
 Vue.component('image-uploader', require('./components/ImageUploader').default);
+
 Vue.component('product-form', require('./components/ProductForm').default);
 Vue.component('product-edit-form', require('./components/ProductEditForm').default);
 Vue.component('products-table', require('./components/ProductsTable').default);
+Vue.component('product-variants', require('./components/admin/products/ProductVariants').default);
+
 Vue.component('table-filter', require('./components/TableFilter').default);
 Vue.component('table-pagination', require('./components/TablePagination').default);
 Vue.component('category-form', require('./components/CategoryForm').default);
@@ -45,7 +48,7 @@ Vue.component('user-query-editor', require('./components/UserQueryEditor').defau
 
 Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 
-                                            /*Client side components*/
+/*Client side components*/
 Vue.component('site-navigation', require('./components/frontend/SiteNavigation').default);
 Vue.component('account-links', require('./components/frontend/AccountLinks').default);
 Vue.component('home-slider', require('./components/frontend/HomeSlider').default);
