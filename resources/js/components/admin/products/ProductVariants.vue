@@ -39,6 +39,9 @@
 
 <script>
     export default {
+        props: {
+            product: {}
+        },
         data() {
             return {
                 product_variants: []
@@ -49,11 +52,23 @@
                 this.$set(this.product_variants, this.product_variants.length, {height: [], width: []});
             },
             removeProductVariant(index) {
-                this.$delete(this.product_variants, index);
+                this.$emit('removeVariant', index);
                 this.$forceUpdate();
             },
             updateProductVariant(index) {
                this.$emit('changeVariant', index, this.product_variants[index])
+            },
+            populateProductVariants() {
+                this.product_variants = this.product.variants;
+                this.product_variants.forEach(variant => {
+                    variant.height = variant.height.split(',');
+                    variant.width = variant.width.split(',');
+                })
+            }
+        },
+        created() {
+            if(typeof this.product === 'object' && this.product !== null) {
+                this.populateProductVariants();
             }
         }
     }

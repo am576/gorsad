@@ -37,6 +37,11 @@ class Product extends Model
              ->get();
     }
 
+    public function variants()
+    {
+        return $this->hasMany('App\ProductVariant');
+    }
+
     public function savedAttributes()
     {
         $attributes = DB::table('attributes')

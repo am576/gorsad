@@ -110,6 +110,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="product-variants" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <product-variants :product="product" @changeVariant="updateVariant" @removeVariant="removeVariant"></product-variants>
                 </div>
             </div>
             <button type="button" @click="submit" class="btn btn-primary white--text">Сохранить</button>
@@ -125,7 +126,6 @@
             ckeditor: CKEditor.component
         },
         props: {
-
             product: {
                 attributes:{}
             },
@@ -271,10 +271,7 @@
                     }
                 })
             },
-            setDefaultAttributeValues(attribute, index) {
 
-
-            },
             setAttributeValues(index, values) {
                 // if(this.attrs[index].type !== 'icon') {
                     this.$set(this.attrs[index], 'selected_values', values);
@@ -291,6 +288,15 @@
                 this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.attrs[index].attribute_id);
                 this.$delete(this.attrs, index);
             },
+
+            updateVariant(index, variant) {
+                this.$set(this.product.variants, index, variant);
+            },
+
+            removeVariant(index) {
+                this.$delete(this.product.variants, index);
+            },
+
             removeImage(image_id)
             {
                 if(!this.images_to_delete.includes(image_id))
@@ -308,6 +314,7 @@
                 });
 
                 formData.delete('images');
+                formData.delete('variants');
                 if(this.images.length)
                 {
                     this.images.forEach(file => {
@@ -327,7 +334,7 @@
                             'values': selected_values
                         })
                 })
-
+                formData.append('variants', JSON.stringify(this.product.variants));
                 formData.append('additional_info', JSON.stringify(this.additional_info));
                 formData.append('attributes', JSON.stringify(attributes_to_save));
 

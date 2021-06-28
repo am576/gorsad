@@ -98,7 +98,7 @@
                     <image-uploader></image-uploader>
                 </div>
                 <div class="tab-pane fade" id="product-variants" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <product-variants @changeVariant="updateVariant"></product-variants>
+                    <product-variants @changeVariant="updateVariant" @removeVariant="removeVariant"></product-variants>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Создать</button>
@@ -218,8 +218,11 @@
             },
 
             updateVariant(index, variant) {
-                console.log(index)
                 this.$set(this.product.variants, index, variant);
+            },
+
+            removeVariant(index) {
+                this.$delete(this.product.variants, index);
             },
 
             submit() {

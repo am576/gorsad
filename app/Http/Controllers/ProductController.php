@@ -141,7 +141,7 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::with('images')->find($id);
+        $product = Product::with(['images','variants'])->find($id);
 
         return view('admin.products.edit')->with('product', $product);
     }
@@ -202,6 +202,28 @@ class ProductController extends Controller
                         'mimetype' => $file->getClientMimeType()
                     ]);
                 }
+            }
+        }
+
+        DB::table('product_variants')
+            ->where('product_id', $product->id)
+            ->delete();
+
+        if(isset($request->variants))
+        {
+            $variants = json_decode($request->get('variants'));
+            foreach ($variants as $variant) {
+                DB::table('product_variants')->insert(
+                    [
+                        'product_id' => $product->id,
+                        'type' => $variant->type,
+                        'height' => implode(',',$variant->height),
+                        'width' => implode(',',$variant->width),
+                        'price' => $variant->price,
+                        "created_at" =>  Carbon::now(),
+                        "updated_at" =>  Carbon::now(),
+                    ]
+                );
             }
         }
 
