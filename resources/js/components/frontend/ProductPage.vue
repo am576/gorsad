@@ -43,31 +43,33 @@
                 <b-tab title="Штамб(St)" active>
                     <b-table :fields="variants_table_data('st').fields" :items="variants_table_data('st').items">
                         <template #cell(quantity)="data">
-                            <input type="text" :value="data.value">
+                            <input type="text" v-model="quantities[data.item.id]">
                         </template>
                         <template #cell(buy)="data">
-                            <button>Buy</button>
+                            <button @click="addToCart(data.item.id)">Buy</button>
                         </template>
                     </b-table>
                 </b-tab>
                 <b-tab title="Мультиштамб(MtSt)">
                     <b-table :fields="variants_table_data('mtst').fields" :items="variants_table_data('mtst').items">
                         <template #cell(quantity)="data">
-                            <input type="text" :value="data.value">
+                            <input type="text" v-model="quantities[data.item.id]">
                         </template>
-                        <template #cell(buy)="data">
-                            <button>Buy</button>
+                        <template #cell(buy)="index">
+                            <button @click="ttest(index)">Buy</button>
                         </template>
                     </b-table>
                 </b-tab>
                 <b-tab title="Солитер(Sol)">
                     <b-table :fields="variants_table_data('sol').fields" :items="variants_table_data('sol').items">
+                        <b-row>
                         <template #cell(quantity)="data">
-                            <input type="text" :value="data.value">
+                            <input type="text" v-model="quantities[data.item.id]">
                         </template>
-                        <template #cell(buy)="data">
-                            <button>Buy</button>
+                        <template #cell(buy)="index">
+                            <button @click="ttest(index)">Buy</button>
                         </template>
+                        </b-row>
                     </b-table>
                 </b-tab>
             </b-tabs>
@@ -98,17 +100,26 @@
                 moment: moment,
                 current_image: '',
                 product_attributes: {},
-                variants_fields: ['Высота', 'Обхват ствола',]
+                quantities: {}
             }
         },
         methods: {
+            ttest(item) {
+                console.log(item)
+            },
+            changeQuantity(variant, new_quantity) {
+                this.quantities[variant] = new_quantity;
+            },
             setCurrentImage(image) {
                 this.current_image = image;
             },
-            addToCart() {
+            addToCart(variant_id) {
+                let quantity = variant_id in this.quantities ? this.quantities[variant_id] : 1;
                 axios.get('/cart/add', {
                     params: {
-                        'product_id': this.product.id
+                        'product_id': this.product.id,
+                        'variant_id': variant_id,
+                        'quantity': quantity
                     }
                 })
                 .then(response => {
@@ -132,14 +143,15 @@
                 ];
                 let rows = [];
 
-                this.product.variants[type].forEach(variant => {
+                this.product.variants[type].forEach((variant, index) => {
                     rows.push(
                         {
+                            id: variant.id,
                             height: variant.height,
                             width: variant.width,
                             price: variant.price,
                             quantity: 1,
-                            buy: ''
+                            buy: variant
                         }
                     )
                 })

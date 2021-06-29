@@ -33,6 +33,7 @@ Route::get('/cart/add/', 'CartController@addProduct');
 Route::get('/cart/changequantity', 'CartController@changeProductQuantity');
 Route::get('/cart/totalprice', 'CartController@getTotalPrice');
 Route::get('/cart/removeproduct', 'CartController@removeProduct');
+Route::get('/cart/removeproductvariant', 'CartController@removeProductVariant');
 Route::get('/cart/getCart', 'ApiController@getCart');
 
 Route::get('/cart/checkout', 'HomeController@showCheckoutPage');

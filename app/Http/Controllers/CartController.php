@@ -24,20 +24,52 @@ class CartController extends Controller
         $cart = session()->get('cart');
 
         if(isset($cart[$product_id])) {
+            if(isset($cart[$product_id]['variants']))
+            {
+                try {
+                    foreach ($cart[$product_id]['variants'] as $index => $variant) {
+                        if($variant['id'] == $request->variant_id)
+                        {
+                            $cart[$product_id]['variants'][$index]['quantity'] += $request->quantity;
 
-            try {
-                $cart[$product_id]['quantity']++;
+                            $cart[$product_id]['price'] += $variant['price'] * $request->quantity;
+
+                            session()->put('cart', $cart);
+
+                            return response($cart[$product_id], 200);
+                        }
+                    }
+                }
+                catch (\Exception $e)
+                {
+                    return response()->json(['cart'=>$cart]);
+                }
+
+                $variant = $product->variants()
+                    ->where('id', $request->variant_id)
+                    ->first();
+
+                array_push($cart[$product_id]['variants'],
+                    [
+                        'id' => $variant->id,
+                        'type' => $variant->type,
+                        'height' => $variant->height,
+                        'quantity' => $request->quantity,
+                        'price' => $variant->price
+                    ]
+                );
+
+                $cart[$product_id]['price'] += $variant['price'] * $request->quantity;
 
                 session()->put('cart', $cart);
 
                 return response($cart[$product_id], 200);
             }
-            catch (\Exception $e)
-            {
-                return response()->json(['cart'=>$cart]);
-            }
-
         }
+
+        $variant = $product->variants()
+            ->where('id', $request->variant_id)
+            ->first();
 
         if(!$cart)
         {
@@ -45,21 +77,33 @@ class CartController extends Controller
                 $product_id => [
                     'title' => $product->title,
                     'quantity' => 1,
-                    'price' => $product->price,
-                    'image' => $product->images[0]->icon
+                    'price' => 0,
+                    'image' => $product->images[0]->icon,
+                    'variants' => []
                 ]
             ];
+
         }
         else
         {
             $cart[$product_id] = [
                 'title' => $product->title,
                 'quantity' => 1,
-                'price' => $product->price,
-                'image' => $product->images[0]->icon
-
+                'image' => $product->images[0]->icon,
             ];
         }
+
+        array_push($cart[$product_id]['variants'],
+            [
+                'id' => $variant->id,
+                'type' => $variant->type,
+                'height' => $variant->height,
+                'quantity' => $request->quantity,
+                'price' => $variant->price
+            ]
+        );
+
+        $cart[$product_id]['price'] += $variant['price'] * $request->quantity;
 
         session()->put('cart', $cart);
 
@@ -69,11 +113,26 @@ class CartController extends Controller
     public function changeProductQuantity(Request $request)
     {
         $cart = session()->get('cart');
-        if(isset($cart[$request->product_id]))
+        if(isset($request->product_id) && isset($request->variant_index) && isset($request->quantity))
         {
-            $cart[$request->product_id]['quantity'] = $request->quantity;
-            session()->put('cart', $cart);
+            if(isset($cart[$request->product_id]))
+            {
+                $cart[$request->product_id]['variants'][$request->variant_index]['quantity'] = $request->quantity;
+                $cart[$request->product_id]['price']=0;
+                foreach ($cart[$request->product_id]['variants'] as $variant) {
+                    $cart[$request->product_id]['price'] += ($variant['price'] * $variant['quantity']);
+                }
+
+                session()->put('cart', $cart);
+
+                return response($request->quantity, 200);
+            }
         }
+    }
+
+    public function recalculatePrices($cart)
+    {
+
     }
 
     public function getTotalPrice()
@@ -106,6 +165,25 @@ class CartController extends Controller
         }
 
         return response('Not found', 404);
+    }
+
+    public function removeProductVariant(Request $request)
+    {
+        if(isset($request->product_id) && isset($request->variant_index))
+        {
+            $cart = session()->get('cart');
+
+            if(isset($cart[$request->product_id]))
+            {
+                unset($cart[$request->product_id]['variants'][$request->variant_index]);
+                session()->put('cart', $cart);
+                session()->flash('success', 'Product has been removed');
+
+                return response('OK', 200);
+            }
+        }
+
+        return response('Product not found', 404);
     }
 
     public function createQuery(Request $request)

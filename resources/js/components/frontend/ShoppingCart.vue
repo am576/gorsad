@@ -24,18 +24,31 @@
                     <div class="col-2">
                         <img :src="'/storage/images/' + product['image']" alt="">
                     </div>
-                    <div class="col-4">
-                        {{product['title']}}
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-10">
+                                <strong>{{product['title']}}</strong>
+                            </div>
+                            <div class="col-2">
+                                <span class="remove-product mdi mdi-close-circle mdi-24px text-danger" @click="removeProduct(id)"></span>
+                            </div>
+                        </div>
+                        <div class="row" v-for="(variant, index) in product.variants">
+                            <div class="col-3">
+                                {{variantTitle(variant)}}
+                            </div>
+                            <div class="col-3 d-flex">
+                                <input type="number" min="1" oninput="validity.valid||(value='1');" class="form-control" v-model="variant.quantity" @change="changeQuantity(id, index, variant.quantity)">
+                                <span class="remove-product-variant mdi mdi-trash-can-outline mdi-24px" @click="removeProductVariant(id, index)"></span>
+                            </div>
+                            <div class="col-3">
+                                {{variant.price * variant.quantity}} &#8381
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-3 d-flex align-items-center">
-                        <input type="number" min="1" oninput="validity.valid||(value='1');" class="form-control" v-model="product['quantity']" @change="changeQuantity(id, product['quantity'])">
-                        <span class="remove-product mdi mdi-trash-can-outline mdi-24px" @click="removeProduct(id)"></span>
-                     </div>
-                    <div class="col-3">
-                        {{product['price'] * product['quantity']}} &#8381;
-                    </div>
+                    <div>Сумма: {{product.price}} &#8381;</div>
                 </div>
-                <div>Сумма: {{totalPrice}} &#8381;</div>
+
                 <div class="text-center">
                     <button class="btn btn-primary btn-lg" @click="goToCheckout">Оформить заказ</button>
                 </div>
@@ -101,40 +114,74 @@
                     })
             },
             removeProduct(id) {
-                if(confirm('Действительно удалить товар из корзины?'))
-                {
-                    axios.get('/cart/removeproduct', {
-                        params : {
-                            id: id
-                        }
-                    })
-                    .then(response => {
-                        if(response.status == 200)
-                        {
-                            this.$delete(this.products, id)
-                        }
-                    })
-                }
-
+                axios.get('/cart/removeproduct', {
+                    params : {
+                        id: id
+                    }
+                })
+                .then(response => {
+                    if(response.status == 200)
+                    {
+                        this.$delete(this.products, id)
+                    }
+                })
             },
-            changeQuantity(id, quantity) {
+            removeProductVariant(product_id, variant_index) {
+                axios.get('/cart/removeproductvariant', {
+                    params : {
+                        product_id: product_id,
+                        variant_index: variant_index
+                    }
+                })
+                .then(response => {
+                    if(response.status == 200)
+                    {
+                        this.$delete(this.products[product_id]['variants'], variant_index);
+                        if(this.products[product_id]['variants'].length === 0)
+                        {
+                            this.$delete(this.products, product_id);
+                            this.removeProduct(product_id);
+                        }
+                    }
+                })
+            },
+            productPrice(id) {
+                let price = 0;
+                this.products[id].variants.forEach(variant => {
+                    this.products[id].price += (variant.price * variant.quantity);
+                })
+
+                return this.products[id].price;
+            },
+            changeQuantity(id, variant_index, quantity) {
                 quantity = quantity === '' ? 1 : quantity;
                 axios.get('/cart/changequantity', {
                     params : {
                         product_id: id,
+                        variant_index: variant_index,
                         quantity: quantity
                     }
+                }).then(res => {
+                    this.products[id].price = 0;
+                    this.products[id].variants.forEach(variant => {
+                        this.products[id].price += variant.price * variant.quantity
+                    })
                 })
             },
             goToCheckout() {
                 window.location.href = "/cart/checkout"
+            },
+            variantTitle(variant) {
+                const height = variant.height.split(',');
+                return `${variant.type.replace(/\b\w/g, l => l.toUpperCase())} ${height[0]} - ${height[1]} м.`
             }
         },
         computed: {
+
           totalPrice() {
               let price = 0;
               Object.keys(this.products).forEach(key => {
-                  price += this.products[key]['price'] * this.products[key]['quantity']
+                  price += this.products[key]['price']
               })
 
               return price;
@@ -160,6 +207,10 @@
     }
 
     .remove-product {
+        cursor: pointer;
+    }
+
+    .remove-product-variant {
         cursor: pointer;
         &:hover {
             color: #1a9aef;
