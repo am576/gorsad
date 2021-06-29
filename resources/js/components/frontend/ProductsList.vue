@@ -2,7 +2,7 @@
     <div class="row">
         <div v-for="product in products" style="width: 20%; padding: 10px">
             <a :href="'/products/'+product.id">
-                <div class="product-card" v-bind:style="{'background-image':'url(/storage/images/' + product.images[0].medium +')'}">
+                <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}">
                     <span class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
                     <p class="description">{{product.title}}</p>
                 </div>
@@ -47,6 +47,14 @@
                 return {
                     'mdi-heart' : this.favorites.includes(id),
                     'mdi-heart-outline' : !this.favorites.includes(id),
+                }
+            },
+            productThumbnail(product) {
+                if(product.images.length) {
+                    return `url(/storage/images/${product.images[0].medium})`
+                }
+                else {
+                    return 'url(https://via.placeholder.com/150)'
                 }
             }
         },

@@ -55,7 +55,9 @@ class HomeController extends Controller
 
         if(count($filter_values) == 0)
         {
-            $products = Product::where('title','like', '%'.$product_name.'%')->get();
+            $products = Product::where('title','like', '%'.$product_name.'%')
+                ->with('images')
+                ->get();
 
             return view('frontend.shop.index')->with('products', $products);
         }
@@ -65,6 +67,7 @@ class HomeController extends Controller
             ->select('products.*', 'products_attributes.attribute_value_id')
             ->whereIn('products_attributes.attribute_value_id',$filter_values)
             ->groupBy('products.id')
+            ->with('images')
             ->get();
 
         return view('frontend.shop.index')->with('products', $products);
