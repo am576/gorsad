@@ -39,7 +39,7 @@ class AttributeController extends Controller
         {
             $values = explode(',', $request->values);
 
-            if(isset($request->icons))
+            if($attribute->type == 'icon' && isset($request->icons))
             {
                 $icons = explode(',', $request->icons);
                 foreach($values as $key=>$value)
@@ -57,7 +57,12 @@ class AttributeController extends Controller
                     ]);
                 }
             }
+            else if($attribute->type == 'range')
+            {
+                $this->populateRangeValues($attribute, $values);
+            }
             else {
+
                 foreach($values as $key=>$value)
                 {
                     $value_id = DB::table('attributes_values')->insert([
@@ -66,20 +71,11 @@ class AttributeController extends Controller
                     ]);
                 }
             }
-
         }
-
-
 
         return redirect(route('attributes.index'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
@@ -141,25 +137,9 @@ class AttributeController extends Controller
             DB::table('attributes_values')
                 ->where('attribute_id', $attribute->id)
                 ->delete();
-            DB::table('attributes_values')->insert([
-                'attribute_id' => $attribute->id,
-                'value' => $values[0]
-            ]);
-            DB::table('attributes_values')->insert([
-                'attribute_id' => $attribute->id,
-                'value' => $values[1]
-            ]);
-            DB::table('attributes_values')->insert([
-                'attribute_id' => $attribute->id,
-                'value' => $values[2]
-            ]);
-            for ($i = $values[0]; $i <= $values[1]; $i+= $values[2])
-            {
-                DB::table('attributes_values')->insert([
-                    'attribute_id' => $attribute->id,
-                    'value' => $i
-                ]);
-            }
+
+            $this->populateRangeValues($attribute, $values);
+
             return redirect()->intended(route('attributes.index'));
         }
         else {
@@ -185,5 +165,43 @@ class AttributeController extends Controller
         $attribute->delete();
 
         return redirect(route('attributes.index'));
+    }
+
+    private function populateRangeValues($attribute, $values)
+    {
+        DB::table('attributes_values')->insert([
+            'attribute_id' => $attribute->id,
+            'value' => $values[0]
+        ]);
+        DB::table('attributes_values')->insert([
+            'attribute_id' => $attribute->id,
+            'value' => $values[1]
+        ]);
+        DB::table('attributes_values')->insert([
+            'attribute_id' => $attribute->id,
+            'value' => $values[2]
+        ]);
+
+        if($values[2] < 1)
+        {
+            for ($i = $values[0]; $i <= $values[1]; $i+= $values[2])
+            {
+                DB::table('attributes_values')->insert([
+                    'attribute_id' => $attribute->id,
+                    'value' => number_format((float)$i, 1, '.', '')
+                ]);
+            }
+        }
+        else
+        {
+            for ($i = $values[0]; $i <= $values[1]; $i+= $values[2])
+            {
+                DB::table('attributes_values')->insert([
+                    'attribute_id' => $attribute->id,
+                    'value' => $i
+                ]);
+            }
+        }
+
     }
 }

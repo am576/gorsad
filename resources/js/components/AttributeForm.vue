@@ -238,7 +238,6 @@
 
                 else
                 {
-                    console.log(1)
                     this.tags.forEach(tag => {
                         this.attributes_values.push(tag)
                     });

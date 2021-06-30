@@ -226,7 +226,6 @@
                     if (this.attrs.length > 0) {
                         this.attrs.forEach((attribute, index) => {
 
-                            this.setDefaultAttributeValues(attribute,index);
 
                             axios.get('/api/getAttributeValues', {
                                 params: {
