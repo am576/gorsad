@@ -18,6 +18,10 @@ import * as ClassicEditor from '/public/ckcustom/build/ckeditor.js';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import PrettyCheckbox from 'pretty-checkbox-vue';
+
+Vue.use(PrettyCheckbox);
+
 Vue.use( CKEditor );
 Vue.use( BootstrapVue );
 Vue.use( IconsPlugin );
@@ -48,19 +52,29 @@ Vue.component('user-query-editor', require('./components/UserQueryEditor').defau
 
 Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 
-/*Client side components*/
+/* Client side components */
 Vue.component('site-navigation', require('./components/frontend/SiteNavigation').default);
 Vue.component('account-links', require('./components/frontend/AccountLinks').default);
 Vue.component('home-slider', require('./components/frontend/HomeSlider').default);
 Vue.component('filter-small', require('./components/frontend/FilterSmall').default);
-Vue.component('products-list', require('./components/frontend/ProductsList').default);
+
 Vue.component('product-bar', require('./components/frontend/ProductBar').default);
 Vue.component('product-images', require('./components/frontend/ProductImages').default);
-Vue.component('product-page', require('./components/frontend/ProductPage').default);
-Vue.component('shopping-cart', require('./components/frontend/ShoppingCart').default);
-Vue.component('checkout-page', require('./components/frontend/CheckoutPage').default);
 
-                                            /* Account page components */
+Vue.component('shopping-cart', require('./components/frontend/ShoppingCart').default);
+
+/* Shop components */
+Vue.component('products-list', require('./components/frontend/shop/ProductsList').default);
+Vue.component('shop-page', require('./components/frontend/shop/ShopPage').default);
+Vue.component('checkout-page', require('./components/frontend/shop/CheckoutPage').default);
+Vue.component('product-page', require('./components/frontend/shop/ProductPage').default);
+Vue.component('shop-filter', require('./components/frontend/shop/ShopFilter').default);
+Vue.component('attribute-button', require('./components/frontend/shop/AttributeButton').default);
+/* End Shop components */
+
+/* End Client side components */
+
+/* Account page components */
 Vue.component('user-profile', require('./components/frontend/profile/UserProfile').default);
 Vue.component('notifications-list', require('./components/frontend/profile/NotificationsList').default);
 Vue.component('user-cabinet', require('./components/frontend/profile/UserCabinet').default);

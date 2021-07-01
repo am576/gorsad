@@ -26,7 +26,6 @@
 <script>
     export default {
         mounted() {
-            console.log('Attribute selector mounted')
 
         },
         props: {

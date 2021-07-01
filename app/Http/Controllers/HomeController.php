@@ -79,7 +79,15 @@ class HomeController extends Controller
             ->with('images')
             ->get();
 
-        return view('frontend.shop.index')->with('products', $products);
+        $attributes = (new \App\Attribute)->shopFilterAttributes();
+
+        return view('frontend.shop.index')
+            ->with(
+                [
+                    'products'=> $products,
+                    'attributes' => $attributes
+                ]
+            );
     }
 
     public function maintenance()

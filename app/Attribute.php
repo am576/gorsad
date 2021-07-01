@@ -52,6 +52,35 @@ class Attribute extends Model
         $attributes = Attribute::where('use_for_filter',1)
             ->get();
 
+        return self::getAttributesWithValues($attributes);
+    }
+
+    public function shopFilterAttributes()
+    {
+        $attributes_by_group = Attribute::all()
+            ->groupBy('group_id');
+
+        $attributes = [];
+        foreach ($attributes_by_group as $group_id => $group_attributes) {
+            array_push($attributes,
+                [
+                    'group_id' => $group_id,
+                    'group_name' => AttributesGroup::find($group_id)->title,
+                    'attributes' => self::getAttributesWithValues($group_attributes)
+                ]
+            );
+        }
+
+        return json_encode($attributes);
+    }
+
+    public function icon()
+    {
+        return $this->morphOne('App\Image', 'imageable');
+    }
+
+    private static function getAttributesWithValues($attributes)
+    {
         foreach ($attributes as $attribute) {
             $values = [];
             foreach ($attribute->values() as $i => $value) {
@@ -65,18 +94,12 @@ class Attribute extends Model
                         ->where('attribute_value_id', $value->id)->get()->pluck('image_id');
                     $image = Image::find($image_id)->first();
                     $values[$i]['icon'] = $image->icon;
-
                 }
             }
             $attribute->values = $values;
         }
 
         return $attributes;
-    }
-
-    public function icon()
-    {
-        return $this->morphOne('App\Image', 'imageable');
     }
 
 }

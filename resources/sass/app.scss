@@ -7,6 +7,9 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@import '~pretty-checkbox/src/pretty-checkbox.scss';
+
+
 #app {
     max-width: 1400px;
     min-height: 1200px;
@@ -160,4 +163,9 @@
 
 .dropdown-menu {
     min-width: 13rem !important;
+}
+
+#app.shop {
+    max-width: 100%;
+    background: #2c2c2c;
 }

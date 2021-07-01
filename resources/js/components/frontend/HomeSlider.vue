@@ -31,8 +31,5 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Slider mounted.')
-        }
     }
 </script>
