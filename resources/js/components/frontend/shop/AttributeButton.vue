@@ -16,6 +16,7 @@
                 value-field="id"
                 text-field="value"
                 stacked
+                @input="addFilterOption"
             ></b-form-checkbox-group>
             </div>
             <div v-else-if="attribute.type === 'range'">
@@ -29,6 +30,7 @@
                     :enable-cross="false"
                     :marks="false"
                     :hide-label="true"
+                    @change="applyRangeFilter"
                 ></vue-slider>
             </div>
             <div class="values-container" v-else-if="attribute.type === 'color'">
@@ -73,6 +75,9 @@
             },
             clearSelectedValues() {
                 this.selected_values.splice(0);
+                this.selected = false;
+                this.setDefaultValues();
+                this.addFilterOption();
             },
             setDefaultValues() {
                 if(this.attribute.type === 'range') {
@@ -87,6 +92,20 @@
                 else {
                     this.selected_values.splice(this.selected_values.indexOf(id), 1);
                 }
+                this.addFilterOption();
+            },
+            applyRangeFilter() {
+                this.selected_values.splice(0);
+                for (let i = this.range[0]; i <= this.range[1]; i++) {
+                    this.selected_values.push(i);
+                }
+                this.addFilterOption();
+            },
+            addFilterOption(e) {
+                let option = {};
+                option['attribute'] = this.attribute.id;
+                option['values'] = this.selected_values;
+                this.$emit('addFilterOption', option);
             }
         },
         computed: {

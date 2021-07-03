@@ -82,7 +82,8 @@
                 this.$eventBus.$emit('changeAttributeValue', this.index, this.selected)
             },
             changeAttributeIcon() {
-                this.$eventBus.$emit('changeAttributeValue', this.index, this.selected)
+
+                // this.$eventBus.$emit('changeAttributeValue', this.index, this.selected)
             },
             changeSelectedColor(id) {
                 this.value_id = id;
@@ -110,8 +111,10 @@
                         }
                         else if(this.type === 'icon') {
                             this.options = values.options;
+
                             values.values.forEach((value, index) => {
                                 this.$set(this.options[index], 'value_id', value.id);
+                                this.$set(this.values.icons[index], 'value_id', value.id);
                             })
                         }
                         else {

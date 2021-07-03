@@ -6,7 +6,7 @@
             </div>
             <div class="col-md-10">
                 <div class="pt-3">
-                    <shop-filter :attributes_groups="attributes"></shop-filter>
+                    <shop-filter :attributes_groups="attributes" @filterProducts="filterProducts"></shop-filter>
                     <products-list :products="products"></products-list>
                 </div>
             </div>
@@ -19,13 +19,25 @@
 <script>
     export default {
         props: {
-            products: {
+            products_all: {
                 type: Array
             },
             attributes: {
                 type: Array,
-
             }
+        },
+        data() {
+            return {
+                products: []
+            }
+        },
+        methods: {
+            filterProducts(products) {
+                this.products = products
+            }
+        },
+        created() {
+            this.products = this.products_all;
         }
     }
 </script>

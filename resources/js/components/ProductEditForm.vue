@@ -209,6 +209,9 @@
                             }
                         }).then(icons => {
                             this.$set(this.attrs[index].attribute_values, 'icons', icons.data);
+                            this.attrs[index].attribute_values['icons'].forEach((value, i) => {
+                                this.$set(this.attrs[index].attribute_values['icons'][i], 'value_id', this.attrs[index].attribute_values[i].id);
+                            })
                         })
                     }
                 })
@@ -251,6 +254,9 @@
                                         }
                                     }).then(icons => {
                                         this.$set(this.attrs[index].attribute_values, 'icons', icons.data);
+                                        this.attrs[index].attribute_values['icons'].forEach((value, i) => {
+                                            this.$set(this.attrs[index].attribute_values['icons'][i], 'value_id', this.attrs[index].attribute_values[i].id);
+                                        })
                                         icons.data.forEach(icon => {
                                             if(icon.icon_id === this.attrs[index].selected_values[0]) {
                                                 this.$set(this.attrs[index].selected_values, 0, icon);
@@ -325,7 +331,7 @@
                 this.attrs.forEach(attribute => {
                     let selected_values = attribute.selected_values;
                     if(attribute.type === 'icon') {
-                        selected_values = [attribute.selected_values[0].icon_id]
+                        selected_values = [attribute.selected_values[0].value_id]
                     }
                     attributes_to_save.push(
                         {

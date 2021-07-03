@@ -187,6 +187,9 @@
                             }
                         }).then(response => {
                             this.$set(this.product.attributes[index].attribute_values, 'icons', response.data);
+                            this.product.attributes[index].attribute_values['icons'].forEach((value, i) => {
+                                this.$set(this.product.attributes[index].attribute_values['icons'][i], 'value_id', this.product.attributes[index].attribute_values[i].id);
+                            })
                         })
                     }
 
@@ -199,7 +202,7 @@
                 }
                 else if(this.attribute_types[index] === 'icon') {
                     this.$set(this.selected_values, index, values);
-                    this.$set(this.product.attributes[index],'values',[values[0].icon_id])
+                    this.$set(this.product.attributes[index],'values',[values[0].value_id])
                 }
             },
             setProductImages(images) {

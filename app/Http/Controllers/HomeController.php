@@ -90,6 +90,8 @@ class HomeController extends Controller
             );
     }
 
+
+
     public function maintenance()
     {
         return view('frontend.maintenance');
