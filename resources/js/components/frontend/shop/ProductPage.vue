@@ -132,6 +132,10 @@
                     }
                 })
             },
+            rangeormatted(value, unit) {
+                let ar = value.split(',');
+                return `${ar[0]} -  ${ar[1]} ${unit}.`
+            },
             variants_table_data(type) {
                 const labels = [
                     {key: 'height', 'label': 'Высота'},
@@ -146,8 +150,8 @@
                     rows.push(
                         {
                             id: variant.id,
-                            height: variant.height,
-                            width: variant.width,
+                            height: this.rangeormatted(variant.height, 'м'),
+                            width: this.rangeormatted(variant.width, 'см'),
                             price: variant.price,
                             quantity: 1,
                             buy: variant
