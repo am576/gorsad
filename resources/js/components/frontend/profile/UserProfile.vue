@@ -91,6 +91,41 @@
                                     <span class="mdi mdi-file-document"></span>
                                 </a>
                             </template>
+                            <template #cell(buy)="data" v-if="company_id === 0">
+                                <b-button variant="primary" v-b-modal.my-modal>Оплата</b-button>
+                                <b-modal id="my-modal" size="md" title="Оплата заказа" ok-only>
+                                    <b-container fluid>
+                                        <b-row>
+                                            <div class="mb-2" style="font-size: 20px;">Выберите вариант оплаты.</div>
+                                        </b-row>
+                                        <b-row class="mb-3">
+                                            <b-card class="w-100">
+                                                <b-card-text class="pay-option f-20">Картой онлайн</b-card-text>
+                                            </b-card>
+                                        </b-row>
+                                        <b-row class="mb-3">
+                                            <b-card class="w-100">
+                                                <b-card-text class="pay-option f-20">Google Pay</b-card-text>
+                                            </b-card>
+                                        </b-row>
+                                        <b-row class="mb-3">
+                                            <b-card class="w-100">
+                                                <b-card-text class="pay-option f-20">QR-код</b-card-text>
+                                            </b-card>
+                                        </b-row>
+                                        <b-row class="mb-3">
+                                            <b-card class="w-100">
+                                                <b-card-text class="pay-option f-20">Apple Pay</b-card-text>
+                                            </b-card>
+                                        </b-row>
+                                        <b-row class="mb-3">
+                                            <b-card class="w-100">
+                                                <b-card-text class="pay-option f-20">Банковский перевод</b-card-text>
+                                            </b-card>
+                                        </b-row>
+                                    </b-container>
+                                </b-modal>
+                            </template>
                         </b-table>
                         <b-pagination
                             v-model="currentOrdersPage"
@@ -139,6 +174,7 @@
             return {
                 moment: moment,
                 user: {},
+                company_id: 0,
                 perPage: 5,
                 currentOrdersPage: 1,
                 currentQueriesPage: 1,
@@ -171,6 +207,22 @@
                 })
 
                 return count;
+            },
+            changeLoginType(newType, companyId) {
+                if(newType === 'user') {
+                    this.company_id = 0
+                }
+                else if(newType == 'company') {
+                    this.company_id = companyId;
+                }
+            },
+            activeCompanyId() {
+                this.data.companies.forEach(company => {
+                    if(company.is_active === 1)
+                    {
+                        this.company_id = company.id;
+                    }
+                })
             }
         },
         computed: {
@@ -205,6 +257,7 @@
                     {key: 'status', 'label': 'Статус'},
                     {key: 'file', 'label': 'PDF'},
                     {key: 'created_at', label: 'Дата', sortable: true},
+                    {key: 'buy', 'label': '', sortable: false},
                 ];
                 let orders = [];
                 this.user.orders.forEach(order => {
@@ -222,15 +275,26 @@
                     items: orders
                 }
             },
+
         },
         mounted() {
-            this.$nextTick(() => this.tabIndex = this.tab)
+            this.$nextTick(() => this.tabIndex = this.tab);
         },
         created() {
             this.user = this.data;
             // this.tabIndex = this.tab;
             this.$eventBus.$on('setNotificationRead', this.setNotificationRead);
             this.$eventBus.$on('setAllNotificationsRead', this.setAllNotificationsRead);
+            this.$eventBus.$on('changeLoginType', this.changeLoginType);
+            this.activeCompanyId();
         }
     }
 </script>
+<style lang="scss" scoped>
+    .f-20 {
+        font-size: 18px !important;
+    }
+    .pay-option {
+        cursor: pointer;
+    }
+</style>

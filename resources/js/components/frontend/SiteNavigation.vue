@@ -166,12 +166,14 @@
                     }
                 }).then(res => {
                     this.company_id = company_id;
+                    this.$eventBus.$emit('changeLoginType', 'company', this.company_id)
                 })
             },
             logAsUser() {
-                axios.get('/logascompany'
+                axios.get('/logasuser'
                 ).then(res => {
                     this.company_id = 0;
+                    this.$eventBus.$emit('changeLoginType', 'user')
                 })
             },
             checkActiveCompany() {
