@@ -55,16 +55,20 @@ class OrderController extends Controller
 
             foreach ($order_data['products'] as $product) {
                 $custom_name = isset($product['custom_name']) ? $product['custom_name'] : null;
-                for ($i = 1; $i <= $product['quantity']; $i++)
-                {
-                    DB::table('orders_products')
-                        ->insert([
-                            'order_id' => $order['id'],
-                            'product_id' => $product['id'],
-                            'custom_name' => $custom_name,
-                            'custom_price' => $product['price']
-                        ]);
+                foreach ($product['variants'] as $variant) {
+                    for ($i = 1; $i <= $variant['quantity']; $i++)
+                    {
+                        DB::table('orders_products')
+                            ->insert([
+                                'order_id' => $order['id'],
+                                'product_id' => $product['id'],
+                                'custom_name' => $custom_name,
+                                'custom_price' => $variant['price'],
+                                'variant_id' => $variant['id']
+                            ]);
+                    }
                 }
+
             }
 
             $notification = new UserNotification([

@@ -1,6 +1,29 @@
 <template>
     <div class="container">
-        <table class="table">
+        <div class="row w-100 justify-content-between">
+            <div class="col-4">Название</div>
+            <div class="col-4">Цена</div>
+            <div class="col-4">Количество</div>
+        </div>
+        <div class="row" v-for="(product,index) in products" :key="index">
+            <div class="w-100">
+                <p v-show="!product.edit" class="product-title">
+                    <span class="d-inline-block mr-2">{{product.title}}</span>
+                    <span class="mdi mdi-lead-pencil mdi-24px text-primary" @click="editProductName($event.target, index)"></span>
+                </p>
+                <input v-show="product.edit" type="text" :ref="'custom_name'+index" v-model="product.custom_name" @blur="hideCustomNameInput(index)" @keyup.enter="hideCustomNameInput(index)">
+            </div>
+            <div class="row w-100" v-for="variant in product.variants">
+                <div class="col-4">{{variant.type}}</div>
+                <div class="col-4">
+                    <input type="number" oninput="validity.valid||(value='1');" class="form-control w-25 d-inline-block" v-model="variant.price"> &#8381;
+                </div>
+                <div class="col-4">
+                    <input type="number" min="1" oninput="validity.valid||(value='1');" class="form-control w-25" v-model="variant.quantity">
+                </div>
+            </div>
+        </div>
+        <!--<table class="table">
             <thead>
             <tr>
                 <th>Название</th>
@@ -25,7 +48,7 @@
                 </td>
             </tr>
             </tbody>
-        </table>
+        </table>-->
         <h3>Сумма: {{totalPrice()}} &#8381;</h3>
         <div class="row justify-content-end">
             <button class="btn btn-primary" @click="submit()">Сохранить и отправить</button>
@@ -50,7 +73,11 @@
             totalPrice() {
                 let total_price = 0;
                 this.products.forEach(product => {
-                    total_price += product.price * product.quantity;
+                    let price = 0;
+                    product.variants.forEach(variant => {
+                        price += variant.price * variant.quantity;
+                    })
+                    total_price += price;
                 })
 
                 return total_price;
