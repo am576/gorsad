@@ -66,48 +66,54 @@ class CartController extends Controller
                 return response($cart[$product_id], 200);
             }
         }
-
-        $variant = $product->variants()
-            ->where('id', $request->variant_id)
-            ->first();
-
-        if(!$cart)
+        else
         {
-            $cart = [
-                $product_id => [
+            $variant = $product->variants()
+                ->where('id', $request->variant_id)
+                ->first();
+
+            if(!$cart)
+            {
+                $cart = [
+                    $product_id => [
+                        'title' => $product->title,
+                        'quantity' => 1,
+                        'price' => 0,
+                        'image' => $product->images[0]->icon,
+                        'variants' => []
+                    ]
+                ];
+
+            }
+            else
+            {
+                $cart[$product_id] = [
                     'title' => $product->title,
                     'quantity' => 1,
                     'price' => 0,
                     'image' => $product->images[0]->icon,
                     'variants' => []
+                ];
+            }
+
+            array_push($cart[$product_id]['variants'],
+                [
+                    'id' => $variant->id,
+                    'type' => $variant->type,
+                    'height' => $variant->height,
+                    'quantity' => $request->quantity,
+                    'price' => $variant->price
                 ]
-            ];
+            );
 
-        }
-        else
-        {
-            $cart[$product_id] = [
-                'title' => $product->title,
-                'quantity' => 1,
-                'image' => $product->images[0]->icon,
-            ];
+            $cart[$product_id]['price'] += $variant['price'] * $request->quantity;
+
+            session()->put('cart', $cart);
+
+            return response($cart[$product_id], 200);
         }
 
-        array_push($cart[$product_id]['variants'],
-            [
-                'id' => $variant->id,
-                'type' => $variant->type,
-                'height' => $variant->height,
-                'quantity' => $request->quantity,
-                'price' => $variant->price
-            ]
-        );
 
-        $cart[$product_id]['price'] += $variant['price'] * $request->quantity;
-
-        session()->put('cart', $cart);
-
-        return response($cart[$product_id], 200);
     }
 
     public function changeProductQuantity(Request $request)
@@ -188,6 +194,7 @@ class CartController extends Controller
 
     public function createQuery(Request $request)
     {
+
         $query_data = $request->all();
 
         $query = new UserQuery([
@@ -199,15 +206,17 @@ class CartController extends Controller
         if($query->save())
         {
             foreach ($query_data['products'] as $product) {
-                for ($i = 1; $i <= $product['quantity']; $i++)
-                {
-                    DB::table('queries_products')
-                        ->insert([
-                            'query_id' => $query->id,
-                            'product_id' => $product['id'],
-                        ]);
+                foreach ($product['variants'] as $variant) {
+                    for ($i = 1; $i <= $variant['quantity']; $i++)
+                    {
+                        DB::table('queries_products')
+                            ->insert([
+                                'query_id' => $query->id,
+                                'product_id' => $product['id'],
+                                'variant_id' => $variant['id']
+                            ]);
+                    }
                 }
-
             }
 
             $notification = new UserNotification([

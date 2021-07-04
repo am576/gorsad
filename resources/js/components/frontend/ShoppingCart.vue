@@ -48,7 +48,9 @@
                     </div>
                     <div>Сумма: {{product.price}} &#8381;</div>
                 </div>
-
+                <div class="total-price row">
+                    Всего: {{totalPrice}}
+                </div>
                 <div class="text-center">
                     <button class="btn btn-primary btn-lg" @click="goToCheckout">Оформить заказ</button>
                 </div>
@@ -215,5 +217,9 @@
         &:hover {
             color: #1a9aef;
         }
+    }
+    .total-price {
+        font-size: 22px;
+        font-weight: bold;
     }
 </style>

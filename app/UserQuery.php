@@ -17,10 +17,13 @@ class UserQuery extends Model
             ->get();
 
         foreach ($products as $product) {
-            $product->quantity = DB::table('queries_products')
+            $product->variants =  DB::table('product_variants')
+                ->join('queries_products','product_variants.id','=','queries_products.variant_id')
+                ->select('product_variants.*', DB::raw('count(*) as quantity'))
                 ->where('query_id', $this->id)
-                ->where('product_id', $product->id)
-                ->count();;
+                ->where('product_variants.product_id', $product->id)
+                ->groupBy('product_variants.id')
+                ->get();
         }
 
         return $products;
@@ -45,7 +48,11 @@ class UserQuery extends Model
         $products = $this->products();
 
         foreach ($products as $product) {
-            $total += ($product->price * $product->quantity);
+            $price = 0;
+            foreach ($product->variants as $variant) {
+                $price += ($variant->price * $variant->quantity);
+            }
+            $total+= $price;
         }
 
         return $total;

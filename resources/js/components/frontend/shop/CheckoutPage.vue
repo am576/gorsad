@@ -6,11 +6,27 @@
                 <h4>Сумма: {{price_total}} р.</h4>
                 <h4>Товары</h4>
                 <div class="products">
-                        <div v-for="(product, id) in products" class="product-details">
+                    <div v-for="(product, id) in products" class="product-details">
                         <div>Название: {{product['title']}}</div>
                         <div>Цена: {{product['price']}}</div>
-                        <div>Количество: {{product['quantity']}}</div>
-                        <div>Фото: <img :src="'/storage/images/' + product['image']" alt=""></div>
+                        <div class="row">
+                            <div class="col-3">Фото: <img :src="'/storage/images/' + product['image']" alt=""></div>
+                            <div class="col-9">
+                                <div class="row" v-for="(variant, index) in product.variants">
+                                    <div class="col-3">
+                                        {{variantTitle(variant)}}
+                                    </div>
+                                    <div class="col-3 d-flex">
+                                        {{variant.quantity}} шт.
+                                    </div>
+                                    <div class="col-3">
+                                        {{variant.price * variant.quantity}} &#8381
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
                     <div>Сумма: {{price_total}} р.</div>
                 </div>
@@ -49,7 +65,8 @@
                 Object.keys(this.products).forEach(key => {
                     order_data['products'].push({
                         'id': key,
-                        'quantity': this.products[key].quantity
+                        'quantity': this.products[key].quantity,
+                        'variants': this.products[key].variants
                     })
                 });
 
@@ -67,6 +84,10 @@
                 .catch(error => {
                     alert('Ошибка обработки заказа');
                 })
+            },
+            variantTitle(variant) {
+                const height = variant.height.split(',');
+                return `${variant.type.replace(/\b\w/g, l => l.toUpperCase())} ${height[0]} - ${height[1]} м.`
             }
         },
         created() {

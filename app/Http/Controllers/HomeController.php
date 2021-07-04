@@ -150,6 +150,6 @@ class HomeController extends Controller
     {
         $order_products = session()->get('cart');
 
-        return view('frontend.checkout')->with('order_products',json_encode($order_products));
+        return view('frontend.checkout')->with('order_products', json_encode($order_products));
     }
 }

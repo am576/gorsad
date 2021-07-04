@@ -39,7 +39,7 @@
         <table class="table">
             <thead>
             <tr>
-                <th>№ п/п</th>
+{{--                <th>№ п/п</th>--}}
                 <th>Наименование</th>
                 <th>Ед. изм</th>
                 <th>Кол-во</th>
@@ -50,16 +50,25 @@
             <tbody>
             @foreach($query->products() as $number => $product)
                 <tr>
-                    <td>{{$number + 1}}</td>
-                    <td>{{$product->title}}</td>
-                    <td>шт.</td>
-                    <td>{{$product->quantity}}</td>
-                    <td>{{$product->price}}</td>
-                    <td><strong>{{$product->quantity * $product->price}}</strong></td>
+{{--                    <td>{{$number + 1}}</td>--}}
+                    <td colspan="5">{{$product->title}}</td>
                 </tr>
+                @foreach ($product->variants as $variant)
+                <tr>
+{{--                    <td rowspan="{{count($product->variants)}}"></td>--}}
+                    <?php
+                    $variant->height = explode(',',$variant->height);
+                    ?>
+                    <td>{{$variant->type}} {{$variant->height[0]}} - {{$variant->height[1]}} м.</td>
+                    <td>шт.</td>
+                    <td>{{$variant->quantity}}</td>
+                    <td>{{$variant->price}}</td>
+                    <td>{{$variant->price * $variant->quantity}}</td>
+
+                </tr>
+                @endforeach
             @endforeach
             <tr>
-                <td></td>
                 <td colspan="4">Итого, растения</td>
                 <td><strong>{{$query->sumTotal()}}</strong></td>
             </tr>

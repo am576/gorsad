@@ -55,8 +55,8 @@
                         <template #cell(quantity)="data">
                             <input type="text" v-model="quantities[data.item.id]">
                         </template>
-                        <template #cell(buy)="index">
-                            <button @click="ttest(index)">Buy</button>
+                        <template #cell(buy)="data">
+                            <button @click="addToCart(data.item.id)">Buy</button>
                         </template>
                     </b-table>
                 </b-tab>
@@ -66,8 +66,8 @@
                         <template #cell(quantity)="data">
                             <input type="text" v-model="quantities[data.item.id]">
                         </template>
-                        <template #cell(buy)="index">
-                            <button @click="ttest(index)">Buy</button>
+                        <template #cell(buy)="data">
+                            <button @click="addToCart(data.item.id)">Buy</button>
                         </template>
                         </b-row>
                     </b-table>
@@ -104,8 +104,6 @@
             }
         },
         methods: {
-            ttest(item) {
-            },
             changeQuantity(variant, new_quantity) {
                 this.quantities[variant] = new_quantity;
             },
@@ -132,7 +130,7 @@
                     }
                 })
             },
-            rangeormatted(value, unit) {
+            rangeFormatted(value, unit) {
                 let ar = value.split(',');
                 return `${ar[0]} -  ${ar[1]} ${unit}.`
             },
@@ -150,8 +148,8 @@
                     rows.push(
                         {
                             id: variant.id,
-                            height: this.rangeormatted(variant.height, 'м'),
-                            width: this.rangeormatted(variant.width, 'см'),
+                            height: this.rangeFormatted(variant.height, 'м'),
+                            width: this.rangeFormatted(variant.width, 'см'),
                             price: variant.price,
                             quantity: 1,
                             buy: variant
