@@ -62,14 +62,12 @@
                 </b-tab>
                 <b-tab title="Солитер(Sol)">
                     <b-table :fields="variants_table_data('sol').fields" :items="variants_table_data('sol').items">
-                        <b-row>
                         <template #cell(quantity)="data">
                             <input type="text" v-model="quantities[data.item.id]">
                         </template>
                         <template #cell(buy)="data">
                             <button @click="addToCart(data.item.id)">Buy</button>
                         </template>
-                        </b-row>
                     </b-table>
                 </b-tab>
             </b-tabs>

@@ -13,5 +13,14 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/karandash_shop</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="lgorsad@185.43.5.170" uuid="c9212b28-44f4-42fc-bf08-be589be9f3bb">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://185.43.5.170:3306/lgorsad</jdbc-url>
+      <driver-properties>
+        <property name="serverTimezone" value="UTC" />
+      </driver-properties>
+    </data-source>
   </component>
 </project>

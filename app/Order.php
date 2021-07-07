@@ -28,6 +28,14 @@ class Order extends Model
                 ->where('product_id', $product->id)
                 ->get()
                 ->pluck('custom_price')[0];
+
+            $product->variants =  DB::table('product_variants')
+                ->join('orders_products','product_variants.id','=','orders_products.variant_id')
+                ->select('product_variants.*', DB::raw('count(*) as quantity'))
+                ->where('order_id', $this->id)
+                ->where('product_variants.product_id', $product->id)
+                ->groupBy('product_variants.id')
+                ->get();
         }
 
         return $products;
@@ -40,8 +48,11 @@ class Order extends Model
         $products = $this->products();
 
         foreach ($products as $product) {
-            $price = $product->custom_price == null ? $product->price : $product->custom_price;
-            $total += ($price * $product->quantity);
+            $price = 0;
+            foreach ($product->variants as $variant) {
+                $price += ($variant->price * $variant->quantity);
+            }
+            $total+= $price;
         }
 
         return $total;

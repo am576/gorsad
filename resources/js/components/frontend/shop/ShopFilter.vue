@@ -1,7 +1,8 @@
 <template>
     <div class="filter row">
         <div class="filter-gtoup">
-            <input type="text" v-model="product_name" @keyup="doFilterProducts">
+            <div>Поиск по названию</div>
+            <input style="width: 90%" type="text" v-model="product_name" @keyup="doFilterProducts">
         </div>
         <div class="filter-group" v-for="group in attributes_groups" :key="group.group_id">
             <div>{{group.group_name}}</div>

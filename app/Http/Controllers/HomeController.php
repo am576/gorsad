@@ -23,7 +23,7 @@ class HomeController extends Controller
     public function index()
     {
         $root_category = Category::where('url_title', 'root')->first();
-        $categories = $root_category->getChildrenCategories();
+        $categories = Category::all();
         $filter_attributes = Attribute::smallFilterAttributes();
 
         $user = auth()->user();

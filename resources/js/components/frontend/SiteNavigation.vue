@@ -7,22 +7,19 @@
             <div id="mobile-logo" class="m-auto" v-if="isMobileView">Какое-то ЛоГо</div>
             <ul class="nav nav-pills m-auto" v-if="!isMobileView">
                 <li class="nav-item">
-                    <a href="/" class="nav-link">Главная</a>
+                    <a href="/shop" class="nav-link">Деревья</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/shop" class="nav-link">Каталог</a>
+                    <a href="#" class="nav-link">Услуги</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Страница_1</a>
+                    <a href="#" class="nav-link">Дизайн</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Страница_2</a>
+                    <a href="#" class="nav-link">Советы</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Страница_3</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Страница_4</a>
+                    <a href="#" class="nav-link">Контакты</a>
                 </li>
             </ul>
             <ul class="nav nav-pills">
