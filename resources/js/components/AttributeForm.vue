@@ -191,6 +191,7 @@
                 })
                     .then((response) => {
                         this.options = response.data;
+                        this.icons = response.data;
                     })
             },
 
