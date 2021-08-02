@@ -1,6 +1,21 @@
 <template>
-    <div>
-        <nav class="navbar" style="margin-top: 40px;">
+    <div class="site-nav">
+        <div class="header-contacts">
+            <div>
+                <span class="mdi mdi-phone mdi-24px"></span>
+                +7(4012) 52-21-11
+            </div>
+            <div>
+                <span class="mdi mdi-email-open-outline mdi-24px"></span>
+                info@group-zg.com
+            </div>
+            <div>
+                <span class="mdi mdi-clock-time-four-outline mdi-24px"></span>
+                Пн-Пт 9.00 - 18.00
+            </div>
+        </div>
+        <nav class="navbar" style="background: rgba(0, 0, 0, 0.6)">
+            <a href="/"><img src="storage/images/public/logov2.png" alt=""></a>
             <div id="navigation-icon-left" v-if="isMobileView">
                 <i class="mdi mdi-menu mdi-36px" @click="toggleMobileNav()"></i>
             </div>
@@ -24,17 +39,23 @@
             </ul>
             <ul class="nav nav-pills">
                 <li class="nav-item">
+                    <a class="nav-link" href=""><span class="mdi mdi-magnify mdi-36px"></span></a>
+                </li>
+                <li class="nav-item"  v-if="!isGuest">
+                    <a class="nav-link" href=""><span class="mdi mdi-heart-outline mdi-36px"></span></a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" v-if="!isGuest" href="/cart">
-                        <span class="mdi mdi-cart mdi-24px"></span>
+                        <span class="mdi mdi-cart mdi-36px"></span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <div v-if="!isGuest">
-                        <b-dropdown size="lg"  variant="link" toggle-class="text-decoration-none" no-caret>
+                        <b-dropdown id="account-dropdown" size="lg" right variant="link" block toggle-class="text-decoration-none" no-caret>
                             <template #button-content>
-                                <span class="mdi mdi-24px"
+                                <div class="mdi mdi-36px"
                                       v-bind:class="{'mdi-account':company_id === 0, 'mdi-briefcase':company_id !== 0}"
-                                ></span>
+                                ></div>
                             </template>
                             <b-dropdown-text>
                                 <div v-if="company_id === 0">{{auth_user.name}}</div>
@@ -56,11 +77,11 @@
                             </b-dropdown-item>
                             <b-dd-divider></b-dd-divider>
                             <b-dropdown-item v-if="company_id === 0" href="#" @click.prevent="logAsCompany(user.companies[0].id)">
-                                <span class="mdi mdi-briefcase mdi-24px"></span>
+                                <span class="mdi mdi-briefcase mdi-36px"></span>
                                 {{user.companies[0].name}}
                             </b-dropdown-item>
                             <b-dropdown-item v-if="company_id !== 0" href="#" @click.prevent="logAsUser()">
-                                <span class="mdi mdi-account mdi-24px"></span>
+                                <span class="mdi mdi-account mdi-36px"></span>
                                 {{auth_user.name}}
                             </b-dropdown-item>
                             <b-dropdown-item href="#">
@@ -73,8 +94,11 @@
                     </div>
 
                 </li>
+
                 <li class="nav-item" v-if="isGuest">
-                    <a class="nav-link" href="/login">Вход</a>
+                    <a class="nav-link" href="/login">
+                        <span class="mdi mdi-account mdi-36px"></span>
+                    </a>
                 </li>
             </ul>
             <div id="navigation-icon-right" v-if="isMobileView">
@@ -206,6 +230,41 @@
 </script>
 
 <style lang="scss" scoped>
+    .site-nav {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1;
+
+        & a.nav-link, .btn-link .mdi, .mdi {
+            color: #fff !important;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        img {
+            height: 70px;
+        }
+    }
+    .header-contacts {
+        display: flex;
+        padding: 15px 0 15px 15%;
+        background: rgba(0, 0, 0, 0.8);
+        color: #dfdfdf;
+
+        .mdi {
+            color: #83b950 !important;
+            margin-right: 5px;
+        }
+
+        div {
+            display: flex;
+            align-items: center;
+            margin-right: 50px;
+            font-size: 14px;
+        }
+    }
     #mobile-logo {
         font-size: 2rem;
     }

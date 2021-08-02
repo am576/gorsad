@@ -13,8 +13,9 @@
         }
         ?>
         <site-navigation @if(isset($auth_user)):auth_user="{{$auth_user}}" :user="{{json_encode($user)}}"@endif></site-navigation>
-        <main class="py-4">
+        <main>
             @yield('content')
+            @include('frontend.layouts.footer')
         </main>
     </div>
 @endsection

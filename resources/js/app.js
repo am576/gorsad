@@ -57,6 +57,7 @@ Vue.component('site-navigation', require('./components/frontend/SiteNavigation')
 Vue.component('account-links', require('./components/frontend/AccountLinks').default);
 Vue.component('home-slider', require('./components/frontend/HomeSlider').default);
 Vue.component('filter-small', require('./components/frontend/FilterSmall').default);
+Vue.component('services-list', require('./components/frontend/ServicesList').default);
 
 Vue.component('product-bar', require('./components/frontend/ProductBar').default);
 Vue.component('product-images', require('./components/frontend/ProductImages').default);

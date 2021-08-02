@@ -1,23 +1,20 @@
 <template>
-    <div class="container">
+    <div class="container pl-4 pr-4">
         <div class="row justify-content-center">
-            <div class="filter-small col-md-11">
+            <div class="filter-small col-md-12">
                 <div class="filter-attributes">
-                    <div class="filter-seg logo w-50">
-                        Логотип
-                    </div>
                     <div class="filter-seg">
                         <input class="form-control" v-model="product_name" placeholder="Искать по названию" type="text" @keyup.enter="submit">
                     </div>
                     <div class="filter-seg" v-for="attribute in filter_attributes">
-                        <button class="form-control" @click="setSelectedAttribute(attribute)">{{attribute.name}}</button>
+                        <button class="btn filter-btn" @click="setSelectedAttribute(attribute)">{{attribute.name}}</button>
                     </div>
                     <div class="filter-seg">
                         <form action="/search" method="post">
                             <input type="hidden" name="_token" :value="csrf">
                             <input name="product_name" type="hidden" v-model="product_name">
                             <textarea name="filter_options" type="hidden" class="hidden" style="display: none">{{selected_filter_options}}</textarea>
-                            <button ref="submitButton" type="submit" class="btn btn-success w-100" >Искать</button>
+                            <button ref="submitButton" type="submit" class="btn search-btn w-100" >Искать</button>
                         </form>
 
                     </div>
@@ -89,12 +86,35 @@
         .filter-attributes {
             display: flex;
             flex-direction: row;
-            padding: 40px 20px 30px;
-            background: #e1dad0;
+            padding: 60px 20px 50px;
+            background: rgba(0, 0, 0, 0.7);
+
+            .btn {
+                color: #ffffff;
+                border: none;
+                border-radius: 5px;
+                width: 100%;
+                padding: 12px 0;
+                font-size: 18px;
+
+                &.filter-btn {
+                    background: #707072;
+                    font-weight: bold;
+                }
+                &.search-btn {
+                    background: #f49829;
+                    text-transform: uppercase;
+                }
+            }
         }
+
         .filter-attribute-values {
-            background: #e1dad0;
+            position: relative;
             .attribute-values {
+                background: rgba(0, 0, 0, 0.7);
+                color: #ffffff;
+                position: absolute;
+                left: 0;
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: center;
@@ -124,8 +144,13 @@
             padding: 0 10px;
             width: 100%;
 
+            input {
+                height: 100%;
+            }
+
             input::placeholder {
-                font-size: 12px;
+                font-size: 16px;
+                font-style: italic;
             }
         }
         .filter-seg.logo {
