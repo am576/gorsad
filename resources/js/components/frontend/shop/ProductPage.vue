@@ -1,11 +1,14 @@
 <template>
-    <div>
-        <div class="row justify-content-center">
-            <div class="col-6">
-                <product-images :product="product"></product-images>
+    <div id="product-page">
+        <div class="row justify-content-start m-0">
+            <div class="col-6" style="padding: 10px">
+                <div class="display-image" :style="{'background-image':'url(/storage/images/' + product.images[0].large +')'}">
+                    <div class="product-name-rus">Клён остролистный</div>
+                    <div class="product-name-lat">Carpinus betulus</div>
+                </div>
             </div>
-            <div class="col-6">
-                <div class="p-3" style="border: 1px solid #2a9055; height: 100% ">
+            <div class="col-5">
+                <div class="p-3">
                     <h5 class="text-success">{{product.additional_info.family}}</h5>
                     <h3>{{product.title}}</h3>
                     <h5 class="text-muted">{{product.additional_info.common_name}}</h5>
@@ -34,52 +37,59 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary" @click="addToCart">Купить</button>
                 </div>
             </div>
         </div>
-        <nav class="mt-3">
-            <b-tabs  horizontal nav-wrapper-class="w-75">
-                <b-tab title="Штамб(St)" active>
-                    <b-table :fields="variants_table_data('st').fields" :items="variants_table_data('st').items">
+        <div class="divider"></div>
+        <nav class="nav-tabs product-variants">
+            <b-tabs  horizontal nav-wrapper-class="w-75" active-nav-item-class="tab_active" active-tab-class="tab_active">
+                <b-tab title="Штамб(St)" active >
+                    <b-table borderless :fields="variants_table_data('st').fields" :items="variants_table_data('st').items" :tbody-tr-class="'table-row'">
                         <template #cell(quantity)="data">
-                            <input type="text" v-model="quantities[data.item.id]">
+                            <input class="quantity-input" type="number" oninput="validity.valid||(value='1');" v-model="quantities[data.item.id]">
                         </template>
                         <template #cell(buy)="data">
-                            <button @click="addToCart(data.item.id)">Buy</button>
+                            <button class="buy-btn" @click="addToCart(data.item.id)">
+                                <span class="mdi mdi-cart-outline mdi-24px"></span>
+                            </button>
                         </template>
                     </b-table>
                 </b-tab>
                 <b-tab title="Мультиштамб(MtSt)">
-                    <b-table :fields="variants_table_data('mtst').fields" :items="variants_table_data('mtst').items">
+                    <b-table borderless :fields="variants_table_data('mtst').fields" :items="variants_table_data('mtst').items" :tbody-tr-class="'table-row'">
                         <template #cell(quantity)="data">
-                            <input type="text" v-model="quantities[data.item.id]">
+                            <input class="quantity-input" type="number" oninput="validity.valid||(value='1');" v-model="quantities[data.item.id]">
                         </template>
                         <template #cell(buy)="data">
-                            <button @click="addToCart(data.item.id)">Buy</button>
+                            <button class="buy-btn" @click="addToCart(data.item.id)">
+                                <span class="mdi mdi-cart-outline mdi-24px"></span>
+                            </button>
                         </template>
                     </b-table>
                 </b-tab>
                 <b-tab title="Солитер(Sol)">
-                    <b-table :fields="variants_table_data('sol').fields" :items="variants_table_data('sol').items">
+                    <b-table borderless :fields="variants_table_data('sol').fields" :items="variants_table_data('sol').items" :tbody-tr-class="'table-row'">
                         <template #cell(quantity)="data">
-                            <input type="text" v-model="quantities[data.item.id]">
+                            <input class="quantity-input" type="number" oninput="validity.valid||(value='1');" v-model="quantities[data.item.id]">
                         </template>
                         <template #cell(buy)="data">
-                            <button @click="addToCart(data.item.id)">Buy</button>
+                            <button class="buy-btn" @click="addToCart(data.item.id)">
+                                <span class="mdi mdi-cart-outline mdi-24px"></span>
+                            </button>
                         </template>
                     </b-table>
                 </b-tab>
             </b-tabs>
         </nav>
-        <div class="user-reviews mt-5">
+
+        <!--<div class="user-reviews mt-5">
             <h2>Отзывы</h2>
             <b-card v-for="(review,index) in product.reviews" :key="index" :title="review.user.name" :sub-title="moment(product.created_at).format('DD.MM.YYYY hh:mm')" class="mt-4">
                 <b-card-text>Достоинства: {{review.pluses}}</b-card-text>
                 <b-card-text>Недостатки: {{review.minuses}}</b-card-text>
                 <b-card-text>Комментарий: {{review.comment}}</b-card-text>
             </b-card>
-        </div>
+        </div>-->
     </div>
 </template>
 
@@ -98,7 +108,8 @@
                 moment: moment,
                 current_image: '',
                 product_attributes: {},
-                quantities: {}
+                quantities: {},
+
             }
         },
         methods: {
@@ -153,6 +164,7 @@
                             buy: variant
                         }
                     )
+                    this.quantities[variant.id] = 0;
                 })
 
                 return {
@@ -174,6 +186,52 @@
 </script>
 
 <style lang="scss" scoped>
+    #product-page {
+        background: #434242;
+        * {
+            color: #e7e7e7 !important;
+        }
+        input.quantity-input {
+            color: #000000 !important;
+            text-align: center;
+            width: 50%;
+        }
+        button.buy-btn {
+            border: none;
+            padding: 0 35px !important;
+            background: #4c4b4b;
+            border-radius: 2px;
+        }
+        .divider {
+            background: #343434;
+            height: 100px;
+            width: 100%;
+        }
+        .product-variants {
+            margin-top: -50px;
+        }
+        .display-image {
+            min-width: 600px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+
+
+            .product-name-rus {
+                font-size: 46px;
+                font-weight: bold;
+                color: #ffffff !important;
+            }
+            .product-name-lat {
+                font-size: 30px;
+                color: #ffffff !important;
+            }
+        }
+    }
     .thumbs {
         .thumb-link {
             cursor: pointer;
@@ -205,4 +263,20 @@
         background: #a39d9d;
         height: 20px;
     }
+    .nav-tabs {
+        display: flex;
+        justify-content: center;
+        a {
+            color: #e7e7e7 !important;
+        }
+    }
+    .tabs {
+        width: 70%;
+    }
+    .b-table {
+        border-spacing: 0 20px;
+    }
+
+
+
 </style>

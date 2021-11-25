@@ -63,6 +63,8 @@ Vue.component('product-bar', require('./components/frontend/ProductBar').default
 Vue.component('product-images', require('./components/frontend/ProductImages').default);
 
 Vue.component('shopping-cart', require('./components/frontend/ShoppingCart').default);
+Vue.component('signin-form', require('./components/frontend/user/SigninForm').default);
+
 
 /* Shop components */
 Vue.component('products-list', require('./components/frontend/shop/ProductsList').default);
@@ -71,6 +73,7 @@ Vue.component('checkout-page', require('./components/frontend/shop/CheckoutPage'
 Vue.component('product-page', require('./components/frontend/shop/ProductPage').default);
 Vue.component('shop-filter', require('./components/frontend/shop/ShopFilter').default);
 Vue.component('attribute-button', require('./components/frontend/shop/AttributeButton').default);
+Vue.component('shop-navigation', require('./components/frontend/shop/ShopNavigation').default);
 /* End Shop components */
 
 /* End Client side components */

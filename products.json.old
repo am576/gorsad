@@ -1,0 +1,38 @@
+[
+    {
+        "id": "16",
+        "name_latin": "Abies koreana KULA",
+        "name_rus": "Пихта корейская Шар",
+        "description": "Медленнорастущее дерево шаровидной формы, достигающее в возрасте 20 лет 1-2 м выс. Иглы короткие, сверху зелёные, глянцевые, с тыльной стороны белёсоватые. Отличительная черта сорта-фиолетово-синие шишки длиной 4-7 см, обильно появляющиеся уже на молодых деревьях выс. 1-1,5 м. Требует влажной плодородной почвы. Этот сорт особенно рекомендуется для небольших приусадебных участков.",
+        "image_url": "https:\/\/прекраснодар.рф\/components\/com_jshopping\/files\/img_products\/abies-koreana-kula-2.jpg",
+        "variants": [
+            {
+                "crown_type": "",
+                "width": "",
+                "height": "30-40",
+                "package_type": "C25 ter",
+                "price": "3400.32",
+                "variant_type": "height"
+            },
+            {
+                "id": "17",
+                "crown_type": "",
+                "width": "",
+                "height": "40-50",
+                "package_type": "C30",
+                "price": "4018.56",
+                "variant_type": "height"
+            },
+            {
+                "id": "18",
+                "crown_type": "",
+                "width": "",
+                "height": "90-100",
+                "package_type": "C90",
+                "price": "22344.96",
+                "variant_type": "height"
+            }
+        ],
+        "variation": "height"
+    }
+]
