@@ -6,8 +6,10 @@
             </div>
             <div class="col-md-10">
                 <div class="pt-3">
-                    <shop-filter :attributes_groups="attributes" @filterProducts="filterProducts"></shop-filter>
-                    <products-list :products="products"></products-list>
+                    <transition name="filter-slide">
+                        <shop-filter v-if="showFilters" :attributes_groups="attributes" @filterProducts="filterProducts"></shop-filter>
+                    </transition>
+                    <products-list :products="products" @toggleFilters="toggleFilters"></products-list>
                 </div>
             </div>
             <div class="col-1"></div>
@@ -15,7 +17,15 @@
         </div>
     </div>
 </template>
-
+<style lang="scss" scoped>
+    .filter-slide-leave-active,
+    .filter-slide-enter-active {
+        transition: margin-top 300ms linear;
+    }
+    .filter-slide-enter, .filter-slide-leave-to {
+        margin-top: -300px;
+    }
+</style>
 <script>
     export default {
         props: {
@@ -28,12 +38,16 @@
         },
         data() {
             return {
-                products: []
+                products: [],
+                showFilters : true
             }
         },
         methods: {
             filterProducts(products) {
                 this.products = products
+            },
+            toggleFilters() {
+                this.showFilters = !this.showFilters;
             }
         },
         created() {

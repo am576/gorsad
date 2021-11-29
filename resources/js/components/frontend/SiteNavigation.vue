@@ -96,9 +96,34 @@
                 </li>
 
                 <li class="nav-item" v-if="isGuest">
-                    <a class="nav-link" href="/login">
-                        <span class="mdi mdi-account mdi-36px"></span>
-                    </a>
+                    <b-dropdown id="login-dropdown" size="lg" right variant="link" block toggle-class="text-decoration-none" menu-class="login-dropdown" no-caret>
+                        <template #button-content>
+                            <div class="mdi mdi-36px mdi-account"></div>
+                        </template>
+                        <b-dropdown-form>
+                            <b-form-group label="Email" label-for="dropdown-form-email" @submit.stop.prevent>
+                                <b-form-input
+                                    id="dropdown-form-email"
+                                    size="sm"
+                                    placeholder=""
+                                ></b-form-input>
+                            </b-form-group>
+
+                            <b-form-group label="Пароль" label-for="dropdown-form-password">
+                                <b-form-input
+                                    id="dropdown-form-password"
+                                    type="password"
+                                    size="sm"
+                                    placeholder=""
+                                ></b-form-input>
+                                <b-form-text id="input-live-help"><a href="/recoverpassword">Забыли пароль?</a></b-form-text>
+                            </b-form-group>
+
+<!--                            <b-form-checkbox class="mb-3">Remember me</b-form-checkbox>-->
+                            <b-button variant="primary" size="sm" @click="onClick">Войти</b-button>
+                            <b-button variant="primary" size="sm" @click="goToRegisterPage">Регистрация</b-button>
+                        </b-dropdown-form>
+                    </b-dropdown>
                 </li>
             </ul>
             <div id="navigation-icon-right" v-if="isMobileView">
@@ -176,6 +201,9 @@
             toggleMobileLinks() {
                 this.showLinks = !this.showLinks;
                 this.linksOpen = !this.linksOpen;
+            },
+            goToRegisterPage() {
+                window.location.href = '/register';
             },
             logout() {
                 this.$refs.logout.submit()
