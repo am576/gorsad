@@ -392,5 +392,30 @@ footer.home-footer {
     justify-content: space-between !important;
 }
 
+.layout-spacing {
+    padding-top: 200px !important;
+}
 
+.login-dropdown {
+    min-width: 250px !important;
+    background: rgb(57, 64, 70) !important;
+    color: #fff !important;
+    .form-group {
+        margin-bottom: 10px !important;
+    }
+    a {
+        text-decoration: none !important;
+        color: #fff !important;
+        &:hover {
+            color: #b1b1b1 !important;
+        }
+    }
+    .btn.btn-primary {
+        background-color: #b09889 !important;
+        border: none;
+        &:hover {
+            background-color: #c4ad9f !important;
+        }
+    }
+}
 
