@@ -100,13 +100,19 @@
                         <template #button-content>
                             <div class="mdi mdi-36px mdi-account"></div>
                         </template>
-                        <b-dropdown-form>
-                            <b-form-group label="Email" label-for="dropdown-form-email" @submit.stop.prevent>
+                        <b-dropdown-form method="POST" action="/login" @submit.stop.prevent="doLogin">
+                            <b-form-group label="Email" label-for="dropdown-form-email" >
+                                <input type="hidden" name="_token" :value="csrf"></input>
                                 <b-form-input
                                     id="dropdown-form-email"
                                     size="sm"
                                     placeholder=""
+                                    v-model="loginCred.email"
+                                    @focus="clearErrors"
                                 ></b-form-input>
+                                <b-form-invalid-feedback :state="!hasEmailErrors">
+                                    {{loginErrors.hasOwnProperty('email')?loginErrors.email[0]:''}}
+                                </b-form-invalid-feedback>
                             </b-form-group>
 
                             <b-form-group label="Пароль" label-for="dropdown-form-password">
@@ -115,12 +121,20 @@
                                     type="password"
                                     size="sm"
                                     placeholder=""
+                                    v-model="loginCred.password"
+                                    @focus="clearErrors"
                                 ></b-form-input>
+                                <b-form-invalid-feedback :state="!hasPasswordErrors">
+                                    {{loginErrors.hasOwnProperty('password')?loginErrors.password[0]:''}}
+                                </b-form-invalid-feedback>
+                                <b-form-invalid-feedback :state="!hasLoginErrors">
+                                    {{loginErrors.hasOwnProperty('login')?loginErrors.login[0]:''}}
+                                </b-form-invalid-feedback>
                                 <b-form-text id="input-live-help"><a href="/recoverpassword">Забыли пароль?</a></b-form-text>
                             </b-form-group>
 
 <!--                            <b-form-checkbox class="mb-3">Remember me</b-form-checkbox>-->
-                            <b-button variant="primary" size="sm" @click="onClick">Войти</b-button>
+                            <b-button variant="primary" size="sm" type="submit">Войти</b-button>
                             <b-button variant="primary" size="sm" @click="goToRegisterPage">Регистрация</b-button>
                         </b-dropdown-form>
                     </b-dropdown>
@@ -187,7 +201,18 @@
                 showLinks: false,
                 linksOpen: false,
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                company_id: 0
+                company_id: 0,
+                loginCred: {
+                    email: '',
+                    password: ''
+                },
+                emailerror: '',
+                loginErrors: {
+                    email: [],
+                    password: [],
+                    login: []
+                },
+
             }
         },
         methods: {
@@ -231,8 +256,27 @@
                         this.company_id = company.id;
                     }
                 })
+            },
+            doLogin() {
+                axios.post('/login', this.loginCred)
+                    .then(response => {
+                        if(response.data.statusCode === 200) {
+                            window.location.reload();
+                        }
+                        else
+                        {
+                            if(Object.keys(response.data.errors).length){
+                                this.loginErrors = response.data.errors;
+                            }
+                        }
+                    })
+            },
+            clearErrors() {
+                Object.keys(this.loginErrors).forEach(key => {
+                    while(this.loginErrors[key].length > 0)
+                    this.loginErrors[key].pop();
+                })
             }
-
         },
         computed: {
             isGuest() {
@@ -247,7 +291,28 @@
 
                 return amount;
             },
+            hasEmailErrors() {
+                if (this.loginErrors.hasOwnProperty('email'))
+                {
+                    return this.loginErrors.email.length > 0
+                }
+                    return false;
+            },
+            hasPasswordErrors() {
+                if (this.loginErrors.hasOwnProperty('password'))
+                {
+                    return this.loginErrors.password.length > 0
+                }
+                return false;
+            },
+            hasLoginErrors() {
+                if (this.loginErrors.hasOwnProperty('login'))
+                {
+                    return this.loginErrors.login.length > 0
+                }
+                return false;
 
+            }
         },
         created() {
             this.handleView();

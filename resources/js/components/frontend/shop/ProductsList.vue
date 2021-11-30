@@ -5,7 +5,7 @@
                 <i class="mdi mdi-24px" v-bind:class="filterShown ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
                 {{filterBtnCaption}}
             </button></div>
-            <div>Войти</div>
+            <div><button @click="showSigninForm">Войти</button></div>
         </div>
         <div class="row wr2">
             <div class="row wr3">
@@ -19,6 +19,7 @@
                 </div>
             </div>
         </div>
+        <signin-form ref="signinForm"></signin-form>
     </div>
 </template>
 
@@ -72,7 +73,10 @@
                 else {
                     return 'url(https://via.placeholder.com/150)'
                 }
-            }
+            },
+            showSigninForm() {
+                this.$refs.signinForm.showModal();
+            },
         },
         computed: {
             filterBtnCaption() {
