@@ -1,11 +1,18 @@
 <template>
     <div class="row wr1">
         <div class="shop-nav">
-            <div><button id="btn-toggle-filters" @click="toggleFilters">
-                <i class="mdi mdi-24px" v-bind:class="filterShown ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
-                {{filterBtnCaption}}
-            </button></div>
-            <div><button @click="showSigninForm">Войти</button></div>
+            <div>
+                <button class="nav-btn" id="btn-toggle-filters" @click="toggleFilters">
+                    <i class="mdi mdi-24px" v-bind:class="filterShown ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
+                    {{filterBtnCaption}}
+                </button>
+            </div>
+            <div>
+                <button class="nav-btn" id="btn-login" @click="showSigninForm">
+                    <i class="mdi mdi-login mdi-24px"></i>
+                    Войти
+                </button>
+            </div>
         </div>
         <div class="row wr2">
             <div class="row wr3">
@@ -118,16 +125,30 @@
             }
         }
     }
-    #btn-toggle-filters {
+    .nav-btn {
         display: flex;
         align-items: center;
-        padding: 0 15px 0 5px;
+        justify-content: space-between;
         border: none;
         border-radius: 3px;
         background-color: #4a4848;
         color: #ffffff;
+
+        &:hover {
+            background-color: #605b5b;
+        }
+    }
+    #btn-toggle-filters {
+
+        padding: 0 15px 0 5px;
+
         .mdi {
             margin-right: 5px;
         }
+    }
+    #btn-login {
+        min-width: 100px;
+        padding-left: 10px;
+        padding-right: 15px;
     }
 </style>

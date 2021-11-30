@@ -3,12 +3,12 @@
         <template #modal-title>
             {{sign_type.form_title}}
         </template>
-        <form method="POST" :action="sign_type.action">
+        <b-form method="POST" @submit.stop.prevent="submitForm(sign_type)">
             <input type="hidden" name="_token" :value="csrf">
             <div class="form-group row">
                 <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail</label>
                 <div class="col-md-6">
-                    <input id="email" type="email" class="form-control" name="email"  required autocomplete="email" autofocus>
+                    <input id="email" type="email" class="form-control" name="email"  required autocomplete="email" autofocus v-model="loginCred.email">
                     <span class="invalid-feedback" role="alert">
                         <strong></strong>
                     </span>
@@ -29,7 +29,7 @@
             <div class="form-group row">
                 <label for="password" class="col-md-4 col-form-label text-md-right">Пароль</label>
                 <div class="col-md-6">
-                    <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password">
+                    <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password" v-model="loginCred.password">
                     <span class="invalid-feedback" role="alert">
                         <strong></strong>
                     </span>
@@ -65,7 +65,7 @@
                     </a>
                 </div>
             </div>
-        </form>
+        </b-form>
     </b-modal>
 </template>
 
@@ -91,12 +91,30 @@
                         form_title: 'Регистрация'
                     }
                 },
-                sign_type: {}
+                sign_type: {},
+                loginCred: {
+                    email: '',
+                    password: ''
+                }
             }
         },
         methods: {
             showModal() {
                 this.$bvModal.show(this.modal_id);
+            },
+            submitForm(signType) {
+                axios.post(signType.action, this.loginCred)
+                    .then(response => {
+                        if(response.data.statusCode === 200) {
+                            window.location.reload();
+                        }
+                        else
+                        {
+                            if(Object.keys(response.data.errors).length){
+                                this.loginErrors = response.data.errors;
+                            }
+                        }
+                    })
             }
         },
         computed: {
