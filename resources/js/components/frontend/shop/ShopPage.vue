@@ -9,7 +9,7 @@
                     <transition name="filter-slide">
                         <shop-filter v-if="showFilters" :attributes_groups="attributes" @filterProducts="filterProducts"></shop-filter>
                     </transition>
-                    <products-list :products="products" @toggleFilters="toggleFilters"></products-list>
+                    <products-list :products="products" :user="user" @toggleFilters="toggleFilters"></products-list>
                 </div>
             </div>
             <div class="col-1"></div>
@@ -34,6 +34,9 @@
             },
             attributes: {
                 type: Array,
+            },
+            user: {
+                type: Object
             }
         },
         data() {

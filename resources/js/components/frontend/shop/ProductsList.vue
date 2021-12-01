@@ -7,11 +7,28 @@
                     {{filterBtnCaption}}
                 </button>
             </div>
-            <div>
+            <div v-if="isGuest">
                 <button class="nav-btn" id="btn-login" @click="showSigninForm">
-                    <i class="mdi mdi-login mdi-24px"></i>
+                    <i class="mdi mdi-login"></i>
                     Войти
                 </button>
+            </div>
+            <div v-if="!isGuest">
+                <b-dropdown id="account-dropdown" size="lg" right variant="link" block toggle-class="text-decoration-none" no-caret>
+                    <template #button-content>
+                        <div class="mdi mdi-account"></div>
+                    </template>
+                    <b-dropdown-text>
+                        <div>{{user.name}}</div>
+                        <a href="/profile" class="text-small">Личный кабинет</a>
+                    </b-dropdown-text>
+                    <b-dropdown-text>
+                        <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
+                            <input type="hidden" name="_token" :value="csrf">
+                        </form>
+                        <a class="curpointer text-small" @click="logout">Выход </a>
+                    </b-dropdown-text>
+                </b-dropdown>
             </div>
         </div>
         <div class="row wr2">
@@ -36,11 +53,15 @@
             products: {
                 type: Array
             },
+            user: {
+                type: Object
+            }
         },
         data() {
             return {
                 favorites: [],
                 filterShown: true,
+                csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             }
         },
         methods: {
@@ -84,18 +105,24 @@
             showSigninForm() {
                 this.$refs.signinForm.showModal();
             },
+            logout() {
+                this.$refs.logout.submit()
+            },
         },
         computed: {
             filterBtnCaption() {
                 return this.filterShown ? 'Скрыть фильтры' : 'Показать фильтры';
-            }
+            },
+            isGuest() {
+                return this.user == null;
+            },
         },
         created() {
             this.getUserFavorites();
         }
     }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
     .product-card {
         position: relative;
     }
@@ -108,11 +135,17 @@
         justify-content: center;
         background-color: #343434;
         .shop-nav {
-            padding: 15px;
+            padding: 10px 15px;
             width: 100%;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             color: white !important;
+
+            .btn-link .mdi.mdi-account{
+                font-size: 28px !important;
+                color: #ffffff !important;
+            }
         }
         .wr2 {
             width: 100%;
@@ -124,6 +157,9 @@
                 background-color: #403d3d;
             }
         }
+    }
+    button#account-dropdown__BV_toggle_.btn.dropdown-toggle.btn-link.btn-lg {
+        padding: 0 !important;
     }
     .nav-btn {
         display: flex;
@@ -148,7 +184,6 @@
     }
     #btn-login {
         min-width: 100px;
-        padding-left: 10px;
-        padding-right: 15px;
+        padding: 5px 15px 5px 10px;
     }
 </style>
