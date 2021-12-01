@@ -6,9 +6,7 @@
         </div>
         <div class="filter-group" v-for="group in attributes_groups" :key="group.group_id">
             <div>{{group.group_name}}</div>
-            <div v-for="attribute in group.attributes">
-                <attribute-button :attribute="attribute" @addFilterOption="addFilterOption"></attribute-button>
-            </div>
+            <attribute-button :selected_options="selected_options" :filtered_name="filtered_name" :attribute="attribute" @addFilterOption="addFilterOption" v-for="attribute in group.attributes" :key="attribute.id"></attribute-button>
         </div>
     </div>
 </template>
@@ -16,7 +14,11 @@
 <script>
     export default {
         props: {
-            attributes_groups: {}
+            attributes_groups: {},
+            selected_options: {
+                type: Array
+            },
+            filtered_name: ''
         },
         data() {
             return {
@@ -46,6 +48,7 @@
             }
         },
         created() {
+            this.product_name = this.filtered_name;
         }
     }
 </script>

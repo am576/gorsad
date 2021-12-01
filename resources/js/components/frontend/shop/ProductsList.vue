@@ -146,6 +146,9 @@
                 font-size: 28px !important;
                 color: #ffffff !important;
             }
+            button#account-dropdown__BV_toggle_.btn.dropdown-toggle.btn-link.btn-lg {
+                padding: 0 !important;
+            }
         }
         .wr2 {
             width: 100%;
@@ -158,9 +161,7 @@
             }
         }
     }
-    button#account-dropdown__BV_toggle_.btn.dropdown-toggle.btn-link.btn-lg {
-        padding: 0 !important;
-    }
+
     .nav-btn {
         display: flex;
         align-items: center;

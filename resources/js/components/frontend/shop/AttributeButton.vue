@@ -60,6 +60,9 @@
         props: {
             attribute: {
                 type: Object
+            },
+            selected_options: {
+                type: Array
             }
         },
         data() {
@@ -106,6 +109,11 @@
                 option['attribute'] = this.attribute.id;
                 option['values'] = this.selected_values;
                 this.$emit('addFilterOption', option);
+            },
+            setSelectedValues() {
+                if(this.selected_options.hasOwnProperty(this.attribute.id)){
+                    this.selected_values = this.selected_options[this.attribute.id];
+                }
             }
         },
         computed: {
@@ -124,6 +132,7 @@
         },
         created() {
             this.setDefaultValues();
+            this.setSelectedValues();
         }
     }
 </script>

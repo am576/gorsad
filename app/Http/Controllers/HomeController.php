@@ -46,31 +46,45 @@ class HomeController extends Controller
         $product_name = $request->get('product_name');
         $filter_options = json_decode($request->get('filter_options'));
         $filter_values = [];
-
-        foreach ($filter_options as $attribute) {
+        $arr = (array)$filter_options;
+        foreach ($filter_options as $attr_id => $attribute) {
             foreach ($attribute as $value) {
                 array_push($filter_values, $value);
             }
+            if(!$arr[$attr_id])
+            {
+                unset($arr[$attr_id]);
+            }
+
         }
+        $attributes = (new \App\Attribute)->shopFilterAttributes();
 
         if(count($filter_values) == 0)
         {
             $products = Product::where('title','like', '%'.$product_name.'%')
                 ->with('images')
                 ->get();
-
-            return view('frontend.shop.index')->with('products', $products);
+        }
+        else
+        {
+            $products = Product::where('title','like', '%'.$product_name.'%')
+                ->join('products_attributes', 'products.id','=','products_attributes.product_id')
+                ->select('products.*', 'products_attributes.attribute_value_id')
+                ->whereIn('products_attributes.attribute_value_id',$filter_values)
+                ->groupBy('products.id')
+                ->with('images')
+                ->get();
         }
 
-        $products = Product::where('title','like', '%'.$product_name.'%')
-            ->join('products_attributes', 'products.id','=','products_attributes.product_id')
-            ->select('products.*', 'products_attributes.attribute_value_id')
-            ->whereIn('products_attributes.attribute_value_id',$filter_values)
-            ->groupBy('products.id')
-            ->with('images')
-            ->get();
-
-        return view('frontend.shop.index')->with('products', $products);
+        return view('frontend.shop.index')
+            ->with(
+                [
+                    'products'=> $products,
+                    'attributes' => $attributes,
+                    'filter_options' => json_encode($arr),
+                    'filtered_name' => $product_name
+                ]
+            );
     }
 
     public function showShopPage()
@@ -89,8 +103,6 @@ class HomeController extends Controller
                 ]
             );
     }
-
-
 
     public function maintenance()
     {
