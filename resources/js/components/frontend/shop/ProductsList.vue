@@ -156,6 +156,7 @@
             padding: 25px 0;
             background-color: #434242;
             .wr3 {
+                width: 100%;
                 padding: 5px;
                 background-color: #403d3d;
             }

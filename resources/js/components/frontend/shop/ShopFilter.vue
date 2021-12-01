@@ -18,7 +18,10 @@
             selected_options: {
                 type: Array
             },
-            filtered_name: ''
+            filtered_name: {
+                type: String,
+                default: ''
+            }
         },
         data() {
             return {
