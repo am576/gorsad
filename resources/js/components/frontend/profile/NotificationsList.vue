@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row justify-content-end">
+        <div v-if="unreadNotificationsCount" class="row justify-content-end">
             <a href=""  @click.prevent="markAllAsRead()">
                 <ins>Отметить все прочитанными</ins>
             </a>
@@ -14,12 +14,10 @@
                           class="mdi mdi-alert-circle mdi-24px text-primary"></span>
                     <strong>{{notification.title}}</strong>
                 </div>
-                <div>{{truncateMessage(notification.message, 200)}}</div>
+                <div class="mt-3 mb-3">{{truncateMessage(notification.message, 200)}}</div>
                 <div class="d-flex">
-                    <div class="text-light" v-bind:class="'bg-'+tags[notification.tag].class">
-                        {{tags[notification.tag].title}}
-                    </div>
-                    <div>{{moment(notification.created_at).format('DD.MM.YY')}}</div>
+
+                    <div class="font-italic">{{moment(notification.created_at).format('DD.MM.YY hh:mm')}}</div>
                 </div>
             </div>
             <b-pagination
@@ -62,7 +60,7 @@
                 notifications: [],
                 paginatedNotifications: [],
                 currentPage: 1,
-                perPage: 3,
+                perPage: 5,
                 viewed_notification: {},
                 tags: {
                     'important' : {
@@ -113,12 +111,22 @@
             },
             onPageChanged(page_number) {
                 this.paginate(this.perPage, page_number);
-            }
+            },
         },
         computed: {
             total_rows() {
                 return this.notifications.length;
-            }
+            },
+            unreadNotificationsCount() {
+                let count = 0;
+                this.notifications.forEach(notification => {
+                    if(notification.status === 'unread') {
+                        count++;
+                    }
+                })
+
+                return count;
+            },
         },
         mounted() {
             this.paginate(this.perPage, 1);
@@ -131,5 +139,11 @@
 <style lang="scss" scoped>
     .notification-row {
         cursor: pointer;
+        margin-bottom: 25px;
+        padding: 10px 30px 15px;
+        border: 1px #d2d2d2 solid;
+        border-radius: 5px;
+        background-color: #fff;
     }
+
 </style>

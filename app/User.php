@@ -40,7 +40,7 @@ class User extends Authenticatable
 
     public function user_notifications()
     {
-        return $this->hasMany('App\UserNotification', 'user_id','id');
+        return $this->hasMany('App\UserNotification', 'user_id','id')->orderBy('created_at','desc');
     }
 
     public function unreadNotifications()

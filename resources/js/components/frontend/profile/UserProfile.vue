@@ -1,68 +1,8 @@
 <template>
     <div class="row justify-content-center">
         <b-card no-body class="col-12 p-0">
-            <b-tabs pills card vertical nav-wrapper-class="w-25" v-model="tabIndex">
-                <b-tab title="МОЙ DASHBOARD" active>
-                    <b-card-text>
-                        <h2>ДОБРО ПОЖАЛОВАТЬ, {{user.name}}</h2>
-                    </b-card-text>
-                    <b-card-text v-if="this.user.queries.length">
-                        <h4>Запросы</h4>
-                        <table  class="table">
-                            <thead>
-                            <tr>
-                                <th>Номер заказа</th>
-                                <th>Количество</th>
-                                <th>Статус</th>
-                                <th>PDF</th>
-                                <th>Дата</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>{{String(this.user.queries[0].id).padStart(8, '0')}}</td>
-                                <td>{{this.user.queries[0].products_count}}</td>
-                                <td>{{this.user.queries[0].status}}</td>
-                                <td><a :href="'/querypdf?id='+this.user.queries[0].id">
-                                    <span class="mdi mdi-file-document"></span>
-                                </a></td>
-                                <td>{{moment(this.user.queries[0].created_at).format('DD.MM.YY')}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <div class="row justify-content-end pr-5">
-                            <a href="/profile?tab=1"><b-button variant="danger">Посмотреть больше</b-button></a>
-                        </div>
-                    </b-card-text>
-                    <b-card-text v-if="this.user.orders.length">
-                        <h4>Заказы</h4>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Номер заказа</th>
-                                <th>Количество</th>
-                                <th>Статус</th>
-                                <th>PDF</th>
-                                <th>Дата</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>{{String(this.user.orders[0].id).padStart(8, '0')}}</td>
-                                <td>{{this.user.orders[0].products_count}}</td>
-                                <td>{{this.user.orders[0].status}}</td>
-                                <td><a :href="'/orderpdf?id='+this.user.orders[0].id">
-                                    <span class="mdi mdi-file-document"></span>
-                                </a></td>
-                                <td>{{moment(this.user.orders[0].created_at).format('DD.MM.YY')}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <div class="row justify-content-end pr-5">
-                            <a href="/profile?tab=2"><b-button variant="danger">Посмотреть больше</b-button></a>
-                        </div>
-                    </b-card-text>
-                </b-tab>
+            <div id="profile-title">{{profileTitle}}</div>
+            <b-tabs pills card vertical nav-wrapper-class="w-25" nav-class="tab-controls" v-model="tabIndex">
                 <b-tab title="ЗАПРОСЫ">
                     <b-card-text>
                         <h4>Мои запросы</h4>
@@ -72,6 +12,9 @@
                                 <a :href="'/querypdf?id='+data.value">
                                     <span class="mdi mdi-file-document"></span>
                                 </a>
+                            </template>
+                            <template #cell(status)="data">
+                                <b-badge :variant="query_status[data.value].color">{{query_status[data.value].loc}}</b-badge>
                             </template>
                         </b-table>
                         <b-pagination
@@ -90,6 +33,9 @@
                                 <a :href="'/orderpdf?id='+data.value">
                                     <span class="mdi mdi-file-document"></span>
                                 </a>
+                            </template>
+                            <template #cell(status)="data">
+                                <b-badge :variant="order_status[data.value].color">{{order_status[data.value].loc}}</b-badge>
                             </template>
                             <template #cell(buy)="data" v-if="company_id === 0">
                                 <b-button variant="primary" v-b-modal.my-modal>Оплата</b-button>
@@ -139,15 +85,12 @@
                         <favorites-list :data="user.favorites"></favorites-list>
                     </b-card-text>
                 </b-tab>
-                <b-tab>
+                <b-tab id="notification-tab">
                     <template #title>
                         УВЕДОМЛЕНИЯ
-                        <span v-if="unreadNotificationsCount()" class="text-danger">
-                        {{unreadNotificationsCount()}}
-                    </span>
+                        <b-badge v-if="unreadNotificationsCount()" variant="light">{{unreadNotificationsCount()}}</b-badge>
                     </template>
                     <b-card-text>
-                        <h4>Уведомления</h4>
                         <notifications-list :data="user.user_notifications"></notifications-list>
                     </b-card-text>
                 </b-tab>
@@ -174,11 +117,48 @@
             return {
                 moment: moment,
                 user: {},
+                company: {},
                 company_id: 0,
                 perPage: 5,
                 currentOrdersPage: 1,
                 currentQueriesPage: 1,
-                tabIndex: this.tab
+                tabIndex: this.tab,
+                query_status : {
+                    'new': {
+                        loc: 'новый',
+                        color: 'primary'
+                    },
+                    'processing': {
+                        loc: 'в обработке',
+                        color: 'info'
+                    },
+                    'approved': {
+                        loc: 'одобрен',
+                        color: 'success'
+                    },
+                    'cancelled': {
+                        loc: 'отменён',
+                        color: 'danger'
+                    }
+                },
+                order_status : {
+                    'new': {
+                        loc: 'новый',
+                        color: 'primary'
+                    },
+                    'accepted': {
+                        loc: 'в обработке',
+                        color: 'info'
+                    },
+                    'closed': {
+                        loc: 'завершён',
+                        color: 'success'
+                    },
+                    'canceled': {
+                        loc: 'отменён',
+                        color: 'danger'
+                    }
+                }
             }
         },
         methods: {
@@ -217,9 +197,10 @@
                 }
             },
             activeCompanyId() {
-                this.data.companies.forEach(company => {
+                this.user.companies.forEach(company => {
                     if(company.is_active === 1)
                     {
+                        this.company = company;
                         this.company_id = company.id;
                     }
                 })
@@ -241,7 +222,7 @@
                         products_count: query.products_count,
                         status: query.status,
                         file: query.id,
-                        created_at: moment(query.created_at).format('DD.MM.YY'),
+                        created_at: moment(query.created_at).format('DD.MM.YY hh:mm'),
                     })
                 })
 
@@ -266,7 +247,7 @@
                         products_count: order.products_count,
                         status: order.status,
                         file: order.id,
-                        created_at: moment(order.created_at).format('DD.MM.YY'),
+                        created_at: moment(order.created_at).format('DD.MM.YY hh:mm'),
                     })
                 })
 
@@ -275,14 +256,15 @@
                     items: orders
                 }
             },
-
+            profileTitle() {
+                return this.company.id ? this.company.name : this.user.name
+            }
         },
         mounted() {
             this.$nextTick(() => this.tabIndex = this.tab);
         },
         created() {
             this.user = this.data;
-            // this.tabIndex = this.tab;
             this.$eventBus.$on('setNotificationRead', this.setNotificationRead);
             this.$eventBus.$on('setAllNotificationsRead', this.setAllNotificationsRead);
             this.$eventBus.$on('changeLoginType', this.changeLoginType);
@@ -296,5 +278,12 @@
     }
     .pay-option {
         cursor: pointer;
+    }
+    #notification-tab {
+        background-color: #eee !important;
+    }
+    #profile-title {
+        font-size: 40px;
+        text-align: center;
     }
 </style>
