@@ -13,7 +13,10 @@
                     Войти
                 </button>
             </div>
-            <div v-if="!isGuest">
+            <div class="d-flex align-items-center" v-if="!isGuest">
+                <a class="nav-link curpointer" @click="showCart">
+                    <span class="mdi mdi-cart"></span>
+                </a>
                 <b-dropdown id="account-dropdown" size="lg" right variant="link" block toggle-class="text-decoration-none" no-caret>
                     <template #button-content>
                         <div class="mdi mdi-account"></div>
@@ -44,6 +47,9 @@
             </div>
         </div>
         <signin-form ref="signinForm"></signin-form>
+        <b-modal id="modal-cart" size="lg" title-html="<span class='mdi mdi-36px mdi-cart'></span> Корзина" hide-footer>
+            <shopping-cart :cart_products="cart"></shopping-cart>
+        </b-modal>
     </div>
 </template>
 
@@ -55,7 +61,8 @@
             },
             user: {
                 type: Object
-            }
+            },
+            cart: {}
         },
         data() {
             return {
@@ -108,6 +115,9 @@
             logout() {
                 this.$refs.logout.submit()
             },
+            showCart() {
+                this.$bvModal.show('modal-cart');
+            }
         },
         computed: {
             filterBtnCaption() {
@@ -142,7 +152,7 @@
             align-items: center;
             color: white !important;
 
-            .btn-link .mdi.mdi-account{
+            .btn-link .mdi.mdi-account, .mdi-cart{
                 font-size: 28px !important;
                 color: #ffffff !important;
             }

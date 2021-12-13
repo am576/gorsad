@@ -25,20 +25,23 @@ class HomeController extends Controller
         $root_category = Category::where('url_title', 'root')->first();
         $categories = Category::all();
         $filter_attributes = Attribute::smallFilterAttributes();
+        $cart = session()->get('cart');
 
         $user = auth()->user();
         if(isset($user))
         {
             $user = User::where('id',auth()->user()->id)->with(['user_notifications', 'companies'])->first();
             $user->favorites = $user->favorites();
-
         }
 
-        return view('frontend/index')
-            ->with('categories', $categories)
-            ->with('auth_user',  auth()->user())
-            ->with('user', $user)
-            ->with('filter_attributes',$filter_attributes);
+        return view('frontend.index')
+            ->with(
+                [
+                    'categories' => $categories,
+                    'auth_user' => auth()->user(),
+                    'user' => $user,
+                    'filter_attributes' => $filter_attributes
+                ]);
     }
 
     public function ApplyFilter(Request $request)
@@ -76,13 +79,16 @@ class HomeController extends Controller
                 ->get();
         }
 
+        $cart = session()->get('cart');
+
         return view('frontend.shop.index')
             ->with(
                 [
                     'products'=> $products,
                     'attributes' => $attributes,
                     'filter_options' => json_encode($arr),
-                    'filtered_name' => $product_name
+                    'filtered_name' => $product_name,
+                    'cart' => json_encode($cart)
                 ]
             );
     }
@@ -94,12 +100,14 @@ class HomeController extends Controller
             ->get();
 
         $attributes = (new \App\Attribute)->shopFilterAttributes();
+        $cart = session()->get('cart');
 
         return view('frontend.shop.index')
             ->with(
                 [
                     'products'=> $products,
-                    'attributes' => $attributes
+                    'attributes' => $attributes,
+                    'cart' => json_encode($cart)
                 ]
             );
     }
@@ -139,6 +147,7 @@ class HomeController extends Controller
             ->first();
 
         $variants_types = ['st','mtst','sol'];
+        $cart = session()->get('cart');
 
         foreach ($variants_types as $type) {
             $product_variants[$type] = $product->variants()
@@ -148,7 +157,9 @@ class HomeController extends Controller
 
         $product['variants'] = $product_variants;
 
-        return view('frontend.product-page')->with('product', $product);
+        return view('frontend.product-page')
+            ->with('product', $product)
+            ->with('cart', json_encode($cart));
     }
 
     public function showCart()

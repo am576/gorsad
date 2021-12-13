@@ -9,7 +9,7 @@
                     <transition name="filter-slide">
                         <shop-filter v-if="showFilters" :attributes_groups="attributes" :filtered_name="filtered_name" :selected_options="filter_options || ''" @filterProducts="filterProducts"></shop-filter>
                     </transition>
-                    <products-list :products="products" :user="user" @toggleFilters="toggleFilters"></products-list>
+                    <products-list :products="products" :cart="cart" :user="user" @toggleFilters="toggleFilters"></products-list>
                 </div>
             </div>
             <div class="col-1"></div>
@@ -44,7 +44,8 @@
             filtered_name: {
                 type: String,
                 default: ''
-            }
+            },
+            cart: {}
         },
         data() {
             return {

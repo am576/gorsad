@@ -45,7 +45,7 @@
                     <a class="nav-link" href=""><span class="mdi mdi-heart-outline mdi-36px"></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" v-if="!isGuest" href="/cart">
+                    <a class="nav-link curpointer" v-if="!isGuest"  @click="showCart">
                         <span class="mdi mdi-cart mdi-36px"></span>
                     </a>
                 </li>
@@ -179,10 +179,10 @@
                     <a class="nav-link" href="#">Войти</a>
                 </li>
             </ul>
-
-
         </div>
-
+        <b-modal id="modal-cart" size="lg" title-html="<span class='mdi mdi-36px mdi-cart'></span> Корзина" hide-footer>
+            <shopping-cart :cart_products="JSON.parse(cart)"></shopping-cart>
+        </b-modal>
     </div>
 
 </template>
@@ -191,7 +191,8 @@
     export default {
         props: {
             auth_user: '',
-            user: {}
+            user: {},
+            cart: {},
         },
         data() {
             return {
@@ -276,6 +277,9 @@
                     while(this.loginErrors[key].length > 0)
                     this.loginErrors[key].pop();
                 })
+            },
+            showCart() {
+                this.$bvModal.show('modal-cart');
             }
         },
         computed: {

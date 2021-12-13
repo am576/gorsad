@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div v-if="!isCartEmpty" class="col-6 order-details">
+            <div v-if="!isCartEmpty" class="col-12 order-details">
                 <h3>Обзор заказа</h3>
                 <!--<v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
                     <template slot="no-options">
@@ -27,7 +27,7 @@
                     <div class="col-10">
                         <div class="row">
                             <div class="col-10">
-                                <strong>{{product['title']}}</strong>
+                                <a class="product-link" :href="'/products/' + id" target="_blank"><strong>{{product['title']}}</strong></a>
                             </div>
                             <div class="col-2">
                                 <span class="remove-product mdi mdi-close-circle mdi-24px text-danger" @click="removeProduct(id)"></span>
@@ -46,10 +46,9 @@
                             </div>
                         </div>
                     </div>
-                    <div>Сумма: {{product.price}} &#8381;</div>
                 </div>
                 <div class="total-price row">
-                    Всего: {{totalPrice}}
+                    Сумма: {{totalPrice}} &#8381;
                 </div>
                 <div class="text-center">
                     <button class="btn btn-primary btn-lg" @click="goToCheckout">Оформить заказ</button>
@@ -200,12 +199,18 @@
 
 <style lang="scss" scoped>
     .order-details {
-        border: 1px solid #000000;
         padding: 15px;
     }
     .product-row {
         padding: 10px 20px;
         border-top: 1px solid #ececec;
+        margin-bottom: 20px;
+
+        a.product-link {
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
 
     .remove-product {
@@ -222,5 +227,7 @@
         font-size: 22px;
         font-weight: bold;
         padding: 0 20px;
+        margin-top: 40px;
+        margin-bottom: 40px;
     }
 </style>
