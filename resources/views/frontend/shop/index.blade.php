@@ -19,5 +19,5 @@
         $filter_options = '[]';
     }
     ?>
-    <shop-page :products_all="{{$products}}" :attributes="{{$attributes}}" :cart="{{$cart}}" :filtered_name="{{"'".$filtered_name ."'" }}" :filter_options="{{$filter_options}}" @if(isset($auth_user)):auth_user="{{$auth_user}}" :user="{{json_encode($user)}}"@endif></shop-page>
+    <shop-page :products_all="{{$products}}" :attributes="{{$attributes}}" :filtered_name="{{"'".$filtered_name ."'" }}" :filter_options="{{$filter_options}}" @if(isset($auth_user)):auth_user="{{$auth_user}}" :user="{{json_encode($user)}}"@endif></shop-page>
 @endsection

@@ -181,7 +181,7 @@
             </ul>
         </div>
         <b-modal id="modal-cart" size="lg" title-html="<span class='mdi mdi-36px mdi-cart'></span> Корзина" hide-footer>
-            <shopping-cart :cart_products="JSON.parse(cart)"></shopping-cart>
+            <shopping-cart></shopping-cart>
         </b-modal>
     </div>
 
@@ -192,7 +192,6 @@
         props: {
             auth_user: '',
             user: {},
-            cart: {},
         },
         data() {
             return {

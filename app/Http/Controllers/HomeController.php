@@ -25,7 +25,6 @@ class HomeController extends Controller
         $root_category = Category::where('url_title', 'root')->first();
         $categories = Category::all();
         $filter_attributes = Attribute::smallFilterAttributes();
-        $cart = session()->get('cart');
 
         $user = auth()->user();
         if(isset($user))
@@ -79,8 +78,6 @@ class HomeController extends Controller
                 ->get();
         }
 
-        $cart = session()->get('cart');
-
         return view('frontend.shop.index')
             ->with(
                 [
@@ -88,7 +85,6 @@ class HomeController extends Controller
                     'attributes' => $attributes,
                     'filter_options' => json_encode($arr),
                     'filtered_name' => $product_name,
-                    'cart' => json_encode($cart)
                 ]
             );
     }
@@ -100,14 +96,12 @@ class HomeController extends Controller
             ->get();
 
         $attributes = (new \App\Attribute)->shopFilterAttributes();
-        $cart = session()->get('cart');
 
         return view('frontend.shop.index')
             ->with(
                 [
                     'products'=> $products,
                     'attributes' => $attributes,
-                    'cart' => json_encode($cart)
                 ]
             );
     }

@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-            <shop-navigation @if(isset($auth_user)):auth_user="{{$auth_user}}" :user="{{json_encode($user)}}"@endif :cart="{{$cart}}">
+            <shop-navigation @if(isset($auth_user)):auth_user="{{$auth_user}}" :user="{{json_encode($user)}}"@endif>
                 <template slot="back_btn">
                     <a href="/shop" class="back_btn d-flex align-items-center">
                         <span class="mdi mdi-chevron-left mdi-24px"></span>

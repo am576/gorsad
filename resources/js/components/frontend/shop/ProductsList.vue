@@ -48,7 +48,7 @@
         </div>
         <signin-form ref="signinForm"></signin-form>
         <b-modal id="modal-cart" size="lg" title-html="<span class='mdi mdi-36px mdi-cart'></span> Корзина" hide-footer>
-            <shopping-cart :cart_products="cart"></shopping-cart>
+            <shopping-cart></shopping-cart>
         </b-modal>
     </div>
 </template>
@@ -62,7 +62,6 @@
             user: {
                 type: Object
             },
-            cart: {}
         },
         data() {
             return {

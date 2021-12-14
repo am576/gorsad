@@ -63,9 +63,6 @@
 
 <script>
     export default {
-        props: {
-            cart_products: {}
-        },
         data() {
             return {
                 products: {},
@@ -169,6 +166,11 @@
                     })
                 })
             },
+            getCartContents() {
+                axios.get('/cart/getCart').then(response => {
+                    this.products = response.data;
+                })
+            },
             goToCheckout() {
                 window.location.href = "/cart/checkout"
             },
@@ -192,7 +194,7 @@
           }
         },
         created() {
-            this.products = this.cart_products == null ? {} : this.cart_products;
+            this.getCartContents();
         }
     }
 </script>

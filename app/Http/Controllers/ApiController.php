@@ -162,6 +162,7 @@ class ApiController extends Controller
 
     public function getCart()
     {
-        return response()->json(session()->get('cart'));
+        $cart = session()->get('cart');
+        return response()->json($cart);
     }
 }
