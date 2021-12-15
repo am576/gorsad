@@ -1,17 +1,17 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-6">
-                <h3>Оформление заказа</h3>
-                <h4>Сумма: {{price_total}} р.</h4>
-                <h4>Товары</h4>
+            <div class="col-12">
+                <button class="btn btn-primary back-btn" @click="goToCart">Назад</button>
                 <div class="products">
                     <div v-for="(product, id) in products" class="product-details">
-                        <div>Название: {{product['title']}}</div>
-                        <div>Цена: {{product['price']}}</div>
+                        <div class="mt-1 mb-2"><strong>{{product['title']}}</strong></div>
                         <div class="row">
-                            <div class="col-3">Фото: <img :src="'/storage/images/' + product['image']" alt=""></div>
-                            <div class="col-9">
+                            <div class="col-3">
+                                <img :src="'/storage/images/' + product['image']" alt="">
+
+                            </div>
+                            <div class="col-9 d-flex flex-column">
                                 <div class="row" v-for="(variant, index) in product.variants">
                                     <div class="col-3">
                                         {{variantTitle(variant)}}
@@ -23,14 +23,13 @@
                                         {{variant.price * variant.quantity}} &#8381
                                     </div>
                                 </div>
+                                <div class="mt-2"><strong>Сумма: {{product['price']}}</strong></div>
                             </div>
-
                         </div>
-
                     </div>
-                    <div>Сумма: {{price_total}} р.</div>
+                    <h4 class="total-price">Всего: {{price_total}} &#8381</h4>
                 </div>
-                <div class="text-center">
+                <div class="text-center mb-2">
                     <button class="btn btn-primary btn-lg" @click="doCheckout">Подтвердить заказ</button>
                 </div>
             </div>
@@ -47,7 +46,6 @@
             return {
                 products: {},
                 price_total: 0,
-                client: {},
             }
         },
         methods: {
@@ -56,6 +54,9 @@
                 .then(response => {
                     this.price_total = response.data
                 })
+            },
+            goToCart() {
+                this.$emit('goToCart');
             },
             doCheckout() {
                 const order_data = {
@@ -93,33 +94,25 @@
         created() {
             this.products = this.order_products;
             this.getTotalPrice();
-        }
+        },
+
     }
 </script>
 
 <style lang="scss" scoped>
     .products {
         max-height: 500px;
-        padding: 20px;
+        padding: 20px 10px;
         margin-bottom: 20px;
         overflow-y: auto;
-        border: 1px solid;
-        border-radius: 10px;
-        -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.42);
-        -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.42);
-        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.42);
     }
-    .client-details, .product-details {
+    .product-details {
+        padding: 10px;
         margin: 20px 0;
-        border: 1px solid;
-        border-radius: 10px;
-        -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.42);
-        -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.42);
-        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.42);
-    }
-
-    .client-details {
-        padding: 20px;
+        -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.2);
+        -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.2);
+        box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.2);
+        background-color: #f5deb3;
     }
 
     .remove-product {
@@ -128,5 +121,13 @@
         top: 0;
         right: 10px;
         color: #000;
+    }
+
+    .total-price {
+        text-align: center;
+        font-size: 26px;
+        font-weight: bold;
+        padding: 0 20px;
+        margin-top: 40px;
     }
 </style>
