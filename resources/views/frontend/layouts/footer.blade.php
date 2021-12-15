@@ -2,19 +2,19 @@
     <div class="certs w-100 pt-3 pb-3 mb-4">
         <div class="certs-inner">
             <div>
-                <img src="storage/images/public/certs/1.jpg" alt="">
+                <img src="/storage/images/public/certs/1.jpg" alt="">
             </div>
             <div>
-                <img src="storage/images/public/certs/2.png" alt="">
+                <img src="/storage/images/public/certs/2.png" alt="">
             </div>
             <div>
-                <img src="storage/images/public/certs/3.jpg" alt="">
+                <img src="/storage/images/public/certs/3.jpg" alt="">
             </div>
             <div>
-                <img src="storage/images/public/certs/4.png" alt="">
+                <img src="/storage/images/public/certs/4.png" alt="">
             </div>
             <div>
-                <img src="storage/images/public/certs/5.jpg" alt="">
+                <img src="/storage/images/public/certs/5.jpg" alt="">
             </div>
         </div>
 
@@ -23,7 +23,7 @@
         <div class="footer-main row">
             <div class="company col-4">
                 <div class="logo">
-                    <img src="storage/images/public/logov2.png" alt="">
+                    <img src="/storage/images/public/logov2.png" alt="">
 
                 </div>
                 <div class="desc color-grey mt-3">
@@ -46,19 +46,19 @@
                 <ul>
                     <li>
                         <span>
-                            <img src="storage/images/public/icons/marker.png" alt="">
+                            <img src="/storage/images/public/icons/marker.png" alt="">
                             ул. Богатырская 35, Калиниград, Россия, 236038
                         </span>
                     </li>
                     <li>
                         <span>
-                            <img src="storage/images/public/icons/281830-48.png" alt="" style="height: 34px">
+                            <img src="/storage/images/public/icons/281830-48.png" alt="" style="height: 34px">
                             +7 (4012) 52-22-11
                         </span>
                     </li>
                     <li>
                         <span>
-                            <img src="storage/images/public/icons/mail.png" alt="">
+                            <img src="/storage/images/public/icons/mail.png" alt="">
                             info@group-zg.com
                         </span>
                     </li>

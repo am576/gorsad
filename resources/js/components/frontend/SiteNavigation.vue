@@ -15,7 +15,7 @@
             </div>
         </div>
         <nav class="navbar" style="background: rgba(0, 0, 0, 0.6)">
-            <a href="/"><img src="storage/images/public/logov2.png" alt=""></a>
+            <a href="/"><img src="/storage/images/public/logov2.png" alt=""></a>
             <div id="navigation-icon-left" v-if="isMobileView">
                 <i class="mdi mdi-menu mdi-36px" @click="toggleMobileNav()"></i>
             </div>

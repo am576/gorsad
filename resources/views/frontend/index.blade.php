@@ -31,19 +31,19 @@
                         </div>
                         <div class="row pt-5 pb-5" style="justify-content: space-evenly">
                             <div>
-                                <img src="storage/images/public/partners/1.png" alt="">
+                                <img src="/storage/images/public/partners/1.png" alt="">
                             </div>
                             <div>
-                                <img src="storage/images/public/partners/2.png" alt="">
+                                <img src="/storage/images/public/partners/2.png" alt="">
                             </div>
                             <div>
-                                <img src="storage/images/public/partners/3.png" alt="">
+                                <img src="/storage/images/public/partners/3.png" alt="">
                             </div>
                             <div>
-                                <img src="storage/images/public/partners/4.png" alt="">
+                                <img src="/storage/images/public/partners/4.png" alt="">
                             </div>
                             <div>
-                                <img src="storage/images/public/partners/5.png" alt="">
+                                <img src="/storage/images/public/partners/5.png" alt="">
                             </div>
                         </div>
                     </div>
