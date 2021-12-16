@@ -304,7 +304,55 @@ footer.home-footer {
     }
 }
 
+.projects-index {
+    .project-row {
+        margin-top: 80px;
+        margin-bottom: 100px;
+        background: #e0e0e0;
+        .project-image {
+            height: 500px;
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 60px;
+            background-position: center;
+            background-size: cover;
+            color: #ffffff;
+            font-size: 44px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.84);
+        }
 
+        .project-description {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 22px;
+            font-style: italic;
+            padding: 0 160px;
+        }
+
+        .project-button {
+            text-transform: uppercase;
+            width: 50%;
+        }
+    }
+    .show-all-projects {
+        display: flex;
+        justify-content: center;
+        padding: 60px 0;
+        background-color: #efefef;
+    }
+    .project-button, .show-all-projects button {
+        font-size: 22px;
+        border: 1px solid #737373;
+        color: #555555;
+        background-color: #ffffff;
+    }
+}
 
 #shop-navigation {
     a.back_btn {
@@ -396,4 +444,11 @@ footer.home-footer {
     }
 }
 
+.site-nav {
+    position: relative;
+}
+
+.map {
+    width: 100%;
+}
 

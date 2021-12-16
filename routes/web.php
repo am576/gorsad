@@ -50,6 +50,10 @@ Route::get('/orderpdf','UserController@getOrderPdf');
 Route::get('/logascompany','UserController@setCompanyActive');
 Route::get('/logasuser','UserController@setCompaniesNotActive');
 
+Route::get('/projects', 'HomeController@showProjectsPage')->name('projects.index');
+Route::get('/projects/all', 'HomeController@showProjects')->name('projects.all');
+Route::get('/projects/{id}', 'HomeController@showProjectPage');
+
 
 /*Admin routes*/
 Route::get('/admin/orders', 'OrderController@index');

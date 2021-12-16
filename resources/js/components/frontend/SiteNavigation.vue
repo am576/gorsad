@@ -28,10 +28,10 @@
                     <a href="#" class="nav-link">Услуги</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Дизайн</a>
+                    <a href="#" class="nav-link">Проекты</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Советы</a>
+                    <a href="#" class="nav-link">Дизайн</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Контакты</a>
@@ -323,13 +323,13 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .site-nav {
-        position: absolute;
+        /*position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        z-index: 1;
+        z-index: 1;*/
 
         & a.nav-link, .btn-link .mdi, .mdi {
             color: #fff !important;
@@ -341,6 +341,8 @@
             height: 70px;
         }
     }
+</style>
+<style lang="scss" scoped>
     .header-contacts {
         display: flex;
         padding: 15px 0 15px 15%;

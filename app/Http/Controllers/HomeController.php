@@ -169,4 +169,19 @@ class HomeController extends Controller
 
         return view('frontend.checkout')->with('order_products', json_encode($order_products));
     }
+
+    public function showProjectsPage()
+    {
+        return view('frontend.projects.index');
+    }
+
+    public function showProjects()
+    {
+        return view('frontend.projects.all');
+    }
+
+    public function showProjectPage($id)
+    {
+        return view('frontend.projects.project_page');
+    }
 }
