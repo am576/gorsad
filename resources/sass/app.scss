@@ -334,11 +334,10 @@ footer.home-footer {
             font-style: italic;
             padding: 0 160px;
         }
-
-        .project-button {
-            text-transform: uppercase;
-            width: 50%;
-        }
+    }
+    .project-button {
+        text-transform: uppercase;
+        width: 50%;
     }
     .show-all-projects {
         display: flex;
@@ -351,6 +350,21 @@ footer.home-footer {
         border: 1px solid #737373;
         color: #555555;
         background-color: #ffffff;
+    }
+
+}
+.projects-all {
+    background-color: #eaeaea;
+    padding-top: 40px;
+    .projects-wrapper {
+        background: url("/storage/images/public/projectsbg.png");
+        display: flex;
+        justify-content: center;
+
+    }
+    .projects-disclaimer {
+        padding: 80px 0 100px;
+        font-size: 22px;
     }
 }
 

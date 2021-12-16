@@ -317,7 +317,7 @@
         },
         created() {
             this.handleView();
-            this.checkActiveCompany();
+            // this.checkActiveCompany();
             window.addEventListener('resize', this.handleView);
         }
     }
