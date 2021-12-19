@@ -427,6 +427,71 @@ footer.home-footer {
     }
 }
 
+.knowhow-img-main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 30%;
+    height: 0;
+    background-position: center;
+    background-size: cover;
+    .knowhow-title {
+        font-size: 3.5rem;
+        position: absolute;
+        bottom: 25%;
+        font-weight: bold;
+        max-width: 50%;
+        text-align: center;
+        text-shadow: 0px 0px 30px rgba(0,0,0,0.7);
+        color: #ffffff
+    }
+}
+
+.design-styles {
+    .styles-bg-main {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding-bottom: 30%;
+        height: 0;
+        background-position: center;
+        background-size: cover;
+
+        .styles-title {
+            font-size: 3.5rem;
+            position: absolute;
+            bottom: 25%;
+            font-weight: bold;
+            max-width: 30%;
+            text-align: left;
+            padding-left: 150px;
+            text-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            color: #ffffff
+        }
+    }
+    .style-bg {
+        background-color: #efefef;
+    }
+    .style-row {
+        width: 100%;
+        justify-content: center;
+        padding: 3em 0;
+        img {
+            max-width: 100%;
+        }
+        p.odd {
+            padding: 1em 0 0 3em;
+        }
+        p.even {
+            padding: 1em 3em 0 0;
+        }
+    }
+}
+
 #shop-navigation {
     a.back_btn {
         padding-right: 10px;

@@ -184,4 +184,14 @@ class HomeController extends Controller
     {
         return view('frontend.projects.project_page');
     }
+
+    public function showKnowhowPage()
+    {
+        return view('frontend.knowhow.index');
+    }
+
+    public function showStylesPage()
+    {
+        return view('frontend.styles');
+    }
 }

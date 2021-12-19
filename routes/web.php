@@ -54,6 +54,9 @@ Route::get('/projects', 'HomeController@showProjectsPage')->name('projects.index
 Route::get('/projects/all', 'HomeController@showProjects')->name('projects.all');
 Route::get('/projects/{id}', 'HomeController@showProjectPage');
 
+Route::get('/knowhow','HomeController@showKnowhowPage');
+Route::get('/styles','HomeController@showStylesPage');
+
 
 /*Admin routes*/
 Route::get('/admin/orders', 'OrderController@index');

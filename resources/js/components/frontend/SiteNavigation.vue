@@ -28,10 +28,13 @@
                     <a href="#" class="nav-link">Услуги</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Проекты</a>
+                    <a href="/projects" class="nav-link">Проекты</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Дизайн</a>
+                    <a href="/knowhow" class="nav-link">Советы</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/styles" class="nav-link">Дизайн</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Контакты</a>
