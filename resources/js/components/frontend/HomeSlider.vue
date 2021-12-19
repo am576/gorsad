@@ -3,7 +3,7 @@
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width: 100%;">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <div class="description">Широкий ассортимент деревьев и кустарников</div>
+                    <div class="description open-sans">Широкий ассортимент деревьев и кустарников</div>
                 </div>
                 <!--<div class="carousel-item">
                     <img class="d-block w-100" :src="'/storage/images/public/home-slider/slider-1.jpg'" alt="Первый слайд">
@@ -45,6 +45,8 @@
         color: #fff;
          .description {
             font-size: 60px;
+             font-weight: bold;
+             max-width: 50%;
         }
     }
 </style>
