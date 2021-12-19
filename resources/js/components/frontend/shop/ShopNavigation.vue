@@ -2,7 +2,11 @@
     <div id="shop-navigation" class="row space-between m-0">
         <slot name="back_btn"></slot>
         <div class="text-light" v-if="isGuest">
-            <a class="nav-link" @click="showSigninForm">Войти</a></div>
+            <button class="nav-btn" id="btn-login" @click="showSigninForm">
+                <i class="mdi mdi-login"></i>
+                Войти
+            </button>
+        </div>
         <div class="d-flex align-items-center" v-if="!isGuest">
             <a class="nav-link curpointer" @click="showCart">
                 <span class="mdi mdi-cart"></span>
@@ -66,5 +70,11 @@
     .mdi {
         font-size: 28px !important;
         color: #ffffff !important;
+    }
+    #shop-navigation {
+        #btn-login {
+            min-width: 100px;
+            padding: 0 10px;
+        }
     }
 </style>

@@ -42,7 +42,7 @@
         </div>
         <div class="divider"></div>
         <nav class="nav-tabs product-variants">
-            <b-tabs  horizontal nav-wrapper-class="w-75" active-nav-item-class="tab_active" active-tab-class="tab_active">
+            <b-tabs  horizontal nav-wrapper-class="w-75 d-flex justify-content-start" active-nav-item-class="tab_active" active-tab-class="tab_active">
                 <b-tab title="Штамб(St)" active >
                     <b-table borderless :fields="variants_table_data('st').fields" :items="variants_table_data('st').items" :tbody-tr-class="'table-row'">
                         <template #cell(quantity)="data">
@@ -81,7 +81,33 @@
                 </b-tab>
             </b-tabs>
         </nav>
-
+        <div class="d-flex justify-content-center pb-5 mb-4 mt-4">
+            <div class="all-specs">
+                <div class="row">
+                    <h4 class="font-weight-bold">ВСЕ ХАРАКТЕРИСТИКИ</h4>
+                </div>
+                <div class="row" v-for="attribute in product.attributes">
+                    <div class="col-3">
+                        {{attribute.name}}
+                    </div>
+                    <div class="col-9">
+                        <div v-if="isTagType(attribute)">
+                            <span class="attr-tag" v-for="value in attribute.values">{{value}}</span>
+                        </div>
+                        <div v-if="attribute.type === 'range'">
+                            {{attribute.values[0]}} - {{attribute.values[1]}}
+                        </div>
+                        <div v-if="attribute.type === 'text' && !isTagType(attribute)">
+                            {{attribute.values[0]}}
+                        </div>
+                        <div v-if="attribute.type === 'color'">
+                        <span class="attr-color" v-for="color in attribute.values"
+                              v-bind:style="{background: color}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--<div class="user-reviews mt-5">
             <h2>Отзывы</h2>
             <b-card v-for="(review,index) in product.reviews" :key="index" :title="review.user.name" :sub-title="moment(product.created_at).format('DD.MM.YYYY hh:mm')" class="mt-4">
@@ -172,11 +198,9 @@
                     items: rows
                 }
             },
-
-        },
-        computed: {
-
-
+            isTagType(attribute) {
+                return attribute.type === 'text' && attribute.values.length > 1
+            },
         },
         created() {
             this.setCurrentImage(this.product.images[0]);
@@ -185,7 +209,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     #product-page {
         background: #434242;
         * {
@@ -231,57 +255,6 @@
                 color: #ffffff !important;
             }
         }
-    }
-    .thumbs {
-        .thumb-link {
-            cursor: pointer;
-            border: 1px solid #1b4b72;
-        }
-    }
-
-    .preview {
-        img {
-            width: 100%;
-        }
-    }
-
-    .attr-row {
-        margin: 10px 0;
-    }
-
-    .attr-color {
-        width: 30px;
-        height: 30px;
-        border-radius: 30px;
-        display: inline-block;
-        margin-right: 10px;
-    }
-
-    .attr-tag {
-        margin-right: 5px;
-        display: inline-block;
-        background: #a39d9d;
-        height: 20px;
-    }
-    .nav-tabs {
-        display: flex;
-        justify-content: center;
-        a {
-            color: #e7e7e7 !important;
-        }
-    }
-    .tabs {
-        width: 70%;
-    }
-    .b-table {
-        border-spacing: 0 20px;
-    }
-    .tab-content {
-        background: #4c4b4b !important;
-        padding: 10px;
-    }
-
-    #product-page {
         a.tab_active {
             background: #4c4b4b !important;
             border: none !important;
@@ -327,6 +300,64 @@
 
         ul.nav-tabs {
             border: none !important;
+        }
+        .all-specs {
+            width: 60%;
+            .row {
+                padding: 5px 0;
+                margin-bottom: 5px;
+                font-size: 18px;
+                font-weight: 600;
+            }
+        }
+        .thumbs {
+            .thumb-link {
+                cursor: pointer;
+                border: 1px solid #1b4b72;
+            }
+        }
+
+        .preview {
+            img {
+                width: 100%;
+            }
+        }
+
+        .attr-row {
+            margin: 10px 0;
+        }
+
+        .attr-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .attr-tag {
+            margin-right: 5px;
+            padding: 3px 10px;
+            display: inline-block;
+            background: #373535;
+            border: 1px solid #6c6c6c
+        }
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            a {
+                color: #e7e7e7 !important;
+            }
+        }
+        .tabs {
+            width: 70%;
+        }
+        .b-table {
+            border-spacing: 0 20px;
+        }
+        .tab-content {
+            background: #4c4b4b !important;
+            padding: 10px;
         }
     }
 

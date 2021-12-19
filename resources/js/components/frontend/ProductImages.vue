@@ -23,7 +23,7 @@
                 </div>
             </template>
         </splide>
-        <b-modal id="modal-image" size="lg" title="Extra Large Modal">
+        <b-modal id="modal-image" size="lg" hide-footer>
             <img :src="'/storage/images/' + current_image" alt="" style="width: 100%;">
         </b-modal>
     </div>

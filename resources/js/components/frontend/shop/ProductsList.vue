@@ -40,7 +40,10 @@
                     <a class="product-link" :href="'/products/'+product.id" @mouseenter="hoverProduct(index)" @mouseleave="unHover()">
                         <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}" :class="{scaled: hoveredIndex === index + 1}">
                             <span v-if="!isGuest" class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
-                            <p class="description">{{product.title}}</p>
+                            <p class="description">
+                                <span class="d-block">{{product.title}}</span>
+                                <span class="w-100" v-show="hoveredIndex === index + 1">Клён остролистный</span>
+                            </p>
                         </div>
                     </a>
                 </div>
@@ -155,7 +158,7 @@
                 }
 
                 to {
-                    transform: scale(1.01);
+                    transform: scale(1.025);
                 }
             }
         }

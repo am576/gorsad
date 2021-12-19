@@ -7,6 +7,7 @@ use App\Category;
 use App\Product;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -148,8 +149,22 @@ class HomeController extends Controller
                 ->where('type', $type)
                 ->get();
         }
-
+        $attributes = [];
+        foreach ($product->savedAttributes() as $attribute) {
+            $selected_values = [];
+            foreach ($attribute->selected_values as $value_id) {
+                array_push($selected_values, DB::table('attributes_values')->find($value_id)->value);
+            }
+            array_push($attributes,
+            [
+               'name' => $attribute->name,
+               'type' => $attribute->type,
+               'values' => $selected_values
+            ]);
+        }
+        $product['attributes'] = $attributes;
         $product['variants'] = $product_variants;
+
 
         return view('frontend.product-page')
             ->with('product', $product)
