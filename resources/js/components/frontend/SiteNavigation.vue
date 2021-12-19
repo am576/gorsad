@@ -21,22 +21,28 @@
             </div>
             <div id="mobile-logo" class="m-auto" v-if="isMobileView">Какое-то ЛоГо</div>
             <ul class="nav nav-pills m-auto" v-if="!isMobileView">
-                <li class="nav-item">
+                <li class="nav-item menu-link" :class="{selected: isSelected ==='services'}" @mouseenter.stop="menuHover(1)" @mouseleave.stop="unHover">
+                    <span :class="{hovered : isHovered ===(1)}"></span>
                     <a href="/shop" class="nav-link">Деревья</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item menu-link" ref="services" :class="{selected: isSelected ==='services'}" @mouseenter.stop="menuHover(2)" @mouseleave.stop="unHover">
+                    <span :class="{hovered : isHovered === (2)}"></span>
                     <a href="#" class="nav-link">Услуги</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item menu-link" ref="projects" :class="{selected: isSelected ==='projects'}" @mouseenter.stop="menuHover(3)" @mouseleave.stop="unHover">
+                    <span :class="{hovered : isHovered === (3)}"></span>
                     <a href="/projects" class="nav-link">Проекты</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item menu-link" @mouseenter.stop="menuHover(4)" @mouseleave.stop="unHover">
+                    <span :class="{hovered : isHovered === (4)}"></span>
                     <a href="/knowhow" class="nav-link">Советы</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item menu-link" ref="styles" :class="{selected: isSelected ==='styles'}" @mouseenter.stop="menuHover(5)" @mouseleave.stop="unHover">
+                    <span :class="{hovered : isHovered === (5)}"></span>
                     <a href="/styles" class="nav-link">Дизайн</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item menu-link" ref="contacts" :class="{selected: isSelected ==='contacts'}" @mouseenter.stop="menuHover(6)" @mouseleave.stop="unHover">
+                    <span :class="{hovered : isHovered ===(6)}"></span>
                     <a href="#" class="nav-link">Контакты</a>
                 </li>
             </ul>
@@ -199,6 +205,8 @@
                 isMobileView: false,
                 showNav: false,
                 navOpen : false,
+                isHovered: 0,
+                isSelected: '',
                 showLinks: false,
                 linksOpen: false,
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -207,6 +215,7 @@
                     email: '',
                     password: ''
                 },
+                refs: {},
                 emailerror: '',
                 loginErrors: {
                     email: [],
@@ -228,6 +237,13 @@
                 this.showLinks = !this.showLinks;
                 this.linksOpen = !this.linksOpen;
             },
+            menuHover(e) {
+                this.isHovered = e;
+            },
+            unHover() {
+                this.isHovered = 0;
+            },
+
             goToRegisterPage() {
                 window.location.href = '/register';
             },
@@ -280,6 +296,14 @@
             },
             showCart() {
                 this.$eventBus.$emit('showCart')
+            },
+            setSelectedItem() {
+                let items = ['services', 'projects', 'styles', 'contacts'];
+                items.forEach(item => {
+                    if(window.location.href.includes(item)) {
+                        this.isSelected = item;
+                    }
+                })
             }
         },
         computed: {
@@ -316,24 +340,24 @@
                 }
                 return false;
 
-            }
+            },
+
         },
         created() {
             this.handleView();
             // this.checkActiveCompany();
             window.addEventListener('resize', this.handleView);
+        },
+        mounted() {
+            this.$nextTick(()=>{
+                this.setSelectedItem();
+            });
         }
     }
 </script>
 
 <style lang="scss">
     .site-nav {
-        /*position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1;*/
-
         & a.nav-link, .btn-link .mdi, .mdi {
             color: #fff !important;
             text-transform: uppercase;
@@ -363,6 +387,44 @@
             margin-right: 50px;
             font-size: 14px;
         }
+    }
+    .nav-item.menu-link {
+        border-bottom: 3px solid transparent;
+        position: relative;
+        &.selected {
+            border-bottom: 3px solid #8cc556;
+        }
+        span {
+            position: absolute;
+            box-sizing: content-box;
+            top: 0;
+            opacity: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-bottom: 3px solid transparent;
+            border-bottom: 3px solid #8cc556;
+            pointer-events: none;
+        }
+        span.hovered {
+            animation: slidein 0.25s;
+            -webkit-animation-fill-mode: forwards; /* Safari 4.0 - 8.0 */
+            animation-fill-mode: forwards;
+
+            @keyframes slidein {
+                from {
+                    left: -100%;
+                    opacity: 0;
+                }
+
+                to {
+                    left: 0;
+                    opacity: 100;
+                }
+            }
+        }
+
     }
     #mobile-logo {
         font-size: 2rem;
@@ -434,4 +496,5 @@
             font-size: 2rem;
         }
     }
+
 </style>
