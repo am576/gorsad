@@ -36,10 +36,10 @@
         </div>
         <div class="row wr2">
             <div class="row wr3">
-                <div v-for="product in products" style="width: 20%; padding: 10px">
-                    <a :href="'/products/'+product.id">
-                        <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}">
-                            <span class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
+                <div v-for="(product, index) in products" style="width: 20%; padding: 10px">
+                    <a class="product-link" :href="'/products/'+product.id" @mouseenter="hoverProduct(index)" @mouseleave="unHover()">
+                        <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}" :class="{scaled: hoveredIndex === index + 1}">
+                            <span v-if="!isGuest" class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
                             <p class="description">{{product.title}}</p>
                         </div>
                     </a>
@@ -66,6 +66,7 @@
                 favorites: [],
                 filterShown: true,
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                hoveredIndex : 0
             }
         },
         methods: {
@@ -85,6 +86,12 @@
                         this.favorites.push(id);
                     }
                 })
+            },
+            hoverProduct(index) {
+                this.hoveredIndex = index + 1;
+            },
+            unHover() {
+                this.hoveredIndex = -1;
             },
             getUserFavorites() {
                 axios.get('/getfavorites')
@@ -130,13 +137,38 @@
     }
 </script>
 <style lang="scss">
+    .product-link {
+        &:hover {
+            text-decoration: none;
+        }
+    }
     .product-card {
         position: relative;
+        &.scaled {
+            animation: slidein 0.25s;
+            -webkit-animation-fill-mode: forwards; /* Safari 4.0 - 8.0 */
+            animation-fill-mode: forwards;
+
+            @keyframes slidein {
+                from {
+                    transform: scale(1);
+                }
+
+                to {
+                    transform: scale(1.01);
+                }
+            }
+        }
     }
     .favorite {
         position: absolute;
         top: 5px;
         right: 5px;
+        color: #fff;
+        width: 35px;
+        text-align: center;
+        border-radius: 50px;
+        background-color: rgba(40, 40, 40, 0.27);
     }
     .wr1 {
         justify-content: center;
