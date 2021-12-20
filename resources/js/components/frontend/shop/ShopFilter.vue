@@ -1,11 +1,11 @@
 <template>
     <div class="filter row">
-        <div class="filter-gtoup">
-            <div>Поиск по названию</div>
-            <input style="width: 90%" type="text" v-model="product_name" @keyup="doFilterProducts">
+        <div class="filter-group">
+            <div class="filter-group-title">Поиск по названию</div>
+            <input id="name-search" type="text" v-model="product_name" @keyup="doFilterProducts">
         </div>
         <div class="filter-group" v-for="group in attributes_groups" :key="group.group_id">
-            <div>{{group.group_name}}</div>
+            <div class="filter-group-title">{{group.group_name}}</div>
             <attribute-button :selected_options="selected_options" :filtered_name="filtered_name" :attribute="attribute" @addFilterOption="addFilterOption" v-for="attribute in group.attributes" :key="attribute.id"></attribute-button>
         </div>
     </div>
@@ -26,7 +26,8 @@
         data() {
             return {
                 product_name: '',
-                filter_options: {}
+                filter_options: {},
+                isMobileView: false,
             }
         },
         methods: {
@@ -48,10 +49,14 @@
                 .then(response => {
                     this.$emit('filterProducts', response.data)
                 })
-            }
+            },
+            handleView() {
+                this.isMobileView = window.innerWidth <= 600;
+            },
         },
         created() {
             this.product_name = this.filtered_name;
+            this.handleView();
         }
     }
 </script>
@@ -63,7 +68,29 @@
     .filter-group {
         display: flex;
         flex-direction: column;
-        flex: 0 0 20%;
-        max-width: 20%;
+        @media (min-width: 591px) {
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+        @media (max-width: 590px) {
+            flex: 0 0 100%;
+            max-width: 100%;
+            align-items: center;
+            .filter-group-title {
+                text-align: center;
+                margin: 2.5vh 0 1.25vh;
+                background-color: #514a4a;
+                padding: 0.5vh 0;
+                width: 100%;
+            }
+        }
+        #name-search {
+            @media (min-width: 591px) {
+                width: 90%;
+            }
+            @media (max-width: 590px) {
+                width: 70%;
+            }
+        }
     }
 </style>

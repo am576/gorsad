@@ -13,6 +13,11 @@ body {
     overflow-x: hidden;
 
 }
+main {
+    @media (max-width: 590px) {
+        padding: 0 !important;
+    }
+}
 
 #app {
     max-width: 1400px;
@@ -171,6 +176,10 @@ body {
 }
 
 #app.shop {
+    @media (min-width: 590px) {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
     max-width: 100%;
     background: #2c2c2c;
 }

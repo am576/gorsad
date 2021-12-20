@@ -1,42 +1,45 @@
 <template>
     <div class="row wr1">
         <div class="shop-nav">
-            <div>
+            <div id="filter-btn-wr">
                 <button class="nav-btn" id="btn-toggle-filters" @click="toggleFilters">
                     <i class="mdi mdi-24px" v-bind:class="filterShown ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
                     {{filterBtnCaption}}
                 </button>
             </div>
-            <div v-if="isGuest">
-                <button class="nav-btn" id="btn-login" @click="showSigninForm">
-                    <i class="mdi mdi-login"></i>
-                    Войти
-                </button>
-            </div>
-            <div class="d-flex align-items-center" v-if="!isGuest">
-                <a class="nav-link curpointer" @click="showCart">
-                    <span class="mdi mdi-cart"></span>
-                </a>
-                <b-dropdown id="account-dropdown" size="lg" right variant="link" block toggle-class="text-decoration-none" no-caret>
-                    <template #button-content>
-                        <div class="mdi mdi-account"></div>
-                    </template>
-                    <b-dropdown-text>
-                        <div>{{user.name}}</div>
-                        <a href="/profile" class="text-small">Личный кабинет</a>
-                    </b-dropdown-text>
-                    <b-dropdown-text>
-                        <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
-                            <input type="hidden" name="_token" :value="csrf">
-                        </form>
-                        <a class="curpointer text-small" @click="logout">Выход </a>
-                    </b-dropdown-text>
-                </b-dropdown>
+            <div id="nav-buttons">
+                <div v-if="isGuest">
+                    <button class="nav-btn" id="btn-login" @click="showSigninForm">
+                        <i class="mdi mdi-login"></i>
+                        Войти
+                    </button>
+                </div>
+                <div class="d-flex align-items-center" v-if="!isGuest">
+                    <a class="nav-link curpointer" @click="showCart">
+                        <span class="mdi mdi-cart"></span>
+                    </a>
+                    <b-dropdown id="account-dropdown" size="lg" right variant="link" block
+                                toggle-class="text-decoration-none" no-caret>
+                        <template #button-content>
+                            <div class="mdi mdi-account"></div>
+                        </template>
+                        <b-dropdown-text>
+                            <div>{{user.name}}</div>
+                            <a href="/profile" class="text-small">Личный кабинет</a>
+                        </b-dropdown-text>
+                        <b-dropdown-text>
+                            <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
+                                <input type="hidden" name="_token" :value="csrf">
+                            </form>
+                            <a class="curpointer text-small" @click="logout">Выход </a>
+                        </b-dropdown-text>
+                    </b-dropdown>
+                </div>
             </div>
         </div>
         <div class="row wr2">
             <div class="row wr3">
-                <div v-for="(product, index) in products" style="width: 20%; padding: 10px">
+                <div class="product-wrapper" v-for="(product, index) in products" style="">
                     <a class="product-link" :href="'/products/'+product.id" @mouseenter="hoverProduct(index)" @mouseleave="unHover()">
                         <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}" :class="{scaled: hoveredIndex === index + 1}">
                             <span v-if="!isGuest" class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
@@ -140,6 +143,14 @@
     }
 </script>
 <style lang="scss">
+    .product-wrapper {
+        @media (min-width: 591px) {
+            width: 20%; padding: 10px
+        }
+        @media (max-width: 591px) {
+            width: 50%; padding: 10px
+        }
+    }
     .product-link {
         &:hover {
             text-decoration: none;
@@ -218,16 +229,29 @@
             background-color: #605b5b;
         }
     }
-    #btn-toggle-filters {
 
-        padding: 0 15px 0 5px;
-
-        .mdi {
-            margin-right: 5px;
-        }
-    }
     #btn-login {
         min-width: 100px;
         padding: 5px 15px 5px 10px;
+    }
+    #nav-buttons {
+        @media (max-width:590px) {
+            display: none;
+        }
+    }
+    #filter-btn-wr {
+        #btn-toggle-filters {
+            padding: 0 15px 0 5px;
+            .mdi {
+                margin-right: 5px;
+            }
+            @media (max-width:590px) {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        @media (max-width:590px) {
+            width: 100%;
+        }
     }
 </style>

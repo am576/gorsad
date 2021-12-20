@@ -7,7 +7,7 @@
             </div>
             <span class="mdi mdi-18px mdi-close ml-auto" v-show="hasSelectedOptions" @click.prevent.stop="clearSelectedValues()"></span>
         </div>
-        <div class="attribute-values" v-show="selected" :class="[allowMaxWidthDropdowm ? 'w-50' : 'w-20']">
+        <div class="attribute-values" v-show="selected">
             <div v-if="attribute.type === 'text'">
             <b-form-checkbox-group
                 v-model="selected_values"
@@ -138,6 +138,9 @@
 </script>
 
 <style lang="scss" scoped>
+    .attribute-button {
+        width: 100%;
+    }
     .attribute-caption {
         margin-left: 0;
         margin-right: 0;
@@ -157,6 +160,14 @@
         position: absolute;
         background: #3e3b3b;
         z-index: 1;
+        @media (min-width: 591px) {
+            width: 20% !important;
+        }
+        @media (max-width: 591px) {
+            width: 100% !important;
+            padding-left: 4vw;
+            padding-top: 4vw;
+        }
     }
 
     .vue-slider-marks {
