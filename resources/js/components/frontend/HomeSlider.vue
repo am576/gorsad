@@ -31,8 +31,15 @@
 
 <style lang="scss" scoped>
     .carousel-inner {
-     height: 920px;
-        min-height: 920px;
+        @media (min-width: 590px) {
+            height: 920px;
+            min-height: 920px;
+        }
+        @media (max-width:589px) {
+            height: 40vh;
+            min-height: 40vh;
+        }
+
     }
     .carousel-item {
         height: 100%;
@@ -44,9 +51,15 @@
         align-items: center;
         color: #fff;
          .description {
-            font-size: 60px;
              font-weight: bold;
              max-width: 50%;
+             @media (min-width: 590px) {
+                 font-size: 6vh;
+             }
+             @media (max-width:589px) {
+                 font-size: 4vh;
+             }
+
         }
     }
 </style>

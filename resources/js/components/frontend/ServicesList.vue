@@ -1,7 +1,7 @@
 <template>
 <div class="container">
     <div class="row">
-        <div class="col-4 " v-for="service in services">
+        <div class="mb-sm-3 col-md-4 col-sm-12 d-flex justify-content-center" v-for="service in services">
             <div class="home-block">
                 <div class="header" :style="{'background-image': 'url('+service.image+')'}">
                     <p class="text-center">{{service.title}}</p>
@@ -50,7 +50,7 @@
                         description: 'Мы сотрудничаем с нащими клиентами, чтобы обеспечить успешное завершение проектов',
                         btn_title: 'Разделите нашу гордость',
                         image: '/storage/images/public/home-blocks/home-block4.jpg',
-                        url: '/'
+                        url: '/projects/all'
                     },
                     {
                         title: 'Стили в ладншафтном дизайне',

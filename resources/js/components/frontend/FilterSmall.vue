@@ -1,13 +1,15 @@
 <template>
-    <div class="container pl-4 pr-4">
-        <div class="row justify-content-center">
+    <div id="filter" class="pl-4 pr-4" :class="{container: !isMobileView}">
             <div class="filter-small col-md-12">
                 <div class="filter-attributes">
                     <div class="filter-seg">
                         <input class="form-control" v-model="product_name" placeholder="Искать по названию" type="text" @keyup.enter="submit">
                     </div>
                     <div class="filter-seg" v-for="attribute in filter_attributes">
-                        <button class="btn filter-btn" @click="setSelectedAttribute(attribute)">{{attribute.name}}</button>
+                        <button class="btn filter-btn" @click="setSelectedAttribute(attribute)">{{attribute.name}}
+                            <i class="mdi mdi-chevron-down-circle-outline mdi-24px" v-if="isMobileView"></i>
+                        </button>
+
                     </div>
                     <div class="filter-seg">
                         <form action="/search" method="post">
@@ -16,7 +18,6 @@
                             <textarea name="filter_options" type="hidden" class="hidden" style="display: none">{{selected_filter_options}}</textarea>
                             <button ref="submitButton" type="submit" class="btn search-btn w-100" >Искать</button>
                         </form>
-
                     </div>
                 </div>
                 <div class="filter-attribute-values">
@@ -32,7 +33,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </template>
 
@@ -46,10 +46,14 @@
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 selected_attribute: {},
                 selected_filter_options: {},
-                product_name: ''
+                product_name: '',
+                isMobileView : false,
             }
         },
         methods: {
+            handleView() {
+                this.isMobileView = window.innerWidth <= 600;
+            },
             setSelectedAttribute(attribute) {
                 this.selected_attribute = attribute.id === this.selected_attribute.id ? {} : attribute ;
             },
@@ -78,32 +82,90 @@
             this.filter_attributes.forEach(attribute => {
                 this.$set(this.selected_filter_options, attribute.id, [])
             })
+            this.handleView();
         }
     }
 </script>
 <style lang="scss" scoped>
+    #filter {
+        @media (max-width: 590px) {
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+        }
+    }
+    .filter-small-wrapper {
+        justify-content: center;
+    }
     .filter-small {
+        @media (max-width: 590px) {
+            padding: 0 !important;
+        }
         .filter-attributes {
             display: flex;
+            @media (min-width: 591px) {
+                flex-direction: row;
+                padding: 60px 20px 50px;
+                background: rgba(0, 0, 0, 0.7);
+            }
+            @media (max-width: 590px) {
+                flex-direction: column;
+                padding: 2vh 6vh;
+                background-color: #e0d9cf;
+                input.form-control {
+                    padding: 15px;
+                    font-size: 18px;
+                    margin-bottom: 2vh;
+                    &::placeholder {
+                        font-size: 18px;
+                    }
+                }
+            }
             flex-direction: row;
             padding: 60px 20px 50px;
             background: rgba(0, 0, 0, 0.7);
 
             .btn {
-                color: #ffffff;
-                border: none;
-                border-radius: 5px;
-                width: 100%;
-                padding: 12px 0;
-                font-size: 18px;
+                @media (min-width: 591px) {
+                    color: #ffffff;
+                    border: none;
+                    border-radius: 5px;
+                    width: 100%;
+                    padding: 12px 0;
+                    font-size: 18px;
 
-                &.filter-btn {
-                    background: #707072;
-                    font-weight: bold;
+                    &.filter-btn {
+                        background: #707072;
+                        font-weight: bold;
+                    }
+                    &.search-btn {
+                        background: #f49829;
+                        text-transform: uppercase;
+                    }
                 }
-                &.search-btn {
-                    background: #f49829;
-                    text-transform: uppercase;
+                @media (max-width: 590px) {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    text-align: left;
+                    color: #000000;
+                    border: none;
+                    border-radius: 4px;
+                    width: 100%;
+                    padding: 15px;
+                    margin-bottom: 2vh;
+                    font-size: 18px;
+
+                    &.filter-btn {
+                        background: #d6cdc1;
+                        text-align: left;
+                    }
+                    &.search-btn {
+                        background: #f49829;
+                        text-transform: uppercase;
+                        text-align: center;
+                        justify-content: center;
+                    }
                 }
             }
         }
@@ -129,6 +191,17 @@
                 }
                 .attribute-value.selected {
                     border: 1px solid #ffffff;
+                }
+                @media (max-width: 590px) {
+                    width: 50%;
+                    z-index: 10;
+                    padding-left: 2vh;
+                    padding-top: 2vh;
+                    background: rgba(59, 59, 55, 0.94);
+                    top: -60vh;
+                    .attribute-value {
+                        width: 100%;
+                    }
                 }
             }
             .attribute-color {

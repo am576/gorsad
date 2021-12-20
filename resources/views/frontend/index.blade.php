@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12 p-0">
             <home-slider></home-slider>
-            <div class="row" style="margin-top: -80px;">
+            <div class="row filter-small-wrapper">
                 <filter-small :filter_attributes="{{$filter_attributes}}"></filter-small>
             </div>
             <div class="pt-3 border-bottom">

@@ -1,6 +1,6 @@
 <template>
     <div class="site-nav">
-        <div class="header-contacts">
+        <div class="header-contacts" v-if="!isMobileView">
             <div>
                 <span class="mdi mdi-phone mdi-24px"></span>
                 +7(4012) 52-21-11
@@ -14,12 +14,11 @@
                 Пн-Пт 9.00 - 18.00
             </div>
         </div>
-        <nav class="navbar" style="background: rgba(0, 0, 0, 0.6)">
-            <a href="/"><img src="/storage/images/public/logov2.png" alt=""></a>
-            <div id="navigation-icon-left" v-if="isMobileView">
-                <i class="mdi mdi-menu mdi-36px" @click="toggleMobileNav()"></i>
-            </div>
-            <div id="mobile-logo" class="m-auto" v-if="isMobileView">Какое-то ЛоГо</div>
+        <nav id="header-navbar" class="navbar">
+            <a href="/">
+                <img src="/storage/images/public/logov2.png" alt="" v-if="!isMobileView">
+                <img src="/storage/images/public/logov2m.png" alt="" v-if="isMobileView">
+            </a>
             <ul class="nav nav-pills m-auto" v-if="!isMobileView">
                 <li class="nav-item menu-link" :class="{selected: isSelected ==='services'}" @mouseenter.stop="menuHover(1)" @mouseleave.stop="unHover">
                     <span :class="{hovered : isHovered ===(1)}"></span>
@@ -46,7 +45,15 @@
                     <a href="#" class="nav-link">Контакты</a>
                 </li>
             </ul>
-            <ul class="nav nav-pills">
+            <ul class="nav nav-pills" v-if="isMobileView">
+                <li id="navigation-icon-search" v-if="isMobileView">
+                    <i class="mdi mdi-magnify mdi-36px" @click="toggleMobileSearch()"></i>
+                </li>
+                <li id="navigation-icon-right" v-if="isMobileView">
+                    <i class="mdi mdi-menu" @click="toggleMobileNav()"></i>
+                </li>
+            </ul>
+            <ul class="nav nav-pills" v-if="!isMobileView">
                 <li class="nav-item">
                     <a class="nav-link" href=""><span class="mdi mdi-magnify mdi-36px"></span></a>
                 </li>
@@ -149,45 +156,17 @@
                     </b-dropdown>
                 </li>
             </ul>
-            <div id="navigation-icon-right" v-if="isMobileView">
-                <i class="mdi mdi-dots-horizontal mdi-36px" @click="toggleMobileLinks"></i>
-            </div>
         </nav>
-
-        <div id="navigation-mobile" class="mobile-menu" :class="{'open': showNav}" v-if="isMobileView">
-            <ul class="nav nav-pills ml-auto" >
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Новинки</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Lalalala</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Babababa</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Nananana</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Mamamama</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Kakakaka</a>
-                </li>
-            </ul>
+        <div id="navigation-mobile"  :class="{'open': showNav}"  v-if="isMobileView">
+            <div class="menu-inner" :style="{'width': device.width + 'px', height: device.height + 'px'}" v-show="showNav">
+                <a href="/shop">Каталог растений</a>
+                <a href="/services">Услуги</a>
+                <a href="/projects/all">Проекты</a>
+                <a href="/shop">Советы</a>
+                <a href="/styles">Дизайн</a>
+                <a href="/contacts">Контакты</a>
+            </div>
             <i class="mdi mdi-close" @click="toggleMobileNav" v-if="navOpen"></i>
-        </div>
-
-        <div id="links-mobile"  class="mobile-menu" :class="{'open': showLinks}">
-            <i class="mdi mdi-close" @click="toggleMobileLinks" ></i>
-            <ul class="nav nav-pills ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Корзина</a>
-                </li>
-                <li class="nav-item" v-if="isGuest">
-                    <a class="nav-link" href="#">Войти</a>
-                </li>
-            </ul>
         </div>
         <shopping-cart></shopping-cart>
     </div>
@@ -222,16 +201,25 @@
                     password: [],
                     login: []
                 },
+                device: {}
 
             }
         },
         methods: {
             handleView() {
                 this.isMobileView = window.innerWidth <= 600;
+                this.width = $(window).width();
+                this.device = {
+                    width: $(window).width(),
+                    height: $(window).height()
+                }
             },
             toggleMobileNav() {
                 this.showNav = !this.showNav;
                 this.navOpen = !this.navOpen;
+                this.handleView();
+                let b = document.getElementsByTagName('html');
+                b[0].className += 'stop-scrolling';
             },
             toggleMobileLinks() {
                 this.showLinks = !this.showLinks;
@@ -339,18 +327,21 @@
                     return this.loginErrors.login.length > 0
                 }
                 return false;
-
             },
-
         },
         created() {
             this.handleView();
             // this.checkActiveCompany();
             window.addEventListener('resize', this.handleView);
+            document.body.addEventListener('touchmove', function(e){
+                document.getElementsByTagName('html')[0]. style .height = "100vh !important";
+                document.getElementsByTagName('html')[0]. style. overflow = "hidden !important";
+            });
         },
         mounted() {
             this.$nextTick(()=>{
                 this.setSelectedItem();
+                this.handleView();
             });
         }
     }
@@ -386,6 +377,15 @@
             align-items: center;
             margin-right: 50px;
             font-size: 14px;
+        }
+    }
+    #header-navbar {
+        @media (min-width: 591px) {
+            background: rgba(0, 0, 0, 0.6)
+        }
+        @media (max-width:590px) {
+            background-color: #ffffff;
+            padding: 0 0 0 10px;
         }
     }
     .nav-item.menu-link {
@@ -433,40 +433,59 @@
     i {
         cursor: pointer;
     }
+    #navigation-icon-search {
+        display: flex;
+        align-items: center;
+        padding-right: 10px;
+        i {
+            color: #000000 !important;
+        }
+
+    }
+    #navigation-icon-right {
+        background-color: #0b2d1b !important;
+        height: 70px;
+        padding: 0 10px;
+        font-size: 43px;
+        i {
+            font-size: 40px;
+        }
+    }
 
     $menu_width : 300px;
 
     #navigation-mobile {
-        left: -$menu_width;
-        ul {
-            float: left;
+        background-color: #ffffff;
+        position: fixed;
+        left: 0;
+        top: 70px;
+        z-index: 9999;
+        .menu-inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-top: 15vh;
+            align-items: center;
+            a {
+                display:block;
+                padding-bottom: 3vh;
+                text-transform: uppercase;
+                color: #000000;
+                font-size: 4vh;
+                font-weight: 600;
+                &:hover {
+                    text-decoration: none;
+                }
+            }
         }
 
         &.open {
-            transform: translateX($menu_width);
-            transition: 0.3s cubic-bezier(0,.12,.14,1) 0s;
+            /*transform: translateX($menu_width);
+            transition: 0.3s cubic-bezier(0,.12,.14,1) 0s;*/
         }
     }
 
-    #links-mobile {
-        right: -$menu_width;
-        text-align: right;
 
-        ul {
-            float: right;
-            text-align: left;
-        }
-
-        &.open {
-            transform: translateX(-1 * $menu_width);
-            transition: 0.3s cubic-bezier(0,.12,.14,1) 0s;
-        }
-
-        input {
-            width: $menu_width * 0.7;
-            box-sizing: border-box;
-        }
-    }
 
     .mobile-menu {
         min-width: $menu_width;
@@ -495,6 +514,10 @@
         i {
             font-size: 2rem;
         }
+    }
+    .stop-scrolling {
+        height: 100% !important;
+        overflow: hidden !important;
     }
 
 </style>

@@ -597,3 +597,9 @@ footer.home-footer {
 .open-sans {
     font-family: 'Open Sans', sans-serif !important;
 }
+
+.filter-small-wrapper {
+    @media (min-width: 591px) {
+        margin-top: -80px;
+    }
+}
