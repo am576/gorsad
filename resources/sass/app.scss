@@ -644,3 +644,10 @@ footer.home-footer {
         display: none;
     }
 }
+
+.profile-tabs-wrapper {
+    width: 25% !important;
+    @media (max-width:590px) {
+        width: 100% !important;
+    }
+}

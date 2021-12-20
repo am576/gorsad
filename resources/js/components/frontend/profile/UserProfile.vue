@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <b-card no-body class="col-12 p-0">
             <div id="profile-title">{{profileTitle}}</div>
-            <b-tabs pills card vertical nav-wrapper-class="w-25" nav-class="tab-controls" v-model="tabIndex">
+            <b-tabs pills card vertical nav-wrapper-class="profile-tabs-wrapper" nav-class="tab-controls" v-model="tabIndex">
                 <b-tab title="ЗАПРОСЫ">
                     <b-card-text>
                         <h4>Мои запросы</h4>
@@ -123,6 +123,7 @@
                 currentOrdersPage: 1,
                 currentQueriesPage: 1,
                 tabIndex: this.tab,
+                isMobileView: false,
                 query_status : {
                     'new': {
                         loc: 'новый',
@@ -158,7 +159,7 @@
                         loc: 'отменён',
                         color: 'danger'
                     }
-                }
+                },
             }
         },
         methods: {
@@ -204,7 +205,10 @@
                         this.company_id = company.id;
                     }
                 })
-            }
+            },
+            handleView() {
+                this.isMobileView = window.innerWidth <= 590;
+            },
         },
         computed: {
             queries_table_data() {
@@ -226,6 +230,10 @@
                     })
                 })
 
+                if(this.isMobileView) {
+                    labels.splice(1,1);
+                    queries.splice(1,1);
+                }
                 return {
                     fields: labels,
                     items: queries
@@ -251,6 +259,11 @@
                     })
                 })
 
+                if(this.isMobileView) {
+                    labels.splice(1,1);
+                    orders.splice(1,1);
+                }
+
                 return {
                     fields: labels,
                     items: orders
@@ -269,6 +282,7 @@
             this.$eventBus.$on('setAllNotificationsRead', this.setAllNotificationsRead);
             this.$eventBus.$on('changeLoginType', this.changeLoginType);
             this.activeCompanyId();
+            this.handleView();
         }
     }
 </script>
@@ -286,4 +300,5 @@
         font-size: 40px;
         text-align: center;
     }
+
 </style>
