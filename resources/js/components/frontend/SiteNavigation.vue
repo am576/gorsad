@@ -349,6 +349,11 @@
 
 <style lang="scss">
     .site-nav {
+        @media (max-width: 590px) {
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+        }
         & a.nav-link, .btn-link .mdi, .mdi {
             color: #fff !important;
             text-transform: uppercase;

@@ -3,8 +3,8 @@
 @section('content')
 <div class="container-fluid projects-all">
     <div class="row justify-content-center">
-        <div class="col-md-12 p-0 projects-wrapper">
-{{--                <h4>Проекты, которыми стоит гордиться</h4>--}}
+        <div class="col-md-12 p-0 projects-wrapper flex-column align-items-center">
+
             <projects-list></projects-list>
         </div>
         <div class="w-100" style="background-color: #efe4d8;">
