@@ -13,8 +13,8 @@
     ?>
 <div class="container-fluid p-0">
     <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10">
+        <div class="col-1 filler"></div>
+        <div class="col-md-10 col-sm-12">
             <shop-navigation @if(isset($auth_user)):auth_user="{{$auth_user}}" :user="{{json_encode($user)}}"@endif>
                 <template slot="back_btn">
                     <a href="/shop" class="back_btn d-flex align-items-center">

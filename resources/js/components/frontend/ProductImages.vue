@@ -54,6 +54,7 @@
                     perPage: 1,
                     fixedWidth:300,
                     cover: true,
+                    isMobileView: false
                 },
             }
         },
@@ -64,10 +65,19 @@
             },
             setCurrentImage(image) {
                 this.current_image = image;
-            }
+            },
+            handleView() {
+                this.isMobileView = window.innerWidth <= 600;
+                if(this.isMobileView) {
+                    this.options.height = 200;
+                    this.options.fixedWidth = 200;
+                    this.options.width = window.innerWidth;
+                }
+            },
         },
         created() {
             this.setCurrentImage(this.product.images[0]);
+            this.handleView();
         }
     }
 </script>

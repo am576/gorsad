@@ -1,13 +1,13 @@
 <template>
     <div id="product-page">
         <div class="row justify-content-start m-0">
-            <div class="col-6" style="padding: 10px">
+            <div class="image-wrapper col-lg-6 col-sm-12">
                 <div class="display-image" :style="{'background-image':'url(/storage/images/' + product.images[0].large +')'}">
                     <div class="product-name-rus">Клён остролистный</div>
                     <div class="product-name-lat">Carpinus betulus</div>
                 </div>
             </div>
-            <div class="col-5">
+            <div class="col-md-5 col-sm-12">
                 <div class="p-3">
                     <h5 class="text-success">{{product.additional_info.family}}</h5>
                     <h3>{{product.title}}</h3>
@@ -17,8 +17,8 @@
                         <p v-html="product.description"></p>
                         <h5>Характеристики</h5>
                         <div class="attr-row row">
-                            <div class="col-md-4">Высота</div>
-                            <div class="col-md-8">{{height[0]}} - {{height[1]}} м.</div>
+                            <div class="col-md-4 col-sm-3">Высота</div>
+                            <div class="col-md-8 col-sm-9">{{height[0]}} - {{height[1]}} м.</div>
                         </div>
                         <div class="attr-row row">
                             <div class="col-md-4">Тип почвы</div>
@@ -42,7 +42,7 @@
         </div>
         <div class="divider"></div>
         <nav class="nav-tabs product-variants">
-            <b-tabs  horizontal nav-wrapper-class="w-75 d-flex justify-content-start" active-nav-item-class="tab_active" active-tab-class="tab_active">
+            <b-tabs  horizontal nav-wrapper-class="tabs-wrapper d-flex justify-content-start" active-nav-item-class="tab_active" active-tab-class="tab_active">
                 <b-tab title="Штамб(St)" active >
                     <b-table borderless :fields="variants_table_data('st').fields" :items="variants_table_data('st').items" :tbody-tr-class="'table-row'">
                         <template #cell(quantity)="data">
@@ -83,14 +83,14 @@
         </nav>
         <div class="d-flex justify-content-center pb-5 mb-4 mt-4">
             <div class="all-specs">
-                <div class="row">
+                <div class="specs-header">
                     <h4 class="font-weight-bold">ВСЕ ХАРАКТЕРИСТИКИ</h4>
                 </div>
                 <div class="row" v-for="attribute in product.attributes">
-                    <div class="col-3">
+                    <div class="col-lg-3 col-sm-4">
                         {{attribute.name}}
                     </div>
-                    <div class="col-9">
+                    <div class="col-lg-9 col-sm-8">
                         <div v-if="isTagType(attribute)">
                             <span class="attr-tag" v-for="value in attribute.values">{{value}}</span>
                         </div>
@@ -234,6 +234,12 @@
         .product-variants {
             margin-top: -50px;
         }
+        .image-wrapper {
+            padding: 10px;
+            @media (max-width: 590px) {
+                padding: 0;
+            }
+        }
         .display-image {
             min-width: 600px;
             min-height: 600px;
@@ -244,15 +250,28 @@
             background-size: cover;
             background-position: center;
 
+            @media (max-width: 590px) {
+                width: 100vw;
+                height: 50vh;
+                min-height: 0;
+                min-width: 0;
+            }
 
             .product-name-rus {
-                font-size: 46px;
+                font-size: 6.5vh;
+
                 font-weight: bold;
                 color: #ffffff !important;
             }
             .product-name-lat {
                 font-size: 30px;
                 color: #ffffff !important;
+            }
+        }
+        .tabs-wrapper {
+            width: 75%;
+            @media (max-width: 590px) {
+                width: 100%;
             }
         }
         a.tab_active {
@@ -273,6 +292,7 @@
             text-align: center;
             vertical-align: middle;
             font-weight: bold;
+            font-size: 2.1vh;
         }
         th {
             padding: 1rem 0.25rem;
@@ -287,7 +307,7 @@
         .nav-tabs {
             border-bottom: none !important;
             a.nav-link {
-                font-size: 18px;
+                font-size: 2.25vh;
                 font-weight: bold;
                 border: none !important;
                 color: #e7e7e7 !important;
@@ -303,11 +323,20 @@
         }
         .all-specs {
             width: 60%;
-            .row {
+            @media (max-width: 590px) {
+                width: 90%;
+                .specs-header {
+                    text-align: center;
+                }
+            }
+            .row,.specs-header {
                 padding: 5px 0;
                 margin-bottom: 5px;
                 font-size: 18px;
                 font-weight: 600;
+                @media (max-width:590px) {
+                    flex-wrap: nowrap;
+                }
             }
         }
         .thumbs {
@@ -325,6 +354,9 @@
 
         .attr-row {
             margin: 10px 0;
+            @media (max-width:590px) {
+                flex-wrap: nowrap;
+            }
         }
 
         .attr-color {
@@ -351,6 +383,9 @@
         }
         .tabs {
             width: 70%;
+            @media (max-width: 590px) {
+                width: 100%;
+            }
         }
         .b-table {
             border-spacing: 0 20px;
@@ -360,6 +395,4 @@
             padding: 10px;
         }
     }
-
-
 </style>

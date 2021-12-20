@@ -638,3 +638,9 @@ footer.home-footer {
     margin-top: -25px;
     margin-bottom: 50px;
 }
+
+.filler {
+    @media (max-width: 590px) {
+        display: none;
+    }
+}
