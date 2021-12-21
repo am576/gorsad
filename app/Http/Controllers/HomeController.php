@@ -49,17 +49,21 @@ class HomeController extends Controller
         $product_name = $request->get('product_name');
         $filter_options = json_decode($request->get('filter_options'));
         $filter_values = [];
-        $arr = (array)$filter_options;
-        foreach ($filter_options as $attr_id => $attribute) {
-            foreach ($attribute as $value) {
-                array_push($filter_values, $value);
+        $arr = [];
+        if(isset($filter_options))
+        {
+            $arr = (array)$filter_options;
+            foreach ($filter_options as $attr_id => $attribute) {
+                foreach ($attribute as $value) {
+                    array_push($filter_values, $value);
+                }
+                if(!$arr[$attr_id])
+                {
+                    unset($arr[$attr_id]);
+                }
             }
-            if(!$arr[$attr_id])
-            {
-                unset($arr[$attr_id]);
-            }
-
         }
+
         $attributes = (new \App\Attribute)->shopFilterAttributes();
 
         if(count($filter_values) == 0)

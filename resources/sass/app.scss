@@ -291,10 +291,16 @@ footer.home-footer {
             display: flex;
             justify-content: space-evenly;
             width: 60%;
+            @media (max-width: 590px) {
+                width: 100%;
+            }
         }
 
         img {
             height: 120px;
+            @media (max-width: 590px) {
+                height: 90px;
+            }
         }
     }
 
@@ -338,6 +344,15 @@ footer.home-footer {
 
     img {
         height: 125px;
+    }
+    @media (max-width: 590px) {
+        .partners-title {
+            padding-top: 20px;
+        }
+
+        img {
+            height: 80px;
+        }
     }
 }
 

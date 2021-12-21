@@ -1,7 +1,7 @@
 <template>
 <div class="container">
     <div class="row">
-        <div class="mb-sm-3 col-md-4 col-sm-12 d-flex justify-content-center" v-for="service in services">
+        <div class="hbwr mb-sm-3 col-md-4 col-sm-12 d-flex justify-content-center" v-for="service in services">
             <div class="home-block">
                 <div class="header" :style="{'background-image': 'url('+service.image+')'}">
                     <p class="text-center">{{service.title}}</p>
@@ -84,6 +84,11 @@
             margin-bottom: 75px;
         }
 
+        .hbwr {
+            @media (max-width: 590px) {
+                margin-bottom: 3vh;
+            }
+        }
         .home-block {
             width: 90%;
             display: flex;

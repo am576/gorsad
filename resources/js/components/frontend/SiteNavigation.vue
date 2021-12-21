@@ -47,7 +47,9 @@
             </ul>
             <ul class="nav nav-pills" v-if="isMobileView">
                 <li id="navigation-icon-search" v-if="isMobileView">
-                    <i class="mdi mdi-magnify mdi-36px" @click="toggleMobileSearch()"></i>
+                    <i class="mdi mdi-magnify mdi-36px" @click="toggleMSearchInput()" v-show="!showMSearchInput"></i>
+                    <input ref="msearch_input" class="form-control" v-model="search_product_name" placeholder="Искать по названию"
+                           type="text" @keyup.enter="submit" v-show="showMSearchInput" @blur="showMSearchInput = false">
                 </li>
                 <li id="navigation-icon-right" v-if="isMobileView">
                     <i class="mdi mdi-menu" @click="toggleMobileNav()"></i>
@@ -55,7 +57,9 @@
             </ul>
             <ul class="nav nav-pills" v-if="!isMobileView">
                 <li class="nav-item">
-                    <a class="nav-link" href=""><span class="mdi mdi-magnify mdi-36px"></span></a>
+                    <a class="nav-link curpointer"><span class="mdi mdi-magnify mdi-36px" @click="toggleSearchInput()" v-show="!showSearchInput"></span></a>
+                    <input ref="search_input" class="form-control" v-model="search_product_name" placeholder="Искать по названию"
+                           type="text" @keyup.enter="submit" v-show="showSearchInput" @blur="showSearchInput = false">
                 </li>
                 <li class="nav-item"  v-if="!isGuest">
                     <a class="nav-link" href=""><span class="mdi mdi-heart-outline mdi-36px"></span></a>
@@ -65,6 +69,7 @@
                         <span class="mdi mdi-cart mdi-36px"></span>
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <div v-if="!isGuest">
                         <b-dropdown id="account-dropdown" size="lg" right variant="link" block toggle-class="text-decoration-none" no-caret>
@@ -156,6 +161,11 @@
                     </b-dropdown>
                 </li>
             </ul>
+            <form action="/search" method="post" style="display: none">
+                <input type="hidden" name="_token" :value="csrf">
+                <input name="product_name" type="hidden" v-model="search_product_name">
+                <button ref="submitButton" type="submit" class="btn search-btn hidden" ></button>
+            </form>
         </nav>
         <div id="navigation-mobile"  :class="{'open': showNav}"  v-if="isMobileView">
             <div class="menu-inner" :style="{'width': device.width + 'px', height: device.height + 'px'}" v-show="showNav">
@@ -188,6 +198,9 @@
                 isSelected: '',
                 showLinks: false,
                 linksOpen: false,
+                showSearchInput: false,
+                showMSearchInput: false,
+                search_product_name : '',
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 company_id: 0,
                 loginCred: {
@@ -224,6 +237,22 @@
             toggleMobileLinks() {
                 this.showLinks = !this.showLinks;
                 this.linksOpen = !this.linksOpen;
+            },
+            toggleSearchInput() {
+                this.showSearchInput = true;
+                this.$nextTick(() => {
+                    this.$refs.search_input.focus();
+                })
+            },
+            toggleMSearchInput() {
+                this.showMSearchInput = true;
+                this.$nextTick(() => {
+                    this.$refs.msearch_input.focus();
+                })
+
+            },
+            submit() {
+                this.$refs.submitButton.click();
             },
             menuHover(e) {
                 this.isHovered = e;
@@ -441,11 +470,14 @@
     #navigation-icon-search {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         padding-right: 10px;
         i {
             color: #000000 !important;
         }
-
+        @media (max-width:590px) {
+            width: 40vw;
+        }
     }
     #navigation-icon-right {
         background-color: #0b2d1b !important;
