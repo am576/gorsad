@@ -90,7 +90,7 @@
                 this.$refs.logout.submit()
             },
             showCart() {
-                this.$eventBus.$emit('showCart')
+                // this.$eventBus.$emit('showCart')
             }
         },
         computed: {

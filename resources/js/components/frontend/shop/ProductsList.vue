@@ -53,7 +53,6 @@
             </div>
         </div>
         <signin-form ref="signinForm"></signin-form>
-        <shopping-cart></shopping-cart>
     </div>
 </template>
 

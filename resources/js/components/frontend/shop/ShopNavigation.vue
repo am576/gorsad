@@ -28,9 +28,7 @@
             </b-dropdown>
         </div>
         <signin-form ref="signinForm"></signin-form>
-        <b-modal id="modal-cart" size="lg" title-html="<span class='mdi mdi-36px mdi-cart'></span> Корзина" hide-footer>
-            <shopping-cart></shopping-cart>
-        </b-modal>
+        <shopping-cart></shopping-cart>
     </div>
 </template>
 
@@ -56,8 +54,8 @@
                 this.$refs.logout.submit()
             },
             showCart() {
-                this.$bvModal.show('modal-cart');
-            }
+                this.$eventBus.$emit('showCart')
+            },
         },
         computed: {
             isGuest() {
