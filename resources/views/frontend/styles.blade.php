@@ -1,14 +1,14 @@
 @extends('frontend.layouts.app')
 @section('title', 'Gorsad')
 @section('content')
-    <div class="container-fluid design-styles">
+    <div class="container-fluid design-styles layout-spacing">
         <div class="row justify-content-center">
             <div class="col-md-12 p-0">
                 <div class="styles-bg-main" style="background-image: url('/storage/images/public/stylesbg.jpg'); ">
                     <h1 class="styles-title" style="">Стили в ландшафтном дизайне</h1>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="row" style="padding: 3em 0; max-width: 1150px;">
+                    <div class="row styles-page-heading">
                         <p>То, как люди создавали ландшафты и сады на протяжении истории, отражает отношения человека с
                             природой. Через некоторые ландшафтные стили мы наблюдаем вечную борьбу человека с природой,
                             тогда
@@ -18,10 +18,11 @@
                     </div>
                     <div class="row style-row style-bg">
                         <div class="container row">
-                            <div class="col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12 d-flex flex-column">
                                 <img src="/storage/images/public/styles/english.jpg" alt="">
+                                <p class="style-title">Английский пейзажный стиль</p>
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6 col-sm-12">
                                 <p class="odd">
                                     Холмистый ландшафт, извилистые дорожки, большие водоемы, свободно раскинувшиеся
                                     группы деревьев
@@ -38,7 +39,7 @@
                     </div>
                     <div class="row style-row">
                         <div class="container row">
-                            <div class="col-6">
+                            <div class="col-md-6 col-sm-12">
                                 <p class="even">
                                     В стиле Барокко преобладает аккуратный, геометрический дизайн, симметричный
                                     относительно
@@ -51,17 +52,19 @@
                                     очень сдержанные, в основном, зеленые, серые и белые.
                                 </p>
                             </div>
-                            <div class="col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12 d-flex flex-column">
                                 <img src="/storage/images/public/styles/barocco.jpg" alt="">
+                                <p class="style-title">Стиль Барокко</p>
                             </div>
                         </div>
                     </div>
                     <div class="row style-row style-bg">
                         <div class="container row">
-                            <div class="col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12 d-flex flex-column">
                                 <img src="/storage/images/public/styles/renaissance.jpg" alt="">
+                                <p class="style-title">Стиль Ренессанс (Возрождение)</p>
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6 col-sm-12">
                                 <p class="odd">
                                     Стиль Ренессанс отличается прямыми линиями и простыми геометрическими формами,
                                     использующимися для создания атмосферы спокойствия и простоты. С помощью живых
@@ -78,7 +81,7 @@
                     </div>
                     <div class="row style-row">
                         <div class="container row">
-                            <div class="col-6">
+                            <div class="col-md-6 col-sm-12">
                                 <p class="even">
                                     Во времена промышленной революции, в Европу было завезено множество экзотических
                                     видов
@@ -94,17 +97,19 @@
                                     создания спокойного фона для этих ярких композиций.
                                 </p>
                             </div>
-                            <div class="col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12 d-flex flex-column">
                                 <img src="/storage/images/public/styles/victorian.jpg" alt="">
+                                <p class="style-title">Викторианский стиль</p>
                             </div>
                         </div>
                     </div>
                     <div class="row style-row style-bg">
                         <div class="container row">
-                            <div class="col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12 d-flex flex-column">
                                 <img src="/storage/images/public/styles/country.jpg" alt="">
+                                <p class="style-title">Деревенский стиль</p>
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6 col-sm-12">
                                 <p class="odd">
                                     Романтический деревенский стиль изобилует яркими красками и цветами. Стиль берет
                                     начало
@@ -122,7 +127,7 @@
                     </div>
                     <div class="row style-row">
                         <div class="container row">
-                            <div class="col-6">
+                            <div class="col-md-6 col-sm-12">
                                 <p class="even">
                                     Дизайн сада в средневековом стиле характеризуется разделением на четыре части,
                                     разграниченные садовыми дорожками. В местах пересечения дорожек обычно располагается
@@ -132,17 +137,19 @@
                                     цветущими многолетниками и кустарниками, посажены деревья, отбрасывающие тень.
                                 </p>
                             </div>
-                            <div class="col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12 d-flex flex-column">
                                 <img src="/storage/images/public/styles/medieval.jpg" alt="">
+                                <p class="style-title">Средневековый стиль</p>
                             </div>
                         </div>
                     </div>
                     <div class="row style-row style-bg">
                         <div class="container row">
-                            <div class="col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12 d-flex flex-column">
                                 <img src="/storage/images/public/styles/chinese.jpg" alt="">
+                                <p class="style-title">Китайский стиль</p>
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6 col-sm-12">
                                 <p class="odd">
                                     Китайский стиль характеризуются плавными линиями и естественными материалами. Баланс
                                     Инь и Ян означает, что элементы, олицетворяющие мужскую энергию (камни) и элементы,
@@ -157,7 +164,7 @@
                     </div>
                     <div class="row style-row">
                         <div class="container row">
-                            <div class="col-6">
+                            <div class="col-md-6 col-sm-12">
                                 <p class="even">
                                     Японский стиль основывается на благоговении перед природой. Природные элементы из
                                     окружающей среды буквально привносятся в дизайн для создания стилизованного
@@ -168,17 +175,19 @@
                                     небольшими листьями красивых сложных форм.
                                 </p>
                             </div>
-                            <div class="col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12 d-flex flex-column">
                                 <img src="/storage/images/public/styles/japanese.jpg" alt="">
+                                <p class="style-title">Японский стиль</p>
                             </div>
                         </div>
                     </div>
                     <div class="row style-row style-bg">
                         <div class="container row">
-                            <div class="col-md-6 col-sm-12">
+                            <div class="col-md-6 col-sm-12 d-flex flex-column">
                                 <img src="/storage/images/public/styles/mauritan.jpg" alt="">
+                                <p class="style-title">Мавританский стиль</p>
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6 col-sm-12">
                                 <p class="odd">
                                     Мавританский стиль характеризуется правильными геометрическими формами. Наблюдается
                                     отчетливое подразделение на четыре квадранта, заданное дорожками и/или водотоками,

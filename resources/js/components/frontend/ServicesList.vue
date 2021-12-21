@@ -8,7 +8,7 @@
                 </div>
                 <div class="description">
                     <div>{{service.description}}</div>
-                    <a class="block-link">
+                    <a class="block-link" :href="service.url">
                         <div class="mr-3">{{service.btn_title}}</div>
                         <span class="mdi mdi-chevron-right-circle-outline mdi-24px"></span>
                     </a>
@@ -54,10 +54,10 @@
                     },
                     {
                         title: 'Стили в ладншафтном дизайне',
-                        description: 'Познакоьтесь со всеми основными стилями и выберите лучшего специалиста для себя',
+                        description: 'Познакомьтесь со всеми основными стилями и выберите лучшего специалиста для себя',
                         btn_title: 'Посмотреть все стили',
                         image: '/storage/images/public/home-blocks/home-block5.jpg',
-                        url: '/'
+                        url: '/styles'
                     },
                     {
                         title: 'С чего начать, чтобы потом не переделывать',
