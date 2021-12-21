@@ -62,7 +62,7 @@
                            type="text" @keyup.enter="submit" v-show="showSearchInput" @blur="showSearchInput = false">
                 </li>
                 <li class="nav-item"  v-if="!isGuest">
-                    <a class="nav-link" href=""><span class="mdi mdi-heart-outline mdi-36px"></span></a>
+                    <a class="nav-link" href="/profile?tab=2"><span class="mdi mdi-heart-outline mdi-36px"></span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link curpointer" v-if="!isGuest"  @click="showCart">
