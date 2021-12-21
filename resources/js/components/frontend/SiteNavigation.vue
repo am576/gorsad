@@ -415,7 +415,9 @@
     }
     #header-navbar {
         @media (min-width: 591px) {
-            background: rgba(0, 0, 0, 0.6)
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+
         }
         @media (max-width:590px) {
             background-color: #ffffff;

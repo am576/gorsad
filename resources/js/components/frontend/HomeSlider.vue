@@ -32,8 +32,8 @@
 <style lang="scss" scoped>
     .carousel-inner {
         @media (min-width: 590px) {
-            height: 720px;
-            min-height: 720px;
+            height: 820px;
+            min-height: 820px;
         }
         @media (max-width:589px) {
             height: 40vh;

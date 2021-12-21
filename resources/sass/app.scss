@@ -634,8 +634,10 @@ footer.home-footer {
 }
 
 .layout-spacing {
+    margin-top: -88px;
     @media (max-width: 590px) {
         padding-top: 70px !important;
+        margin-top: 0;
     }
 }
 
