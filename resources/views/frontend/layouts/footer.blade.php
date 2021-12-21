@@ -27,7 +27,7 @@
 
                 </div>
                 <div class="desc color-grey mt-3">
-                    <div style="font-size: 18px; max-width: 80%; line-height: 30px;">
+                    <div style="">
                         ГОРОДСКОЙ САДОВНИК <br>Комплексное озеленение и саженцы оптом в Калининграде</div>
                 </div>
             </div>
