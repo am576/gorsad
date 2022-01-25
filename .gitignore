@@ -4,6 +4,7 @@
 /public/css/*
 /public/storage/images/products/*
 /storage/*.key
+/storage/app/public/images/products
 /vendor
 .env
 .env.backup
