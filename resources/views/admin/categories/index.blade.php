@@ -36,8 +36,7 @@
                                             <img width="100" src="{{URL::asset('storage/images/' . $img)}}" alt="">
                                         </td>
                                         <td>{{$category->products()->count()}}</td>
-                                        <td>@foreach($category->additional_fields() as $af)
-                                            @endforeach
+                                        <td>
                                             </td>
                                         <td>@include('admin.macros.table-buttons', ['entity' => $category])</td>
                                     </tr>
