@@ -12,8 +12,10 @@
                 <option value="0">...</option>
                 @foreach($attributes as $attribute)
                     <option value="{{$attribute->id}}"
-                        @if($attribute->id ==$filter_attributes[$i-1]->id )
-                            selected
+                        @if(count($filter_attributes))
+                            @if($attribute->id == $filter_attributes[$i-1]->id )
+                                selected
+                            @endif
                         @endif>
                         {{$attribute->name}}</option>
                 @endforeach
