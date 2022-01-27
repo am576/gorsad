@@ -97,7 +97,7 @@
                                 <a class="nav-link" @click="logout"> Выход </a>
                             </b-dropdown-item>
                             <b-dd-divider></b-dd-divider>
-                            <b-dropdown-item v-if="company_id === 0" href="#" @click.prevent="logAsCompany(user.companies[0].id)">
+                            <b-dropdown-item v-if="hasCompanies && company_id === 0" href="#" @click.prevent="logAsCompany(user.companies[0].id)">
                                 <span class="mdi mdi-briefcase mdi-36px"></span>
                                 {{user.companies[0].name}}
                             </b-dropdown-item>
@@ -357,6 +357,9 @@
                 }
                 return false;
             },
+            hasCompanies() {
+                return this.user.companies.length > 0
+            }
         },
         created() {
             this.handleView();
