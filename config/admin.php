@@ -57,6 +57,12 @@ return [
           'singular' => 'клиенты',
           'route' => 'clients',
           'icon' => 'human-handsdown'
+      ],
+      'project' => [
+          'title' => 'проекты',
+          'singular' => 'проект',
+          'route' => 'projects',
+          'icon' => 'map-check-outline'
       ]
   ],
   'per_page' => [

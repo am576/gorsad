@@ -8,6 +8,7 @@ use App\Category;
 use App\IconSet;
 use App\Image;
 use App\Product;
+use App\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -146,6 +147,13 @@ class ApiController extends Controller
         }
 
         return json_encode($jproducts);
+    }
+
+    public function paginateProjects(Request $request)
+    {
+        $projects = Project::paginate($request->per_page)->toJson();
+
+        return $projects;
     }
 
     public function getProducts()

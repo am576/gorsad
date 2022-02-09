@@ -35,3 +35,4 @@ Route::get('getAttributeIcons', 'ApiController@getAttributeIcons');
 Route::get('getCategoryParams', 'ApiController@getCategoryParams');
 Route::get('searchProduct', 'ApiController@searchProducts');
 
+Route::get('paginateProjects', 'ApiController@paginateProjects');

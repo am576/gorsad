@@ -248,7 +248,7 @@
                 axios.post('/admin/products', formData)
                 .then(response =>{
                     if(response.status == 200) {
-                        window.location.href = '/admin/products'
+                        window.location.href = ''
                     }
                 }).catch(error => {
                     if (error.response.status === 422) {

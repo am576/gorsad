@@ -356,7 +356,7 @@
                     this.overlay = false;
                     if(response.status == '200')
                     {
-                        window.location.href = '/admin/products'
+                        window.location.href = ''
                     }
                 }).catch(error => {
                     this.overlay = false;

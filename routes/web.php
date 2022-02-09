@@ -89,8 +89,11 @@ Route::prefix('admin')->group(function(){
         'categories'  => 'CategoryController',
         'attributes'  => 'AttributeController',
         'attributes_groups'  => 'AttributesGroupController',
-        'icon_sets' => 'IconSetController'
+        'icon_sets' => 'IconSetController',
+        'projects' => 'ProjectController'
     ]);
+
+
 
     Route::post('/images-upload', 'ImagesController@upload');
 });
