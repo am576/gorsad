@@ -1,5 +1,5 @@
 <template>
-    <div class="product_images">
+    <div class="product_images images-container">
         <div v-show="!isSingleImage && existing_images.length" class="card">
             <div class="card-header">Сохранённые изображения</div>
             <div class="card-body">

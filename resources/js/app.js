@@ -51,6 +51,7 @@ Vue.component('iconset-form', require('./components/admin/IconsetForm').default)
 Vue.component('user-query-editor', require('./components/admin/UserQueryEditor').default);
 
 Vue.component('projects-table', require('./components/admin/projects/ProjectsTable').default);
+Vue.component('project-form', require('./components/admin/projects/ProjectForm').default);
 
 Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 

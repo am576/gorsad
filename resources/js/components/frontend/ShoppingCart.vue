@@ -4,7 +4,7 @@
             <div class="row justify-content-center" v-if="!showCheckout">
                 <div v-if="!isCartEmpty" class="col-12 order-details">
                     <h3>Обзор заказа</h3>
-                    <!--<v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
+                    <v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
                         <template slot="no-options">
                             быстрый поиск растений...
                         </template>
@@ -19,7 +19,7 @@
                                 {{ option.title }}
                             </div>
                         </template>
-                    </v-select>-->
+                    </v-select>
 
                     <div class="product-row row align-items-center" v-for="(product, id) in products">
                         <div class="col-2">

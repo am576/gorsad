@@ -20,6 +20,7 @@
                     <td>{{project.area}}</td>
                     <td>{{project.client}}</td>
                     <td>{{project.doneby}}</td>
+                    <td></td>
                     <td>
                         <table-buttons :table="'projects'" :id="project.id"></table-buttons>
                     </td>
