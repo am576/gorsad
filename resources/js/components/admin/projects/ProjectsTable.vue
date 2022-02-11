@@ -5,10 +5,6 @@
                 <thead>
                 <tr>
                     <th>Название</th>
-                    <th>Место</th>
-                    <th>Площадь</th>
-                    <th>Заказчик</th>
-                    <th>Исполнитель</th>
                     <th>Растения</th>
                     <th></th>
                 </tr>
@@ -16,11 +12,11 @@
                 <tbody>
                 <tr v-for="(project, index) in projects.data" :key="index">
                     <td>{{project.name}}</td>
-                    <td>{{project.place}}</td>
-                    <td>{{project.area}}</td>
-                    <td>{{project.client}}</td>
-                    <td>{{project.doneby}}</td>
-                    <td></td>
+                    <td>
+                        <div v-for="plant in project.plants" class="badge badge-primary">
+                            {{plant.text}}
+                        </div>
+                    </td>
                     <td>
                         <table-buttons :table="'projects'" :id="project.id"></table-buttons>
                     </td>
@@ -69,3 +65,11 @@
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    .badge {
+        padding: 5px;
+        font-size: 14px;
+        margin-right: 5px;
+    }
+</style>

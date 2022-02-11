@@ -19,8 +19,12 @@ class ProjectController extends Controller
 
     public function index()
     {
-        $projects = Project::paginate(10)->toJson();
-        return view('admin.projects.index')->with('projects', $projects);
+        $projects = Project::paginate(10);
+        foreach ($projects as $project) {
+            $project['plants'] = $project->plants();
+        }
+
+        return view('admin.projects.index')->with('projects', $projects->toJson());
     }
 
     public function show($id)
