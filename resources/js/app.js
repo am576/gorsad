@@ -5,23 +5,18 @@ window.Vue = require('vue');
 import vuetify from './vuetify';
 import VueTagsInput from '@johmun/vue-tags-input';
 import CKEditor from '@ckeditor/ckeditor5-vue';
-
-
-Vue.prototype.$eventBus = new Vue();
-
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
-
 import * as ClassicEditor from '/public/ckcustom/build/ckeditor.js';
-
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-
 import PrettyCheckbox from 'pretty-checkbox-vue';
+import 'leaflet/dist/leaflet.css';
+
+Vue.prototype.$eventBus = new Vue();
 
 Vue.use(PrettyCheckbox);
-
 Vue.use( CKEditor );
 Vue.use( BootstrapVue );
 Vue.use( IconsPlugin );
@@ -69,6 +64,8 @@ Vue.component('product-images', require('./components/frontend/ProductImages').d
 
 Vue.component('shopping-cart', require('./components/frontend/ShoppingCart').default);
 Vue.component('signin-form', require('./components/frontend/user/SigninForm').default);
+
+Vue.component('projects-map', require('./components/frontend/projects/ProjectsMap').default);
 
 
 /* Shop components */

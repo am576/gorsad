@@ -4,7 +4,7 @@
 <div class="container-fluid projects-index">
     <div class="row justify-content-center">
         <div class="col-md-12 p-0">
-            <img class="map" src="/storage/images/public/map.png">
+            <projects-map></projects-map>
             <div class="pt-3 border-bottom">
                 <div class="home-text">
                     <div class="container">
