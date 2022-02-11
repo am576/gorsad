@@ -127,4 +127,21 @@ class ProjectController extends Controller
 
         return redirect()->intended(route('projects.index'));
     }
+
+    public function destroy($id)
+    {
+        $project = Project::findOrFail($id);
+
+        foreach ($project->images()->pluck('id') as $image_id) {
+            $images = array_values(Image::select('icon','small','medium','large')
+                ->where('id', $image_id)->get()->toArray()[0]);
+
+            Storage::disk('images')->delete($images);
+        }
+
+        $project->images()->delete();
+        $project->delete();
+
+        return redirect()->intended(route('projects.index'));
+    }
 }

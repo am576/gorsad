@@ -63,8 +63,10 @@ class StaticTools
                     $img_small->save($small);
                     $img_medium->save($medium);
 
+                    $object_label = isset($object->title) ? $object->title : $object->name;
+
                     $object->images()->create([
-                        'label' => $object->title . '_0' . $index,
+                        'label' => $object_label . '_0' . $index,
                         'icon' => $icon_path,
                         'small' => $small_path,
                         'medium' => $medium_path,
