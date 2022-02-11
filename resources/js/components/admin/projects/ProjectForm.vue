@@ -19,12 +19,12 @@
                         <label>Координаты</label>
                         <div class="row">
                             <div class="col-6">
-                                <input type="text" class="form-control" id="long" autocomplete="off" v-model="project.long">
-                                <div v-if="errors && errors.long" class="text-danger">{{errors.long[0]}}</div>
+                                <input type="text" class="form-control" id="long" autocomplete="off" v-model="project.lat">
+                                <div v-if="errors && errors.long" class="text-danger">{{errors.lat[0]}}</div>
                             </div>
                             <div class="col-6">
-                                <input type="text" class="form-control" id="lat" autocomplete="off" v-model="project.lat">
-                                <div v-if="errors && errors.lat" class="text-danger">{{errors.lat[0]}}</div>
+                                <input type="text" class="form-control" id="lat" autocomplete="off" v-model="project.long">
+                                <div v-if="errors && errors.lat" class="text-danger">{{errors.long[0]}}</div>
                             </div>
                         </div>
                     </div>

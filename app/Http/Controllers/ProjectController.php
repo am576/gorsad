@@ -42,7 +42,7 @@ class ProjectController extends Controller
         $validated = $request->validated();
 
         $plants_ids = explode(',', $request->all()['plants']);
-        $coordinates = $validated['long'] . ';' . $validated['lat'];
+        $coordinates = $validated['lat'] . ';' . $validated['long'];
 
         $project = new Project([
             'name' => $validated['name'],
@@ -88,7 +88,7 @@ class ProjectController extends Controller
         $validated = $request->validated();
 
         $plants_ids = explode(',', $request->all()['plants']);
-        $coordinates = $validated['long'] . ';' . $validated['lat'];
+        $coordinates = $validated['lat'] . ';' . $validated['long'];
 
         DB::table('project_plants')
             ->where('project_id', $id)
