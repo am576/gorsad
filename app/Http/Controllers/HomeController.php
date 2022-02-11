@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Attribute;
 use App\Category;
 use App\Product;
+use App\Project;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -191,7 +192,16 @@ class HomeController extends Controller
 
     public function showProjectsPage()
     {
-        return view('frontend.projects.index');
+        $projects = Project::select('id','name','coordinates')->get();
+
+        foreach ($projects as $project) {
+            $coordinates = explode(';', $project['coordinates']);
+            $project['lat'] = $coordinates[0];
+            $project['long'] = $coordinates[1];
+            unset($project['coordinates']);
+        }
+
+        return view('frontend.projects.index', compact('projects'));
     }
 
     public function showProjects()
