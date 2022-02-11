@@ -93,8 +93,6 @@ Route::prefix('admin')->group(function(){
         'projects' => 'ProjectController'
     ]);
 
-
-
     Route::post('/images-upload', 'ImagesController@upload');
 });
 

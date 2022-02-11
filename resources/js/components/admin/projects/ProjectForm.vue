@@ -1,6 +1,10 @@
 <template>
     <div>
         <form @submit.prevent="submit">
+            <v-overlay :value="overlay">
+                <p class="display-4 d-inline">Сохранение...</p>
+                <v-progress-circular indeterminate size="64"></v-progress-circular>
+            </v-overlay>
             <div class="row">
                 <div class="col-4">
                     <div class="form-group">
@@ -41,7 +45,7 @@
                         <label>Список растений</label>
                         <v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addPlant">
                             <template slot="no-options">
-                                выберите растение
+                                введите название
                             </template>
                             <template slot="option" slot-scope="option">
                                 <div class="d-flex justify-content-between">
@@ -58,6 +62,7 @@
                             v-model="tag"
                             :tags="project_plants"
                             :avoid-adding-duplicates="true"
+                            :placeholder="''"
                             @tags-changed="changeTags"
                         />
                     </div>
@@ -69,8 +74,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row"><image-uploader></image-uploader></div>
-            <button type="submit" class="btn btn-primary">Создать</button>
+            <div class="row" v-if="!is_edit"><image-uploader></image-uploader></div>
+            <div class="row" v-if="is_edit">
+                <image-uploader :entity="project" :entity_id="project.id" :entity_model="'Project'"
+                                @removeImage="removeImage" :storage="'projects/'"></image-uploader>
+            </div>
+            <button type="submit" class="btn btn-primary">{{submitCaption}}</button>
         </form>
     </div>
 </template>
@@ -81,6 +90,10 @@
     export default {
         components: {
             ckeditor: CKEditor.component
+        },
+        props: {
+            project_data: null,
+            is_edit: false,
         },
         data() {
             return {
@@ -105,7 +118,9 @@
                 options: [],
                 selectedOption: {},
                 project_plants: [],
-                tag: ''
+                images_to_delete: [],
+                tag: '',
+                overlay: false,
             }
         },
         methods: {
@@ -136,15 +151,15 @@
             addPlant() {
                 if(!this.project.plants.includes(this.selectedOption.id)) {
                     let new_plant = {
-                        text:this.selectedOption.title,
-                        id: this.selectedOption.id
+                        id: this.selectedOption.id,
+                        text:this.selectedOption.title
                     }
                     this.project.plants.push(this.selectedOption.id);
                     this.project_plants.push(new_plant);
                 }
             },
             changeTags(newTags) {
-                this.project.plants = [];
+                this.project.plants.splice(0, this.project.plants.length);
                 newTags.forEach(tag => {
                     this.project.plants.push(tag.id);
                 })
@@ -154,8 +169,11 @@
                 this.images = images;
             },
             submit() {
+                this.overlay = true;
                 this.errors = {};
                 const formData = new FormData();
+
+                let form_action = '/admin/projects/';
 
                 Object.keys(this.project).forEach(key => {
                     formData.append(key, this.project[key])
@@ -163,11 +181,23 @@
                 formData.delete('plants');
                 formData.append('plants', this.project.plants.join(','));
 
-                this.images.forEach(file => {
-                    formData.append('images[]', file, file.name);
-                });
+                formData.delete('images');
+                if(this.images.length)
+                {
+                    this.images.forEach(file => {
+                        formData.append('images[]', file, file.name);
+                    });
+                }
 
-                axios.post('/admin/projects', formData)
+                if(this.is_edit) {
+                    form_action = '/admin/projects/' + this.project.id;
+                    formData.append('_method', 'PUT');
+                    this.images_to_delete.forEach(image_id => {
+                        formData.append('images_to_delete[]', image_id)
+                    });
+                }
+
+                axios.post(form_action, formData)
                     .then(response =>{
                         if(response.status == 200) {
                             window.location.href = '/admin/projects'
@@ -175,11 +205,32 @@
                     }).catch(error => {
                     if (error.response.status === 422) {
                         this.errors = error.response.data.errors || {};
+                        this.overlay = false;
                     }
                 });
+            },
+            removeImage(image_id)
+            {
+                if(!this.images_to_delete.includes(image_id))
+                {
+                    this.images_to_delete.push(image_id);
+                }
+            },
+        },
+        computed: {
+            submitCaption() {
+                return this.is_edit ? 'Сохранить' : 'Создать'
             }
         },
         created() {
+            if(this.project_data !== undefined) {
+                this.project = this.project_data;
+                this.project_plants = this.project.plants;
+                this.project.plants = []
+                this.project_plants.forEach(plant => {
+                    this.project.plants.push(plant.id)
+                })
+            }
             this.$eventBus.$on('addImages', this.setImages)
         }
     }
@@ -187,5 +238,10 @@
 <style lang="scss" scoped>
     .images-container {
         width: 100% !important;
+    }
+    .overlay {
+        opacity: 0.46;
+        background-color: rgb(33, 33, 33);
+        border-color: rgb(33, 33, 33);
     }
 </style>

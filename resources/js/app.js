@@ -2,7 +2,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-// import vuetify from './vuetify';
+import vuetify from './vuetify';
 import VueTagsInput from '@johmun/vue-tags-input';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 
@@ -91,7 +91,7 @@ Vue.component('favorites-list', require('./components/frontend/profile/Favorites
 Vue.component('review-form', require('./components/frontend/ReviewForm').default)
 
 const app = new Vue({
-    // vuetify,
+    vuetify,
     VueTagsInput,
     el: '#app',
 });

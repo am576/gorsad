@@ -39,6 +39,7 @@
         "verte": "0.0.12",
         "vue-select": "^3.11.2",
         "vue-slider-component": "^3.2.11",
-        "vuejs-datatable": "^2.0.0-alpha.7"
+        "vuejs-datatable": "^2.0.0-alpha.7",
+        "vuetify": "^2.5.0"
     }
 }
