@@ -211,7 +211,7 @@ class HomeController extends Controller
 
     public function showProjectPage($id)
     {
-        return view('frontend.projects.project_page');
+        return view('frontend.projects.project_page')->with('project', Project::with('images')->find($id));
     }
 
     public function showKnowhowPage()

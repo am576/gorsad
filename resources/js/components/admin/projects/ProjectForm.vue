@@ -169,11 +169,12 @@
                 this.images = images;
             },
             submit() {
-                this.overlay = true;
+                // this.overlay = true;
                 this.errors = {};
                 const formData = new FormData();
 
                 let form_action = '/admin/projects/';
+                this.project.description = this.project.description.substring(3, this.project.description.length - 4);
 
                 Object.keys(this.project).forEach(key => {
                     formData.append(key, this.project[key])

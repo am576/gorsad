@@ -2,7 +2,7 @@
     <div class="row slider-wrapper project-images">
         <splide :options="options" @splide:click="showImage">
             <splide-slide v-for="image in images" :key="image.path" >
-                <img :src="image.path" alt="">
+                <img :src="'/storage/images/'+image.medium" alt="">
             </splide-slide>
             <template v-slot:controls>
                 <div class="splide__arrows">
@@ -16,7 +16,7 @@
             </template>
         </splide>
         <b-modal id="modal-image" size="lg" hide-footer>
-            <img :src="current_image" alt="" style="width: 100%;">
+            <img :src="'/storage/images/'+current_image.large" alt="" style="width: 100%;">
         </b-modal>
     </div>
 </template>
@@ -48,32 +48,16 @@
                     cover: true,
                     isMobileView: false
                 },
-                images: [
-                    {
-                        path: '/storage/images/projects/project-01.jpg'
-                    },
-                    {
-                        path: '/storage/images/projects/project-02.jpg'
-                    },
-                    {
-                        path: '/storage/images/projects/project-03.jpg'
-                    },
-                    {
-                        path: '/storage/images/projects/project-04.jpg'
-                    },
-                    {
-                        path: '/storage/images/projects/project-05.jpg'
-                    },
-                ]
+                images: []
             }
         },
         methods: {
             showImage(slide, e) {
                 this.$bvModal.show('modal-image');
-                this.current_image = this.images[e.index].path;
+                this.current_image = this.images[e.index];
             },
             setCurrentImage(image) {
-                this.current_image = image.path;
+                this.current_image = image;
             },
             handleView() {
                 this.isMobileView = window.innerWidth <= 600;
@@ -85,6 +69,7 @@
             },
         },
         created() {
+            this.images = this.project.images;
             this.setCurrentImage(this.images[0]);
             this.handleView();
         }
@@ -133,6 +118,9 @@
             position: absolute;
             right: 0;
             margin-right: -10%;
+        }
+        .splide__slide {
+            cursor: pointer;
         }
     }
 </style>

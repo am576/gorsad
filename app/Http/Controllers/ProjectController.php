@@ -49,8 +49,8 @@ class ProjectController extends Controller
             'description' => $validated['description'],
             'place' => $request->place || $request->name,
             'area' => $validated['area'],
-            'client' => isset($request->client) ? $request->client : '-',
-            'doneby' => isset($request->doneby) ? $request->doneby : '-',
+            'client' => isset($request->client) ? $request->client : '',
+            'doneby' => isset($request->doneby) ? $request->doneby : '',
             'coordinates' => $coordinates
         ]);
 
