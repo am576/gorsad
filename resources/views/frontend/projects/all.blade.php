@@ -4,8 +4,7 @@
 <div class="container-fluid projects-all">
     <div class="row justify-content-center">
         <div class="col-md-12 p-0 projects-wrapper flex-column align-items-center">
-
-            <projects-list></projects-list>
+            <projects-list :projects="{{$projects}}"></projects-list>
         </div>
         <div class="w-100" style="background-color: #efe4d8;">
             <div class="container" >

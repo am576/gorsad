@@ -2,8 +2,8 @@
     <div class="row justify-content-center projects-list">
         <p class="projects-page-title">Проекты, которыми стоит гордиться</p>
         <div class="row projects-container">
-            <div class="project-block"  v-for="project in projects">
-                <img height="100" :src="project.img_path" alt="">
+            <div class="project-block"  v-for="project in projects" @click="loadProjectPage(project.id)">
+                <img height="100" :src="'/storage/images/'+project.images[0].medium" alt="">
                 <p class="project-name">{{project.name}}</p>
             </div>
         </div>
@@ -13,32 +13,24 @@
 
 <script>
     export default {
+        props: {
+            projects: {
+                type: Array,
+                default: []
+            }
+        },
         data() {
             return {
-                projects: [
-                    {
-                        name: 'ул. Аэропортная',
-                        img_path: '/storage/images/projects/project-01.jpg'
-                    }
-                ],
                 shouldLoadProjects : false,
                 deltaScroll : 600
             }
         },
         methods: {
+            loadProjectPage(id) {
+                window.location.href = '/projects/' + id;
+            },
             populateProjects(count) {
-                let i = 1, len = count;
-                let r = 1;
-                while(i < len) {
-                    r =  this.getRandomInt(1,6);
-                    let tmp = {
-                        name: 'ул. Аэропортная',
-                        img_path : '/storage/images/projects/project-0' + r + '.jpg'
-                    }
 
-                    this.projects.push(tmp);
-                    i++;
-                }
             },
             getRandomInt(min, max) {
                 min = Math.ceil(min);
@@ -46,11 +38,11 @@
                 return Math.floor(Math.random() * (max - min)) + min;
             },
             handleScroll () {
-                this.shouldLoadProjects = window.scrollY > this.deltaScroll;
+                /*this.shouldLoadProjects = window.scrollY > this.deltaScroll;
                 if(this.projects.length < 50 && this.shouldLoadProjects) {
                     this.populateProjects(6);
                     this.deltaScroll += 500;
-                }
+                }*/
             }
         },
         created() {
@@ -111,6 +103,7 @@
                         height: 50vh;
                     }
                 }
+                position: relative;
                 display: flex;
                 margin-bottom: 25px;
                 flex-direction: column;
@@ -118,9 +111,13 @@
                 align-items: center;
                 background-position: center;
                 background-size: cover;
+                cursor: pointer;
 
                 .project-name {
                     position: absolute;
+                    text-align: center;
+                    width: 100%;
+                    background: rgba(0, 0, 0, 0.15);
                     color: #fff;
                     font-size: 30px;
                     font-weight: bold;

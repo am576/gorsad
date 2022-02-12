@@ -206,7 +206,9 @@ class HomeController extends Controller
 
     public function showProjects()
     {
-        return view('frontend.projects.all');
+        $projects = Project::select('id','name')->with('images')->get();
+
+        return view('frontend.projects.all', compact('projects'));
     }
 
     public function showProjectPage($id)

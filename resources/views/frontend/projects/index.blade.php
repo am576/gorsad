@@ -65,10 +65,10 @@
                     </div>
                 </div>
                 <div class="show-all-projects">
-                    <button class="pr-3 pl-3">
+                    <a href="/projects/all" class="pr-3 pl-3">
                         Посмотреть все проекты
                         <span class="mdi mdi-arrow-right-bold-circle-outline"></span>
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="home-text2">
