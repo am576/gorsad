@@ -110,4 +110,20 @@ class User extends Authenticatable
     {
         return $this->companies()->where('is_active', 1)->first();
     }
+
+    public function bonusesTotal()
+    {
+        return DB::table('user_bonus_history')
+            ->where('user_id', $this->id)
+            ->sum('bonuses');
+    }
+
+    public function bonusesHistory()
+    {
+        return DB::table('user_bonus_history')
+            ->where('user_id', $this->id)
+            ->join('products', 'products.id', '=','product_id')
+            ->select('products.id','products.title', 'bonuses', 'user_bonus_history.created_at')
+            ->get();
+    }
 }

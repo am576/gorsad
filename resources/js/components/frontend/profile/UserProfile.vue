@@ -80,11 +80,6 @@
                         ></b-pagination>
                     </b-card-text>
                 </b-tab>
-                <b-tab title="ИЗБРАННОЕ">
-                    <b-card-text>
-                        <favorites-list :data="user.favorites"></favorites-list>
-                    </b-card-text>
-                </b-tab>
                 <b-tab id="notification-tab">
                     <template #title>
                         УВЕДОМЛЕНИЯ
@@ -92,6 +87,19 @@
                     </template>
                     <b-card-text>
                         <notifications-list :data="user.user_notifications"></notifications-list>
+                    </b-card-text>
+                </b-tab>
+                <b-tab title="БАЛЛЫ">
+                    <b-card-text>
+                        <h4>Баллы - {{user.bonuses}}</h4>
+                        <b-table :fields="bonuses_table_data.fields" :items="bonuses_table_data.items" :per-page="perPage"
+                                 :current-page="currentQueriesPage">
+                        </b-table>
+                    </b-card-text>
+                </b-tab>
+                <b-tab title="ИЗБРАННОЕ">
+                    <b-card-text>
+                        <favorites-list :data="user.favorites"></favorites-list>
                     </b-card-text>
                 </b-tab>
                 <b-tab title="ЛИЧНЫЙ КАБИНЕТ">
@@ -212,7 +220,7 @@
         },
         computed: {
             queries_table_data() {
-                let labels = [
+                const labels = [
                     {key: 'id', label: 'Номер заказа', sortable: true},
                     {key: 'products_count', 'label': 'Количество'},
                     {key: 'status', 'label': 'Статус'},
@@ -240,7 +248,7 @@
                 }
             },
             orders_table_data() {
-                let labels = [
+                const labels = [
                     {key: 'id', label: 'Номер заказа', sortable: true},
                     {key: 'products_count', 'label': 'Количество'},
                     {key: 'status', 'label': 'Статус'},
@@ -267,6 +275,25 @@
                 return {
                     fields: labels,
                     items: orders
+                }
+            },
+            bonuses_table_data() {
+                const labels = [
+                    {key: 'product_name', label: 'Товар'},
+                    {key: 'bonuses', label: 'Баллы'},
+                    {key: 'created_at', label: 'Дата'},
+                ]
+                let history = [];
+                this.user.bonuses_history.forEach(entry => {
+                    history.push({
+                        'product_name' : entry.title,
+                        'bonuses' : entry.bonuses,
+                        'created_at' : moment(entry.created_at).format('DD.MM.YY hh:mm')
+                    })
+                })
+                return {
+                    fields: labels,
+                    items: history
                 }
             },
             profileTitle() {
