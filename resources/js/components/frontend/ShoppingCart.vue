@@ -4,7 +4,7 @@
             <div class="row justify-content-center" v-if="!showCheckout">
                 <div v-if="!isCartEmpty" class="col-12 order-details">
                     <h3>Обзор заказа</h3>
-                    <v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
+                    <!--<v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
                         <template slot="no-options">
                             быстрый поиск растений...
                         </template>
@@ -19,7 +19,7 @@
                                 {{ option.title }}
                             </div>
                         </template>
-                    </v-select>
+                    </v-select>-->
 
                     <div class="product-row row align-items-center" v-for="(product, id) in products">
                         <div class="col-2">
@@ -49,7 +49,8 @@
                         </div>
                     </div>
                     <div class="total-price row">
-                        Сумма: {{totalPrice}} &#8381;
+                        <div class="col-6">Сумма: {{totalPrice}} &#8381;</div>
+                        <div class="col-6">Вы получите {{totalBonuses}} баллов</div>
                     </div>
                     <div class="text-center">
                         <button class="btn btn-primary btn-lg" @click="goToCheckout">Оформить заказ</button>
@@ -198,6 +199,16 @@
               })
 
               return price;
+            },
+            totalBonuses() {
+                let bonuses = 0;
+                Object.keys(this.products).forEach(key => {
+                    this.products[key]['variants'].forEach(variant => {
+                        bonuses+= (variant.bonus * variant.quantity);
+                    })
+                })
+
+                return bonuses;
             },
             isCartEmpty() {
               return Object.keys(this.products).length === 0

@@ -55,7 +55,8 @@ class CartController extends Controller
                         'type' => $variant->type,
                         'height' => $variant->height,
                         'quantity' => $request->quantity,
-                        'price' => $variant->price
+                        'price' => $variant->price,
+                        'bonus' => $variant->bonus_value
                     ]
                 );
 
@@ -102,7 +103,8 @@ class CartController extends Controller
                     'type' => $variant->type,
                     'height' => $variant->height,
                     'quantity' => $request->quantity,
-                    'price' => $variant->price
+                    'price' => $variant->price,
+                    'bonus' => $variant->bonus_value
                 ]
             );
 
