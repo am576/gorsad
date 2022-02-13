@@ -53,6 +53,9 @@
                                 <span class="mdi mdi-cart-outline mdi-24px"></span>
                             </button>
                         </template>
+                        <template #cell(bonus)="data">
+                            <img height="50" v-if="data.item.bonus.bonus_value > 0" src="/storage/images/public/bonus_icon.png" alt="" :title="'Покупка этого товара принесёт ' + data.item.bonus.bonus_value + ' баллов'">
+                        </template>
                     </b-table>
                 </b-tab>
                 <b-tab title="Мультиштамб(MtSt)">
@@ -65,6 +68,9 @@
                                 <span class="mdi mdi-cart-outline mdi-24px"></span>
                             </button>
                         </template>
+                        <template #cell(bonus)="data">
+                            <img height="50" v-if="data.item.bonus.bonus_value > 0" src="/storage/images/public/bonus_icon.png" alt="" :title="'Покупка этого товара принесёт ' + data.item.bonus.bonus_value + ' баллов'">
+                        </template>
                     </b-table>
                 </b-tab>
                 <b-tab title="Солитер(Sol)">
@@ -76,6 +82,9 @@
                             <button class="buy-btn" @click="addToCart(data.item.id)">
                                 <span class="mdi mdi-cart-outline mdi-24px"></span>
                             </button>
+                        </template>
+                        <template #cell(bonus)="data">
+                            <img height="50" v-if="data.item.bonus.bonus_value > 0" src="/storage/images/public/bonus_icon.png" alt="" :title="'Покупка этого товара принесёт ' + data.item.bonus.bonus_value + ' баллов'">
                         </template>
                     </b-table>
                 </b-tab>
@@ -176,6 +185,7 @@
                     {key: 'price', 'label': 'Цена'},
                     {key: 'quantity', 'label': 'Количество'},
                     {key: 'buy', 'label': ''},
+                    {key: 'bonus', 'label': ''},
                 ];
                 let rows = [];
 
@@ -187,7 +197,8 @@
                             width: this.rangeFormatted(variant.width, 'см'),
                             price: variant.price,
                             quantity: 1,
-                            buy: variant
+                            buy: variant,
+                            bonus: variant
                         }
                     )
                     this.quantities[variant.id] = 0;
