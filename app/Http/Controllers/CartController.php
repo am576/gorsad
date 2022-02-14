@@ -143,16 +143,46 @@ class CartController extends Controller
 
     }
 
+    public function useBonuses(Request $request)
+    {
+        if(isset($request->amount))
+        {
+            $order_bonuses_spent = $request->amount;
+
+            if(is_numeric($order_bonuses_spent))
+            {
+                if(auth()->user()->bonusesTotal() >= $order_bonuses_spent)
+                {
+                    session()->put('bonuses' , $order_bonuses_spent);
+                    return response()->json([
+                        'status' => 'success',
+                        'msg' => 'OK'
+                    ], 200);
+                }
+                else
+                {
+                    return response()->json([
+                        'status' => 'error',
+                        'msg' => 'Not enough bonuses'
+                    ], 422);
+                }
+
+            }
+        }
+    }
+
     public function getTotalPrice()
     {
         $price_total = 0;
         $cart = session()->get('cart');
+
         if(isset($cart))
         {
             foreach ($cart as $product) {
                 $price_total += $product['price'] * $product['quantity'];
             }
         }
+
 
         return response($price_total,'200');
     }
@@ -196,45 +226,63 @@ class CartController extends Controller
 
     public function createQuery(Request $request)
     {
+        try {
+            $query_data = $request->all();
+            $bonuses = session()->get('bonuses');
 
-        $query_data = $request->all();
-
-        $query = new UserQuery([
-           'user_id' => auth()->user()->id,
-           'status' => 'new',
-           'quote_file_link' => 'some/location/file.pdf'
-        ]);
-
-        if($query->save())
-        {
-            foreach ($query_data['products'] as $product) {
-                foreach ($product['variants'] as $variant) {
-                    for ($i = 1; $i <= $variant['quantity']; $i++)
-                    {
-                        DB::table('queries_products')
-                            ->insert([
-                                'query_id' => $query->id,
-                                'product_id' => $product['id'],
-                                'variant_id' => $variant['id']
-                            ]);
-                    }
-                }
-            }
-
-            $notification = new UserNotification([
+            $query = new UserQuery([
                 'user_id' => auth()->user()->id,
-                'title' => "Ваш запрос #{$query->id} отправлен и ожидает обработки",
-                'message' => "Ваш запрос {$query->id} отправлен и ожидает обработки",
-                'tag' => 'info',
-                'status' => 'unread'
+                'status' => 'new',
+                'quote_file_link' => 'some/location/file.pdf',
+                'bonuses' => $bonuses
             ]);
 
-            $notification->save();
+            if($query->save()) {
+                foreach ($query_data['products'] as $product) {
+                    foreach ($product['variants'] as $variant) {
+                        for ($i = 1; $i <= $variant['quantity']; $i++) {
+                            DB::table('queries_products')
+                                ->insert([
+                                    'query_id' => $query->id,
+                                    'product_id' => $product['id'],
+                                    'variant_id' => $variant['id']
+                                ]);
+                        }
+                    }
+                }
 
-            return response('OK', 200);
+                $notification = new UserNotification([
+                    'user_id' => auth()->user()->id,
+                    'title' => "Ваш запрос #{$query->id} отправлен и ожидает обработки",
+                    'message' => "Ваш запрос {$query->id} отправлен и ожидает обработки",
+                    'tag' => 'info',
+                    'status' => 'unread'
+                ]);
+
+                $notification->save();
+
+                $arrResponse = array(
+                    'msg' => 'OK',
+                    'statusCode' => 200,
+                );
+                $code = 200;
+            }
         }
+        catch (\Exception $ex)
+        {
+            $arrResponse = array(
+                'result' => 0,
+                'reason' => $ex->getMessage(),
+                'data' => array(),
+                'statusCode' => $ex->status,
+            );
+            $code = 422;
 
-        return response('Ошибка создания предложения', 300);
+        }
+        finally
+        {
+            return response()->json($arrResponse, $code);
+        }
     }
 
     public function clearCart()

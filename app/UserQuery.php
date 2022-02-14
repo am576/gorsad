@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserQuery extends Model
 {
-    protected $fillable = ['user_id', 'status', 'quote_file_link'];
+    protected $fillable = ['user_id', 'status', 'quote_file_link', 'bonuses'];
 
     public function products()
     {

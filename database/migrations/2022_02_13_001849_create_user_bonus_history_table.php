@@ -16,8 +16,8 @@ class CreateUserBonusHistoryTable extends Migration
         Schema::create('user_bonus_history', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('product_id');
-            $table->unsignedInteger('bonuses');
+            $table->unsignedInteger('order_id');
+            $table->integer('bonuses');
             $table->timestamps();
         });
     }

@@ -27,7 +27,9 @@
                             </div>
                         </div>
                     </div>
-                    <h4 class="total-price">Всего: {{price_total}} &#8381</h4>
+                    <h5 v-if="bonuses > 0">Использовано баллов: {{bonuses}}</h5>
+                    <h4 v-if="bonuses === 0" class="total-price">Всего: {{price_total}} &#8381</h4>
+                    <h4 v-else class="total-price">Всего: <s>{{price_total}}</s> {{bonus_price}} &#8381</h4>
                 </div>
                 <div class="text-center mb-2">
                     <button class="btn btn-primary btn-lg" @click="doCheckout">Подтвердить заказ</button>
@@ -40,19 +42,22 @@
 <script>
     export default {
         props: {
-            order_products: {}
+            order_products: {},
+            bonuses: 0,
         },
         data() {
             return {
                 products: {},
                 price_total: 0,
+                bonus_price: 0
             }
         },
         methods: {
             getTotalPrice() {
                 axios.get('/cart/totalprice')
                 .then(response => {
-                    this.price_total = response.data
+                    this.price_total = response.data;
+                    this.bonus_price = this.price_total - Math.floor(this.bonuses / 10)
                 })
             },
             goToCart() {
@@ -75,11 +80,11 @@
                 .then(response => {
                     if(response.status == 200)
                     {
-                        alert('Заказ успешно создан');
+                        /*alert('Заказ успешно создан');
                         axios.post('/cart/clear')
                         .then(() =>{
                             window.location.href = "/";
-                        })
+                        })*/
                     }
                 })
                 .catch(error => {
