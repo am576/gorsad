@@ -46,6 +46,7 @@ class Order extends Model
         $total = 0;
 
         $products = $this->products();
+        $bonuses = UserQuery::where('id', $this->query_id)->first()->bonuses;
 
         foreach ($products as $product) {
             $price = 0;
@@ -55,11 +56,17 @@ class Order extends Model
             $total+= $price;
         }
 
-        return $total;
+        return $this->calcTotalWithBonuses($total, $bonuses);
     }
+
 
     public function user()
     {
         return User::where('id',$this->user_id)->first();
+    }
+
+    private function calcTotalWithBonuses($total, $bonuses)
+    {
+        return $total - intdiv($bonuses, 10);
     }
 }

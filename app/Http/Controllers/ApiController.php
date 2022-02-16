@@ -9,7 +9,9 @@ use App\IconSet;
 use App\Image;
 use App\Product;
 use App\Project;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
@@ -170,7 +172,15 @@ class ApiController extends Controller
 
     public function getCart()
     {
-        $cart = session()->get('cart');
+        $cart = [];
+        $cart['products'] =  session()->get('cart');
+        $auth_user = Auth::user();
+        if(isset($auth_user))
+        {
+            $user = User::where('id', auth()->user()->id)->first();
+            $cart['user_bonuses'] = $user->bonusesTotal();
+        }
+
         return response()->json($cart);
     }
 }

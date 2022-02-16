@@ -4,7 +4,7 @@
             <div class="row justify-content-center" v-if="!showCheckout">
                 <div v-if="!isCartEmpty" class="col-12 order-details">
                     <h3>Обзор заказа</h3>
-                    <v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
+                    <!--<v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
                         <template slot="no-options">
                             быстрый поиск растений...
                         </template>
@@ -19,7 +19,7 @@
                                 {{ option.title }}
                             </div>
                         </template>
-                    </v-select>
+                    </v-select>-->
 
                     <div class="product-row row align-items-center" v-for="(product, id) in products">
                         <div class="col-2">
@@ -48,8 +48,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row" v-if="useBonuses">
+                        <div class="col-7">
+                            <h4>Доступно <b>{{userBonuses}}</b> баллов</h4>
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <h5>Сколько баллов Вы хотите использовать?</h5>
+                                </div>
+                                <div class="col-6">
+                                    <b-form-input v-model="bonusesToUseAmount" @blur="calcBonusesPrice"></b-form-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="total-price row">
-                        Сумма: {{totalPrice}} &#8381;
+                        <div class="col-8">
+                            <div class="d-inline-block mr-3">Сумма: {{totalPrice}} &#8381;</div>
+                            <p-check v-if="userBonuses > 0" name="check" color="success" v-model="useBonuses" @change="test()">Использовать баллы</p-check>
+                        </div>
+
+                        <div class="col-3">+{{totalBonuses}} баллов</div>
                     </div>
                     <div class="text-center">
                         <button class="btn btn-primary btn-lg" @click="goToCheckout">Оформить заказ</button>
@@ -59,7 +77,7 @@
                     <h3>Ваша корзина пуста</h3>
                 </div>
             </div>
-            <checkout-page v-if="showCheckout" :order_products="products" @goToCart="goToCart"></checkout-page>
+            <checkout-page v-if="showCheckout" :order_products="products" :bonuses="bonusesToUseAmount" @goToCart="goToCart"></checkout-page>
         </div>
     </b-modal>
 </template>
@@ -71,10 +89,17 @@
                 products: {},
                 options: [],
                 selectedOption: {},
-                showCheckout: false
+                showCheckout: false,
+                useBonuses: false,
+                userBonuses: 0,
+                bonusesToUseAmount: 0,
             }
         },
         methods: {
+            test() {
+                if(!this.useBonuses)
+                    this.bonusesToUseAmount = 0;
+            },
             onSearch(search, loading) {
                 if(search.length) {
                     loading(true);
@@ -172,7 +197,8 @@
             },
             getCartContents() {
                 axios.get('/cart/getCart').then(response => {
-                    this.products = response.data;
+                    this.products = response.data.products;
+                    this.userBonuses = response.data.user_bonuses;
                 })
             },
             showModal() {
@@ -180,7 +206,16 @@
                 this.$bvModal.show('modal-cart');
             },
             goToCheckout() {
-                this.showCheckout = true;
+                // this.putBonuses();
+                axios.post('/cart/usebonuses', {
+                    amount: this.bonusesToUseAmount
+                }).then(response => {
+                    this.showCheckout = true;
+                })
+                .catch(error => {
+                    alert('Недостаточно баллов')
+                })
+                //
             },
             goToCart() {
               this.showCheckout = false;
@@ -188,16 +223,42 @@
             variantTitle(variant) {
                 const height = variant.height.split(',');
                 return `${variant.type.replace(/\b\w/g, l => l.toUpperCase())} ${height[0]} - ${height[1]} м.`
+            },
+            calcBonusesPrice(e) {
+                if(isNaN(this.bonusesToUseAmount)) {
+                    this.bonusesToUseAmount = 0;
+                }
+                else {
+
+                    return (Math.floor(this.bonusesToUseAmount / 10));
+                }
+            },
+            putBonuses() {
+                axios.post('/cart/usebonuses', {
+                    amount: this.bonusesToUseAmount
+                })
             }
         },
         computed: {
             totalPrice() {
-              let price = 0;
-              Object.keys(this.products).forEach(key => {
-                  price += this.products[key]['price']
-              })
+                let price = 0;
+                Object.keys(this.products).forEach(key => {
+                    price += this.products[key]['price']
+                })
+                price = price - this.calcBonusesPrice()
+                price = price >= 0 ? price : 0;
 
-              return price;
+                return price;
+            },
+            totalBonuses() {
+                let bonuses = 0;
+                Object.keys(this.products).forEach(key => {
+                    this.products[key]['variants'].forEach(variant => {
+                        bonuses+= (variant.bonus * variant.quantity);
+                    })
+                })
+
+                return bonuses;
             },
             isCartEmpty() {
               return Object.keys(this.products).length === 0

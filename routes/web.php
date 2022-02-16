@@ -37,6 +37,7 @@ Route::get('/cart/totalprice', 'CartController@getTotalPrice');
 Route::get('/cart/removeproduct', 'CartController@removeProduct');
 Route::get('/cart/removeproductvariant', 'CartController@removeProductVariant');
 Route::get('/cart/getCart', 'ApiController@getCart');
+Route::post('/cart/usebonuses', 'CartController@useBonuses');
 
 Route::get('/cart/checkout', 'HomeController@showCheckoutPage');
 Route::post('/cart/checkout', 'CartController@createQuery');

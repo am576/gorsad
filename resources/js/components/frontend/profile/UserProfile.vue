@@ -37,6 +37,9 @@
                             <template #cell(status)="data">
                                 <b-badge :variant="order_status[data.value].color">{{order_status[data.value].loc}}</b-badge>
                             </template>
+                            <template #cell(sum)="data">
+                                <span>{{data.item.sum}} &#8381;</span>
+                            </template>
                             <template #cell(buy)="data" v-if="company_id === 0">
                                 <b-button variant="primary" v-b-modal.my-modal>Оплата</b-button>
                                 <b-modal id="my-modal" size="md" title="Оплата заказа" ok-only>
@@ -80,11 +83,6 @@
                         ></b-pagination>
                     </b-card-text>
                 </b-tab>
-                <b-tab title="ИЗБРАННОЕ">
-                    <b-card-text>
-                        <favorites-list :data="user.favorites"></favorites-list>
-                    </b-card-text>
-                </b-tab>
                 <b-tab id="notification-tab">
                     <template #title>
                         УВЕДОМЛЕНИЯ
@@ -92,6 +90,20 @@
                     </template>
                     <b-card-text>
                         <notifications-list :data="user.user_notifications"></notifications-list>
+                    </b-card-text>
+                </b-tab>
+                <b-tab title="БАЛЛЫ">
+                    <b-card-text>
+                        <h4>Баллы - {{user.bonuses}}</h4>
+                        <h5 class="text-center mt-3">История</h5>
+                        <b-table :fields="bonuses_table_data.fields" :items="bonuses_table_data.items" :per-page="perPage"
+                                 :current-page="currentQueriesPage">
+                        </b-table>
+                    </b-card-text>
+                </b-tab>
+                <b-tab title="ИЗБРАННОЕ">
+                    <b-card-text>
+                        <favorites-list :data="user.favorites"></favorites-list>
                     </b-card-text>
                 </b-tab>
                 <b-tab title="ЛИЧНЫЙ КАБИНЕТ">
@@ -212,11 +224,11 @@
         },
         computed: {
             queries_table_data() {
-                let labels = [
+                const labels = [
                     {key: 'id', label: 'Номер заказа', sortable: true},
                     {key: 'products_count', 'label': 'Количество'},
                     {key: 'status', 'label': 'Статус'},
-                    {key: 'file', 'label': 'PDF'},
+                    // {key: 'file', 'label': 'PDF'},
                     {key: 'created_at', label: 'Дата', sortable: true},
                 ];
                 let queries = [];
@@ -240,11 +252,12 @@
                 }
             },
             orders_table_data() {
-                let labels = [
+                const labels = [
                     {key: 'id', label: 'Номер заказа', sortable: true},
                     {key: 'products_count', 'label': 'Количество'},
+                    {key: 'sum', 'label': 'Сумма'},
                     {key: 'status', 'label': 'Статус'},
-                    {key: 'file', 'label': 'PDF'},
+                    // {key: 'file', 'label': 'PDF'},
                     {key: 'created_at', label: 'Дата', sortable: true},
                     {key: 'buy', 'label': '', sortable: false},
                 ];
@@ -253,6 +266,7 @@
                     orders.push({
                         id: String(order.query_id).padStart(8, '0'),
                         products_count: order.products_count,
+                        sum: order.sum,
                         status: order.status,
                         file: order.id,
                         created_at: moment(order.created_at).format('DD.MM.YY hh:mm'),
@@ -267,6 +281,25 @@
                 return {
                     fields: labels,
                     items: orders
+                }
+            },
+            bonuses_table_data() {
+                const labels = [
+                    // {key: 'order', label: 'Заказ'},
+                    {key: 'bonuses', label: 'Баллы'},
+                    {key: 'created_at', label: 'Дата'},
+                ]
+                let history = [];
+                this.user.bonuses_history.forEach(entry => {
+                    history.push({
+                        // 'order' : entry.order_id,
+                        'bonuses' : entry.bonuses > 0 ? '+'+entry.bonuses : entry.bonuses,
+                        'created_at' : moment(entry.created_at).format('DD.MM.YY hh:mm')
+                    })
+                })
+                return {
+                    fields: labels,
+                    items: history
                 }
             },
             profileTitle() {

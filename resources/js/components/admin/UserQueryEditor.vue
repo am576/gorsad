@@ -23,33 +23,9 @@
                 </div>
             </div>
         </div>
-        <!--<table class="table">
-            <thead>
-            <tr>
-                <th>Название</th>
-                <th>Цена</th>
-                <th>Количество</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(product,index) in products" :key="index">
-                <td>
-                    <p v-show="!product.edit" class="product-title">
-                        <span class="d-inline-block mr-2">{{product.title}}</span>
-                        <span class="mdi mdi-lead-pencil mdi-24px text-primary" @click="editProductName($event.target, index)"></span>
-                    </p>
-                    <input v-show="product.edit" type="text" :ref="'custom_name'+index" v-model="product.custom_name" @blur="hideCustomNameInput(index)" @keyup.enter="hideCustomNameInput(index)">
-                </td>
-                <td>
-                    <input type="number" class="form-control w-25 d-inline-block" v-model="product.price"> &#8381;
-                </td>
-                <td>
-                    <input type="number" min="1" oninput="validity.valid||(value='1');" class="form-control w-25" v-model="product.quantity">
-                </td>
-            </tr>
-            </tbody>
-        </table>-->
-        <h3>Сумма: {{totalPrice()}} &#8381;</h3>
+
+        <h4>Сумма: {{totalPrice()}} &#8381;</h4>
+        <h4 v-if="query.bonuses">Сумма с учётом баллов: <b>{{priceWithBonuses}} &#8381;</b></h4>
         <div class="row justify-content-end">
             <button class="btn btn-primary" @click="submit()">Сохранить и отправить</button>
         </div>
@@ -100,6 +76,11 @@
                 .then(res => {
                     window.location.href = '/admin/orders';
                 })
+            }
+        },
+        computed: {
+            priceWithBonuses() {
+                return this.totalPrice() - Math.floor(this.query.bonuses / 10);
             }
         },
         created() {

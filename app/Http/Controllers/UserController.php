@@ -26,6 +26,8 @@ class UserController extends Controller
         $user->orders = $user->orders();
         $user->favorites = $user->favorites();
         $user->suggested_products = $user->suggestedReviews();
+        $user->bonuses = $user->bonusesTotal();
+        $user->bonuses_history = $user->bonusesHistory();
 
         $params_with = ['user' => $user];
         if(isset($request->all()['tab']))

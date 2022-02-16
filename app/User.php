@@ -71,6 +71,7 @@ class User extends Authenticatable
 
         foreach ($orders as $order) {
             $order->products_count = DB::table('orders_products')->where('order_id', $order->id)->count();
+            $order->sum = $order->sumTotal();
         }
 
         return $orders;
@@ -109,5 +110,21 @@ class User extends Authenticatable
     public function activeCompany()
     {
         return $this->companies()->where('is_active', 1)->first();
+    }
+
+    public function bonusesTotal()
+    {
+        return DB::table('user_bonus_history')
+            ->where('user_id', $this->id)
+            ->sum('bonuses');
+    }
+
+    public function bonusesHistory()
+    {
+        return DB::table('user_bonus_history')
+            ->where('user_bonus_history.user_id', $this->id)
+            ->join('orders', 'orders.user_id', '=','user_bonus_history.user_id')
+            ->select('orders.id', 'bonuses', 'user_bonus_history.created_at')
+            ->get();
     }
 }

@@ -57,6 +57,8 @@ class ProductController extends Controller
                         'height' => implode(',',$variant->height),
                         'width' => implode(',',$variant->width),
                         'price' => $variant->price,
+                        'bonus_price' => $variant->bonus_price,
+                        'bonus_value' => $variant->bonus_value,
                         "created_at" =>  Carbon::now(),
                         "updated_at" =>  Carbon::now(),
                     ]
@@ -220,6 +222,8 @@ class ProductController extends Controller
                         'height' => implode(',',$variant->height),
                         'width' => implode(',',$variant->width),
                         'price' => $variant->price,
+                        'bonus_price' => $variant->bonus_price,
+                        'bonus_value' => $variant->bonus_value,
                         "created_at" =>  Carbon::now(),
                         "updated_at" =>  Carbon::now(),
                     ]
