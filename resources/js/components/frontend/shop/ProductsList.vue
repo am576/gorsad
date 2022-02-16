@@ -8,6 +8,13 @@
                 </button>
             </div>
             <div id="nav-buttons">
+                <div v-if="productsToCompare.length > 1">
+                    <button class="nav-btn show_compare" @click="toggleComparisonPage">
+                        <i class="mdi mdi-24px mdi-format-horizontal-align-center mr-1 mr-l1"></i>
+                        Показать сравнение
+                    </button>
+                </div>
+
                 <div v-if="isGuest">
                     <button class="nav-btn" id="btn-login" @click="showSigninForm">
                         <i class="mdi mdi-login"></i>
@@ -39,10 +46,11 @@
         </div>
         <div class="row wr2">
             <div class="row wr3">
-                <div class="product-wrapper" v-for="(product, index) in products" style="">
+                <div v-show="!showComparison" class="product-wrapper" v-for="(product, index) in products" style="">
                     <a class="product-link" :href="'/products/'+product.id" @mouseenter="hoverProduct(index)" @mouseleave="unHover()">
                         <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}" :class="{scaled: hoveredIndex === index + 1}">
                             <span v-if="!isGuest" class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
+                            <span class="compare mdi mdi-24px mdi-format-horizontal-align-center" v-bind:class="isSetToCompare(product.id)" @click.prevent="toggleProductCompare(product.id)"></span>
                             <p class="description">
                                 <span class="d-block">{{product.title}}</span>
                                 <span class="w-100" v-show="hoveredIndex === index + 1">Клён остролистный</span>
@@ -50,6 +58,7 @@
                         </div>
                     </a>
                 </div>
+                <comparison-page v-if="showComparison" :comparison="compareProducts" @closeComparison="closeComparison"></comparison-page>
             </div>
         </div>
         <signin-form ref="signinForm"></signin-form>
@@ -71,7 +80,10 @@
                 favorites: [],
                 filterShown: true,
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                hoveredIndex : 0
+                hoveredIndex : 0,
+                showComparison: false,
+                productsToCompare: [],
+                compareProducts: []
             }
         },
         methods: {
@@ -110,6 +122,22 @@
                     'mdi-heart-outline' : !this.favorites.includes(id),
                 }
             },
+            toggleProductCompare(id) {
+                if(this.productsToCompare.includes(id)) {
+                    this.$delete(this.productsToCompare, this.productsToCompare.indexOf(id))
+                }
+                else {
+                    this.productsToCompare.push(id);
+                }
+                const formData = new FormData();
+                this.productsToCompare.forEach(id => {
+                    formData.append('products[]', id);
+                })
+                axios.post('/shop/addProductsToCompare', formData);
+            },
+            isSetToCompare(id) {
+                return this.productsToCompare.includes(id) ? 'set_to_compare' : '';
+            },
             productThumbnail(product) {
                 if(product.images.length) {
                     return `url(/storage/images/${product.images[0].medium})`
@@ -126,6 +154,23 @@
             },
             showCart() {
                 this.$eventBus.$emit('showCart')
+            },
+            toggleComparisonPage() {
+                this.toggleFilters();
+                if(this.showComparison === false) {
+                    this.showComparison = true;
+                    axios.get('/shop/comparison')
+                        .then(response => {
+                            this.compareProducts = response.data;
+                        })
+                }
+                else {
+                    this.showComparison = false;
+                }
+
+            },
+            closeComparison() {
+                this.showComparison = false;
             }
         },
         computed: {
@@ -173,15 +218,23 @@
             }
         }
     }
-    .favorite {
+    .favorite, .compare {
         position: absolute;
         top: 5px;
-        right: 5px;
         color: #fff;
         width: 35px;
         text-align: center;
         border-radius: 50px;
         background-color: rgba(40, 40, 40, 0.27);
+    }
+    .favorite {
+        right: 45px;
+    }
+    .compare {
+        right: 5px;
+    }
+    .compare.set_to_compare {
+        background-color: rgba(179, 155, 85, 0.91);;
     }
     .wr1 {
         justify-content: center;
@@ -234,8 +287,13 @@
         padding: 5px 15px 5px 10px;
     }
     #nav-buttons {
+        display: flex;
+        align-items: center;
         @media (max-width:590px) {
             display: none;
+        }
+        .show_compare {
+            background-color: #868278;;
         }
     }
     #filter-btn-wr {

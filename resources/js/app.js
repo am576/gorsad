@@ -79,6 +79,7 @@ Vue.component('product-page', require('./components/frontend/shop/ProductPage').
 Vue.component('shop-filter', require('./components/frontend/shop/ShopFilter').default);
 Vue.component('attribute-button', require('./components/frontend/shop/AttributeButton').default);
 Vue.component('shop-navigation', require('./components/frontend/shop/ShopNavigation').default);
+Vue.component('comparison-page', require('./components/frontend/shop/ComparisonPage').default);
 /* End Shop components */
 
 /* End Client side components */

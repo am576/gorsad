@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Attribute;
 use App\Category;
+use App\Image;
 use App\Product;
 use App\Project;
 use App\User;
@@ -103,6 +104,9 @@ class HomeController extends Controller
 
         $attributes = (new \App\Attribute)->shopFilterAttributes();
 
+        foreach ($products as $product) {
+            $product['attributes'] = $product->savedAttributes();
+        }
         return view('frontend.shop.index')
             ->with(
                 [
@@ -157,15 +161,24 @@ class HomeController extends Controller
         $attributes = [];
         foreach ($product->savedAttributes() as $attribute) {
             $selected_values = [];
+            $img_path = '';
             foreach ($attribute->selected_values as $value_id) {
+                if($attribute->type == 'icon')
+                {
+                    $img_path = Image::select('icon')
+                        ->where('id', DB::table('attribute_icons')->select('image_id')->where('attribute_value_id', $value_id)->pluck('image_id'))
+                        ->first()->icon;
+                }
                 array_push($selected_values, DB::table('attributes_values')->find($value_id)->value);
             }
             array_push($attributes,
             [
-               'name' => $attribute->name,
-               'type' => $attribute->type,
-               'values' => $selected_values
+                'name' => $attribute->name,
+                'type' => $attribute->type,
+                'values' => $selected_values,
+                'icon' => $img_path
             ]);
+            if($attribute->type == 'icon') unset($attributes['icon']);
         }
         $product['attributes'] = $attributes;
         $product['variants'] = $product_variants;
