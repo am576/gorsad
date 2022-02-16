@@ -87,7 +87,7 @@
                     <h4 class="font-weight-bold">ВСЕ ХАРАКТЕРИСТИКИ</h4>
                 </div>
                 <div class="row" v-for="attribute in product.attributes">
-                    <div class="col-lg-3 col-sm-4">
+                    <div class="col-lg-3 col-sm-4 d-flex align-items-center">
                         {{attribute.name}}
                     </div>
                     <div class="col-lg-9 col-sm-8">
@@ -102,7 +102,12 @@
                         </div>
                         <div v-if="attribute.type === 'color'">
                         <span class="attr-color" v-for="color in attribute.values"
-                              v-bind:style="{background: color}"></span>
+                              v-bind:style="{background: color}">
+                        </span>
+                        </div>
+                        <div v-if="attribute.type === 'icon'" class="d-flex align-items-center">
+                            <span>{{attribute.values[0]}}</span>
+                            <img height="40" :src="'/storage/images/' + attribute.icon" alt="">
                         </div>
                     </div>
                 </div>
