@@ -45,36 +45,54 @@
             <b-tabs  horizontal nav-wrapper-class="tabs-wrapper d-flex justify-content-start" active-nav-item-class="tab_active" active-tab-class="tab_active">
                 <b-tab title="Штамб(St)" active >
                     <b-table borderless :fields="variants_table_data('st').fields" :items="variants_table_data('st').items" :tbody-tr-class="'table-row'">
+                        <template #cell(price)="data">
+                            <span v-if="data.item.price > 0">{{data.item.price}}</span>
+                        </template>
                         <template #cell(quantity)="data">
-                            <input class="quantity-input" type="number" oninput="validity.valid||(value='1');" v-model="quantities[data.item.id]">
+                            <input class="quantity-input" type="number" oninput="validity.valid||(value='1');" v-model="quantities[data.item.id]" v-if="data.item.price > 0">
                         </template>
                         <template #cell(buy)="data">
-                            <button class="buy-btn" @click="addToCart(data.item.id)">
+                            <button class="buy-btn" @click="addToCart(data.item.id)" v-if="data.item.price > 0">
                                 <span class="mdi mdi-cart-outline mdi-24px"></span>
+                            </button>
+                            <button style="padding: 10px !important; font-size: 16px;" class="buy-btn" @click="priceRequest(data.item.id)" v-else>
+                                Запрос цены
                             </button>
                         </template>
                     </b-table>
                 </b-tab>
                 <b-tab title="Мультиштамб(MtSt)">
                     <b-table borderless :fields="variants_table_data('mtst').fields" :items="variants_table_data('mtst').items" :tbody-tr-class="'table-row'">
+                        <template #cell(price)="data">
+                            <span v-if="data.item.price > 0">{{data.item.price}}</span>
+                        </template>
                         <template #cell(quantity)="data">
-                            <input class="quantity-input" type="number" oninput="validity.valid||(value='1');" v-model="quantities[data.item.id]">
+                            <input class="quantity-input" type="number" oninput="validity.valid||(value='1');" v-model="quantities[data.item.id]" v-if="data.item.price > 0">
                         </template>
                         <template #cell(buy)="data">
-                            <button class="buy-btn" @click="addToCart(data.item.id)">
+                            <button class="buy-btn" @click="addToCart(data.item.id)" v-if="data.item.price > 0">
                                 <span class="mdi mdi-cart-outline mdi-24px"></span>
+                            </button>
+                            <button style="padding: 10px !important; font-size: 16px;" class="buy-btn" @click="priceRequest(data.item.id)" v-else>
+                                Запрос цены
                             </button>
                         </template>
                     </b-table>
                 </b-tab>
                 <b-tab title="Солитер(Sol)">
                     <b-table borderless :fields="variants_table_data('sol').fields" :items="variants_table_data('sol').items" :tbody-tr-class="'table-row'">
+                        <template #cell(price)="data">
+                            <span v-if="data.item.price > 0">{{data.item.price}}</span>
+                        </template>
                         <template #cell(quantity)="data">
-                            <input class="quantity-input" type="number" oninput="validity.valid||(value='1');" v-model="quantities[data.item.id]">
+                            <input class="quantity-input" type="number" oninput="validity.valid||(value='1');" v-model="quantities[data.item.id]" v-if="data.item.price > 0">
                         </template>
                         <template #cell(buy)="data">
-                            <button class="buy-btn" @click="addToCart(data.item.id)">
+                            <button class="buy-btn" @click="addToCart(data.item.id)" v-if="data.item.price > 0">
                                 <span class="mdi mdi-cart-outline mdi-24px"></span>
+                            </button>
+                            <button style="padding: 10px !important; font-size: 16px;" class="buy-btn" @click="priceRequest(data.item.id)" v-else>
+                                Запрос цены
                             </button>
                         </template>
                     </b-table>
@@ -201,6 +219,9 @@
             isTagType(attribute) {
                 return attribute.type === 'text' && attribute.values.length > 1
             },
+            priceRequest() {
+                alert('Запрос отправлен. Уведомление о цене Вы сможете увидеть в Вашем личном кабинете');
+            }
         },
         created() {
             this.setCurrentImage(this.product.images[0]);

@@ -75,8 +75,8 @@ class ProjectController extends Controller
         $project = Project::with(['images'])->findOrFail($id);
         $coordinates = explode(';',$project->coordinates);
         $project['plants'] = $project->plants();
-        $project['long'] = $coordinates[0];
-        $project['lat'] = $coordinates[1];
+        $project['lat'] = $coordinates[0];
+        $project['long'] = $coordinates[1];
 
         return view('admin.projects.edit')->with('project', $project);
     }
