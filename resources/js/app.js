@@ -48,6 +48,9 @@ Vue.component('user-query-editor', require('./components/admin/UserQueryEditor')
 Vue.component('projects-table', require('./components/admin/projects/ProjectsTable').default);
 Vue.component('project-form', require('./components/admin/projects/ProjectForm').default);
 
+Vue.component('services-table', require('./components/admin/services/ServicesTable').default);
+Vue.component('service-form', require('./components/admin/services/ServiceForm').default);
+
 Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 
 /* Client side components */

@@ -40,7 +40,7 @@
                             <i class="mdi mdi-close-circle-outline" @click.prevent="removeUploadedImage(index)"></i>
                             <div class="image-details">
                                 <span class="image-name" v-text="files[index].name" :title="files[index].name"></span>
-                                <span class="image-size" v-text="files[index].size + ' байт'"></span>
+<!--                                <span class="image-size" v-text="files[index].size + ' байт'"></span>-->
                             </div>
                         </div>
                     </div>
@@ -313,8 +313,6 @@
 
             .img-wrapper {
                 position: relative;
-                width: 100px;
-                height: 100px;
                 display: flex;
                 flex-direction: column;
                 margin: 10px;

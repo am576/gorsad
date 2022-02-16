@@ -8,6 +8,12 @@ return [
           'route' => 'products',
           'icon'  => 'cart'
       ],
+      'service' => [
+          'title' => 'услуги',
+          'singular' => 'услуга',
+          'route' => 'services',
+          'icon'  => 'bulldozer'
+      ],
       'category' => [
           'title' => 'категории',
           'singular' => 'категория',
@@ -75,6 +81,9 @@ return [
       'bool' => 'Да/Нет',
       'color' => 'Цвет',
       'icon' => 'Иконка'
+  ],
+  'static_pages' => [
+      'services' => ['test']
   ]
 
 ];
