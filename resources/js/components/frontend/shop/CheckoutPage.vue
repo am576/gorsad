@@ -80,11 +80,11 @@
                 .then(response => {
                     if(response.status == 200)
                     {
-                        /*alert('Заказ успешно создан');
+                        alert('Заказ успешно создан');
                         axios.post('/cart/clear')
                         .then(() =>{
                             window.location.href = "/";
-                        })*/
+                        })
                     }
                 })
                 .catch(error => {

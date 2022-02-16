@@ -83,7 +83,7 @@ return [
       'icon' => 'Иконка'
   ],
   'static_pages' => [
-      'services' => ['test']
+      'services' => ['test', 'test2']
   ]
 
 ];
