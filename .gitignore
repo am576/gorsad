@@ -5,6 +5,7 @@
 /storage/*.key
 /storage/app/public/images/projects/*
 /storage/app/public/images/products/*
+/storage/app/public/images/service_groups/*
 /vendor
 .env
 .env.backup

@@ -4,7 +4,9 @@
 namespace App\Utils;
 
 
+use App\Image;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as InterventionImage;
 
 class StaticTools
@@ -76,5 +78,17 @@ class StaticTools
                 }
             }
         }
+    }
+
+    public static function deleteImages($images)
+    {
+        /*foreach ($images as $image_id) {
+            $images = array_values(\App\Image::select('icon','small','medium','large')
+                ->where('id', $image_id)->get()->toArray()[0]);
+
+            Storage::disk('images')->delete($images);
+        }*/
+        \App\Image::whereIn('id', $images)
+            ->delete();
     }
 }

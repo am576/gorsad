@@ -120,7 +120,7 @@
         },
         created() {
             if(this.service_group_data !== undefined) {
-                this.service = this.service_data;
+                this.service_group = this.service_group_data;
             }
             this.$eventBus.$on('addImages', this.setImages)
         }

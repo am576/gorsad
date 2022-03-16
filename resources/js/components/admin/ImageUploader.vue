@@ -49,7 +49,7 @@
         </div>
         <div class="card-body">
             <div v-if="isSingleImage && !isImageEmpty" class="images-preview">
-                <div class="img-wrapper" :class="[isSingleImage ? 'w-100 h-100' : '']">
+                <div class="img-wrapper" :class="[isSingleImage ? 'single_image_wrapper' : '']">
                     <img class="single-image" :src="single_image">
                     <i class="mdi mdi-close-circle-outline" @click.prevent="removeSingleImage()"></i>
                 </div>
@@ -147,6 +147,7 @@
                 })
                 .then(response => {
                     if(this.isSingleImage)
+                        if(typeof this.entity.images[0] !== 'undefined')
                         this.current_image = this.entity.images[0];
                     else
                         this.existing_images = this.entity.images;
@@ -167,7 +168,11 @@
 
             },
             isImageEmpty() {
-                if(typeof this.current_image === 'string')
+                if(typeof this.current_image === 'undefined')
+                {
+                    return Object.keys(this.current_image).length === 0
+                }
+                else if(typeof this.current_image === 'string')
                 {
                     return this.current_image.length === 0
                 }
@@ -311,6 +316,10 @@
             flex-wrap: wrap;
             margin-top: 20px;
 
+            .img-wrapper.single_image_wrapper {
+                max-width: 50% !important;
+            }
+
             .img-wrapper {
                 position: relative;
                 display: flex;
@@ -325,7 +334,7 @@
                 }
 
                 img.single-image {
-                    width: 100% !important;
+                    max-width: 100% !important;
                     height: auto !important;
                     max-height: 100%;
                 }
