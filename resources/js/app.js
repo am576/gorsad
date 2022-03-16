@@ -50,6 +50,7 @@ Vue.component('project-form', require('./components/admin/projects/ProjectForm')
 
 Vue.component('services-table', require('./components/admin/services/ServicesTable').default);
 Vue.component('service-form', require('./components/admin/services/ServiceForm').default);
+Vue.component('service-group-form', require('./components/admin/services/ServiceGroupForm').default);
 
 Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 

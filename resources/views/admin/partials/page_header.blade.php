@@ -26,9 +26,15 @@ else
             <i class="mdi mdi-plus"></i>
             <span>Создать</span>
         </a>
-        <a href="#" class="btn btn-danger" id="bulk_delete_btn">
+        {{--<a href="#" class="btn btn-danger" id="bulk_delete_btn">
             <i class="mdi mdi-trash-can-outline"></i>
             <span>Удалить выбранное</span>
+        </a>--}}
+    @endif
+    @if($create_group ?? '')
+        <a href="{{ route($entity_config['route'].'.create_group') }}" class="btn btn-success btn-add-new">
+            <i class="mdi mdi-plus"></i>
+            <span>Создать группу</span>
         </a>
     @endif
 </div>

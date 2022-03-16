@@ -95,7 +95,8 @@ Route::prefix('admin')->group(function(){
         'attributes_groups'  => 'AttributesGroupController',
         'icon_sets' => 'IconSetController',
         'projects' => 'ProjectController',
-        'services' => 'ServiceController'
+        'services' => 'ServiceController',
+        'service_groups' => 'ServiceGroupController',
     ]);
 
     Route::post('/images-upload', 'ImagesController@upload');

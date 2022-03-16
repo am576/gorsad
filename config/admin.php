@@ -12,7 +12,15 @@ return [
           'title' => 'услуги',
           'singular' => 'услуга',
           'route' => 'services',
-          'icon'  => 'bulldozer'
+          'icon'  => 'bulldozer',
+          'submenu' => [
+              [
+                  'title' => 'группы услуг',
+                  'singular' => 'группа услуг',
+                  'route'=> 'service_groups',
+                  'icon'  => 'bulldozer'
+              ]
+          ]
       ],
       'category' => [
           'title' => 'категории',
@@ -82,8 +90,4 @@ return [
       'color' => 'Цвет',
       'icon' => 'Иконка'
   ],
-  'static_pages' => [
-      'services' => ['test', 'test2']
-  ]
-
 ];

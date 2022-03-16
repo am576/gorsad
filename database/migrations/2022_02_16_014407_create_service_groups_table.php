@@ -16,6 +16,7 @@ class CreateServiceGroupsTable extends Migration
         Schema::create('service_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('description');
         });
     }
 

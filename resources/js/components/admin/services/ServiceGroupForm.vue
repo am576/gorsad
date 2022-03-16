@@ -9,18 +9,19 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="name">Название</label>
-                        <input type="text" class="form-control" id="name" autocomplete="off" required v-model="service.title">
+                        <input type="text" class="form-control" id="name" autocomplete="off" required v-model="service_group.name">
                     </div>
                     <div class="form-group">
-                        <label>Страница</label>
-                        <v-select v-model="service.view" :options="views"></v-select>
+                        <label>Описание</label>
+                        <ckeditor :editor="editor" :config="editorConfig" v-model="service_group.description"></ckeditor>
+                        <div v-if="errors && errors.description" class="text-danger">{{errors.description[0]}}</div>
                     </div>
                 </div>
             </div>
             <div class="row" v-if="!is_edit"><image-uploader></image-uploader></div>
             <div class="row" v-if="is_edit">
-                <image-uploader :isSingleImage="true" :entity="service" :entity_id="service.id" :entity_model="'Service'"
-                                @removeImage="removeImage" :storage="'services/'"></image-uploader>
+                <image-uploader :isSingleImage="true" :entity="service_group" :entity_id="service_group.id" :entity_model="'ServiceGroup'"
+                                @removeImage="removeImage" :storage="'service_groups/'"></image-uploader>
             </div>
             <button type="submit" class="btn btn-primary">{{submitCaption}}</button>
         </form>
@@ -28,20 +29,34 @@
 </template>
 
 <script>
+    import CKEditor from '@ckeditor/ckeditor5-vue';
+
     export default {
+        components: {
+            ckeditor: CKEditor.component
+        },
         props: {
-            service_data: null,
-            views: [],
+            service_group_data: null,
             is_edit: false,
         },
         data() {
             return {
-                service : {},
-                view: '',
+                editor: ClassicEditor,
+                editorConfig: {
+                    fontSize: {
+                        options: [
+                            'tiny',
+                            'default',
+                            'big'
+                        ]
+                    },
+                    toolbar: [
+                        'heading', 'bulletedList', 'numberedList', 'fontSize', 'undo', 'redo'
+                    ],
+                },
+                service_group : {},
                 errors: {},
                 images: [],
-                options: [],
-                selectedOption: {},
                 images_to_delete: [],
                 overlay: false,
             }
@@ -52,14 +67,14 @@
                 this.images = images;
             },
             submit() {
-                // this.overlay = true;
+                this.overlay = true;
                 this.errors = {};
                 const formData = new FormData();
 
-                let form_action = '/admin/services/';
+                let form_action = '/admin/service_groups/';
 
-                Object.keys(this.service).forEach(key => {
-                    formData.append(key, this.service[key])
+                Object.keys(this.service_group).forEach(key => {
+                    formData.append(key, this.service_group[key])
                 });
 
                 formData.delete('images');
@@ -71,7 +86,7 @@
                 }
 
                 if(this.is_edit) {
-                    form_action = '/admin/service/' + this.service.id;
+                    form_action = form_action + this.service_group.id;
                     formData.append('_method', 'PUT');
                     this.images_to_delete.forEach(image_id => {
                         formData.append('images_to_delete[]', image_id)
@@ -81,7 +96,7 @@
                 axios.post(form_action, formData)
                     .then(response =>{
                         if(response.status == 200) {
-                            window.location.href = '/admin/services'
+                            window.location.href = '/admin/service_groups/'
                         }
                     }).catch(error => {
                     if (error.response.status === 422) {
@@ -104,7 +119,7 @@
             }
         },
         created() {
-            if(this.project_data !== undefined) {
+            if(this.service_group_data !== undefined) {
                 this.service = this.service_data;
             }
             this.$eventBus.$on('addImages', this.setImages)
