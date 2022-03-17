@@ -9,6 +9,7 @@ use App\IconSet;
 use App\Image;
 use App\Product;
 use App\Project;
+use App\ServiceGroup;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -182,5 +183,10 @@ class ApiController extends Controller
         }
 
         return response()->json($cart);
+    }
+
+    public function getServiceGroups()
+    {
+        return response()->json(ServiceGroup::all());
     }
 }

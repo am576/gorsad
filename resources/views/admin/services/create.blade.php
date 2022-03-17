@@ -1,4 +1,4 @@
 @extends('admin.master')
 @section('content')
-<service-form :views="{{$views}}"></service-form>
+<service-form></service-form>
 @endsection

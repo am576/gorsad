@@ -5,12 +5,14 @@
                 <thead>
                 <tr>
                     <th>Название</th>
+                    <th>Цена</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="(service, index) in services.data" :key="index">
-                    <td>{{service.title}}</td>
+                    <td>{{service.name}}</td>
+                    <td>{{service.price}}</td>
                     <td>
                         <table-buttons :table="'services'" :id="service.id"></table-buttons>
                     </td>

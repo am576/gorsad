@@ -34,5 +34,6 @@ Route::get('getIconsets', 'ApiController@getIconsets');
 Route::get('getAttributeIcons', 'ApiController@getAttributeIcons');
 Route::get('getCategoryParams', 'ApiController@getCategoryParams');
 Route::get('searchProduct', 'ApiController@searchProducts');
+Route::get('getServiceGroups', 'ApiController@getServiceGroups');
 
 Route::get('paginateProjects', 'ApiController@paginateProjects');

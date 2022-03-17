@@ -9,18 +9,30 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="name">Название</label>
-                        <input type="text" class="form-control" id="name" autocomplete="off" required v-model="service.title">
+                        <input type="text" class="form-control" id="name" autocomplete="off" required v-model="service.name">
+                        <div v-if="errors && errors.name" class="text-danger">{{errors.name[0]}}</div>
                     </div>
                     <div class="form-group">
-                        <label>Страница</label>
-                        <v-select v-model="service.view" :options="views"></v-select>
+                        <label for="group_id">Группа</label>
+                        <select class="form-control" name="group_id" id="group_id" v-model="service.group_id">
+                            <option value="0">...</option>
+                            <option v-for="group in groups" :value="group.id" :key="group.id">{{group.name}}</option>
+                        </select>
+                        <div v-if="errors && errors.group_id" class="text-danger">{{errors.group_id[0]}}</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Цена</label>
+                        <input type="text" class="form-control" id="price" autocomplete="off" required v-model="service.price">
+                        <div v-if="errors && errors.price" class="text-danger">{{errors.price[0]}}</div>
                     </div>
                 </div>
-            </div>
-            <div class="row" v-if="!is_edit"><image-uploader></image-uploader></div>
-            <div class="row" v-if="is_edit">
-                <image-uploader :isSingleImage="true" :entity="service" :entity_id="service.id" :entity_model="'Service'"
-                                @removeImage="removeImage" :storage="'services/'"></image-uploader>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>Описание</label>
+                        <ckeditor :editor="editor" :config="editorConfig" v-model="service.description"></ckeditor>
+                        <div v-if="errors && errors.description" class="text-danger">{{errors.description[0]}}</div>
+                    </div>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">{{submitCaption}}</button>
         </form>
@@ -28,31 +40,47 @@
 </template>
 
 <script>
+    import CKEditor from '@ckeditor/ckeditor5-vue';
+
     export default {
+        components: {
+            ckeditor: CKEditor.component
+        },
+
         props: {
             service_data: null,
-            views: [],
             is_edit: false,
         },
         data() {
             return {
                 service : {},
-                view: '',
+                groups: Array,
                 errors: {},
-                images: [],
-                options: [],
-                selectedOption: {},
-                images_to_delete: [],
                 overlay: false,
+                editor: ClassicEditor,
+                editorConfig: {
+                    fontSize: {
+                        options: [
+                            'tiny',
+                            'default',
+                            'big'
+                        ]
+                    },
+                    toolbar: [
+                        'heading', 'bulletedList', 'numberedList', 'fontSize', 'undo', 'redo'
+                    ],
+                },
             }
         },
         methods: {
-
-            setImages(images) {
-                this.images = images;
+            getServiceGroups() {
+                axios.get('/api/getServiceGroups')
+                    .then((response) => {
+                        this.groups = response.data;
+                    })
             },
             submit() {
-                // this.overlay = true;
+                this.overlay = true;
                 this.errors = {};
                 const formData = new FormData();
 
@@ -62,20 +90,9 @@
                     formData.append(key, this.service[key])
                 });
 
-                formData.delete('images');
-                if(this.images.length)
-                {
-                    this.images.forEach(file => {
-                        formData.append('images[]', file, file.name);
-                    });
-                }
-
                 if(this.is_edit) {
-                    form_action = '/admin/service/' + this.service.id;
+                    form_action = '/admin/services/' + this.service.id;
                     formData.append('_method', 'PUT');
-                    this.images_to_delete.forEach(image_id => {
-                        formData.append('images_to_delete[]', image_id)
-                    });
                 }
 
                 axios.post(form_action, formData)
@@ -90,13 +107,6 @@
                     }
                 });
             },
-            removeImage(image_id)
-            {
-                if(!this.images_to_delete.includes(image_id))
-                {
-                    this.images_to_delete.push(image_id);
-                }
-            },
         },
         computed: {
             submitCaption() {
@@ -104,10 +114,10 @@
             }
         },
         created() {
-            if(this.project_data !== undefined) {
+            this.getServiceGroups();
+            if(this.service_data !== undefined) {
                 this.service = this.service_data;
             }
-            this.$eventBus.$on('addImages', this.setImages)
         }
     }
 </script>
