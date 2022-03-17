@@ -96,7 +96,7 @@
                 axios.post(form_action, formData)
                     .then(response =>{
                         if(response.status == 200) {
-                            window.location.href = '/admin/service_groups/'
+                            window.location.href = '/admin/service_groups'
                         }
                     }).catch(error => {
                     if (error.response.status === 422) {

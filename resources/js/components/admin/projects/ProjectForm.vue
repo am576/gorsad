@@ -169,7 +169,7 @@
                 this.images = images;
             },
             submit() {
-                // this.overlay = true;
+                this.overlay = true;
                 this.errors = {};
                 const formData = new FormData();
 
