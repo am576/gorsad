@@ -1,7 +1,8 @@
 <template>
     <div class="container">
-        <div class="row justify-content-between">
-            <div v-for="group in service_groups">
+        <h1 class="title">Услуги</h1>
+        <div class="row">
+            <div class="col-4 service-wrapper" v-for="group in service_groups">
                 <div class="service-card-img" :style="{'background-image': 'url(/storage/images/' + group.images[0].medium+')'}" @click="loadServicePage(group.id)">
                     <span class="group-name">
                         {{group.name}}
@@ -19,12 +20,22 @@
         },
         methods: {
             loadServicePage(id) {
-                window.location.href = '/services/' + id
+                window.open('/services/' + id, '_blank').focus();
             }
         }
     }
 </script>
 <style lang="scss" scoped>
+    .title {
+        display: inline-block;
+        margin-bottom: 2rem;
+        width: 12%;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ca7246;
+    }
+    .service-wrapper {
+        margin-bottom: 3rem;
+    }
     .service-card-img {
         display: flex;
         flex-direction: column;
