@@ -37,3 +37,4 @@ Route::get('searchProduct', 'ApiController@searchProducts');
 Route::get('getServiceGroups', 'ApiController@getServiceGroups');
 
 Route::get('paginateProjects', 'ApiController@paginateProjects');
+Route::get('paginateServices', 'ApiController@paginateservices');

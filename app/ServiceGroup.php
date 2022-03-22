@@ -14,4 +14,9 @@ class ServiceGroup extends Model
     {
         return $this->morphMany('App\Image', 'imageable');
     }
+
+    public function services()
+    {
+        return $this->hasMany('App\Service', 'group_id');
+    }
 }

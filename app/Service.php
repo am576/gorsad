@@ -10,11 +10,6 @@ class Service extends Model
 
     public function group()
     {
-        return $this->hasOne('App\ServiceGroup', 'id', 'group_id')->first();
-    }
-
-    public function setViewAttribute($value)
-    {
-        $this->attributes['view'] = 'admin.services.static.' . $value;
+        return $this->belongsTo('\App\ServiceGroup', 'group_id');
     }
 }

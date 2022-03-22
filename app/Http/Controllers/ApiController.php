@@ -9,6 +9,7 @@ use App\IconSet;
 use App\Image;
 use App\Product;
 use App\Project;
+use App\Service;
 use App\ServiceGroup;
 use App\User;
 use Illuminate\Http\Request;
@@ -154,9 +155,7 @@ class ApiController extends Controller
 
     public function paginateProjects(Request $request)
     {
-        $projects = Project::paginate($request->per_page)->toJson();
-
-        return $projects;
+        return Project::paginate($request->per_page)->toJson();
     }
 
     public function getProducts()
@@ -188,5 +187,10 @@ class ApiController extends Controller
     public function getServiceGroups()
     {
         return response()->json(ServiceGroup::all());
+    }
+
+    public function paginateServices(Request $request)
+    {
+        return Service::with(['group'])->paginate($request->per_page)->toJson();
     }
 }

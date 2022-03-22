@@ -7,6 +7,7 @@ use App\Category;
 use App\Image;
 use App\Product;
 use App\Project;
+use App\ServiceGroup;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -237,5 +238,17 @@ class HomeController extends Controller
     public function showStylesPage()
     {
         return view('frontend.styles');
+    }
+
+    public function showServicesPage()
+    {
+        $service_groups = ServiceGroup::with(['images'])->get();
+
+        return view('frontend.services.index', compact('service_groups'));
+    }
+
+    public function showServicePage($id)
+    {
+        return view('frontend.services.service_page')->with('service_group', ServiceGroup::with(['images', 'services'])->find($id));
     }
 }

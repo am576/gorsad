@@ -5,6 +5,7 @@
                 <thead>
                 <tr>
                     <th>Название</th>
+                    <th>Группа</th>
                     <th>Цена</th>
                     <th></th>
                 </tr>
@@ -12,6 +13,7 @@
                 <tbody>
                 <tr v-for="(service, index) in services.data" :key="index">
                     <td>{{service.name}}</td>
+                    <td>{{service.group.name}}</td>
                     <td>{{service.price}}</td>
                     <td>
                         <table-buttons :table="'services'" :id="service.id"></table-buttons>

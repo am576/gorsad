@@ -20,13 +20,13 @@
                 <img src="/storage/images/public/logov2m.png" alt="" v-if="isMobileView">
             </a>
             <ul class="nav nav-pills m-auto" v-if="!isMobileView">
-                <li class="nav-item menu-link" :class="{selected: isSelected ==='services'}" @mouseenter.stop="menuHover(1)" @mouseleave.stop="unHover">
+                <li class="nav-item menu-link" :class="{selected: isSelected ==='shop'}" @mouseenter.stop="menuHover(1)" @mouseleave.stop="unHover">
                     <span :class="{hovered : isHovered ===(1)}"></span>
                     <a href="/shop" class="nav-link">Деревья</a>
                 </li>
                 <li class="nav-item menu-link" ref="services" :class="{selected: isSelected ==='services'}" @mouseenter.stop="menuHover(2)" @mouseleave.stop="unHover">
                     <span :class="{hovered : isHovered === (2)}"></span>
-                    <a href="#" class="nav-link">Услуги</a>
+                    <a href="/services" class="nav-link">Услуги</a>
                 </li>
                 <li class="nav-item menu-link" ref="projects" :class="{selected: isSelected ==='projects'}" @mouseenter.stop="menuHover(3)" @mouseleave.stop="unHover">
                     <span :class="{hovered : isHovered === (3)}"></span>

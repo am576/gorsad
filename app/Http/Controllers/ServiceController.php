@@ -16,7 +16,7 @@ class ServiceController extends Controller
 
     public function index()
     {
-        $services = Service::paginate(5);
+        $services = Service::with(['group'])->paginate(10);
 
         return view('admin.services.index')->with('services', $services->toJson());
     }

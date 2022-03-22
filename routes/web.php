@@ -61,6 +61,8 @@ Route::get('/styles','HomeController@showStylesPage');
 Route::post('/shop/addProductsToCompare','ShopController@addProductsToCompare');
 Route::get('/shop/comparison', 'ShopController@getProductsForComparison');
 
+Route::get('/services', 'HomeController@showServicesPage');
+Route::get('/services/{id}', 'HomeController@showServicePage');
 
 /*Admin routes*/
 Route::get('/admin/orders', 'OrderController@index');
