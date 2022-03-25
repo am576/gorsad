@@ -3,7 +3,7 @@ const mix = require('laravel-mix');
 /*require('laravel-mix-bundle-analyzer');
 if (!mix.inProduction()) {
     mix.bundleAnalyzer();
-}*/ // --- Uncomment for bundle analyze
+} */// --- Uncomment for bundle analyze
 
 
 /*

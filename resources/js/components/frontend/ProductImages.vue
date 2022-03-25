@@ -23,9 +23,9 @@
                 </div>
             </template>
         </splide>
-        <b-modal id="modal-image" size="lg" hide-footer>
+        <!--<b-modal id="modal-image" size="lg" hide-footer>
             <img :src="'/storage/images/' + current_image" alt="" style="width: 100%;">
-        </b-modal>
+        </b-modal>-->
     </div>
 </template>
 

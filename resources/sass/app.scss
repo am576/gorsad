@@ -1,3 +1,6 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
 // Variables
 @import 'variables';
 
@@ -7,11 +10,12 @@
 @import '~pretty-checkbox/src/pretty-checkbox.scss';
 * {
     font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
 }
 
 body {
     overflow-x: hidden;
-
+    font-size: 1rem !important;
 }
 main {
     @media (max-width: 590px) {
@@ -778,4 +782,12 @@ footer.home-footer {
     .tab-pane.active.card-body {
         padding: 0 !important;
     }
+}
+.dropdown-text {
+    display: inline-block;
+    padding: 0.25rem 1.5rem;
+    margin-bottom: 0;
+    width: 100%;
+    clear: both;
+    font-weight: lighter;
 }

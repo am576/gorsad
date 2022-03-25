@@ -72,7 +72,49 @@
 
                 <li class="nav-item">
                     <div v-if="!isGuest">
-                        <b-dropdown id="account-dropdown" size="lg" right variant="link" block toggle-class="text-decoration-none" no-caret>
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" id="account-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="mdi mdi-36px mdi-account"></div>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li>
+                                    <div class="dropdown-text">
+                                        <div v-if="company_id === 0">{{auth_user.name}}</div>
+                                        <div v-if="company_id !== 0">{{user.companies[0].name}}</div>
+                                        <a href="/profile" class="text-small">Личный кабинет</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="#" class="dropdown-item">Мои баллы</a>
+                                </li>
+                                <li>
+                                    <a href="/profile?tab=4" class="dropdown-item">
+                                        Уведомления <span v-if="unreadNotificationsAmount" class="text-danger">{{unreadNotificationsAmount}}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="profile?tab=1" class="dropdown-item">Мои запросы</a>
+                                </li>
+                                <li>
+                                    <a href="profile?tab=2" class="dropdown-item">Мои заказы</a>
+                                </li>
+                                <li>
+                                    <a role="menuitem" href="#" target="_self">
+                                        <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
+                                            <input type="hidden" name="_token" :value="csrf">
+                                        </form>
+                                        <a class="dropdown-item d-flex align-items-center" @click="logout">
+                                            <span class="mdi mdi-24px mdi-logout" style="color: rgb(22, 24, 27)!important;"></span>
+                                            <span class="ml-2">Выход</span>
+                                        </a>
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            </ul>
+                        </div>
+                        <!--<b-dropdown id="account-dropdown" size="lg" right variant="link" block toggle-class="text-decoration-none" no-caret>
                             <template #button-content>
                                 <div class="mdi mdi-36px"
                                       v-bind:class="{'mdi-account':company_id === 0, 'mdi-briefcase':company_id !== 0}"
@@ -89,7 +131,7 @@
                             </b-dropdown-item>
                             <b-dropdown-item href="profile?tab=1">Мои запросы</b-dropdown-item>
                             <b-dropdown-item href="profile?tab=2">Мои заказы</b-dropdown-item>
-<!--                            <b-dropdown-item href="#">Загрузить список растений</b-dropdown-item>-->
+&lt;!&ndash;                            <b-dropdown-item href="#">Загрузить список растений</b-dropdown-item>&ndash;&gt;
                             <b-dropdown-item href="#">
                                 <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
                                     <input type="hidden" name="_token" :value="csrf">
@@ -111,54 +153,52 @@
                                     <p class="d-inline-block">Добавить компанию</p>
                                 </div>
                             </b-dropdown-item>
-                        </b-dropdown>
+                        </b-dropdown>-->
                     </div>
 
                 </li>
 
                 <li class="nav-item" v-if="isGuest">
-                    <b-dropdown id="login-dropdown" size="lg" right variant="link" block toggle-class="text-decoration-none" menu-class="login-dropdown" no-caret>
-                        <template #button-content>
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" id="login-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="mdi mdi-36px mdi-account"></div>
-                        </template>
-                        <b-dropdown-form method="POST" action="/login" @submit.stop.prevent="doLogin">
-                            <b-form-group label="Email" label-for="dropdown-form-email" >
-                                <input type="hidden" name="_token" :value="csrf"></input>
-                                <b-form-input
-                                    id="dropdown-form-email"
-                                    size="sm"
-                                    placeholder=""
-                                    v-model="loginCred.email"
-                                    @focus="clearErrors"
-                                ></b-form-input>
-                                <b-form-invalid-feedback :state="!hasEmailErrors">
-                                    {{loginErrors.hasOwnProperty('email')?loginErrors.email[0]:''}}
-                                </b-form-invalid-feedback>
-                            </b-form-group>
-
-                            <b-form-group label="Пароль" label-for="dropdown-form-password">
-                                <b-form-input
-                                    id="dropdown-form-password"
-                                    type="password"
-                                    size="sm"
-                                    placeholder=""
-                                    v-model="loginCred.password"
-                                    @focus="clearErrors"
-                                ></b-form-input>
-                                <b-form-invalid-feedback :state="!hasPasswordErrors">
-                                    {{loginErrors.hasOwnProperty('password')?loginErrors.password[0]:''}}
-                                </b-form-invalid-feedback>
-                                <b-form-invalid-feedback :state="!hasLoginErrors">
-                                    {{loginErrors.hasOwnProperty('login')?loginErrors.login[0]:''}}
-                                </b-form-invalid-feedback>
-                                <b-form-text id="input-live-help"><a href="/recoverpassword">Забыли пароль?</a></b-form-text>
-                            </b-form-group>
-
-<!--                            <b-form-checkbox class="mb-3">Remember me</b-form-checkbox>-->
-                            <b-button variant="primary" size="sm" type="submit">Войти</b-button>
-                            <b-button variant="primary" size="sm" @click="goToRegisterPage">Регистрация</b-button>
-                        </b-dropdown-form>
-                    </b-dropdown>
+                        </button>
+                        <div class="login-dropdown dropdown-menu dropdown-menu-right" aria-labelledby="dropdownAll">
+                            <form id="login-dropdown-form" action="/login" method="POST" @submit.stop.prevent="doLogin">
+                                <div class="form-group">
+                                    <label class="d-block" for="dropdown-form-email">Email</label>
+                                    <div>
+                                        <input type="hidden" name="_token" :value="csrf">
+                                        <input class="form-control form-control-sm" type="text" id="dropdown-form-email"
+                                               placeholder=""
+                                               v-model="loginCred.email"
+                                               @focus="clearErrors"
+                                        >
+                                        <small class="text-danger" v-show="hasEmailErrors">
+                                            {{loginErrors.hasOwnProperty('email')?loginErrors.email[0]:''}}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dropdown-form-password">Пароль</label>
+                                    <div>
+                                        <input class="form-control form-control-sm" id="dropdown-form-password" type="password" v-model="loginCred.password" @focus="clearErrors">
+                                        <small class="text-danger" v-show="hasPasswordErrors">
+                                            {{loginErrors.hasOwnProperty('password')?loginErrors.password[0]:''}}
+                                        </small>
+                                        <small class="text-danger" v-show="hasLoginErrors">
+                                            {{loginErrors.hasOwnProperty('login')?loginErrors.login[0]:''}}
+                                        </small>
+                                        <small id="input-live-help" class="form-text text-muted">
+                                            <a href="/recoverpassword"><small>Забыли пароль?</small></a>
+                                        </small>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Войти</button>
+                                <button class="btn btn-primary" type="button" @click="goToRegisterPage">Регистрация</button>
+                            </form>
+                        </div>
+                    </div>
                 </li>
             </ul>
             <form action="/search" method="post" style="display: none">
@@ -525,8 +565,15 @@
             /*transform: translateX($menu_width);
             transition: 0.3s cubic-bezier(0,.12,.14,1) 0s;*/
         }
-    }
 
+    }
+    #login-dropdown-form {
+        display: inline-block;
+        padding: 0.25rem 1.5rem;
+        width: 100%;
+        clear: both;
+        font-weight: 400;
+    }
 
 
     .mobile-menu {
@@ -561,5 +608,7 @@
         height: 100% !important;
         overflow: hidden !important;
     }
+
+    .dropdown-toggle:after { content: none }
 
 </style>

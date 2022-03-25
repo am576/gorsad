@@ -1,5 +1,5 @@
 <template>
-    <b-modal :id="modal_id" centered hide-footer>
+    <!--<b-modal :id="modal_id" centered hide-footer>
         <template #modal-title>
             {{sign_type.form_title}}
         </template>
@@ -66,7 +66,7 @@
                 </div>
             </div>
         </b-form>
-    </b-modal>
+    </b-modal>-->
 </template>
 
 <script>

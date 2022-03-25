@@ -1,6 +1,6 @@
 <template>
     <div class="accordion" role="tablist">
-        <b-card no-body class="mb-1">
+        <!--<b-card no-body class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
                 <b-button block v-b-toggle.accordion-1 variant="light">
                     <div class="d-flex justify-content-between align-items-center">
@@ -54,9 +54,9 @@
                     </b-card>
                 </b-card-body>
             </b-collapse>
-        </b-card>
+        </b-card>-->
 
-        <b-card no-body class="mb-1">
+        <!--<b-card no-body class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
                 <b-button block v-b-toggle.accordion-2 variant="light">
                     <div class="d-flex justify-content-between align-items-center">
@@ -69,9 +69,9 @@
                     <b-card-text>Вы ещё не совершали покупок с помощью платёжных карт.</b-card-text>
                 </b-card-body>
             </b-collapse>
-        </b-card>
+        </b-card>-->
 
-        <b-card no-body class="mb-1">
+        <!--<b-card no-body class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
                 <b-button block v-b-toggle.accordion-3 variant="light">
                     <div class="d-flex justify-content-between align-items-center">
@@ -100,7 +100,7 @@
                     </b-card-text>
                 </b-card-body>
             </b-collapse>
-        </b-card>
+        </b-card>-->
     </div>
 </template>
 

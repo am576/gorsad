@@ -1,10 +1,10 @@
 <template>
-    <b-modal id="modal-cart" size="lg" :title-html="modalTitle" hide-footer>
+    <!--<b-modal id="modal-cart" size="lg" :title-html="modalTitle" hide-footer>
         <div class="container-fluid">
             <div class="row justify-content-center" v-if="!showCheckout">
                 <div v-if="!isCartEmpty" class="col-12 order-details">
                     <h3>Обзор заказа</h3>
-                    <!--<v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
+                    &lt;!&ndash;<v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
                         <template slot="no-options">
                             быстрый поиск растений...
                         </template>
@@ -19,7 +19,7 @@
                                 {{ option.title }}
                             </div>
                         </template>
-                    </v-select>-->
+                    </v-select>&ndash;&gt;
 
                     <div class="product-row row align-items-center" v-for="(product, id) in products">
                         <div class="col-2">
@@ -79,7 +79,7 @@
             </div>
             <checkout-page v-if="showCheckout" :order_products="products" :bonuses="bonusesToUseAmount" @goToCart="goToCart"></checkout-page>
         </div>
-    </b-modal>
+    </b-modal>-->
 </template>
 
 <script>
