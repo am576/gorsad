@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\ServiceOrder;
 use App\User;
 use App\UserNotification;
 use App\UserQuery;
@@ -21,11 +22,13 @@ class OrderController extends Controller
     {
         $queries = UserQuery::all();
         $orders = Order::all();
+        $service_orders = ServiceOrder::all();
 
         return view('admin.orders.index')
             ->with([
                 'queries' => $queries,
-                'orders' => $orders
+                'orders' => $orders,
+                'service_orders' => $service_orders
             ]);
     }
 
