@@ -31,13 +31,13 @@
             </div>
         </div>
         <g-modal>
-            <form @submit.prevent="orderService">
-                <div class="form-text">Заказ услуги</div>
-                <div class="form-text">{{selected_service.name || ''}}</div>
+            <form class="h-100" @submit.prevent="orderService">
+                <div class="form-text modal-form-caption">- Заказ услуги -</div>
+                <div class="form-text font-weight-bold">{{selected_service.name || ''}}</div>
                 <input type="text" class="form-control mt-5" placeholder="Имя" required v-model="order.client_name">
                 <input type="email" class="form-control" placeholder="E-mail" required v-model="order.client_email">
                 <input type="text" class="form-control" placeholder="Телефон" v-model="order.client_phone">
-                <button type="submit">Оставить заявку</button>
+                <button class="btn order-service-modal" type="submit">Оставить заявку</button>
             </form>
         </g-modal>
     </div>
@@ -72,7 +72,8 @@
                 try {
                     let res = await axios.post('/services/' + this.selected_service.id + '/order', formData);
                     if(res.status === 200) {
-                        alert('Спасибо! Ваша заявка принята. В ближайшее время с Вами свяжется наш менеджер для уточнения деталей')
+                        alert('Спасибо! Ваша заявка принята. В ближайшее время с Вами свяжется наш менеджер для уточнения деталей');
+                        window.location.reload();
                     }
                 }
                 catch(error) {
@@ -110,6 +111,17 @@
             border-radius: 0;
             font-size: 1.2rem;
             padding: 1.2rem;
+        }
+        .btn.order-service-modal {
+            background: #ffd59e;
+            font-size: 2rem;
+            padding: 1rem 2rem;
+            margin-top: 1rem;
+            color: #5e5e5e;
+        }
+        .modal-form-caption {
+            font-size: 1.5rem;
+            color: #5e5e5e;
         }
     }
 
