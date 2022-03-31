@@ -63,6 +63,7 @@ Route::get('/shop/comparison', 'ShopController@getProductsForComparison');
 
 Route::get('/services', 'HomeController@showServicesPage');
 Route::get('/services/{id}', 'HomeController@showServicePage');
+Route::post('/services/{id}/order', 'ShopController@createOrderService');
 
 /*Admin routes*/
 Route::get('/admin/orders', 'OrderController@index');

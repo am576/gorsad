@@ -73,6 +73,8 @@ Vue.component('projects-map', require('./components/frontend/projects/ProjectsMa
 Vue.component('services-page', require('./components/frontend/services/ServicesPage').default);
 Vue.component('service-page', require('./components/frontend/services/ServicePage').default);
 
+Vue.component('g-modal', require('./components/frontend/shared/GenericModal').default);
+
 /* Shop components */
 Vue.component('products-list', require('./components/frontend/shop/ProductsList').default);
 Vue.component('shop-page', require('./components/frontend/shop/ShopPage').default);
