@@ -113,20 +113,50 @@
                                             <th>Email</th>
                                             <th>Телефон</th>
                                             <th>Услуга</th>
+                                            <th>Статус</th>
                                             <th>Дата</th>
+                                            <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        <?php
+                                        $service_order_statuses = [
+                                            'new' => [
+                                                'class' => 'text-primary',
+                                                'value' => 'новый'
+                                            ],
+                                            'complete' => [
+                                                'class' => 'text-success',
+                                                'value' => 'выполнен'
+                                            ],
+                                            'cancelled' => [
+                                                'class' => 'text-danger',
+                                                'value' => 'отменён'
+                                            ]
+                                        ]
+                                        ?>
                                         @foreach($service_orders as $service_order)
                                             <tr>
                                                 <td>{{$service_order->client_name}}</td>
                                                 <td>{{$service_order->client_email}}</td>
                                                 <td>{{empty($service_order->client_phone) ? '-' : $service_order->client_phone}}</td>
                                                 <td>{{$service_order->service->name}}</td>
+                                                <td class="{{$service_order_statuses[$service_order->status]['class']}}">{{$service_order_statuses[$service_order->status]['value']}}</td>
                                                 <td>{{date('d.m.Y', strtotime($service_order->created_at))}}</td>
+                                                @if($service_order->status == 'new')
+                                                    <td>
+                                                        <a class="btn btn-success" href="service_order/{{$service_order->id}}?status=complete" title="Выполнить">
+                                                            <i class="mdi mdi-check mdi-18px"></i>
+                                                        </a>
+                                                        <a class="btn btn-danger" href="service_order/{{$service_order->id}}?status=cancelled" title="Отменить">
+                                                            <i class="mdi mdi-close mdi-18px"></i>
+                                                        </a>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                         </tbody>
+
                                     </table>
                                 </div>
                             </div>

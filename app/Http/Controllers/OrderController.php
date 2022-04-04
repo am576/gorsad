@@ -115,4 +115,16 @@ class OrderController extends Controller
 
         return $pdf->download('order.pdf');
     }
+
+    public function setServiceOrderStatus($id, Request $request)
+    {
+        $service_order = ServiceOrder::findOrFail($id);
+
+        $service_order->status = $request->status;
+
+        if($service_order->save())
+        {
+            return redirect()->intended(route('orders.index'));
+        }
+    }
 }

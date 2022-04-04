@@ -66,7 +66,7 @@ Route::get('/services/{id}', 'HomeController@showServicePage');
 Route::post('/services/{id}/order', 'ShopController@createOrderService');
 
 /*Admin routes*/
-Route::get('/admin/orders', 'OrderController@index');
+Route::get('/admin/orders', 'OrderController@index')->name('orders.index');
 Route::get('/admin/orders/{id}', 'OrderController@show');
 Route::get('/admin/queries/{id}', 'OrderController@showUserQuery');
 Route::post('/admin/queries/{id}/approve', 'OrderController@createOrderFromQuery');
@@ -90,6 +90,8 @@ Route::prefix('admin')->group(function(){
 
     Route::get('/querypdf','OrderController@getQueryPdf');
     Route::get('/orderpdf','OrderController@getOrderPdf');
+
+    route::get('/service_order/{id}','OrderController@setServiceOrderStatus');
 
     Route::resources([
         'products'    => 'ProductController',
