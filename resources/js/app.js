@@ -5,9 +5,12 @@ window.Vue = require('vue');
 import vuetify from './vuetify';
 import VueTagsInput from '@johmun/vue-tags-input';
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 import * as ClassicEditor from '/public/ckcustom/build/ckeditor.js';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 import PrettyCheckbox from 'pretty-checkbox-vue';
 import 'leaflet/dist/leaflet.css';
 
@@ -15,6 +18,8 @@ Vue.prototype.$eventBus = new Vue();
 
 Vue.use(PrettyCheckbox);
 Vue.use( CKEditor );
+Vue.use( BootstrapVue );
+Vue.use( IconsPlugin );
 Vue.use( vSelect );
 Vue.use( ClassicEditor );
 
