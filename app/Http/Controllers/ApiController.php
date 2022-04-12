@@ -70,14 +70,7 @@ class ApiController extends Controller
         $attribute = Attribute::find($request->attribute_id);
         $icons = $attribute->icons();
 
-        $images = Image::whereIn('id', $icons->pluck('image_id'))->get();
-
-        foreach ($images as $index => $image) {
-            $image->icon_id = $icons[$index]->id;
-            $image->icon_label = DB::table('attributes_values')->where('id',$icons[$index]->attribute_value_id)->get()->pluck('value')[0];
-        }
-
-        return response()->json($images);
+        return response()->json($icons);
     }
 
     public function getAttributesGroups()

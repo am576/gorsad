@@ -86,6 +86,8 @@ class AttributeController extends Controller
         $attribute = Attribute::find($id);
         $icons = $attribute->icons()->pluck('image_id');
 
+        $attribute['iconset_id'] = $attribute->iconset()->iconset_id;
+
         $images = Image::whereIn('id', $icons)->get();
         return view('admin.attributes.edit')->with([
             'attribute' => $attribute,
@@ -120,6 +122,7 @@ class AttributeController extends Controller
                         'attribute_id' => $attribute->id,
                         'value' => $value
                     ]);
+
 
                     DB::table('attribute_icons')->insert([
                         'attribute_id' => $attribute->id,

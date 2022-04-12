@@ -33,7 +33,16 @@ class Attribute extends Model
     {
         return DB::table('attribute_icons')
             ->where('attribute_id', $this->id)
+            ->join('images', 'images.id','=','image_id')
+            ->select('images.*')
             ->get();
+    }
+
+    public function iconset()
+    {
+        return DB::table('attribute_icons')
+            ->where('attribute_id', $this->id)
+            ->first();
     }
 
     public function valuesLabels()
@@ -101,5 +110,7 @@ class Attribute extends Model
 
         return $attributes;
     }
+
+
 
 }

@@ -24,7 +24,7 @@
                 <option value="0">...</option>
                 <option v-for="(title, type) in attr_types" :value="type" :key="type">{{title}}</option>
             </select>
-            <select v-show="iconsets.length" v-model="iconset_id" name="iconset" id="iconset" @change="getIconsForSet($event.target)">
+            <select v-show="iconsets.length" v-model="attribute.iconset_id" name="iconset" id="iconset" @change="getIconsForSet($event.target)">
                 <option value="0">...</option>
                 <option v-for="(iconset,index) in iconsets" :value="iconset.id" :key="index" :data-index="index">{{iconset.name}}</option>
             </select>
@@ -53,17 +53,18 @@
             </div>
         </div>
         <div class="form-group" v-if="attribute.type === 'color'">
-            <div style="width: 30px;" v-for="(color,index) in tags" :key="index">
+            <div class="d-flex align-items-center" style="width: 60px;" v-for="(color,index) in tags" :key="index">
                 <verte menuPosition="center" :value="tags[index]" :showHistory="false" :enableAlpha="false" model="hex" v-model="tags[index]"></verte>
+                <span class="btn mdi mdi-minus mdi-24px" @click="removeColor(index)"></span>
             </div>
             <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="addColor()"><i class="mdi mdi-plus"></i></button>
         </div>
         <div v-if="attribute.type === 'icon'">
-            <div class="form-group row" v-for="(name, index) in tags" :key="index">
-                <div class="form-group">
+            <div class="form-group row align-items-center" v-for="(name, index) in tags" :key="index">
+                <div class="form-group m-0">
                     <input type="text" name="value_title" id="value_title" v-model="tags[index]" placeholder="Название">
                 </div>
-                <div class="form-group">
+                <div class="form-group m-0">
                     <v-select v-model="icons[index]" :options="options">
                         <template #selected-option="{ icon }">
                             <div style="display: flex; align-items: baseline;">
@@ -76,6 +77,7 @@
                         </template>
                     </v-select>
                 </div>
+                <span class="btn mdi mdi-minus mdi-24px" @click="removeIcon(index)"></span>
             </div>
             <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="addIcon"><i class="mdi mdi-plus"></i></button>
         </div>
@@ -115,8 +117,8 @@
                 selected_icon: '',
                 tag: '',
                 range_min:0,
-                range_max:0,
-                range_step:0,
+                range_max:1,
+                range_step:1,
                 tags: [],
                 errors: {},
                 group_id: 0,
@@ -129,7 +131,6 @@
                 this.attribute.category_id = id;
             },
             getAttributeValues() {
-                console.log()
                 axios.get('/api/getAttributeValues', {
                     params: {
                         attribute_id: this.attribute.id
@@ -176,12 +177,16 @@
                 axios.get('/api/getIconsets')
                     .then((response) => {
                         this.iconsets = response.data;
-
+                        this.getIconsForSet();
                     })
             },
-            getIconsForSet(select) {
-                const selected = select.options[select.options.selectedIndex].dataset;
-                this.options = this.iconsets[selected.index].images;
+            getIconsForSet() {
+                this.iconsets.forEach(iconset => {
+                    if(iconset.id === this.attribute.iconset_id)
+                    {
+                        this.options = iconset.images;
+                    }
+                })
             },
             getIcons() {
                 axios.get('/api/getAttributeIcons', {
@@ -190,7 +195,6 @@
                     }
                 })
                     .then((response) => {
-                        this.options = response.data;
                         this.icons = response.data;
                     })
             },
@@ -211,8 +215,16 @@
             addColor() {
                 this.$set(this.tags, this.tags.length, '#498230');
             },
+            removeColor(index) {
+                this.$delete(this.tags, index);
+            },
             addIcon() {
                 this.$set(this.tags, this.tags.length, '');
+            },
+            removeIcon(index) {
+                this.$delete(this.icons, index);
+                this.$delete(this.tags, index);
+                this.$delete(this.attribute_values, index);
             },
             setRangeValues() {
                 this.$set(this.attributes_values, 0, this.range_min);
@@ -220,6 +232,11 @@
                 this.$set(this.attributes_values, 2, this.range_step);
             },
             submit() {
+                if(this.attribute.type !=='range' && this.isTagsEmpty) {
+                    alert('Атрибут должен иметь хотя бы 1 значение');
+                    return;
+                }
+
                 const formData = new FormData();
 
                 Object.keys(this.attribute).forEach(key => {
@@ -245,12 +262,16 @@
                 }
                 if(this.attribute.type === 'icon')
                 {
+                    if(this.icons.length === 0) {
+                        alert('Атрибут должен иметь хотя бы 1 значение');
+                        return;
+                    }
                     let icons_ids = [];
                     this.icons.forEach(icon => {
                         icons_ids.push(icon.id);
                     })
                     formData.append('icons', icons_ids);
-                    formData.append('iconset_id', this.iconset_id);
+                    formData.append('iconset_id', this.attribute.iconset_id);
                 }
 
                 formData.append('values', this.attributes_values);
@@ -293,6 +314,9 @@
         computed: {
             submit_title() {
                 return this.is_edit_form ? 'Сохранить' : 'Создать'
+            },
+            isTagsEmpty() {
+                return this.tags.length === 0
             }
         },
         created() {

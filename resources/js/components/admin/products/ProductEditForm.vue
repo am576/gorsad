@@ -233,8 +233,6 @@
                     this.attributes = response.data;
                     if (this.attrs.length > 0) {
                         this.attrs.forEach((attribute, index) => {
-
-
                             axios.get('/api/getAttributeValues', {
                                 params: {
                                     attribute_id: attribute.attribute_id
