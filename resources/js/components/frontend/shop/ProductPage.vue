@@ -3,15 +3,14 @@
         <div class="row justify-content-start m-0">
             <div class="image-wrapper col-lg-6 col-sm-12">
                 <div class="display-image" :style="{'background-image':'url(/storage/images/' + product.images[0].large +')'}">
-                    <div class="product-name-rus">Клён остролистный</div>
-                    <div class="product-name-lat">Carpinus betulus</div>
+                    <div class="product-name-rus">{{product.title}}</div>
+                    <div class="product-name-lat">{{product.title_lat}}</div>
                 </div>
             </div>
             <div class="col-md-5 col-sm-12">
                 <div class="p-3">
-                    <h5 class="text-success">{{product.additional_info.family}}</h5>
                     <h3>{{product.title}}</h3>
-                    <h5 class="text-muted">{{product.additional_info.common_name}}</h5>
+                    <h5 class="text-muted">{{product.title_lat}}</h5>
                     <div>----</div>
                     <div>
                         <p v-html="product.description"></p>

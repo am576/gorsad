@@ -36,11 +36,17 @@ class ProductController extends Controller
 
     public function store(ProductStore $request)
     {
-        $input = $request->except(['attribute_id', 'attribute_value_id', 'attributes', 'variants']);
+//        $input = $request->except(['attribute_id', 'attribute_value_id', 'attributes', 'variants']);
+        $input = $request->validated();
         foreach ($input as $field => $value) {
             if ($value == '') {
                 $input[$field] = 0;
             }
+        }
+
+        if($input['title_lat'] == 0)
+        {
+            $input['title_lat'] = $input['title'];
         }
 
         $product = new Product($input);
@@ -158,6 +164,10 @@ class ProductController extends Controller
             if ($value == '') {
                 $input[$field] = 0;
             }
+        }
+        if($input['title_lat'] == 0)
+        {
+            $input['title_lat'] = $input['title'];
         }
 
         $product->fill($input);

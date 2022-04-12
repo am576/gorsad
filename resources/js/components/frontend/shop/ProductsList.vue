@@ -52,8 +52,9 @@
                             <span v-if="!isGuest" class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
                             <span class="compare mdi mdi-24px mdi-format-horizontal-align-center" v-bind:class="isSetToCompare(product.id)" @click.prevent="toggleProductCompare(product.id)"></span>
                             <p class="description">
+                                <span class="w-100" v-show="hoveredIndex === index + 1">{{product.title_lat}}</span>
                                 <span class="d-block">{{product.title}}</span>
-                                <span class="w-100" v-show="hoveredIndex === index + 1">Клён остролистный</span>
+
                             </p>
                         </div>
                     </a>

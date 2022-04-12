@@ -24,12 +24,18 @@
                                        v-model="product.title">
                                 <div v-if="errors && errors.title" class="text-danger">{{errors.title[0]}}</div>
                             </div>
-                            <div class="form-group" v-for="(field,index) in category_fields" :key="index">
+                            <div class="form-group">
+                                <label for="title_lat">Название латинское</label>
+                                <input type="text" class="form-control" id="title_lat" name="title_lat" autocomplete="off"
+                                       v-model="product.title_lat">
+                                <div v-if="errors && errors.title_lat" class="text-danger">{{errors.title_lat[0]}}</div>
+                            </div>
+                            <!--<div class="form-group" v-for="(field,index) in category_fields" :key="index">
                                 <label for="title">{{field.title}}</label>
                                 <input type="text" class="form-control" :id="field.name" :name="field.name" autocomplete="off"
                                        v-model="additional_info[field.name]">
                                 <div v-if="errors && errors.title" class="text-danger">{{errors.title[0]}}</div>
-                            </div>
+                            </div>-->
                             <!--<div class="form-group">
                                 <label for="code">Код товара</label>
                                 <input type="text" class="form-control" id="code" name="code" autocomplete="off"
@@ -232,6 +238,7 @@
                 this.errors = {};
                 const formData = new FormData();
 
+                if(!this.product.hasOwnProperty('title_lat') || this.product.title_lat === '') this.product.title_lat = this.product.title;
                 Object.keys(this.product).forEach(key => {
                     formData.append(key, this.product[key])
                 });
@@ -248,7 +255,7 @@
                 axios.post('/admin/products', formData)
                 .then(response =>{
                     if(response.status == 200) {
-                        window.location.href = ''
+                        window.location.href = '/admin/products'
                     }
                 }).catch(error => {
                     if (error.response.status === 422) {

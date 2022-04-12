@@ -12,6 +12,7 @@
         "ext-json": "*",
         "ext-mysqli": "*",
         "barryvdh/laravel-dompdf": "^0.9.0",
+        "doctrine/dbal": "^2.12.1",
         "fideloper/proxy": "^4.2",
         "fomvasss/laravel-punycode": "^1.3",
         "fruitcake/laravel-cors": "^1.0",
