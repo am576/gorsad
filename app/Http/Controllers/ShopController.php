@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Attribute;
+use App\Http\Requests\ServiceOrderRequest;
 use App\Image;
 use App\Product;
+use App\Service;
+use App\ServiceOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -139,5 +142,23 @@ class ShopController extends Controller
 
         $products_compared['products'] = $products;
         return $products_compared;
+    }
+
+    public function createOrderService($service_id, ServiceOrderRequest $request)
+    {
+        $service = Service::findOrFail($service_id);
+        $input = $request->validated();
+
+        $service_order = new ServiceOrder($input);
+        $service_order['service_id'] = $service_id;
+
+        if($service_order->save())
+        {
+            $data = ['message' => 'OK!'];
+
+            return response()->json($data, 200);
+        }
+
+        return response()->json('error', 422);
     }
 }

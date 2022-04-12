@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\ServiceOrder;
 use App\User;
 use App\UserNotification;
 use App\UserQuery;
@@ -21,11 +22,13 @@ class OrderController extends Controller
     {
         $queries = UserQuery::all();
         $orders = Order::all();
+        $service_orders = ServiceOrder::all();
 
         return view('admin.orders.index')
             ->with([
                 'queries' => $queries,
-                'orders' => $orders
+                'orders' => $orders,
+                'service_orders' => $service_orders
             ]);
     }
 
@@ -111,5 +114,17 @@ class OrderController extends Controller
         return PDF::loadView('frontend.shop.order', compact('order'))->stream();
 
         return $pdf->download('order.pdf');
+    }
+
+    public function setServiceOrderStatus($id, Request $request)
+    {
+        $service_order = ServiceOrder::findOrFail($id);
+
+        $service_order->status = $request->status;
+
+        if($service_order->save())
+        {
+            return redirect()->intended(route('orders.index'));
+        }
     }
 }
