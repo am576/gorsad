@@ -144,7 +144,7 @@
                     return `url(/storage/images/${product.images[0].medium})`
                 }
                 else {
-                    return 'url(https://via.placeholder.com/150)'
+                    return 'url(/storage/images/products/noimage/noimage_medium.png)'
                 }
             },
             showSigninForm() {

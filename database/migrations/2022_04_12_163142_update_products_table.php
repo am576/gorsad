@@ -15,7 +15,6 @@ class UpdateProductsTable extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->string('title_lat')->after('title');
-
         });
     }
 
