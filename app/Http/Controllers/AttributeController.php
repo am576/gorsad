@@ -28,10 +28,15 @@ class AttributeController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $val_params = [
             'name' => 'required',
-            'values' => 'required|json|min:3'
-        ]);
+
+        ];
+        if($request['type'] != 'bool')
+        {
+            $val_params['values'] = 'required|json|min:3';
+        }
+        $request->validate($val_params);
 
         $attribute = new Attribute($request->except(['values']));
         $attribute->save();
