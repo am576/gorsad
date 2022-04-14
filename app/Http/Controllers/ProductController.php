@@ -157,6 +157,7 @@ class ProductController extends Controller
 
     public function update(ProductUpdate $request, $id)
     {
+//        return dd(json_decode($request['attributes']));
         $product = Product::findOrFail($id);
 
         $input = $request->except(['attribute_id', 'attribute_value_id', 'attributes']);

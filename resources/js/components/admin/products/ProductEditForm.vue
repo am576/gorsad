@@ -217,6 +217,7 @@
                             this.attrs[index].attribute_values['icons'].forEach((value, i) => {
                                 this.$set(this.attrs[index].attribute_values['icons'][i], 'value_id', this.attrs[index].attribute_values[i].id);
                             })
+                            this.$eventBus.$emit('setAttributeOptions', index,  response.data.icons);
                         })
                     }
                 })
@@ -281,10 +282,18 @@
             },
 
             setAttributeValues(index, values) {
-                // if(this.attrs[index].type !== 'icon') {
+                if(this.attrs[index].type === 'icon') {
+                    this.attrs[index].selected_values = [];
+                    this.selected_values = []
+                    values.forEach(value => {
+                        this.attrs[index].selected_values.push(value.value_id);
+                        this.selected_values.push(value.value_id);
+                    })
+                }
+                else {
                     this.$set(this.attrs[index], 'selected_values', values);
                     this.$set(this.selected_values, index, values)
-                // }
+                }
 
             },
             createAttributeRow()
@@ -334,7 +343,7 @@
                 this.attrs.forEach(attribute => {
                     let selected_values = attribute.selected_values;
                     if(attribute.type === 'icon') {
-                        selected_values = [attribute.selected_values[0].value_id]
+                        selected_values = attribute.selected_values
                     }
                     attributes_to_save.push(
                         {

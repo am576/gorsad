@@ -55,7 +55,7 @@ class ImportProductsFromJson extends Command
 
                 ];
             })->toArray();
-        });
+        })->toArray();
 
         /**** Parse JSON file ****/
         $json_string = file_get_contents('products.json');
@@ -127,6 +127,6 @@ class ImportProductsFromJson extends Command
          * Color -
          * Icon -
          * */
-        dd($array->toArray()['Цвет листа']);
+        dd($array);
     }
 }
