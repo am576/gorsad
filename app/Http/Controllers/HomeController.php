@@ -101,17 +101,18 @@ class HomeController extends Controller
     {
         $products = Product::select('*')
             ->with('images')
-            ->get();
+            ->paginate(config('shop.paginate'));
 
         $attributes = (new \App\Attribute)->shopFilterAttributes();
 
         foreach ($products as $product) {
             $product['attributes'] = $product->savedAttributes();
         }
+//                return dd($products);
         return view('frontend.shop.index')
             ->with(
                 [
-                    'products'=> $products,
+                    'products'=> $products->toJson(),
                     'attributes' => $attributes,
                 ]
             );

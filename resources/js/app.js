@@ -23,7 +23,8 @@ Vue.use( IconsPlugin );
 Vue.use( vSelect );
 Vue.use( ClassicEditor );
 
-Vue.component('v-select', vSelect)
+Vue.component('v-select', vSelect);
+Vue.component('InfiniteLoading', require('vue-infinite-loading'));
 
 /* Admin side components */
 Vue.component('category-selector', require('./components/admin/CategorySelector.vue').default);

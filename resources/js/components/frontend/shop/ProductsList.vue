@@ -46,7 +46,7 @@
         </div>
         <div class="row wr2">
             <div class="row wr3">
-                <div v-show="!showComparison" class="product-wrapper" v-for="(product, index) in products" style="">
+                <div v-show="!showComparison" class="product-wrapper" v-for="(product, index) in products" style="" infinite-wrapper>
                     <a class="product-link" :href="'/products/'+product.id" @mouseenter="hoverProduct(index)" @mouseleave="unHover()">
                         <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}" :class="{scaled: hoveredIndex === index + 1}">
                             <span v-if="!isGuest" class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
@@ -59,6 +59,7 @@
                         </div>
                     </a>
                 </div>
+                <infinite-loading @distance="1000" @infinite="infiniteHandler" force-use-infinite-wrapper></infinite-loading>
                 <comparison-page v-if="showComparison" :comparison="compareProducts" @closeComparison="closeComparison"></comparison-page>
             </div>
         </div>
@@ -78,6 +79,7 @@
         },
         data() {
             return {
+                page: 2,
                 favorites: [],
                 filterShown: true,
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -172,7 +174,21 @@
             },
             closeComparison() {
                 this.showComparison = false;
-            }
+            },
+            infiniteHandler($state) {
+                axios.get('/shop/load?page='+this.page)
+                    .then(response => {
+                        return response.data;
+
+                    }).then(data => {
+                    $.each(data.data, (key, value)=> {
+                        this.products.push(value);
+                    });
+                    $state.loaded();
+                });
+
+                this.page = this.page + 1;
+            },
         },
         computed: {
             filterBtnCaption() {

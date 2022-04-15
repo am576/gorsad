@@ -99,7 +99,7 @@
             },
         },
         created() {
-            this.products = this.products_all;
+            this.products = this.products_all.data;
             this.handleView();
         }
     }

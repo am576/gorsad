@@ -19,5 +19,8 @@
         $filter_options = '[]';
     }
     ?>
+    <?php
+//        dd($products['data'])
+    ?>
     <shop-page :products_all="{{$products}}" :attributes="{{$attributes}}" :filtered_name="{{"'".$filtered_name ."'" }}" :filter_options="{{$filter_options}}" @if(isset($auth_user)):auth_user="{{$auth_user}}" :user="{{json_encode($user)}}"@endif></shop-page>
 @endsection

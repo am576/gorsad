@@ -29,6 +29,7 @@ Route::post('/donotreview','UserController@doNotReview');
 
 Route::get('/shop', 'HomeController@showShopPage')->name('shop');
 Route::post('/shop/filter', 'ShopController@applyFilter')->name('filter');
+Route::get('shop/load', 'ShopController@loadProducts');
 
 Route::get('/cart', 'HomeController@showCart');
 Route::get('/cart/add/', 'CartController@addProduct');
