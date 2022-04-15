@@ -163,28 +163,36 @@ class HomeController extends Controller
         $attributes = [];
         foreach ($product->savedAttributes() as $attribute) {
             $selected_values = [];
-            $img_path = '';
+            $icons = [];
             foreach ($attribute->selected_values as $value_id) {
                 if($attribute->type == 'icon')
                 {
-                    $img_path = Image::select('icon')
-                        ->where('id', DB::table('attribute_icons')->select('image_id')->where('attribute_value_id', $value_id)->pluck('image_id'))
-                        ->first()->icon;
+                    $attribute_icon_id = DB::table('attribute_icons')
+                        ->where('attribute_value_id', $value_id)
+                        ->first()
+                        ->image_id;
+
+                    $image_path = Image::where('id',$attribute_icon_id)
+                        ->first()
+                        ->icon;
+                    array_push($icons, $image_path);
                 }
+
                 array_push($selected_values, DB::table('attributes_values')->find($value_id)->value);
             }
+
             array_push($attributes,
             [
                 'name' => $attribute->name,
                 'type' => $attribute->type,
                 'values' => $selected_values,
-                'icon' => $img_path
+                'icon' => $icons
             ]);
             if($attribute->type == 'icon') unset($attributes['icon']);
         }
+
         $product['attributes'] = $attributes;
         $product['variants'] = $product_variants;
-
 
         return view('frontend.product-page')
             ->with('product', $product)

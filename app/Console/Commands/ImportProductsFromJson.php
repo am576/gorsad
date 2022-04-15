@@ -94,7 +94,7 @@ class ImportProductsFromJson extends Command
                 foreach ($json_product as $attribute_name => $product_attribute) {
                     if (isset($db_attributes[$attribute_name])) {
                         $db_attribute = Attribute::where('name', $attribute_name)->first();
-                        if ($db_attribute->type != 'icon') {
+                        if (true) {
                             if (!empty($product_attribute)) {
                                 $json_attribute_values = explode('|', $product_attribute);
                                 if ($db_attribute->type == 'range') {
