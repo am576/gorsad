@@ -4,8 +4,10 @@ namespace App\Console\Commands;
 
 use App\Attribute;
 use App\Product;
+use App\ProductVariant;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use function Symfony\Component\String\lower;
 
 class ImportProductsFromJson extends Command
 {
@@ -62,34 +64,21 @@ class ImportProductsFromJson extends Command
         })->toArray();
 
         /*** Read JSON file ***/
-        $json_string = file_get_contents('products.json');
-        $json_data = json_decode($json_string, true);
+        $products_data = file_get_contents('products.json');
+        $json_products = json_decode($products_data, true);
 
-        /*
-         * Range - first and last
-         * Text - everything
-         * Color -
-         * Icon -
-         * */
+        $json_products_variants =  $this->getReformattedVariantsJson();
 
-        /*** Create products ***/
+        /*** Create products with variants ***/
         $product_index = 1;
-        foreach ($json_data as $index => $json_product) {
+        foreach ($json_products as $index => $json_product) {
             if ($product_index <= $IMPORT_LIMIT) {
                 echo 'Запись товара #' . $product_index . " ... ";
 
-                $product_name_rus = $this->getRusName($json_product);
-                $product_name_lat = $this->getLatName($json_product);
-                $product_description = $this->getProductDescription($json_product);
+                $product = $this->createProductFromJson($json_product);
+                $this->writeProductVariants($product, $json_products_variants);
 
-                $product = new Product([
-                    'category_id' => 2,
-                ]);
-                $product_name_rus ? $product->title = $product_name_rus : '';
-                $product_name_lat ? $product->title_lat = $product_name_lat : '';
-                $product_description ? $product->description = $product_description : '';
-
-                $product->save();
+                /*** Write attributes ***/
 
                 foreach ($json_product as $attribute_name => $product_attribute) {
                     if (isset($db_attributes[$attribute_name])) {
@@ -142,6 +131,92 @@ class ImportProductsFromJson extends Command
         }
     }
 
+    private function getReformattedVariantsJson()
+    {
+        $json_string = file_get_contents('products_variants_raw.json');
+        $json_data = json_decode($json_string, true);
+
+        $products = [];
+
+        $count = 0;
+        foreach ($json_data as $index => $product) {
+            $remove_keys = ['No.', 'Артикул', 'description', 'FIELD9', 'package_weight', 'FIELD9', 'FIELD10', 'FIELD12', 'FIELD13'];
+            $product = array_diff_key($product, array_flip($remove_keys));
+
+            if(!empty($product['name_rus']))
+            {
+                $product['variants'] = [];
+
+                array_push($product['variants'],
+                    [
+                        "type" => $product['type'],
+                        "width" => $product['width'],
+                        "height" => $product['height'],
+                        "price" => $product['price'],
+                    ]);
+                $product_name = $product['name_rus'];
+                $remove_keys = ['type','width','height','price','name_rus','name_lat'];
+                $product = array_diff_key($product, array_flip($remove_keys));
+
+                $products[$product_name] = $product;
+                $count++;
+            }
+            else
+            {
+                $remove_keys = ['name_rus','name_lat'];
+                $product = array_diff_key($product, array_flip($remove_keys));
+                array_push($products[array_key_last($products)]['variants'], $product);
+            }
+        }
+        echo "Обработано $count товаров \n";
+
+        $products_variants_json = json_encode($products, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        file_put_contents('products_variants.json','');
+        file_put_contents('products_variants.json', $products_variants_json);
+
+        return $products;
+    }
+
+    private function createProductFromJson($json_product)
+    {
+        $product_name_rus = $this->getRusName($json_product);
+        $product_name_lat = $this->getLatName($json_product);
+        $product_description = $this->getProductDescription($json_product);
+
+        $product = new Product([
+            'category_id' => 2,
+        ]);
+        $product_name_rus ? $product->title = $product_name_rus : '';
+        $product_name_lat ? $product->title_lat = $product_name_lat : '';
+        $product_description ? $product->description = $product_description : '';
+
+        $product->save();
+
+        return $product;
+    }
+
+    private function writeProductVariants($product, $variants)
+    {
+        $trimmed_product_name = $this->getTrimmedName($product->title);
+        if(isset($variants[$trimmed_product_name]))
+        {
+            foreach ($variants[$trimmed_product_name]['variants'] as $variant)
+            {
+                $new_variant = new ProductVariant(
+                    [
+                        'product_id' => $product->id,
+                        'height' => $this->formatVariantValue($variant['height']),
+                        'width' => $this->formatVariantValue($variant['width']),
+                        'price' => $this->formatVariantPrice($variant['price']),
+                        'type' => $this->formatVariantType($variant['type'])
+                    ]
+                );
+
+                $new_variant->save();
+            }
+        }
+    }
+
     private function getRusName($product)
     {
         preg_match('/([\p{Cyrillic}\s\'«»\"\.]+)/u', $product['Title'], $match);
@@ -170,4 +245,27 @@ class ImportProductsFromJson extends Command
 
         return false;
     }
+
+    private function getTrimmedName(string $product_name)
+    {
+        return preg_replace('/[\'\"]+/', '', $product_name);
+    }
+
+    private function formatVariantValue(string $value)
+    {
+        return preg_replace('/[-]+/', ',', trim($value));
+    }
+
+    private function formatVariantPrice(string $price)
+    {
+        $price = str_replace(',', '.', $price);
+
+        return preg_replace('/[^0-9.]/', '', $price);
+    }
+
+    private function formatVariantType(string $type)
+    {
+        return strtolower($type);
+    }
+
 }

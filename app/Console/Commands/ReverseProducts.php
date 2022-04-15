@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Product;
+use App\ProductVariant;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -39,6 +40,8 @@ class ReverseProducts extends Command
             ->delete();
         DB::table('products_attributes')
             ->where('product_id','!=',1)
+            ->delete();
+        ProductVariant::where('product_id','!=',1)
             ->delete();
     }
 }
