@@ -2,7 +2,7 @@
     <div id="product-page">
         <div class="row justify-content-start m-0">
             <div class="image-wrapper col-lg-6 col-sm-12">
-                <div class="display-image" :style="{'background-image':'url(/storage/images/' + product.images[0].large +')'}">
+                <div class="display-image" :style="{'background-image':'url(/storage/images/' + product.images[0].large || '' +')'}">
                     <div class="product-name-rus">{{product.title}}</div>
                     <div class="product-name-lat">{{product.title_lat}}</div>
                 </div>
@@ -236,9 +236,17 @@
             },
             priceRequest() {
                 alert('Запрос отправлен. Уведомление о цене Вы сможете увидеть в Вашем личном кабинете');
+            },
+            replaceMissingImages() {
+                if(this.product.images.length === 0) {
+                   this.product.images.push({
+                       large: 'products/noimage/noimage_large.png'
+                   })
+                }
             }
         },
         created() {
+            this.replaceMissingImages();
             this.setCurrentImage(this.product.images[0]);
             this.$set(this.product, 'additional_info', JSON.parse(this.product.additional_info));
         }

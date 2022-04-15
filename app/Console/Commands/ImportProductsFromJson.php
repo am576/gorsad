@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Attribute;
 use App\Product;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class ImportProductsFromJson extends Command
 {
@@ -101,11 +102,10 @@ class ImportProductsFromJson extends Command
          * Color -
          * Icon -
          * */
-//        dd($array);
-//        dd($array['Скорость роста'][0]);
-//        dd($json_data);
-        $mesto = [];
+
+        $product_index = 1;
         foreach ($json_data as $index => $json_product) {
+            echo 'Запись товара #' . $product_index . " ... ";
             $product_name_rus = $this->getRusName($json_product);
             $product_name_lat = $this->getLatName($json_product);
             $product_description = $this->getProductDescription($json_product);
@@ -120,21 +120,35 @@ class ImportProductsFromJson extends Command
 
             $product->save();
 
-            /*foreach ($json_product as $attribute_name => $product_attr) {
+            foreach ($json_product as $attribute_name => $product_attribute) {
                 if(isset($db_attributes[$attribute_name]))
                 {
-                    if($attribute_name == 'Дополнительная ценность')
+                    $db_attribute = Attribute::where('name', $attribute_name)->first();
+                    if($db_attribute->type == 'text' && !empty($product_attribute))
                     {
-//                        echo $attr_name . "\n";
-//                        print_r(explode('|',$product_attr));
-//                        $mesto = array_merge($mesto,explode('|',$product_attr));
-                    }
+                        $json_attribute_values = explode('|', $product_attribute);
+                        $db_attribute_values_id = DB::table('attributes_values')
+                            ->whereIn('value', $json_attribute_values)
+                            ->get()
+                            ->pluck('id')
+                            ->toArray();
 
+                        $values_to_insert = [];
+                        foreach ($db_attribute_values_id as $db_attribute_value_id) {
+                            array_push($values_to_insert, [
+                                'product_id' => $product->id,
+                                'attribute_id' => $db_attribute->id,
+                                'attribute_value_id' => $db_attribute_value_id
+                            ]);
+                        }
+
+                        DB::table('products_attributes')->insert($values_to_insert);
+                    }
                 }
-            }*/
+            }
+            echo "ОК\n";
+            $product_index++;
         }
-        $mesto = array_unique($mesto);
-        dd($mesto);
     }
 
     private function getRusName($product)
