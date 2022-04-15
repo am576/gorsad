@@ -108,9 +108,11 @@ class ImportProductsFromJson extends Command
                                     $json_attribute_values = $ar;
                                 }
 
+
+                                $value_column = $db_attribute->type == 'color' ? 'ext_value' : 'value';
                                 $db_attribute_values_id = DB::table('attributes_values')
                                     ->where('attribute_id', $db_attribute->id)
-                                    ->whereIn('value', $json_attribute_values)
+                                    ->whereIn($value_column, $json_attribute_values)
                                     ->get()
                                     ->pluck('id', 'value')
                                     ->toArray();
