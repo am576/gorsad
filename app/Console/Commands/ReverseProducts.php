@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Image;
 use App\Product;
 use App\ProductVariant;
 use Illuminate\Console\Command;
@@ -42,6 +43,8 @@ class ReverseProducts extends Command
             ->where('product_id','!=',1)
             ->delete();
         ProductVariant::where('product_id','!=',1)
+            ->delete();
+        Image::where('imageable_type','App\Product')
             ->delete();
     }
 }

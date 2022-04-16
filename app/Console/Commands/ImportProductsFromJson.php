@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Attribute;
+use App\Image;
 use App\Product;
 use App\ProductVariant;
 use Illuminate\Console\Command;
@@ -37,6 +38,7 @@ class ImportProductsFromJson extends Command
 
     public function handle()
     {
+        $time_start = microtime(true);
         $IMPORT_LIMIT = $this->option('count');
 
         /*** Get attributes from DB and create an assoc array  ***/
@@ -63,6 +65,9 @@ class ImportProductsFromJson extends Command
             })->toArray();
         })->toArray();
 
+        $image_files = scandir('./public/storage/images/products');
+        $file_names = array_map('strtolower', $image_files);
+
         /*** Read JSON file ***/
         $products_data = file_get_contents('products.json');
         $json_products = json_decode($products_data, true);
@@ -78,8 +83,31 @@ class ImportProductsFromJson extends Command
                 $product = $this->createProductFromJson($json_product);
                 $this->writeProductVariants($product, $json_products_variants);
 
-                /*** Write attributes ***/
+                /*** Write images ***/
+                if(!empty($product->title_lat))
+                {
+                    $lat_name_mod = strtolower(rtrim(preg_replace('/[\s\'\"]+/', '_', $product->title_lat), '_'));
+                    $match = preg_grep("/$lat_name_mod\_\d/",$file_names);
+                    if(count($match))
+                    {
+                        foreach ($match as $index => $label) {
+                            $path = 'products/' . $image_files[$index];
+                            $image = new Image([
+                                'label' => $label,
+                                'mimetype' => 'image/jpeg',
+                                'imageable_type' => 'App\Product',
+                                'imageable_id' => $product->id,
+                                'icon' => $path,
+                                'small' => $path,
+                                'medium' => $path,
+                                'large' => $path,
+                            ]);
+                            $image->save();
+                        }
+                    }
+                }
 
+                /*** Write attributes ***/
                 foreach ($json_product as $attribute_name => $product_attribute) {
                     if (isset($db_attributes[$attribute_name])) {
                         $db_attribute = Attribute::where('name', $attribute_name)->first();
@@ -129,6 +157,9 @@ class ImportProductsFromJson extends Command
                 $product_index++;
             }
         }
+        $time_end = microtime(true);
+        $time = number_format((float)($time_end - $time_start), 2, '.', '');;
+        echo "\n Импорт занял $time секунд\n";
     }
 
     private function getReformattedVariantsJson()
@@ -154,7 +185,7 @@ class ImportProductsFromJson extends Command
                         "height" => $product['height'],
                         "price" => $product['price'],
                     ]);
-                $product_name = $product['name_rus'];
+                $product_name = $this->getTrimmedName($product['name_rus']);
                 $remove_keys = ['type','width','height','price','name_rus','name_lat'];
                 $product = array_diff_key($product, array_flip($remove_keys));
 
@@ -168,8 +199,6 @@ class ImportProductsFromJson extends Command
                 array_push($products[array_key_last($products)]['variants'], $product);
             }
         }
-        echo "Обработано $count товаров \n";
-
         $products_variants_json = json_encode($products, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         file_put_contents('products_variants.json','');
         file_put_contents('products_variants.json', $products_variants_json);
@@ -198,6 +227,7 @@ class ImportProductsFromJson extends Command
     private function writeProductVariants($product, $variants)
     {
         $trimmed_product_name = $this->getTrimmedName($product->title);
+
         if(isset($variants[$trimmed_product_name]))
         {
             foreach ($variants[$trimmed_product_name]['variants'] as $variant)
@@ -248,7 +278,7 @@ class ImportProductsFromJson extends Command
 
     private function getTrimmedName(string $product_name)
     {
-        return preg_replace('/[\'\"]+/', '', $product_name);
+        return rtrim(preg_replace('/[\'\"]+/', '', $product_name));
     }
 
     private function formatVariantValue(string $value)
