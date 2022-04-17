@@ -174,6 +174,7 @@
                 const formData = new FormData();
 
                 let form_action = '/admin/projects/';
+                if (this.project.hasOwnProperty('description'))
                 this.project.description = this.project.description.substring(3, this.project.description.length - 4);
 
                 Object.keys(this.project).forEach(key => {
