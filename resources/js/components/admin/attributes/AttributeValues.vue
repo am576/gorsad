@@ -18,16 +18,16 @@
             ></vue-slider>
         </div>
         <div v-if="type === 'icon'">
-            <v-select v-model="selected[0]" :options="values.icons" @option:selected="changeAttributeIcon" @option:deselected="changeAttributeIcon">
-                <template #selected-option="{ icon }">
-                    <div style="display: flex; align-items: baseline;">
-                        <span>{{selected[0].icon_label}}</span>
-                        <img height="50px" :src="'/storage/images/' + selected[0].icon"/>
+            <v-select multiple v-model="icons_selected" :options="icons" @option:selected="changeAttributeIcon" @option:deselected="changeAttributeIcon" :dropdown-should-open="dropdownShouldOpen">
+                <template #selected-option="{ icon_name, icon }">
+                    <div style="display: flex; align-items: baseline; color: black">
+                        <span>{{icon_name}}</span>
+                        <img height="50px" :src="'/storage/images/' + icon"/>
                     </div>
                 </template>
 
                 <template slot="option" slot-scope="option">
-                    <span>{{option.icon_label}}</span>
+                    <span>{{option.icon_name}}</span>
                     <img height="50px" :src="'/storage/images/' + option.icon"/>
                 </template>
             </v-select>
@@ -71,19 +71,23 @@
                 attr_id: 0,
                 selected_id:0,
                 selected_text_options: [],
+                icons_selected: [],
                 i: 0
             }
         },
         methods: {
+            dropdownShouldOpen() {
+                return true;
+            },
             changeAttributeRange() {
                 this.$eventBus.$emit('changeAttributeValue', this.index, this.values.range)
             },
             changeAttributeValue() {
                 this.$eventBus.$emit('changeAttributeValue', this.index, this.selected)
             },
-            changeAttributeIcon() {
-
-                // this.$eventBus.$emit('changeAttributeValue', this.index, this.selected)
+            changeAttributeIcon(v) {
+                this.selected[0] = v.value_id;
+                this.$eventBus.$emit('changeAttributeValue', this.index, this.icons_selected)
             },
             changeSelectedColor(id) {
                 this.value_id = id;
@@ -96,6 +100,7 @@
                 this.$eventBus.$emit('changeAttributeValue', this.index, this.colors_ids)
             },
             getAttributeValues(values) {
+
                     if(values.length || Object.keys(values).length) {
                         if (values.length && this.type === 'range') {
                             if (this.range_ids.length === 0) {
@@ -127,7 +132,7 @@
                     }
             },
             setAttributeValues(id, values) {
-                if (id === this.attribute_id){
+                if (id === this.attribute_id) {
                     if(this.type === 'range') {
                         if (this.range_ids.length === 0) {
                             this.values = values;
@@ -138,13 +143,19 @@
                         this.colors_ids = this.selected;
                     }
                     else if(this.type === 'icon') {
-                        this.values = values.icons;
-                        this.selected = [values.selected];
-                        // this.options = values.options;
-                        // this.icons[this.index] = values.values[0];
-                        // values.values[1].forEach((value, index) => {
-                        //     this.$set(this.options[index], 'value_id', value.id);
-                        // })
+                        this.icons = values.icons;
+
+                        this.values.forEach((value,index) => {
+                            this.$set(this.icons[index], 'icon_name', value.value)
+                        })
+                        this.selected.forEach(selected_id => {
+                            this.icons.forEach(icon => {
+                                if(selected_id === icon.value_id) {
+                                    this.icons_selected.push(icon);
+                                }
+                            })
+
+                        })
                     }
                     else if(this.type === 'text') {
                         this.values = values;
@@ -158,7 +169,11 @@
                     this.$set(this.range_ids, 1, va[1]);
                 }
             },
-
+            setAttributeOptions(index, icons) {
+                if(this.index === index) {
+                    this.icons = icons;
+                }
+            }
         },
         computed: {
             range_values: {
@@ -173,10 +188,30 @@
                     this.$set(this.range, 1, newValue[1]);
                 }
             },
+            selectedIcon() {
+                let icon =''
+                this.values.forEach(value => {
+                    if(this.selected[0] === value.id) {
+                        icon = value.image.icon;
+                    }
+                })
+                return icon;
+            },
+            selectedLabel() {
+                let label = '';
+                this.values.forEach(value => {
+                    if(this.selected[0] === value.id) {
+                        label = value.value
+                    }
+                })
+                return label;
+            }
         },
         created() {
             this.$eventBus.$on('getAttributeValues', this.getAttributeValues);
             this.$eventBus.$on('setAttributeValues', this.setAttributeValues);
+            this.$eventBus.$on('setAttributeOptions', this.setAttributeOptions);
+            // this.$eventBus.$on('addOptions', this.addOptions);
             // this.$eventBus.$on('setTextValues', this.setTextValues);
         }
 

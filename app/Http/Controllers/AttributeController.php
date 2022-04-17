@@ -28,48 +28,54 @@ class AttributeController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $val_params = [
             'name' => 'required',
-        ]);
+
+        ];
+        if($request['type'] != 'bool')
+        {
+            $val_params['values'] = 'required|json|min:3';
+        }
+        $request->validate($val_params);
 
         $attribute = new Attribute($request->except(['values']));
         $attribute->save();
 
         if(isset($request->values))
         {
-            $values = explode(',', $request->values);
+            $values = json_decode($request->values);
 
-            if($attribute->type == 'icon' && isset($request->icons))
+            if($attribute->type == 'range')
             {
-                $icons = explode(',', $request->icons);
-                foreach($values as $key=>$value)
+                if($this->validateRange($values))
                 {
+                    $this->populateRangeValues($attribute, $values);
+                }
+                else
+                {
+                    return response()->json('error', 422);
+                }
+            }
+            else
+            {
+                foreach($values as $key=>$value) {
                     $value_id = DB::table('attributes_values')->insertGetId([
                         'attribute_id' => $attribute->id,
-                        'value' => $value,
+                        'value' => $value->value,
+                        'ext_value' => isset($value->ext_value) ? $value->ext_value : ''
                     ]);
-
-                    DB::table('attribute_icons')->insert([
-                       'attribute_id' => $attribute->id,
-                       'attribute_value_id' => $value_id,
-                       'image_id' => $icons[$key],
-                       'iconset_id' => $request->iconset_id
-                    ]);
+                    if(isset($value->image))
+                    {
+                        $image = $value->image;
+                        DB::table('attribute_icons')->insert([
+                            'attribute_id' => $attribute->id,
+                            'attribute_value_id' => $value_id,
+                            'image_id' => $image->id,
+                            'iconset_id' => $request->iconset_id
+                        ]);
+                    }
                 }
-            }
-            else if($attribute->type == 'range')
-            {
-                $this->populateRangeValues($attribute, $values);
-            }
-            else {
 
-                foreach($values as $key=>$value)
-                {
-                    $value_id = DB::table('attributes_values')->insert([
-                        'attribute_id' => $attribute->id,
-                        'value' => $value
-                    ]);
-                }
             }
         }
 
@@ -84,13 +90,13 @@ class AttributeController extends Controller
     public function edit($id)
     {
         $attribute = Attribute::find($id);
-        $icons = $attribute->icons()->pluck('image_id');
+        $attribute['values'] = $attribute->values();
+        if($attribute->type == 'icon')
+        {
+            $attribute['iconset_id'] = $attribute->iconset();
+        }
 
-        $images = Image::whereIn('id', $icons)->get();
-        return view('admin.attributes.edit')->with([
-            'attribute' => $attribute,
-            'images' => $images
-        ]);
+        return view('admin.attributes.edit')->with(['attribute' => $attribute]);
     }
 
     public function update(Request $request, $id)
@@ -100,55 +106,85 @@ class AttributeController extends Controller
         $attribute->fill($input);
         $attribute->save();
 
-        $values = explode(',', $request->values);
+        $values = json_decode($request->values);
 
-        if($attribute->type == 'icon')
+        if(isset($request->delete_values))
         {
-            if(isset($request->icons)) {
-                DB::table('attributes_values')
-                    ->where('attribute_id', $attribute->id)
-                    ->delete();
+            $delete_values = json_decode($request->delete_values);
 
-                DB::table('attribute_icons')
-                    ->where('attribute_id', $attribute->id)
-                    ->delete();
-
-                $icons = explode(',', $request->icons);
-
-                foreach ($values as $key => $value) {
-                    $value_id = DB::table('attributes_values')->insertGetId([
-                        'attribute_id' => $attribute->id,
-                        'value' => $value
-                    ]);
-
-                    DB::table('attribute_icons')->insert([
-                        'attribute_id' => $attribute->id,
-                        'attribute_value_id' => $value_id,
-                        'image_id' => $icons[$key],
-                        'iconset_id' => $request->iconset_id
-                    ]);
+            foreach ($delete_values as $delete_value) {
+                if(isset($delete_value->id))
+                {
+                    DB::table('attributes_values')
+                        ->where('id', $delete_value->id)
+                        ->delete();
+                    if(isset($delete_value->image))
+                    {
+                        DB::table('attribute_icons')
+                            ->where('attribute_id', $delete_value->attribute_id)
+                            ->where('attribute_value_id', $delete_value->id)
+                            ->delete();
+                    }
                 }
-
-                return redirect()->intended(route('attributes.index'));
             }
         }
-        else if($attribute->type == 'range')
+
+        if($attribute->type == 'range')
         {
-            DB::table('attributes_values')
-                ->where('attribute_id', $attribute->id)
-                ->delete();
-
-            $this->populateRangeValues($attribute, $values);
-
-            return redirect()->intended(route('attributes.index'));
+            if($this->validateRange($values))
+            {
+                $this->populateRangeValues($attribute, $values);
+            }
+            else
+            {
+                return response()->json('error', 422);
+            }
         }
-        else {
+        else
+        {
             foreach($values as $key=>$value)
             {
-                DB::table('attributes_values')->updateOrInsert([
-                    'attribute_id' => $attribute->id,
-                    'value' => $value
-                ]);
+                if(isset($value->id))
+                {
+                    DB::table('attributes_values')
+                        ->where('id',$value->id)
+                        ->update([
+                            'attribute_id' => $attribute->id,
+                            'value' => $value->value,
+                            'ext_value' => isset($value->ext_value) ? $value->ext_value : ''
+                        ]);
+                }
+                else
+                {
+                    $value_id = DB::table('attributes_values')->insertGetId([
+                        'attribute_id' => $attribute->id,
+                        'value' => $value->value,
+                        'ext_value' => isset($value->ext_value) ? $value->ext_value : ''
+                    ]);
+                }
+                if(isset($value->image))
+                {
+                    $image = $value->image;
+
+                    if(isset($value->id))
+                    {
+                        DB::table('attribute_icons')
+                            ->where('attribute_id',$attribute->id)
+                            ->where('attribute_value_id',$value->id)
+                            ->update([
+                                'image_id' => $image->id,
+                                'iconset_id' => $request->iconset_id
+                            ]);
+                    }
+                    else{
+                        DB::table('attribute_icons')->insert([
+                            'attribute_id' => $attribute->id,
+                            'attribute_value_id' => $value_id,
+                            'image_id' => $image->id,
+                            'iconset_id' => $request->iconset_id
+                        ]);
+                    }
+                }
             }
             return redirect()->intended(route('attributes.index'));
         }
@@ -169,22 +205,28 @@ class AttributeController extends Controller
 
     private function populateRangeValues($attribute, $values)
     {
-        DB::table('attributes_values')->insert([
-            'attribute_id' => $attribute->id,
-            'value' => $values[0]
-        ]);
-        DB::table('attributes_values')->insert([
-            'attribute_id' => $attribute->id,
-            'value' => $values[1]
-        ]);
-        DB::table('attributes_values')->insert([
-            'attribute_id' => $attribute->id,
-            'value' => $values[2]
-        ]);
+        $range_min = $values[0]->value;
+        $range_max = $values[1]->value;
+        $range_step = $values[2]->value;
+        $attributes_data = [
+            [
+                'attribute_id' => $attribute->id,
+                'value' => $range_min
+            ],
+            [
+                'attribute_id' => $attribute->id,
+                'value' => $range_max
+            ],
+            [
+                'attribute_id' => $attribute->id,
+                'value' => $range_step
+            ]
+        ];
+        DB::table('attributes_values')->insert($attributes_data);
 
-        if($values[2] < 1)
+        if($range_step < 1)
         {
-            for ($i = $values[0]; $i <= $values[1]; $i+= $values[2])
+            for ($i = $range_min; $i <= $range_max; $i+= $range_step)
             {
                 DB::table('attributes_values')->insert([
                     'attribute_id' => $attribute->id,
@@ -194,7 +236,7 @@ class AttributeController extends Controller
         }
         else
         {
-            for ($i = $values[0]; $i <= $values[1]; $i+= $values[2])
+            for ($i = $range_min; $i <= $range_max; $i+= $range_step)
             {
                 DB::table('attributes_values')->insert([
                     'attribute_id' => $attribute->id,
@@ -202,6 +244,20 @@ class AttributeController extends Controller
                 ]);
             }
         }
+    }
 
+    private function validateRange($values)
+    {
+        $MIN = 0;
+        $MAX = 250;
+        $range_min = $values[0]->value;
+        $range_max = $values[1]->value;
+        $range_step = $values[2]->value;
+
+        if($range_min < $MIN || $range_max > $MAX || ($range_min > $range_max) || ($range_max - $range_min) < $range_step)
+        {
+            return false;
+        }
+        return true;
     }
 }

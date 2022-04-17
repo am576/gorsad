@@ -9,7 +9,7 @@ class Attribute extends Model
 {
     public $timestamps = false;
 
-    protected $fillable  = ['name', 'value', 'category_id', 'group_id', 'type'];
+    protected $fillable  = ['name', 'value', 'ext_value', 'category_id', 'group_id', 'type'];
 
 
     public function category()
@@ -24,16 +24,33 @@ class Attribute extends Model
 
     public function values()
     {
-        return DB::table('attributes_values')
+        $values =  DB::table('attributes_values')
             ->where('attribute_id', $this->id)
             ->get();
+        foreach ($values as $value) {
+            $value->image = DB::table('attribute_icons')
+                ->where('attribute_value_id', $value->id)
+                ->join('images', 'images.id','=','image_id')
+                ->select('images.*','attribute_icons.id as icon_id')
+                ->first();
+        }
+        return $values;
     }
 
     public function icons()
     {
         return DB::table('attribute_icons')
             ->where('attribute_id', $this->id)
+            ->join('images', 'images.id','=','image_id')
+            ->select('images.*')
             ->get();
+    }
+
+    public function iconset()
+    {
+        return DB::table('attribute_icons')
+            ->where('attribute_id', $this->id)
+            ->first()->iconset_id;
     }
 
     public function valuesLabels()
@@ -79,6 +96,7 @@ class Attribute extends Model
         return $this->morphOne('App\Image', 'imageable');
     }
 
+
     private static function getAttributesWithValues($attributes)
     {
         foreach ($attributes as $attribute) {
@@ -101,5 +119,7 @@ class Attribute extends Model
 
         return $attributes;
     }
+
+
 
 }

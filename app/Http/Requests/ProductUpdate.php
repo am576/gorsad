@@ -26,6 +26,7 @@ class ProductUpdate extends ProductStore
     {
         return [
             'title' => 'required',
+            'title_lat' => 'string',
             'category_id' => 'required | numeric',
             'description'  =>  'required',
             'price' =>  'required | numeric | max:1000000',

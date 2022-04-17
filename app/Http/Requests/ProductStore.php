@@ -26,6 +26,7 @@ class ProductStore extends FormRequest
     {
         return [
             'title' => 'required',
+            'title_lat' => 'string',
             'category_id' => 'required | numeric',
 //            'code'  =>  'required | unique:App\Product',
             'description'  =>  'required',

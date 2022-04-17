@@ -46,9 +46,9 @@ class ProjectController extends Controller
 
         $project = new Project([
             'name' => $validated['name'],
-            'description' => $validated['description'],
-            'place' => $request->place || $request->name,
-            'area' => $validated['area'],
+            'description' => isset($validated['description']) ? $validated['description'] : '',
+            'place' => $request->place,
+            'area' => isset($validated['area']) ? $validated['area'] : 0,
             'client' => isset($request->client) ? $request->client : '',
             'doneby' => isset($request->doneby) ? $request->doneby : '',
             'coordinates' => $coordinates
@@ -97,7 +97,7 @@ class ProjectController extends Controller
         $project->fill([
             'name' => $validated['name'],
             'description' => $validated['description'],
-            'place' => $request->place || $request->name,
+            'place' => $request->place,
             'area' => $validated['area'],
             'client' => isset($request->client) ? $request->client : '-',
             'doneby' => isset($request->doneby) ? $request->doneby : '-',

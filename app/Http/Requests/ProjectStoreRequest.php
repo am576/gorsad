@@ -26,8 +26,8 @@ class ProjectStoreRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'description' => 'required',
-            'area' => 'numeric',
+            'description' => 'string',
+            'area' => 'numeric | max:10',
             'long' => 'required | numeric',
             'lat' => 'required | numeric',
         ];

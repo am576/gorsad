@@ -161,4 +161,17 @@ class ShopController extends Controller
 
         return response()->json('error', 422);
     }
+    public function loadProducts()
+    {
+        $products = Product::select('*')
+            ->with('images')
+            ->paginate(config('shop.paginate'));
+
+        foreach ($products as $product) {
+            $product['attributes'] = $product->savedAttributes();
+        }
+
+        return response()->json($products);
+
+    }
 }

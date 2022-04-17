@@ -27,7 +27,7 @@
         },
         methods: {
             loadProjectPage(id) {
-                window.location.href = '/projects/' + id;
+                window.open('/projects/' + id, '_blank');
             },
             populateProjects(count) {
 

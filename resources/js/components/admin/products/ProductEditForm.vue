@@ -21,10 +21,21 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
+                                <label for="category_id">Категория</label>
+                                <category-selector :children_only="true" :category="product.category_id"></category-selector>
+                                <div v-if="errors && errors.category_id" class="text-danger">{{errors.category_id[0]}}</div>
+                            </div>
+                            <div class="form-group">
                                 <label for="title">Название</label>
                                 <input type="text" class="form-control" id="title" name="title" autocomplete="off"
                                        v-model="product.title" value="123">
                                 <div v-if="errors && errors.title" class="text-danger">{{errors.title[0]}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Название латинское</label>
+                                <input type="text" class="form-control" id="title_lat" name="title_lat" autocomplete="off"
+                                       v-model="product.title_lat" value="123">
+                                <div v-if="errors && errors.title_lat" class="text-danger">{{errors.title_lat[0]}}</div>
                             </div>
                             <!--<div class="form-group">
                                 <label for="code">Код товара</label>
@@ -32,18 +43,12 @@
                                        v-model="product.code">
                                 <div v-if="errors && errors.code" class="text-danger">{{errors.code[0]}}</div>
                             </div>-->
-
-                            <div class="form-group">
-                                <label for="category_id">Категория</label>
-                                <category-selector :children_only="true" :category="product.category_id"></category-selector>
-                                <div v-if="errors && errors.category_id" class="text-danger">{{errors.category_id[0]}}</div>
-                            </div>
-                            <div class="form-group" v-for="(field,index) in category_fields" :key="index">
+                            <!--<div class="form-group" v-for="(field,index) in category_fields" :key="index">
                                 <label for="title">{{field.title}}</label>
                                 <input type="text" class="form-control"  :name="field.name" autocomplete="off"
                                        v-model="additional_info[field.name]">
                                 <div v-if="errors && errors.title" class="text-danger">{{errors.title[0]}}</div>
-                            </div>
+                            </div>-->
                             <div class="form-group">
                                 <label for="price">Цена</label>
                                 <input type="text" class="form-control" id="price" name="price" autocomplete="off"
@@ -212,6 +217,7 @@
                             this.attrs[index].attribute_values['icons'].forEach((value, i) => {
                                 this.$set(this.attrs[index].attribute_values['icons'][i], 'value_id', this.attrs[index].attribute_values[i].id);
                             })
+                            this.$eventBus.$emit('setAttributeOptions', index,  response.data.icons);
                         })
                     }
                 })
@@ -228,8 +234,6 @@
                     this.attributes = response.data;
                     if (this.attrs.length > 0) {
                         this.attrs.forEach((attribute, index) => {
-
-
                             axios.get('/api/getAttributeValues', {
                                 params: {
                                     attribute_id: attribute.attribute_id
@@ -278,10 +282,18 @@
             },
 
             setAttributeValues(index, values) {
-                // if(this.attrs[index].type !== 'icon') {
+                if(this.attrs[index].type === 'icon') {
+                    this.attrs[index].selected_values = [];
+                    this.selected_values = []
+                    values.forEach(value => {
+                        this.attrs[index].selected_values.push(value.value_id);
+                        this.selected_values.push(value.value_id);
+                    })
+                }
+                else {
                     this.$set(this.attrs[index], 'selected_values', values);
                     this.$set(this.selected_values, index, values)
-                // }
+                }
 
             },
             createAttributeRow()
@@ -331,7 +343,7 @@
                 this.attrs.forEach(attribute => {
                     let selected_values = attribute.selected_values;
                     if(attribute.type === 'icon') {
-                        selected_values = [attribute.selected_values[0].value_id]
+                        selected_values = attribute.selected_values
                     }
                     attributes_to_save.push(
                         {
@@ -356,7 +368,7 @@
                     this.overlay = false;
                     if(response.status == '200')
                     {
-                        window.location.href = ''
+                        window.location.href = '/admin/products'
                     }
                 }).catch(error => {
                     this.overlay = false;

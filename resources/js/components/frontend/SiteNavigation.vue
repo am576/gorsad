@@ -457,14 +457,15 @@
         }
     }
     #header-navbar {
-        @media (min-width: 591px) {
+        @media (min-width: 601px) {
             background: rgba(0, 0, 0, 0.6);
             z-index: 1000;
 
         }
-        @media (max-width:590px) {
+        @media (max-width:600px) {
             background-color: #ffffff;
             padding: 0 0 0 10px;
+            border-bottom: 1px solid #b6b9bd;
         }
     }
     .nav-item.menu-link {
