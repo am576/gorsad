@@ -23,9 +23,7 @@
                 </div>
             </template>
         </splide>
-        <!--<b-modal id="modal-image" size="lg" hide-footer>
-            <img :src="'/storage/images/' + current_image" alt="" style="width: 100%;">
-        </b-modal>-->
+        <image-modal :images="product.images"></image-modal>
     </div>
 </template>
 
@@ -56,12 +54,13 @@
                     cover: true,
                     isMobileView: false
                 },
+                images: []
             }
         },
         methods: {
             showImage(slide, e) {
-                this.$bvModal.show('modal-image');
-                this.current_image = this.product.images[e.index].large;
+                this.$eventBus.$emit('showModal', e.index)
+                this.current_image = this.images[e.index];
             },
             setCurrentImage(image) {
                 this.current_image = image;
@@ -76,7 +75,8 @@
             },
         },
         created() {
-            this.setCurrentImage(this.product.images[0]);
+            this.images = this.product.images;
+            this.setCurrentImage(this.images[0]);
             this.handleView();
         }
     }
