@@ -11,9 +11,16 @@
         </div>
         <div class="row justify-content-center" style="margin-top: 3rem;">
             <div class="col-10">
-                <div class="row justify-content-center">
-                    <b-tabs pills card vertical nav-wrapper-class="service-tabs-wrapper" nav-class="tab-controls" v-model="tabIndex">
-                        <b-tab gutters v-for="service in service_group.services" :title="service.name" :key="service.id">
+                <div class="row justify-content-center no-gutters">
+                    <div class="col-auto service-tabs-wrapper">
+                        <ul class="nav nav-pills nav-justified flex-column tab-controls">
+                            <li class="nav-item" v-for="service in service_group.services">
+                                <a class="nav-link" @click.prevent="setActiveTab(service.name)" :class="{ active: isTabActive(service.name) }" href="#home">{{service.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content col" id="myTabContent">
+                        <div class="tab-pane fade" :class="{ 'active show': isTabActive(service.name) }"v-for="service in service_group.services">
                             <div class="service-description">
                                 <div>
                                     <h2 class="text-center">{{service.name}}</h2>
@@ -23,10 +30,9 @@
                                     <div class="service-price">ОТ {{service.price}} &#8381;</div>
                                     <button class="btn order-service" @click="showModal(service)">ЗАКАЗАТЬ</button>
                                 </div>
-
                             </div>
-                        </b-tab>
-                    </b-tabs>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,13 +61,20 @@
                     type: Object,
                     default: {}
                 },
-                order : {}
+                order : {},
+                activeTab: ''
             }
         },
         methods: {
             showModal(service) {
                 this.selected_service = service;
                 this.$eventBus.$emit('showModal', service.id);
+            },
+            setActiveTab(service_name) {
+                this.activeTab = service_name;
+            },
+            isTabActive(service_name) {
+                return service_name === this.activeTab;
             },
             async orderService() {
                 const formData = new FormData();
@@ -80,15 +93,16 @@
                     alert(error.response.statusText + ' - ' + error.response.status)
                 }
             }
+        },
+        created() {
+            this.activeTab = this.service_group.services[0].name;
         }
     }
 </script>
 <style lang="scss" scoped>
     .service-page {
         margin-bottom: 50px;
-        .tab-content {
-            height: 400px !important;
-        }
+
         .service-description {
             display: flex;
             flex-direction: column;
