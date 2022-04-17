@@ -23,12 +23,12 @@
                     </a>
                 </template>
             </shop-navigation>
-            <product-page :product="{{$product}}" :height="{{$product->height()}}" :soil="{{$product->soil()}}" :speed="{{$product->speed()}}" :leaf_color="{{$product->leafColor()}}"></product-page>
+            <product-page :product="{{$product}}"></product-page>
         </div>
         <div class="col-1"></div>
     </div>
     <div class="container-fluid mt-2" style="padding: 50px 0 !important; background: #434242">
-        <product-images :product="{{$product}}"></product-images>
+{{--        <product-images :product="{{$product}}"></product-images>--}}
     </div>
 </div>
 @endsection
