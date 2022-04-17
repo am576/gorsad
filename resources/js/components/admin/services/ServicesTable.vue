@@ -57,7 +57,7 @@
             },
             changePerPage(per_page) {
                 this.per_page = per_page;
-                this.getProducts(this.services.current_page);
+                this.getServices(this.services.current_page);
             },
         }
     }
