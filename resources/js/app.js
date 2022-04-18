@@ -2,7 +2,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import vuetify from './vuetify';
+// import vuetify from './vuetify';
 import VueTagsInput from '@johmun/vue-tags-input';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import vSelect from 'vue-select';
@@ -11,6 +11,10 @@ import * as ClassicEditor from '/public/ckcustom/build/ckeditor.js';
 import PrettyCheckbox from 'pretty-checkbox-vue';
 import 'leaflet/dist/leaflet.css';
 
+import { BTable } from 'bootstrap-vue/esm/components/table'
+import { BPagination } from "bootstrap-vue/esm/components/pagination";
+import { BBadge } from "bootstrap-vue/esm/components/badge";
+
 Vue.prototype.$eventBus = new Vue();
 
 Vue.use(PrettyCheckbox);
@@ -18,7 +22,11 @@ Vue.use( CKEditor );
 Vue.use( vSelect );
 Vue.use( ClassicEditor );
 
-Vue.component('v-select', vSelect)
+Vue.component('v-select', vSelect);
+
+Vue.component('b-table', BTable);
+Vue.component('b-pagination', BPagination);
+Vue.component('b-badge', BBadge);
 
 /* Admin side components */
 Vue.component('category-selector', require('./components/admin/CategorySelector.vue').default);
@@ -96,7 +104,7 @@ Vue.component('image-modal', require('./components/frontend/ImageModal').default
 /* End Shared components */
 
 const app = new Vue({
-    vuetify,
+    // vuetify,
     VueTagsInput,
     el: '#app',
 });
