@@ -94,12 +94,6 @@
             .right-control {
                 right: -100px;
             }
-            .close-modal {
-                position: absolute;
-                top: -50px;
-                right: -50px;
-                cursor: pointer;
-            }
         }
     }
 

@@ -13,6 +13,16 @@
                                 <b-badge v-if="unreadNotificationsCount()" variant="light">{{unreadNotificationsCount()}}</b-badge>
                             </a>
                         </li>
+                        <li>
+                            <a class="nav-link" href="#" @click.prevent="setActiveTab('favorites')" :class="{active: isTabActive('favorites')}">
+                                ИЗБРАННОЕ
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="#" @click.prevent="setActiveTab('user_cabinet')" :class="{active: isTabActive('user_cabinet')}">
+                                ЛИЧНЫЙ КАБИНЕТ
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="tab-content col">
@@ -53,38 +63,6 @@
                                 </template>
                                 <template #cell(buy)="data" v-if="company_id === 1">
                                     <button class="btn btn-primary" v-if="data.item.status === 'new'">Оплата</button>
-                                    <!--<b-modal id="my-modal" size="md" title="Оплата заказа" ok-only>
-                                        <b-container fluid>
-                                            <b-row>
-                                                <div class="mb-2" style="font-size: 20px;">Выберите вариант оплаты.</div>
-                                            </b-row>
-                                            <b-row class="mb-3">
-                                                <b-card class="w-100">
-                                                    <b-card-text class="pay-option f-20">Картой онлайн</b-card-text>
-                                                </b-card>
-                                            </b-row>
-                                            <b-row class="mb-3">
-                                                <b-card class="w-100">
-                                                    <b-card-text class="pay-option f-20">Google Pay</b-card-text>
-                                                </b-card>
-                                            </b-row>
-                                            <b-row class="mb-3">
-                                                <b-card class="w-100">
-                                                    <b-card-text class="pay-option f-20">QR-код</b-card-text>
-                                                </b-card>
-                                            </b-row>
-                                            <b-row class="mb-3">
-                                                <b-card class="w-100">
-                                                    <b-card-text class="pay-option f-20">Apple Pay</b-card-text>
-                                                </b-card>
-                                            </b-row>
-                                            <b-row class="mb-3">
-                                                <b-card class="w-100">
-                                                    <b-card-text class="pay-option f-20">Банковский перевод</b-card-text>
-                                                </b-card>
-                                            </b-row>
-                                        </b-container>
-                                    </b-modal>-->
                                 </template>
                             </b-table>
                             <b-pagination
@@ -99,43 +77,33 @@
                             <notifications-list :data="user.user_notifications"></notifications-list>
                         </div>
                     </div>
+                    <div class="tab-pane card-body" :class="{active: isTabActive('bonuses_history')}">
+                        <div class="card-text">
+                            <h4>Баллы - {{user.bonuses}}</h4>
+                            <h5 class="text-center mt-3">История</h5>
+                            <b-table :fields="tabs.bonuses_history.data.fields" :items="tabs.bonuses_history.data.items" :per-page="perPage"
+                                     :current-page="currentBonusesPage">
+                            </b-table>
+                            <b-pagination
+                                v-model="currentBonusesPage"
+                                :total-rows="tabs.bonuses_history.data.items.length"
+                                :per-page="perPage"
+                            ></b-pagination>
+                        </div>
+                    </div>
+                    <div class="tab-pane card-body" :class="{active: isTabActive('favorites')}">
+                        <div class="card-text">
+                            <favorites-list :data="user.favorites"></favorites-list>
+                        </div>
+                    </div>
+                    <div class="tab-pane card-body" :class="{active: isTabActive('user_cabinet')}">
+                        <div class="card-text">
+                            <user-cabinet :data="user"></user-cabinet>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!--<div class="card col-12 p-0">
-            <div id="profile-title">{{profileTitle}}</div>
-            <b-tabs pills card vertical nav-wrapper-class="profile-tabs-wrapper" nav-class="tab-controls" v-model="tabIndex">
-
-                <b-tab id="notification-tab">
-                    <template #title>
-                        УВЕДОМЛЕНИЯ
-                        <b-badge v-if="unreadNotificationsCount()" variant="light">{{unreadNotificationsCount()}}</b-badge>
-                    </template>
-                    <b-card-text>
-                        <notifications-list :data="user.user_notifications"></notifications-list>
-                    </b-card-text>
-                </b-tab>
-                <b-tab title="БАЛЛЫ">
-                    <div class="card-text">
-                        <h4>Баллы - {{user.bonuses}}</h4>
-                        <h5 class="text-center mt-3">История</h5>
-                        <b-table :fields="bonuses_table_data.fields" :items="bonuses_table_data.items" :per-page="perPage"
-                                 :current-page="currentQueriesPage">
-                        </b-table>
-                    </div>
-                </b-tab>
-                <b-tab title="ИЗБРАННОЕ">
-                    <div class="card-text">
-                        <favorites-list :data="user.favorites"></favorites-list>
-                    </div>
-                </b-tab>
-                <b-tab title="ЛИЧНЫЙ КАБИНЕТ">
-                    <div class="card-text">
-                        <user-cabinet :data="user"></user-cabinet>
-                    </div>
-                </b-tab>
-            </b-tabs>
-        </div>-->
     </div>
 </template>
 
@@ -158,6 +126,7 @@
                 perPage: 10,
                 currentOrdersPage: 1,
                 currentQueriesPage: 1,
+                currentBonusesPage: 1,
                 tabIndex: this.tab,
                 isMobileView: false,
                 query_status : {
@@ -208,7 +177,7 @@
                         data: {}
                     },
                     bonuses_history: {
-                        tab_name: 'БОНУСЫ',
+                        tab_name: 'БАЛЛЫ',
                         hasBadge: false,
                         data: {}
                     }

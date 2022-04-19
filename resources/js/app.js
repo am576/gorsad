@@ -1,3 +1,5 @@
+
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -14,6 +16,8 @@ import 'leaflet/dist/leaflet.css';
 import { BTable } from 'bootstrap-vue/esm/components/table'
 import { BPagination } from "bootstrap-vue/esm/components/pagination";
 import { BBadge } from "bootstrap-vue/esm/components/badge";
+import { BCollapse } from "bootstrap-vue/esm/components/collapse";
+import { VBToggle } from "bootstrap-vue/esm/directives/toggle";
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -27,6 +31,8 @@ Vue.component('v-select', vSelect);
 Vue.component('b-table', BTable);
 Vue.component('b-pagination', BPagination);
 Vue.component('b-badge', BBadge);
+Vue.component('b-collapse', BCollapse);
+Vue.directive('b-toggle', VBToggle);
 
 /* Admin side components */
 Vue.component('category-selector', require('./components/admin/CategorySelector.vue').default);
