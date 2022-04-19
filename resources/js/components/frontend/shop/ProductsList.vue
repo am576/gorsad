@@ -182,7 +182,7 @@
             },
         },
         created() {
-            this.getUserFavorites();
+            // this.getUserFavorites();
         }
     }
 </script>

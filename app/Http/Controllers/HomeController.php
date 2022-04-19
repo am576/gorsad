@@ -101,6 +101,7 @@ class HomeController extends Controller
     {
         $products = Product::select('*')
             ->with('images')
+            ->take(10)
             ->get();
 
         $attributes = (new \App\Attribute)->shopFilterAttributes();

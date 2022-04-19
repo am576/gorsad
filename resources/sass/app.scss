@@ -806,13 +806,7 @@ footer.home-footer {
         margin-top: 10%;
         background-color: #ffffff;
         height: max-content;
-
-        input.form-control {
-            width: 70%;
-            margin: 0 auto 1rem;
-            line-height: 24px;
-            font-size: 24px;
-        }
+        width: 500px;
     }
 }
 
@@ -832,11 +826,23 @@ footer.home-footer {
             background-color: #fff6ea;
             width: 500px;
             padding: 40px 0;
+            input.form-control {
+                width: 70%;
+                margin: 0 auto 1rem;
+                line-height: 24px;
+                font-size: 24px;
+            }
         }
     }
 }
 
 .review-modal {
     width: 50% !important;
+    input.form-control {
+        width: 70%;
+        margin: 0 auto 1rem;
+        line-height: 24px;
+        font-size: 24px;
+    }
 }
 
