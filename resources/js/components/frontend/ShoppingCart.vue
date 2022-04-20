@@ -61,7 +61,7 @@
                                     <h5>Сколько баллов Вы хотите использовать?</h5>
                                 </div>
                                 <div class="col-6">
-                                    <b-form-input v-model="bonusesToUseAmount" @blur="calcBonusesPrice"></b-form-input>
+                                    <input type="text" class="form-control" v-model="bonusesToUseAmount" @blur="calcBonusesPrice"></input>
                                 </div>
                             </div>
                         </div>
