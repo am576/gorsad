@@ -9,15 +9,13 @@
         </div>
         <div class="attribute-values" v-show="selected">
             <div v-if="attribute.type === 'text'">
-            <b-form-checkbox-group
-                v-model="selected_values"
-                :options="attribute.values"
-                class="mb-3"
-                value-field="id"
-                text-field="value"
-                stacked
-                @input="addFilterOption"
-            ></b-form-checkbox-group>
+                <div class="mb-3 bv-no-focus-ring">
+                    <div class="custom-control custom-checkbox" v-for="attr_value in attribute.values">
+                        <input type="checkbox" class="custom-control-input" v-model="selected_values"
+                               :value="attr_value.id" @change="addFilterOption" style="z-index: 100;">
+                        <label class="custom-control-label" @click="addFilterOption">{{attr_value.value}}</label>
+                    </div>
+                </div>
             </div>
             <div v-else-if="attribute.type === 'range'">
                 <vue-slider
@@ -69,7 +67,8 @@
             return {
                 selected: false,
                 selected_values: [],
-                range: []
+                range: [],
+                checked: []
             }
         },
         methods: {
