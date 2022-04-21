@@ -10,6 +10,7 @@ use App\Project;
 use App\ServiceGroup;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -99,9 +100,12 @@ class HomeController extends Controller
 
     public function showShopPage()
     {
+        $user = $this->getAuthUser();
+
         $products = Product::select('*')
             ->with('images')
             ->paginate(config('shop.paginate'));
+
 
         $attributes = (new \App\Attribute)->shopFilterAttributes();
 
@@ -114,6 +118,7 @@ class HomeController extends Controller
                 [
                     'products'=> $products->toJson(),
                     'attributes' => $attributes,
+                    'user' => json_encode($user)
                 ]
             );
     }
@@ -147,6 +152,7 @@ class HomeController extends Controller
 
     public function productPage($product_id)
     {
+        $user = $this->getAuthUser();
         $product = Product::where('id', $product_id)
             ->with('images')
             ->with('reviews')
@@ -196,7 +202,8 @@ class HomeController extends Controller
 
         return view('frontend.product-page')
             ->with('product', $product)
-            ->with('cart', json_encode($cart));
+            ->with('cart', json_encode($cart))
+            ->with('user', json_encode($user));
     }
 
     public function showCart()
@@ -259,5 +266,21 @@ class HomeController extends Controller
     public function showServicePage($id)
     {
         return view('frontend.services.service_page')->with('service_group', ServiceGroup::with(['images', 'services'])->find($id));
+    }
+
+    private function getAuthUser()
+    {
+        $user = Auth::user();
+        if(isset($user))
+        {
+            $companies = $user->companies()->get();
+            $active_company = $user->activeCompany();
+            $user = User::where('id',auth()->user()->id)->first();
+            $user->favorites = $user->favorites();
+            $user->companies = is_null($companies) ? [] : $companies;
+            $user->company = is_null($active_company) ? [] : $active_company;
+        }
+
+        return $user;
     }
 }

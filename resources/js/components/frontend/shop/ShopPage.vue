@@ -13,29 +13,32 @@
                     <a class="nav-link curpointer" @click="showCart">
                         <span class="mdi mdi-cart"></span>
                     </a>
-                    <b-dropdown id="account-dropdown" size="lg" right variant="link" block toggle-class="text-decoration-none" no-caret>
-                        <template #button-content>
-                            <div class="mdi mdi-account"></div>
-                        </template>
-                        <b-dropdown-text>
-                            <div>{{user.name}}</div>
-                            <a href="/profile" class="text-small">Личный кабинет</a>
-                        </b-dropdown-text>
-                        <b-dropdown-text>
-                            <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
-                                <input type="hidden" name="_token" :value="csrf">
-                            </form>
-                            <a class="curpointer text-small" @click="logout">Выход </a>
-                        </b-dropdown-text>
-                    </b-dropdown>
+                    <account-dropdown :user="user"></account-dropdown>
                 </div>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-10 shop-content">
                 <div class="pt-3">
                     <transition name="filter-slide">
                         <shop-filter v-if="showFilters" :attributes_groups="attributes" :filtered_name="filtered_name" :selected_options="filter_options || ''" @filterProducts="filterProducts"></shop-filter>
                     </transition>
-                    <products-list :products="products" :cart="cart" :user="user" @toggleFilters="toggleFilters"></products-list>
+                    <shop-navigation :user="user" :isMobileView="isMobileView">
+                        <template slot="back_btn" >
+                            <div id="filter-btn-wr" :class="{'visibility-hidden' : showComparison}">
+                                <button class="nav-btn" id="btn-toggle-filters" @click="toggleFilters">
+                                    <i class="mdi mdi-24px" v-bind:class="showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
+                                    {{filterBtnCaption}}
+                                </button>
+                            </div>
+                        </template>
+                        <template slot="additional_buttons" v-if="productsToCompare.length > 1">
+                            <button class="nav-btn show_compare" @click="toggleComparisonPage">
+                                <i class="mdi mdi-24px mdi-format-horizontal-align-center mr-1 mr-l1"></i>
+                                Показать сравнение
+                            </button>
+                        </template>
+                    </shop-navigation>
+                    <products-list v-show="!showComparison" :products="products" :productsToCompare="productsToCompare" :cart="cart" :user="user" @toggleFilters="toggleFilters"></products-list>
+                    <comparison-page v-if="showComparison" :comparison="compareProducts" @closeComparison="closeComparison"></comparison-page>
                 </div>
             </div>
             <div class="col-1"></div>
@@ -71,6 +74,9 @@
                 products: [],
                 showFilters : true,
                 isMobileView: false,
+                showComparison: false,
+                productsToCompare: [],
+                compareProducts: []
             }
         },
         methods: {
@@ -90,21 +96,70 @@
                 this.$refs.logout.submit()
             },
             showCart() {
-                // this.$eventBus.$emit('showCart')
-            }
+                this.$eventBus.$emit('showCart')
+            },
+            toggleComparisonPage() {
+                this.toggleFilters();
+                if(this.showComparison === false) {
+                    this.showComparison = true;
+                    axios.get('/shop/comparison')
+                        .then(response => {
+                            this.compareProducts = response.data;
+                        })
+                }
+                else {
+                    this.showComparison = false;
+                }
+            },
+            closeComparison() {
+                this.showComparison = false;
+            },
+            toggleProductCompare(id) {
+                if(this.productsToCompare.includes(id)) {
+                    this.$delete(this.productsToCompare, this.productsToCompare.indexOf(id))
+                }
+                else {
+                    this.productsToCompare.push(id);
+                }
+                const formData = new FormData();
+                this.productsToCompare.forEach(id => {
+                    formData.append('products[]', id);
+                })
+                axios.post('/shop/addProductsToCompare', formData);
+            },
         },
         computed: {
             isGuest() {
                 return this.user == null;
             },
+            filterBtnCaption() {
+                return this.showFilters ? 'Скрыть фильтры' : 'Показать фильтры';
+            },
         },
         created() {
             this.products = this.products_all.data;
             this.handleView();
+            axios.get('/shop/comparison')
+                .then(response => {
+                    if(response.data) {
+                        this.compareProducts = response.data;
+                        this.compareProducts.products.forEach(product => {
+                            this.productsToCompare.push(product.id)
+                        })
+                    }
+                })
+            this.$eventBus.$on('toggleProductCompare', this.toggleProductCompare);
+
         }
     }
 </script>
 <style lang="scss" scoped>
+    $header-height : 6vh;
+    @media (max-width: 600px) {
+        .shop-content {
+            margin-top: $header-height;
+        }
+    }
     .filter-slide-leave-active,
     .filter-slide-enter-active {
         transition: margin-top 300ms linear;
@@ -112,8 +167,11 @@
     .filter-slide-enter, .filter-slide-leave-to {
         margin-top: -300px;
     }
-    $header-height : 6vh;
+
     .header-mobile {
+        position: fixed;
+        background: rgba(7, 19, 8, 0.79);
+        z-index: 1000;
         height: $header-height;
         width: 100%;
         display: flex;
@@ -137,6 +195,22 @@
             font-size: 2.5vh;
             font-weight: bold;
             margin-left: 1vh;
+        }
+    }
+    #filter-btn-wr {
+        #btn-toggle-filters {
+            padding: 0 15px 0 5px;
+            .mdi {
+                margin-right: 5px;
+            }
+            @media (max-width:590px) {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        @media (max-width:590px) {
+            width: 100%;
+            justify-content: center;
         }
     }
 </style>

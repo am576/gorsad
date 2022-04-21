@@ -40,6 +40,10 @@ main {
   color: #fff;
 }
 
+.visibility-hidden {
+    visibility: hidden !important;
+}
+
 .v-overlay {
   align-items: center;
   border-radius: inherit;
@@ -795,3 +799,71 @@ footer.home-footer {
     clear: both;
     font-weight: lighter;
 }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    justify-content: center;
+    background-color: #000000da;
+    z-index: 1000;
+    .gmodal {
+        position: relative;
+        margin-top: 10%;
+        background-color: #ffffff;
+        height: max-content;
+        width: 500px;
+    }
+}
+
+.modal-overlay {
+    .close-modal {
+        position: absolute;
+        cursor: pointer;
+    }
+
+    @media (min-width: 670px) {
+        .close-modal {
+            top: -50px;
+            right: -50px;
+            color: #ffffff;
+        }
+    }
+    @media (max-width: 670px) {
+        .close-modal {
+            top: -1rem;
+            right: 0;
+            color: #000000;
+        }
+    }
+}
+
+.service-page {
+    .modal-overlay {
+        .gmodal {
+            text-align: center;
+            background-color: #fff6ea;
+            width: 500px;
+            padding: 40px 0;
+            input.form-control {
+                width: 70%;
+                margin: 0 auto 1rem;
+                line-height: 24px;
+                font-size: 24px;
+            }
+        }
+    }
+}
+
+.review-modal {
+    width: 50% !important;
+    input.form-control {
+        width: 70%;
+        margin: 0 auto 1rem;
+        line-height: 24px;
+        font-size: 24px;
+    }
+}
+

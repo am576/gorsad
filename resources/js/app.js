@@ -1,8 +1,9 @@
+
+
 require('./bootstrap');
 
 window.Vue = require('vue');
 
-import vuetify from './vuetify';
 import VueTagsInput from '@johmun/vue-tags-input';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -13,6 +14,12 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import PrettyCheckbox from 'pretty-checkbox-vue';
 import 'leaflet/dist/leaflet.css';
+
+import { BTable } from 'bootstrap-vue/esm/components/table'
+import { BPagination } from "bootstrap-vue/esm/components/pagination";
+import { BBadge } from "bootstrap-vue/esm/components/badge";
+import { BCollapse } from "bootstrap-vue/esm/components/collapse";
+import { VBToggle } from "bootstrap-vue/esm/directives/toggle";
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -25,6 +32,12 @@ Vue.use( ClassicEditor );
 
 Vue.component('v-select', vSelect);
 Vue.component('InfiniteLoading', require('vue-infinite-loading'));
+
+Vue.component('b-table', BTable);
+Vue.component('b-pagination', BPagination);
+Vue.component('b-badge', BBadge);
+Vue.component('b-collapse', BCollapse);
+Vue.directive('b-toggle', VBToggle);
 
 /* Admin side components */
 Vue.component('category-selector', require('./components/admin/CategorySelector.vue').default);
@@ -55,7 +68,7 @@ Vue.component('service-group-form', require('./components/admin/services/Service
 
 Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 
-/* Client side components */
+/** Client side components **/
 Vue.component('site-navigation', require('./components/frontend/SiteNavigation').default);
 Vue.component('account-links', require('./components/frontend/AccountLinks').default);
 Vue.component('home-slider', require('./components/frontend/HomeSlider').default);
@@ -74,8 +87,6 @@ Vue.component('projects-map', require('./components/frontend/projects/ProjectsMa
 Vue.component('services-page', require('./components/frontend/services/ServicesPage').default);
 Vue.component('service-page', require('./components/frontend/services/ServicePage').default);
 
-Vue.component('g-modal', require('./components/frontend/shared/GenericModal').default);
-
 /* Shop components */
 Vue.component('products-list', require('./components/frontend/shop/ProductsList').default);
 Vue.component('shop-page', require('./components/frontend/shop/ShopPage').default);
@@ -87,17 +98,23 @@ Vue.component('shop-navigation', require('./components/frontend/shop/ShopNavigat
 Vue.component('comparison-page', require('./components/frontend/shop/ComparisonPage').default);
 /* End Shop components */
 
-/* End Client side components */
-
 /* Account page components */
 Vue.component('user-profile', require('./components/frontend/profile/UserProfile').default);
 Vue.component('notifications-list', require('./components/frontend/profile/NotificationsList').default);
 Vue.component('user-cabinet', require('./components/frontend/profile/UserCabinet').default);
 Vue.component('favorites-list', require('./components/frontend/profile/FavoritesList').default);
-Vue.component('review-form', require('./components/frontend/ReviewForm').default)
+Vue.component('review-form', require('./components/frontend/ReviewForm').default);
+/* Account page components */
+
+/* Shared components */
+Vue.component('g-modal', require('./components/frontend/shared/GenericModal').default);
+Vue.component('image-modal', require('./components/frontend/ImageModal').default);
+Vue.component('account-dropdown', require('./components/frontend/shared/AccountDropdown').default);
+/* End Shared components */
+
+/** End Client side components **/
 
 const app = new Vue({
-    vuetify,
     VueTagsInput,
     el: '#app',
 });

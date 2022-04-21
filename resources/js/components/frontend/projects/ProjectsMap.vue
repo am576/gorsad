@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import { latLng, icon } from "leaflet";
+    // import { latLng, icon } from "leaflet";
     import { LMap, LTileLayer, LMarker, LPopup, LTooltip, LIcon } from "vue2-leaflet";
 
     export default {

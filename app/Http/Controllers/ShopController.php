@@ -86,62 +86,62 @@ class ShopController extends Controller
 
     public function getProductsForComparison()
     {
-        $product_ids = session()->get('products_to_compare');
-        $products = Product::whereIn('id',$product_ids)
-            ->select(['id','title'])
-            ->get();
+        if(session()->has('products_to_compare')) {
 
-        $products_compared = [];
 
-        $products_compared['attributes'] =  DB::table('products_attributes')
-            ->join('attributes_values','attribute_value_id','=','attributes_values.id')
-            ->join('attributes','products_attributes.attribute_id','=','attributes.id')
-            ->whereIn('product_id',[1,5])
-            ->select(DB::raw('group_concat(value) as `values`'), DB::raw('group_concat(attributes_values.id) as `ids`'), 'attributes.id', 'attributes.type','attributes.name')
-            ->groupBy('attributes.id')
-            ->get();
+            $product_ids = session()->get('products_to_compare');
+            $products = Product::whereIn('id', $product_ids)
+                ->select(['id', 'title'])
+                ->get();
 
-        foreach ($products as $product) {
-            $attributes = [];
+            $products_compared = [];
 
-            foreach ($product->savedAttributes() as $attribute) {
-                $selected_values = [];
-                $img_path = '';
-                foreach ($attribute->selected_values as $value_id) {
-                    if($attribute->type == 'icon')
-                    {
-                        $img_path = Image::select('icon')
-                            ->where('id',
-                                DB::table('attribute_icons')
-                                    ->select('image_id')
-                                    ->where('attribute_value_id', $value_id)
-                                    ->pluck('image_id'))
-                            ->first()->icon;
+            $products_compared['attributes'] = DB::table('products_attributes')
+                ->join('attributes_values', 'attribute_value_id', '=', 'attributes_values.id')
+                ->join('attributes', 'products_attributes.attribute_id', '=', 'attributes.id')
+                ->whereIn('product_id', [1, 5])
+                ->select(DB::raw('group_concat(value) as `values`'), DB::raw('group_concat(attributes_values.id) as `ids`'), 'attributes.id', 'attributes.type', 'attributes.name')
+                ->groupBy('attributes.id')
+                ->get();
+
+            foreach ($products as $product) {
+                $attributes = [];
+
+                foreach ($product->savedAttributes() as $attribute) {
+                    $selected_values = [];
+                    $img_path = '';
+                    foreach ($attribute->selected_values as $value_id) {
+                        if ($attribute->type == 'icon') {
+                            $img_path = Image::select('icon')
+                                ->where('id',
+                                    DB::table('attribute_icons')
+                                        ->select('image_id')
+                                        ->where('attribute_value_id', $value_id)
+                                        ->pluck('image_id'))
+                                ->first()->icon;
+                        }
+                        if ($attribute->type == 'text') {
+                            array_push($selected_values, $value_id);
+                        } else if ($attribute->type == 'range' || 'color') {
+                            array_push($selected_values, DB::table('attributes_values')->find($value_id)->value);
+                        }
+
                     }
-                    if($attribute->type == 'text')
-                    {
-                        array_push($selected_values, $value_id);
-                    }
-                    else if($attribute->type == 'range' || 'color')
-                    {
-                        array_push($selected_values, DB::table('attributes_values')->find($value_id)->value);
-                    }
+                    $attributes[$attribute->id] = [
+                        'type' => $attribute->type,
+                        'values' => $selected_values,
+                        'icon' => $img_path
+                    ];
 
                 }
-                $attributes[$attribute->id] = [
-                    'type' => $attribute->type,
-                    'values' => $selected_values,
-                    'icon' => $img_path
-                ];
-
+                $image = $product->images()->first();
+                $product['attributes'] = $attributes;
+                $product['image'] = !is_null($image) ? $image['medium'] : config('product.noimage.path') . config('product.noimage.medium');
             }
 
-            $product['attributes'] = $attributes;
-            $product['image'] = $product->images()->first()['medium'];
+            $products_compared['products'] = $products;
+            return $products_compared;
         }
-
-        $products_compared['products'] = $products;
-        return $products_compared;
     }
 
     public function createOrderService($service_id, ServiceOrderRequest $request)

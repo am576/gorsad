@@ -1,123 +1,115 @@
 <template>
     <div class="row justify-content-center">
-        <b-card no-body class="col-12 p-0">
-            <div id="profile-title">{{profileTitle}}</div>
-            <b-tabs pills card vertical nav-wrapper-class="profile-tabs-wrapper" nav-class="tab-controls" v-model="tabIndex">
-                <b-tab title="ЗАПРОСЫ">
-                    <b-card-text>
-                        <h4>Мои запросы</h4>
-                        <b-table :fields="queries_table_data.fields" :items="queries_table_data.items" :per-page="perPage"
-                                 :current-page="currentQueriesPage">
-                            <template #cell(file)="data">
-                                <a :href="'/querypdf?id='+data.value">
-                                    <span class="mdi mdi-file-document"></span>
-                                </a>
-                            </template>
-                            <template #cell(status)="data">
-                                <b-badge :variant="query_status[data.value].color">{{query_status[data.value].loc}}</b-badge>
-                            </template>
-                        </b-table>
-                        <b-pagination
-                            v-model="currentQueriesPage"
-                            :total-rows="queries_table_data.items.length"
-                            :per-page="perPage"
-                        ></b-pagination>
-                    </b-card-text>
-                </b-tab>
-                <b-tab title="ЗАКАЗЫ">
-                    <b-card-text>
-                        <h4>Мои заказы</h4>
-                        <b-table :fields="orders_table_data.fields" :items="orders_table_data.items" :per-page="perPage"
-                                 :current-page="currentOrdersPage">
-                            <template #cell(file)="data">
-                                <a :href="'/orderpdf?id='+data.value">
-                                    <span class="mdi mdi-file-document"></span>
-                                </a>
-                            </template>
-                            <template #cell(status)="data">
-                                <b-badge :variant="order_status[data.value].color">{{order_status[data.value].loc}}</b-badge>
-                            </template>
-                            <template #cell(sum)="data">
-                                <span>{{data.item.sum}} &#8381;</span>
-                            </template>
-                            <template #cell(buy)="data" v-if="company_id === 0">
-                                <b-button variant="primary" v-b-modal.my-modal>Оплата</b-button>
-                                <b-modal id="my-modal" size="md" title="Оплата заказа" ok-only>
-                                    <b-container fluid>
-                                        <b-row>
-                                            <div class="mb-2" style="font-size: 20px;">Выберите вариант оплаты.</div>
-                                        </b-row>
-                                        <b-row class="mb-3">
-                                            <b-card class="w-100">
-                                                <b-card-text class="pay-option f-20">Картой онлайн</b-card-text>
-                                            </b-card>
-                                        </b-row>
-                                        <b-row class="mb-3">
-                                            <b-card class="w-100">
-                                                <b-card-text class="pay-option f-20">Google Pay</b-card-text>
-                                            </b-card>
-                                        </b-row>
-                                        <b-row class="mb-3">
-                                            <b-card class="w-100">
-                                                <b-card-text class="pay-option f-20">QR-код</b-card-text>
-                                            </b-card>
-                                        </b-row>
-                                        <b-row class="mb-3">
-                                            <b-card class="w-100">
-                                                <b-card-text class="pay-option f-20">Apple Pay</b-card-text>
-                                            </b-card>
-                                        </b-row>
-                                        <b-row class="mb-3">
-                                            <b-card class="w-100">
-                                                <b-card-text class="pay-option f-20">Банковский перевод</b-card-text>
-                                            </b-card>
-                                        </b-row>
-                                    </b-container>
-                                </b-modal>
-                            </template>
-                        </b-table>
-                        <b-pagination
-                            v-model="currentOrdersPage"
-                            :total-rows="orders_table_data.items.length"
-                            :per-page="perPage"
-                        ></b-pagination>
-                    </b-card-text>
-                </b-tab>
-                <b-tab id="notification-tab">
-                    <template #title>
-                        УВЕДОМЛЕНИЯ
-                        <b-badge v-if="unreadNotificationsCount()" variant="light">{{unreadNotificationsCount()}}</b-badge>
-                    </template>
-                    <b-card-text>
-                        <notifications-list :data="user.user_notifications"></notifications-list>
-                    </b-card-text>
-                </b-tab>
-                <b-tab title="БАЛЛЫ">
-                    <b-card-text>
-                        <h4>Баллы - {{user.bonuses}}</h4>
-                        <h5 class="text-center mt-3">История</h5>
-                        <b-table :fields="bonuses_table_data.fields" :items="bonuses_table_data.items" :per-page="perPage"
-                                 :current-page="currentQueriesPage">
-                        </b-table>
-                    </b-card-text>
-                </b-tab>
-                <b-tab title="ИЗБРАННОЕ">
-                    <b-card-text>
-                        <favorites-list :data="user.favorites"></favorites-list>
-                    </b-card-text>
-                </b-tab>
-                <b-tab title="ЛИЧНЫЙ КАБИНЕТ">
-                    <b-card-text>
-                        <user-cabinet :data="user"></user-cabinet>
-                    </b-card-text>
-                </b-tab>
-            </b-tabs>
-        </b-card>
+        <div class="card col-12 p-0">
+            <div class="tabs row no-gutters">
+                <div class="col-auto profile-tabs-wrapper">
+                    <ul class="nav nav-pills flex-column card-header h-100 border-bottom-0 rounded-0 tab-controls">
+                        <li class="nav-item" v-for="(tab, tab_name) in tabs">
+                            <a class="nav-link" href="#" @click.prevent="setActiveTab(tab_name)" :class="{active: isTabActive(tab_name)}">{{tab.tab_name}}</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="#" @click.prevent="setActiveTab('notifications')" :class="{active: isTabActive('notifications')}">
+                                УВЕДОМЛЕНИЯ
+                                <b-badge v-if="unreadNotificationsCount()" variant="light">{{unreadNotificationsCount()}}</b-badge>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="#" @click.prevent="setActiveTab('favorites')" :class="{active: isTabActive('favorites')}">
+                                ИЗБРАННОЕ
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="#" @click.prevent="setActiveTab('user_cabinet')" :class="{active: isTabActive('user_cabinet')}">
+                                ЛИЧНЫЙ КАБИНЕТ
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content col">
+                    <div class="tab-pane card-body" :class="{active: isTabActive('queries')}">
+                        <div class="card-text">
+                            <b-table :fields="tabs.queries.data.fields" :items="tabs.queries.data.items" :per-page="perPage"
+                                     :current-page="currentQueriesPage">
+                                <template #cell(file)="data">
+                                    <a :href="'/querypdf?id='+data.value">
+                                        <span class="mdi mdi-file-document"></span>
+                                    </a>
+                                </template>
+                                <template #cell(status)="data">
+                                    <b-badge :variant="query_status[data.value].color">{{query_status[data.value].loc}}</b-badge>
+                                </template>
+                            </b-table>
+                            <b-pagination
+                                v-model="currentQueriesPage"
+                                :total-rows="tabs.queries.data.items.length"
+                                :per-page="perPage"
+                            ></b-pagination>
+                        </div>
+                    </div>
+                    <div class="tab-pane card-body" :class="{active: isTabActive('orders')}">
+                        <div class="card-text">
+                            <b-table :fields="tabs.orders.data.fields" :items="tabs.orders.data.items" :per-page="perPage"
+                                     :current-page="currentOrdersPage">
+                                <template #cell(file)="data">
+                                    <a :href="'/orderpdf?id='+data.value">
+                                        <span class="mdi mdi-file-document"></span>
+                                    </a>
+                                </template>
+                                <template #cell(status)="data">
+                                    <b-badge :variant="order_status[data.value].color">{{order_status[data.value].loc}}</b-badge>
+                                </template>
+                                <template #cell(sum)="data">
+                                    <span>{{data.item.sum}} &#8381;</span>
+                                </template>
+                                <template #cell(buy)="data" v-if="company_id === 1">
+                                    <button class="btn btn-primary" v-if="data.item.status === 'new'">Оплата</button>
+                                </template>
+                            </b-table>
+                            <b-pagination
+                                v-model="currentOrdersPage"
+                                :total-rows="tabs.orders.data.items.length"
+                                :per-page="perPage"
+                            ></b-pagination>
+                        </div>
+                    </div>
+                    <div class="tab-pane card-body" :class="{active: isTabActive('notifications')}">
+                        <div class="card-text">
+                            <notifications-list :data="user.user_notifications"></notifications-list>
+                        </div>
+                    </div>
+                    <div class="tab-pane card-body" :class="{active: isTabActive('bonuses_history')}">
+                        <div class="card-text">
+                            <h4>Баллы - {{user.bonuses}}</h4>
+                            <h5 class="text-center mt-3">История</h5>
+                            <b-table :fields="tabs.bonuses_history.data.fields" :items="tabs.bonuses_history.data.items" :per-page="perPage"
+                                     :current-page="currentBonusesPage">
+                            </b-table>
+                            <b-pagination
+                                v-model="currentBonusesPage"
+                                :total-rows="tabs.bonuses_history.data.items.length"
+                                :per-page="perPage"
+                            ></b-pagination>
+                        </div>
+                    </div>
+                    <div class="tab-pane card-body" :class="{active: isTabActive('favorites')}">
+                        <div class="card-text">
+                            <favorites-list :data="user.favorites"></favorites-list>
+                        </div>
+                    </div>
+                    <div class="tab-pane card-body" :class="{active: isTabActive('user_cabinet')}">
+                        <div class="card-text">
+                            <user-cabinet :data="user"></user-cabinet>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
     import moment from "moment";
+
     export default {
         props: {
             data: {
@@ -131,9 +123,10 @@
                 user: {},
                 company: {},
                 company_id: 0,
-                perPage: 5,
+                perPage: 10,
                 currentOrdersPage: 1,
                 currentQueriesPage: 1,
+                currentBonusesPage: 1,
                 tabIndex: this.tab,
                 isMobileView: false,
                 query_status : {
@@ -172,6 +165,24 @@
                         color: 'danger'
                     }
                 },
+                tabs: {
+                    queries: {
+                        tab_name: 'ЗАПРОСЫ',
+                        hasBadge: true,
+                        data: {}
+                    },
+                    orders: {
+                        tab_name: 'ЗАКАЗЫ',
+                        hasBadge: true,
+                        data: {}
+                    },
+                    bonuses_history: {
+                        tab_name: 'БАЛЛЫ',
+                        hasBadge: false,
+                        data: {}
+                    }
+                },
+                active_tab: ''
             }
         },
         methods: {
@@ -221,9 +232,18 @@
             handleView() {
                 this.isMobileView = window.innerWidth <= 590;
             },
-        },
-        computed: {
-            queries_table_data() {
+            setActiveTab(tab) {
+                this.active_tab = tab;
+            },
+            isTabActive(tab) {
+                return tab === this.active_tab;
+            },
+            fillTableData() {
+                this.fillQueriesTableData();
+                this.fillOrdersTableData();
+                this.fillBonusesTableData();
+            },
+            fillQueriesTableData() {
                 const labels = [
                     {key: 'id', label: 'Номер заказа', sortable: true},
                     {key: 'products_count', 'label': 'Количество'},
@@ -246,12 +266,12 @@
                     labels.splice(1,1);
                     queries.splice(1,1);
                 }
-                return {
+                this.tabs.queries.data = {
                     fields: labels,
                     items: queries
                 }
             },
-            orders_table_data() {
+            fillOrdersTableData() {
                 const labels = [
                     {key: 'id', label: 'Номер заказа', sortable: true},
                     {key: 'products_count', 'label': 'Количество'},
@@ -278,12 +298,12 @@
                     orders.splice(1,1);
                 }
 
-                return {
+                this.tabs.orders.data = {
                     fields: labels,
                     items: orders
                 }
             },
-            bonuses_table_data() {
+            fillBonusesTableData() {
                 const labels = [
                     // {key: 'order', label: 'Заказ'},
                     {key: 'bonuses', label: 'Баллы'},
@@ -297,11 +317,17 @@
                         'created_at' : moment(entry.created_at).format('DD.MM.YY hh:mm')
                     })
                 })
-                return {
+                this.tabs.bonuses_history.data = {
                     fields: labels,
                     items: history
                 }
             },
+        },
+
+        computed: {
+
+
+
             profileTitle() {
                 return this.company.id ? this.company.name : this.user.name
             }
@@ -311,11 +337,13 @@
         },
         created() {
             this.user = this.data;
+            this.fillTableData();
             this.$eventBus.$on('setNotificationRead', this.setNotificationRead);
             this.$eventBus.$on('setAllNotificationsRead', this.setAllNotificationsRead);
             this.$eventBus.$on('changeLoginType', this.changeLoginType);
             this.activeCompanyId();
             this.handleView();
+            document.title += ' | Личный кабинет';
         }
     }
 </script>

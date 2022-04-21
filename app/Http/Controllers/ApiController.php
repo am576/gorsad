@@ -15,6 +15,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use MongoDB\Driver\Session;
 
 class ApiController extends Controller
 {
@@ -166,10 +167,10 @@ class ApiController extends Controller
     public function getCart()
     {
         $cart = [];
-        $cart['products'] =  session()->get('cart');
         $auth_user = Auth::user();
-        if(isset($auth_user))
+        if(isset($auth_user) && session()->has('cart'))
         {
+            $cart['products'] =  session()->get('cart');
             $user = User::where('id', auth()->user()->id)->first();
             $cart['user_bonuses'] = $user->bonusesTotal();
         }

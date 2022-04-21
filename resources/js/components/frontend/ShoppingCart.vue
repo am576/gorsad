@@ -1,10 +1,15 @@
 <template>
-    <!--<b-modal id="modal-cart" size="lg" :title-html="modalTitle" hide-footer>
+    <g-modal id="modal-cart" ref="cartModal" class="shopping-cart">
+        <template v-slot:header>
+            <header class="modal-header">
+                <h5 class="modal-title" v-html="modalTitle"></h5>
+            </header>
+        </template>
         <div class="container-fluid">
             <div class="row justify-content-center" v-if="!showCheckout">
                 <div v-if="!isCartEmpty" class="col-12 order-details">
                     <h3>Обзор заказа</h3>
-                    &lt;!&ndash;<v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
+                    <!--<v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
                         <template slot="no-options">
                             быстрый поиск растений...
                         </template>
@@ -19,7 +24,7 @@
                                 {{ option.title }}
                             </div>
                         </template>
-                    </v-select>&ndash;&gt;
+                    </v-select>-->
 
                     <div class="product-row row align-items-center" v-for="(product, id) in products">
                         <div class="col-2">
@@ -56,7 +61,7 @@
                                     <h5>Сколько баллов Вы хотите использовать?</h5>
                                 </div>
                                 <div class="col-6">
-                                    <b-form-input v-model="bonusesToUseAmount" @blur="calcBonusesPrice"></b-form-input>
+                                    <input type="text" class="form-control" v-model="bonusesToUseAmount" @blur="calcBonusesPrice"></input>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +84,7 @@
             </div>
             <checkout-page v-if="showCheckout" :order_products="products" :bonuses="bonusesToUseAmount" @goToCart="goToCart"></checkout-page>
         </div>
-    </b-modal>-->
+    </g-modal>
 </template>
 
 <script>
@@ -197,13 +202,13 @@
             },
             getCartContents() {
                 axios.get('/cart/getCart').then(response => {
-                    this.products = response.data.products;
+                    this.products = response.data.products || [];
                     this.userBonuses = response.data.user_bonuses;
                 })
             },
             showModal() {
                 this.getCartContents();
-                this.$bvModal.show('modal-cart');
+                this.$refs.cartModal.setModalVisibility(true);
             },
             goToCheckout() {
                 // this.putBonuses();
@@ -264,7 +269,7 @@
               return Object.keys(this.products).length === 0
             },
             modalTitle() {
-                let title = '<span class=\'mdi mdi-36px mdi-cart\'></span> '
+                let title = '<span class=\'mdi mdi-36px mdi-cart text-black-50\'></span> '
                 if(!this.showCheckout) {
                     return  title + 'Корзина';
                 }
@@ -288,6 +293,15 @@
 </script>
 
 <style lang="scss" scoped>
+    .shopping-cart {
+        * {
+            color: #000000;
+        }
+        .modal-title {
+            display: flex;
+            align-items: center;
+        }
+    }
     .order-details {
         padding: 15px;
     }

@@ -1,72 +1,82 @@
 <template>
-    <!--<b-modal :id="modal_id" centered hide-footer>
-        <template #modal-title>
-            {{sign_type.form_title}}
+    <g-modal :modal_class="'shop-login-modal'" ref="shopLoginModal">
+        <template v-slot:header>
+            <header class="modal-header">
+                <h5 class="modal-title">{{sign_type.form_title}}</h5>
+            </header>
         </template>
-        <b-form method="POST" @submit.stop.prevent="submitForm(sign_type)">
-            <input type="hidden" name="_token" :value="csrf">
-            <div class="form-group row">
-                <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail</label>
-                <div class="col-md-6">
-                    <input id="email" type="email" class="form-control" name="email"  required autocomplete="email" autofocus v-model="loginCred.email">
-                    <span class="invalid-feedback" role="alert">
+        <div class="modal-body">
+            <form method="POST" @submit.stop.prevent="submitForm(sign_type)">
+                <input type="hidden" name="_token" :value="csrf">
+                <div class="form-group row">
+                    <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail</label>
+                    <div class="col-md-6">
+                        <input id="email" type="email" class="form-control" name="email" required autocomplete="email"
+                               autofocus v-model="loginCred.email">
+                        <span class="invalid-feedback" role="alert">
                         <strong></strong>
                     </span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group row" v-if="isRegisterForm">
-                <label for="name" class="col-md-4 col-form-label text-md-right">Имя</label>
-                <div class="col-md-6">
-                    <input id="name" type="text" class="form-control" name="name" required autocomplete="name" autofocus>
+                <div class="form-group row" v-if="isRegisterForm">
+                    <label for="name" class="col-md-4 col-form-label text-md-right">Имя</label>
+                    <div class="col-md-6">
+                        <input id="name" type="text" class="form-control" name="name" required autocomplete="name"
+                               autofocus>
 
-                    <span class="invalid-feedback" role="alert">
+                        <span class="invalid-feedback" role="alert">
                         <strong></strong>
                     </span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group row">
-                <label for="password" class="col-md-4 col-form-label text-md-right">Пароль</label>
-                <div class="col-md-6">
-                    <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password" v-model="loginCred.password">
-                    <span class="invalid-feedback" role="alert">
+                <div class="form-group row">
+                    <label for="password" class="col-md-4 col-form-label text-md-right">Пароль</label>
+                    <div class="col-md-6">
+                        <input id="password" type="password" class="form-control" name="password" required
+                               autocomplete="current-password" v-model="loginCred.password">
+                        <span class="invalid-feedback" role="alert">
                         <strong></strong>
                     </span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group row" v-if="isRegisterForm">
-                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Подтверждение пароля</label>
+                <div class="form-group row" v-if="isRegisterForm">
+                    <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Подтверждение
+                        пароля</label>
 
-                <div class="col-md-6">
-                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                    <div class="col-md-6">
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
+                               required autocomplete="new-password">
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group row mb-0" v-if="!isRegisterForm">
-                <div class="col-md-8 offset-md-4">
-                    <button type="submit" class="btn btn-primary">
-                        Войти
-                    </button>
-                    <a class="btn btn-link" @click="sign_type = sign_types.register">
-                        Регистрация
-                    </a>
+                <div class="form-group row mb-0" v-if="!isRegisterForm">
+                    <div class="col-md-8 offset-md-4">
+                        <button type="submit" class="btn btn-primary">
+                            Войти
+                        </button>
+                        <a class="btn btn-link" @click="sign_type = sign_types.register">
+                            Регистрация
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group row mb-0" v-if="isRegisterForm">
-                <div class="col-md-8 offset-md-4">
-                    <button type="submit" class="btn btn-primary">
-                        Зарегистрироваться
-                    </button>
-                    <a class="btn btn-link" @click="sign_type = sign_types.login">
-                        Вход
-                    </a>
+                <div class="form-group row mb-0" v-if="isRegisterForm">
+                    <div class="col-md-8 offset-md-4">
+                        <button type="submit" class="btn btn-primary">
+                            Зарегистрироваться
+                        </button>
+                        <a class="btn btn-link" @click="sign_type = sign_types.login">
+                            Вход
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </b-form>
-    </b-modal>-->
+            </form>
+        </div>
+        <template v-slot:footer></template>
+    </g-modal>
 </template>
 
 <script>
@@ -100,7 +110,7 @@
         },
         methods: {
             showModal() {
-                this.$bvModal.show(this.modal_id);
+                this.$refs.shopLoginModal.setModalVisibility(true);
             },
             submitForm(signType) {
                 axios.post(signType.action, this.loginCred)

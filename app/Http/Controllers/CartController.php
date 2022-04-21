@@ -80,7 +80,7 @@ class CartController extends Controller
                         'title' => $product->title,
                         'quantity' => 1,
                         'price' => 0,
-                        'image' => $product->images[0]->icon,
+                        'image' => isset($product->images[0]) ? $product->images[0]->icon : '',
                         'variants' => []
                     ]
                 ];

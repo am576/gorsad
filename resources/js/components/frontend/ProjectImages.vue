@@ -15,9 +15,7 @@
                 </div>
             </template>
         </splide>
-        <b-modal id="modal-image" size="lg" hide-footer>
-            <img :src="'/storage/images/'+current_image.large" alt="" style="width: 100%;">
-        </b-modal>
+        <image-modal :images="images"></image-modal>
     </div>
 </template>
 
@@ -53,7 +51,7 @@
         },
         methods: {
             showImage(slide, e) {
-                this.$bvModal.show('modal-image');
+                this.$eventBus.$emit('showModal', e.index)
                 this.current_image = this.images[e.index];
             },
             setCurrentImage(image) {

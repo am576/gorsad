@@ -80,7 +80,7 @@
                                 <li>
                                     <div class="dropdown-text">
                                         <div v-if="company_id === 0">{{auth_user.name}}</div>
-                                        <div v-if="company_id !== 0">{{user.companies[0].name}}</div>
+                                        <div v-else>{{user.companies[0].name}}</div>
                                         <a href="/profile" class="text-small">Личный кабинет</a>
                                     </div>
                                 </li>
@@ -114,50 +114,8 @@
                                 </li>
                             </ul>
                         </div>
-                        <!--<b-dropdown id="account-dropdown" size="lg" right variant="link" block toggle-class="text-decoration-none" no-caret>
-                            <template #button-content>
-                                <div class="mdi mdi-36px"
-                                      v-bind:class="{'mdi-account':company_id === 0, 'mdi-briefcase':company_id !== 0}"
-                                ></div>
-                            </template>
-                            <b-dropdown-text>
-                                <div v-if="company_id === 0">{{auth_user.name}}</div>
-                                <div v-if="company_id !== 0">{{user.companies[0].name}}</div>
-                                <a href="/profile" class="text-small">Личный кабинет</a>
-                            </b-dropdown-text>
-                            <b-dropdown-item href="#">Ваши баллы</b-dropdown-item>
-                            <b-dropdown-item href="/profile?tab=4">
-                                Уведомления <span v-if="unreadNotificationsAmount" class="text-danger">{{unreadNotificationsAmount}}</span>
-                            </b-dropdown-item>
-                            <b-dropdown-item href="profile?tab=1">Мои запросы</b-dropdown-item>
-                            <b-dropdown-item href="profile?tab=2">Мои заказы</b-dropdown-item>
-&lt;!&ndash;                            <b-dropdown-item href="#">Загрузить список растений</b-dropdown-item>&ndash;&gt;
-                            <b-dropdown-item href="#">
-                                <form ref="logout" id="logout-form" action="/logout" method="POST" style="display: none;">
-                                    <input type="hidden" name="_token" :value="csrf">
-                                </form>
-                                <a class="nav-link" @click="logout"> Выход </a>
-                            </b-dropdown-item>
-                            <b-dd-divider></b-dd-divider>
-                            <b-dropdown-item v-if="hasCompanies && company_id === 0" href="#" @click.prevent="logAsCompany(user.companies[0].id)">
-                                <span class="mdi mdi-briefcase mdi-36px"></span>
-                                {{user.companies[0].name}}
-                            </b-dropdown-item>
-                            <b-dropdown-item v-if="company_id !== 0" href="#" @click.prevent="logAsUser()">
-                                <span class="mdi mdi-account mdi-36px"></span>
-                                {{auth_user.name}}
-                            </b-dropdown-item>
-                            <b-dropdown-item href="#">
-                                <div>
-                                    <span class="mdi mdi-briefcase-plus mdi-24px"></span>
-                                    <p class="d-inline-block">Добавить компанию</p>
-                                </div>
-                            </b-dropdown-item>
-                        </b-dropdown>-->
                     </div>
-
                 </li>
-
                 <li class="nav-item" v-if="isGuest">
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="login-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
