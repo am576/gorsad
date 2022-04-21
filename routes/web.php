@@ -28,6 +28,8 @@ Route::post('/postreview','UserController@postReview');
 Route::post('/donotreview','UserController@doNotReview');
 
 Route::get('/shop', 'HomeController@showShopPage')->name('shop');
+Route::post('/shop/addProductsToCompare','ShopController@addProductsToCompare');
+Route::get('/shop/comparison', 'ShopController@getProductsForComparison');
 Route::post('/shop/filter', 'ShopController@applyFilter')->name('filter');
 Route::get('shop/load', 'ShopController@loadProducts');
 
@@ -58,9 +60,6 @@ Route::get('/projects/{id}', 'HomeController@showProjectPage');
 
 Route::get('/knowhow','HomeController@showKnowhowPage');
 Route::get('/styles','HomeController@showStylesPage');
-
-Route::post('/shop/addProductsToCompare','ShopController@addProductsToCompare');
-Route::get('/shop/comparison', 'ShopController@getProductsForComparison');
 
 Route::get('/services', 'HomeController@showServicesPage');
 Route::get('/services/{id}', 'HomeController@showServicePage');

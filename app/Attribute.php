@@ -24,7 +24,8 @@ class Attribute extends Model
 
     public function values()
     {
-        $values =  DB::table('attributes_values')
+        return $this->hasMany('App\AttributesValue');
+        /*$values =  DB::table('attributes_values')
             ->where('attribute_id', $this->id)
             ->get();
         foreach ($values as $value) {
@@ -34,7 +35,7 @@ class Attribute extends Model
                 ->select('images.*','attribute_icons.id as icon_id')
                 ->first();
         }
-        return $values;
+        return $values;*/
     }
 
     public function icons()
@@ -66,15 +67,20 @@ class Attribute extends Model
 
     public static function smallFilterAttributes()
     {
-        $attributes = Attribute::where('use_for_filter',1)
+        return Attribute::where('use_for_filter',1)
+            ->with('values')
             ->get();
-
-        return self::getAttributesWithValues($attributes);
     }
 
     public function shopFilterAttributes()
     {
-        $attributes_by_group = Attribute::all()
+        return $this->values();
+
+        return Attribute::select('attributes_groups.id as group_id','attributes.name')
+            ->join('attributes_groups','attributes_groups.id','=','attributes.group_id')
+            ->get()
+            ->toArray();
+        /*$attributes_by_group = Attribute::all()
             ->groupBy('group_id');
 
         $attributes = [];
@@ -88,7 +94,7 @@ class Attribute extends Model
             );
         }
 
-        return json_encode($attributes);
+        return json_encode($attributes);*/
     }
 
     public function icon()

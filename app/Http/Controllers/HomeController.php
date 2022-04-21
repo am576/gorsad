@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Attribute;
+use App\AttributesGroup;
 use App\Category;
 use App\Image;
 use App\Product;
@@ -105,7 +106,35 @@ class HomeController extends Controller
         $products = Product::with('image')
             ->paginate(config('shop.paginate'));
 
-        $attributes = (new \App\Attribute)->shopFilterAttributes();
+        $attributes = AttributesGroup::has('attributes')
+            ->with(['attributes','attributes.values:id,value,attribute_id,ext_value','attributes.values.icon.image:icon,id'])
+            ->get()
+            ->map(function ($group) {
+                return [
+                    'group_id' => $group->id,
+                    'group_name' => $group->title,
+                    'attributes' => $group->attributes->map(function($attribute) {
+                        return [
+                            'id' => $attribute->id,
+                            'name' => $attribute->name,
+                            'type' => $attribute->type,
+                            'group_id' => $attribute->group_id,
+                            'category_id' => $attribute->category_id,
+                            'use_fo_filter' => $attribute->use_fo_filter,
+                            'values' => $attribute->values->map(function($value) {
+                                $new_value = [
+                                    'id' => $value->id,
+                                    'value' => $value->value,
+                                ];
+                                if($value->ext_value) $new_value['ext_value'] = $value->ext_value;
+                                if($value->icon) $new_value['icon'] = $value->icon->image->icon;
+
+                                return $new_value;
+                            })->toArray()
+                        ];
+                    })->toArray()
+                ];
+            });
 
         return view('frontend.shop.index')
             ->with(
@@ -269,7 +298,8 @@ class HomeController extends Controller
         {
             $companies = $user->companies()->get();
             $active_company = $user->activeCompany();
-            $user->favorites = $user->favorites();
+            $favorites = $user->favorites();
+            $user->favorites = is_null($favorites) ? [] : $favorites;
             $user->companies = is_null($companies) ? [] : $companies;
             $user->company = is_null($active_company) ? [] : $active_company;
         }
