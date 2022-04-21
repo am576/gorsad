@@ -95,6 +95,11 @@ class Product extends Model
             ->get();
     }
 
+    public function image()
+    {
+        return $this->MorphOne('App\Image','imageable');
+    }
+
     public function images()
     {
         return $this->morphMany('App\Image', 'imageable');

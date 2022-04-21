@@ -102,17 +102,11 @@ class HomeController extends Controller
     {
         $user = $this->getAuthUser();
 
-        $products = Product::select('*')
-            ->with('images')
+        $products = Product::with('image')
             ->paginate(config('shop.paginate'));
-
 
         $attributes = (new \App\Attribute)->shopFilterAttributes();
 
-        foreach ($products as $product) {
-            $product['attributes'] = $product->savedAttributes();
-        }
-//                return dd($products);
         return view('frontend.shop.index')
             ->with(
                 [
@@ -275,7 +269,6 @@ class HomeController extends Controller
         {
             $companies = $user->companies()->get();
             $active_company = $user->activeCompany();
-            $user = User::where('id',auth()->user()->id)->first();
             $user->favorites = $user->favorites();
             $user->companies = is_null($companies) ? [] : $companies;
             $user->company = is_null($active_company) ? [] : $active_company;
