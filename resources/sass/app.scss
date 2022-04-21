@@ -40,6 +40,10 @@ main {
   color: #fff;
 }
 
+.visibility-hidden {
+    visibility: hidden !important;
+}
+
 .v-overlay {
   align-items: center;
   border-radius: inherit;
@@ -813,9 +817,22 @@ footer.home-footer {
 .modal-overlay {
     .close-modal {
         position: absolute;
-        top: -50px;
-        right: -50px;
         cursor: pointer;
+    }
+
+    @media (min-width: 670px) {
+        .close-modal {
+            top: -50px;
+            right: -50px;
+            color: #ffffff;
+        }
+    }
+    @media (max-width: 670px) {
+        .close-modal {
+            top: -1rem;
+            right: 0;
+            color: #000000;
+        }
     }
 }
 

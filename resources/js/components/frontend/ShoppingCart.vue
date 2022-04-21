@@ -1,5 +1,5 @@
 <template>
-    <g-modal id="modal-cart" ref="cartModal">
+    <g-modal id="modal-cart" ref="cartModal" class="shopping-cart">
         <template v-slot:header>
             <header class="modal-header">
                 <h5 class="modal-title" v-html="modalTitle"></h5>
@@ -269,7 +269,7 @@
               return Object.keys(this.products).length === 0
             },
             modalTitle() {
-                let title = '<span class=\'mdi mdi-36px mdi-cart\'></span> '
+                let title = '<span class=\'mdi mdi-36px mdi-cart text-black-50\'></span> '
                 if(!this.showCheckout) {
                     return  title + 'Корзина';
                 }
@@ -293,6 +293,15 @@
 </script>
 
 <style lang="scss" scoped>
+    .shopping-cart {
+        * {
+            color: #000000;
+        }
+        .modal-title {
+            display: flex;
+            align-items: center;
+        }
+    }
     .order-details {
         padding: 15px;
     }

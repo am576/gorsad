@@ -1,6 +1,6 @@
 <template>
     <div class="row wr1">
-        <div class="shop-nav">
+        <!--<div class="shop-nav">
             <div id="filter-btn-wr">
                 <button class="nav-btn" id="btn-toggle-filters" @click="toggleFilters">
                     <i class="mdi mdi-24px" v-bind:class="filterShown ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
@@ -43,10 +43,10 @@
                     </b-dropdown>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="row wr2">
             <div class="row wr3">
-                <div v-show="!showComparison" class="product-wrapper" v-for="(product, index) in products" style="">
+                <div class="product-wrapper" v-for="(product, index) in products" style="">
                     <a class="product-link" :href="'/products/'+product.id" @mouseenter="hoverProduct(index)" @mouseleave="unHover()">
                         <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}" :class="{scaled: hoveredIndex === index + 1}">
                             <span v-if="!isGuest" class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
@@ -58,7 +58,6 @@
                         </div>
                     </a>
                 </div>
-                <comparison-page v-if="showComparison" :comparison="compareProducts" @closeComparison="closeComparison"></comparison-page>
             </div>
         </div>
         <signin-form ref="signinForm"></signin-form>
@@ -74,6 +73,10 @@
             user: {
                 type: Object
             },
+            productsToCompare: {
+                type: Array,
+                default: []
+            }
         },
         data() {
             return {
@@ -81,16 +84,10 @@
                 filterShown: true,
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 hoveredIndex : 0,
-                showComparison: false,
-                productsToCompare: [],
-                compareProducts: []
+
             }
         },
         methods: {
-            toggleFilters() {
-                this.filterShown = !this.filterShown;
-                this.$emit('toggleFilters');
-            },
             toggleProductFavorite(id) {
                 axios.post('/favorite', {
                     product_id : id
@@ -122,18 +119,21 @@
                     'mdi-heart-outline' : !this.favorites.includes(id),
                 }
             },
-            toggleProductCompare(id) {
-                if(this.productsToCompare.includes(id)) {
-                    this.$delete(this.productsToCompare, this.productsToCompare.indexOf(id))
+            toggleComparisonPage() {
+                this.toggleFilters();
+                if(this.showComparison === false) {
+                    this.showComparison = true;
+                    axios.get('/shop/comparison')
+                        .then(response => {
+                            this.compareProducts = response.data;
+                        })
                 }
                 else {
-                    this.productsToCompare.push(id);
+                    this.showComparison = false;
                 }
-                const formData = new FormData();
-                this.productsToCompare.forEach(id => {
-                    formData.append('products[]', id);
-                })
-                axios.post('/shop/addProductsToCompare', formData);
+            },
+            toggleProductCompare(id) {
+                this.$eventBus.$emit('toggleProductCompare', id)
             },
             isSetToCompare(id) {
                 return this.productsToCompare.includes(id) ? 'set_to_compare' : '';
@@ -155,28 +155,10 @@
             showCart() {
                 this.$eventBus.$emit('showCart')
             },
-            toggleComparisonPage() {
-                this.toggleFilters();
-                if(this.showComparison === false) {
-                    this.showComparison = true;
-                    axios.get('/shop/comparison')
-                        .then(response => {
-                            this.compareProducts = response.data;
-                        })
-                }
-                else {
-                    this.showComparison = false;
-                }
 
-            },
-            closeComparison() {
-                this.showComparison = false;
-            }
         },
         computed: {
-            filterBtnCaption() {
-                return this.filterShown ? 'Скрыть фильтры' : 'Показать фильтры';
-            },
+
             isGuest() {
                 return this.user == null;
             },
@@ -239,22 +221,7 @@
     .wr1 {
         justify-content: center;
         background-color: #343434;
-        .shop-nav {
-            padding: 10px 15px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white !important;
 
-            .btn-link .mdi.mdi-account, .mdi-cart{
-                font-size: 28px !important;
-                color: #ffffff !important;
-            }
-            button#account-dropdown__BV_toggle_.btn.dropdown-toggle.btn-link.btn-lg {
-                padding: 0 !important;
-            }
-        }
         .wr2 {
             width: 100%;
             justify-content: center;
@@ -296,19 +263,5 @@
             background-color: #868278;;
         }
     }
-    #filter-btn-wr {
-        #btn-toggle-filters {
-            padding: 0 15px 0 5px;
-            .mdi {
-                margin-right: 5px;
-            }
-            @media (max-width:590px) {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-        @media (max-width:590px) {
-            width: 100%;
-        }
-    }
+
 </style>

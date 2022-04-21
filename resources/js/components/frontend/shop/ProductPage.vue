@@ -1,5 +1,5 @@
 <template>
-    <div id="product-page">
+    <div id="product-page" class="product-page">
         <div class="row justify-content-start m-0">
             <div class="image-wrapper col-lg-6 col-sm-12">
 <!--                <div class="display-image" :style="{'background-image':'url(/storage/images/' + product.images[0].large +')'}">-->
@@ -115,6 +115,7 @@
                 <b-card-text>Комментарий: {{review.comment}}</b-card-text>
             </b-card>
         </div>-->
+        <shopping-cart></shopping-cart>
     </div>
 </template>
 
@@ -232,10 +233,10 @@
 </script>
 
 <style lang="scss">
-    #product-page {
+    .product-page {
         background: #434242;
         * {
-            color: #e7e7e7 !important;
+            color: #e7e7e7;
         }
         input.quantity-input {
             color: #000000 !important;
