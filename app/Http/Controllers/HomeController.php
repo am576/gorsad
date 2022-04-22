@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Attribute;
-use App\AttributesGroup;
 use App\Category;
 use App\Image;
 use App\Product;
 use App\Project;
 use App\ServiceGroup;
 use App\User;
+use App\Utils\StaticTools;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -52,48 +52,25 @@ class HomeController extends Controller
     public function ApplyFilter(Request $request)
     {
         $product_name = $request->get('product_name');
-        $filter_options = json_decode($request->get('filter_options'));
-        $filter_values = [];
-        $arr = [];
-        if(isset($filter_options))
-        {
-            $arr = (array)$filter_options;
-            foreach ($filter_options as $attr_id => $attribute) {
-                foreach ($attribute as $value) {
-                    array_push($filter_values, $value);
-                }
-                if(!$arr[$attr_id])
-                {
-                    unset($arr[$attr_id]);
-                }
-            }
-        }
+        $filter_parameters = json_decode($request->get('filter_options'));
 
-        $attributes = (new \App\Attribute)->shopFilterAttributes();
-
-        if(count($filter_values) == 0)
+        if(isset($filter_parameters))
         {
-            $products = Product::where('title','like', '%'.$product_name.'%')
-                ->with('images')
-                ->get();
+            $filtered_products = StaticTools::filterProducts($product_name, $filter_parameters);
         }
         else
         {
-            $products = Product::where('title','like', '%'.$product_name.'%')
-                ->join('products_attributes', 'products.id','=','products_attributes.product_id')
-                ->select('products.*', 'products_attributes.attribute_value_id')
-                ->whereIn('products_attributes.attribute_value_id',$filter_values)
-                ->groupBy('products.id')
-                ->with('images')
-                ->get();
+            $filtered_products = Product::with('image')
+                ->paginate(config('shop.paginate'));
         }
 
         return view('frontend.shop.index')
             ->with(
                 [
-                    'products'=> $products,
-                    'attributes' => $attributes,
-                    'filter_options' => json_encode($arr),
+                    'user' => json_encode($this->getAuthUser()),
+                    'products'=> json_encode($filtered_products),
+                    'attributes' => json_encode(StaticTools::getAttributesByGroup()),
+                    'filter_options' => json_encode($filter_parameters),
                     'filtered_name' => $product_name,
                 ]
             );
@@ -106,35 +83,7 @@ class HomeController extends Controller
         $products = Product::with('image')
             ->paginate(config('shop.paginate'));
 
-        $attributes = AttributesGroup::has('attributes')
-            ->with(['attributes','attributes.values:id,value,attribute_id,ext_value','attributes.values.icon.image:icon,id'])
-            ->get()
-            ->map(function ($group) {
-                return [
-                    'group_id' => $group->id,
-                    'group_name' => $group->title,
-                    'attributes' => $group->attributes->map(function($attribute) {
-                        return [
-                            'id' => $attribute->id,
-                            'name' => $attribute->name,
-                            'type' => $attribute->type,
-                            'group_id' => $attribute->group_id,
-                            'category_id' => $attribute->category_id,
-                            'use_fo_filter' => $attribute->use_fo_filter,
-                            'values' => $attribute->values->map(function($value) {
-                                $new_value = [
-                                    'id' => $value->id,
-                                    'value' => $value->value,
-                                ];
-                                if($value->ext_value) $new_value['ext_value'] = $value->ext_value;
-                                if($value->icon) $new_value['icon'] = $value->icon->image->icon;
-
-                                return $new_value;
-                            })->toArray()
-                        ];
-                    })->toArray()
-                ];
-            });
+        $attributes = StaticTools::getAttributesByGroup();
 
         return view('frontend.shop.index')
             ->with(

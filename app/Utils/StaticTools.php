@@ -4,7 +4,9 @@
 namespace App\Utils;
 
 
+use App\AttributesGroup;
 use App\Image;
+use App\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as InterventionImage;
@@ -90,5 +92,63 @@ class StaticTools
         }*/
         \App\Image::whereIn('id', $images)
             ->delete();
+    }
+
+    public static function filterProducts($product_name, $filter)
+    {
+        $filter_values = [];
+        foreach ($filter as $filter_item) {
+            $filter_values = array_merge($filter_values, $filter_item);
+        }
+
+        return Product::where(function ($query) use ($product_name) {
+            if(!empty($product_name)) {
+                $query->where('title','like', '%'.$product_name.'%');
+            }
+            })
+            ->select(['products.id','title', 'title_lat'])
+            ->join('products_attributes', 'products.id','=','products_attributes.product_id')
+            ->where(function ($query) use ($filter_values) {
+                if(count($filter_values)) {
+                    $query->whereIn('attribute_value_id', $filter_values);
+                }
+            })
+            ->with(['image:medium,imageable_id'])
+            ->groupBy('product_id')
+            ->get()
+            ->toArray();
+    }
+
+    public static function getAttributesByGroup()
+    {
+        return AttributesGroup::has('attributes')
+            ->with(['attributes','attributes.values:id,value,attribute_id,ext_value','attributes.values.icon.image:icon,id'])
+            ->get()
+            ->map(function ($group) {
+                return [
+                    'group_id' => $group->id,
+                    'group_name' => $group->title,
+                    'attributes' => $group->attributes->map(function($attribute) {
+                        return [
+                            'id' => $attribute->id,
+                            'name' => $attribute->name,
+                            'type' => $attribute->type,
+                            'group_id' => $attribute->group_id,
+                            'category_id' => $attribute->category_id,
+                            'use_fo_filter' => $attribute->use_fo_filter,
+                            'values' => $attribute->values->map(function($value) {
+                                $new_value = [
+                                    'id' => $value->id,
+                                    'value' => $value->value,
+                                ];
+                                if($value->ext_value) $new_value['ext_value'] = $value->ext_value;
+                                if($value->icon) $new_value['icon'] = $value->icon->image->icon;
+
+                                return $new_value;
+                            })->toArray()
+                        ];
+                    })->toArray()
+                ];
+            });
     }
 }

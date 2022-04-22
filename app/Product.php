@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
-
-
     protected $fillable = ['title', 'title_lat', 'code', 'description', 'category_id', 'price', 'discount', 'status', 'quantity', 'additional_info'];
 
     public function category() {
@@ -88,13 +86,6 @@ class Product extends Model
         return $attributes;
     }
 
-    public function saved_attributes()
-    {
-        return DB::table('products_attributes')
-            ->where('product_id', $this->id)
-            ->get();
-    }
-
     public function image()
     {
         return $this->MorphOne('App\Image','imageable');
@@ -105,75 +96,8 @@ class Product extends Model
         return $this->morphMany('App\Image', 'imageable');
     }
 
-    public function frontendAttributes()
-    {
-        return DB::table('products_attributes')
-            ->join('attributes_values','attributes_values.attribute_id','=','products_attributes.attribute_id')
-            ->join('attributes','attributes.id','=','products_attributes.attribute_id')
-            ->select('attributes.name',DB::raw('group_concat(attributes_values.value)'))
-            ->where('product_id',$this->id)
-            ->groupBy('attributes_values.attribute_id')
-            ->get();
-    }
-
-    public function height()
-    {
-        $height = DB::table('products_attributes')
-            ->where('products_attributes.product_id',$this->id)
-            ->join('attributes_values','products_attributes.attribute_value_id','=','attributes_values.id')
-            ->where('attributes_values.attribute_id','=',42)
-            ->get()->pluck('value')->toArray();
-
-        return json_encode($height);
-    }
-
-    public function soil()
-    {
-        $height = DB::table('products_attributes')
-            ->where('products_attributes.product_id',$this->id)
-            ->join('attributes_values','products_attributes.attribute_value_id','=','attributes_values.id')
-            ->where('attributes_values.attribute_id','=',46)
-            ->get()->pluck('value')->toArray();
-
-        return json_encode($height);
-    }
-
-    public function speed()
-    {
-        $speed = DB::table('products_attributes')
-            ->where('products_attributes.product_id',$this->id)
-            ->join('attributes_values','products_attributes.attribute_value_id','=','attributes_values.id')
-            ->where('attributes_values.attribute_id','=',50)
-            ->get()->pluck('value')->toArray();
-
-        return json_encode($speed);
-    }
-
-    public function leafColor()
-    {
-        $leafColor = DB::table('products_attributes')
-            ->where('products_attributes.product_id',$this->id)
-            ->join('attributes_values','products_attributes.attribute_value_id','=','attributes_values.id')
-            ->where('attributes_values.attribute_id','=',45)
-            ->get()->pluck('value')->toArray();
-
-        return json_encode($leafColor);
-    }
-
-    public function isFavorite()
-    {
-        $user = auth()->user();
-
-        $fav = DB::table('user_favorites')
-            ->where('user_id', $user->id)
-            ->where('product->id', $this->id)
-            ->select('id')
-            ->first();
-    }
-
     public function reviews()
     {
         return $this->hasMany('App\UserReview', 'product_id','id')->with('user');
     }
-
 }

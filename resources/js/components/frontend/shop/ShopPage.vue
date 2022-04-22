@@ -19,7 +19,7 @@
             <div class="col-md-10 shop-content">
                 <div class="pt-3">
                     <transition name="filter-slide">
-                        <shop-filter v-if="showFilters" :attributes_groups="attributes" :filtered_name="filtered_name" :selected_options="filter_options || ''" @filterProducts="filterProducts"></shop-filter>
+                        <shop-filter v-if="showFilters" :attributes_groups="attributes" :filtered_name="filtered_name" :selected_options="filter_options || {}" @filterProducts="filterProducts"></shop-filter>
                     </transition>
                     <shop-navigation :user="user" :isMobileView="isMobileView">
                         <template slot="back_btn" >
@@ -60,7 +60,7 @@
                 type: Object
             },
             filter_options: {
-                type: Array
+                type: Object
             },
             filtered_name: {
                 type: String,
@@ -137,7 +137,7 @@
             },
         },
         created() {
-            this.products = this.products_all.data;
+            this.products = 'data' in this.products_all ? this.products_all.data : this.products_all;
             this.handleView();
             axios.get('/shop/comparison')
                 .then(response => {

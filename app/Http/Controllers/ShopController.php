@@ -8,6 +8,7 @@ use App\Image;
 use App\Product;
 use App\Service;
 use App\ServiceOrder;
+use App\Utils\StaticTools;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,29 +17,9 @@ class ShopController extends Controller
     public function applyFilter(Request $request)
     {
         $product_name = $request->get('product_name');
-        $filter = $request->get('filter');
+        $filter_parameters = $request->get('filter');
 
-        $filter_values = [];
-        foreach ($filter as $filter_item) {
-            $filter_values = array_merge($filter_values, $filter_item);
-        }
-
-        $filtered_products = Product::where(function ($query) use ($product_name) {
-            if(!empty($product_name)) {
-                $query->where('title','like', '%'.$product_name.'%');
-                }
-            })
-            ->select(['products.id','title', 'title_lat'])
-            ->join('products_attributes', 'products.id','=','products_attributes.product_id')
-            ->where(function ($query) use ($filter_values) {
-                if(count($filter_values)) {
-                    $query->whereIn('attribute_value_id', $filter_values);
-                }
-            })
-            ->with('image')
-            ->groupBy('product_id')
-            ->get()
-            ->toArray();
+        $filtered_products = StaticTools::filterProducts($product_name, $filter_parameters);
 
         return response()->json($filtered_products);
     }

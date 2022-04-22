@@ -14,18 +14,21 @@
                     <div class="filter-seg">
                         <form action="/search" method="post">
                             <input type="hidden" name="_token" :value="csrf">
-                            <input name="product_name" type="hidden" v-model="product_name">
                             <textarea name="filter_options" type="hidden" class="hidden" style="display: none">{{selected_filter_options}}</textarea>
-                            <button ref="submitButton" type="submit" class="btn search-btn w-100" >Искать</button>
+                            <input name="product_name" type="hidden" v-model="product_name">
+                            <button ref="submitButton" type="submit" class="btn search-btn w-100" @click="applyFilter()">Искать</button>
                         </form>
                     </div>
                 </div>
                 <div class="filter-attribute-values">
-                    <div v-if="attribute.id === selected_attribute.id" class="attribute-values" v-for="attribute in filter_attributes">
-                        <div class="attribute-value" v-for="value in attribute.values" v-bind:class="{selected: selected_filter_options[attribute.id].includes(value.id)}">
+                    <div v-show="attribute.id === selected_attribute.id" class="attribute-values" v-for="attribute in filter_attributes">
+                        <div class="attribute-value" v-for="value in attribute.values" v-bind:class="{selected:isValueSelected(attribute.id, value.id)}">
                             <div class="form-check" @click="setSelectedValue(attribute.id, value.id)">
-                                <span v-if="attribute.type === 'color'" class="attribute-color"  v-bind:style="{background: value.value}" ></span>
-                                <input  v-if="attribute.type === 'text'" type="checkbox" class="form-check-input" style="width:25px; height:25px" :value="value.id" v-model="selected_filter_options[selected_attribute.id]">
+                                <div v-if="attribute.type === 'color'" class="d-flex curpointer">
+                                    <span class="attribute-color" v-bind:style="{background: value.value}"></span>
+                                    <span>{{value.ext_value}}</span>
+                                </div>
+                                <input  v-if="attribute.type === 'text'" type="checkbox" class="form-check-input" style="width:25px; height:25px" :value="value.id">
                                 <img v-if="attribute.type === 'icon'" :src="'/storage/images/' + value.icon">
                                 <label v-if="attribute.type !== 'color'" class="form-check-label">{{value.value}}</label>
                             </div>
@@ -55,33 +58,39 @@
                 this.isMobileView = window.innerWidth <= 600;
             },
             setSelectedAttribute(attribute) {
-                this.selected_attribute = attribute.id === this.selected_attribute.id ? {} : attribute ;
+                this.selected_attribute = attribute.id === this.selected_attribute.id ? {} : attribute;
             },
             setSelectedValue(attribute_id, value_id) {
-                if (!(this.selected_filter_options[attribute_id].includes(value_id))) {
+                if(!(attribute_id in this.selected_filter_options)) this.selected_filter_options[attribute_id] = [];
+                if(!this.selected_filter_options[attribute_id].includes(value_id)) {
                     this.selected_filter_options[attribute_id].push(value_id)
                 }
                 else {
-                    this.selected_filter_options[attribute_id].splice(this.selected_filter_options[attribute_id].indexOf(value_id, 1))
+                    this.selected_filter_options[attribute_id].splice(this.selected_filter_options[attribute_id].indexOf(value_id), 1);
+                    if(this.selected_filter_options[attribute_id].length === 0) {
+                        this.$delete(this.selected_filter_options, attribute_id);
+                    }
                 }
+                this.$forceUpdate();
             },
             applyFilter() {
+                console.log(this.selected_filter_options)
                 const formData = new FormData();
 
                 formData.append('product_name', this.product_name);
-                formData.append('filter_options', this.selected_filter_options);
+                formData.append('filter_options', JSON.stringify(this.selected_filter_options));
                 // this.$router.push({path: '/search', query:formData})
                 // axios.post('/search', formData)
 
             },
             submit() {
                 this.$refs.submitButton.click();
+            },
+            isValueSelected(attribute_id, value_id) {
+                return (attribute_id in this.selected_filter_options && this.selected_filter_options[attribute_id].includes(value_id))
             }
         },
         created() {
-            this.filter_attributes.forEach(attribute => {
-                this.$set(this.selected_filter_options, attribute.id, [])
-            })
             this.handleView();
         }
     }

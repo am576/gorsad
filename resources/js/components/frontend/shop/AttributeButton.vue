@@ -110,8 +110,8 @@
                 this.$emit('addFilterOption', option);
             },
             setSelectedValues() {
-                if(this.selected_options.hasOwnProperty(this.attribute.id)){
-                    this.selected_values = this.selected_options[this.attribute.id];
+                if(this.selected_options) {
+                    this.selected_values = this.selected_options;
                 }
             }
         },
