@@ -25,17 +25,6 @@ class Attribute extends Model
     public function values()
     {
         return $this->hasMany('App\AttributesValue');
-        /*$values =  DB::table('attributes_values')
-            ->where('attribute_id', $this->id)
-            ->get();
-        foreach ($values as $value) {
-            $value->image = DB::table('attribute_icons')
-                ->where('attribute_value_id', $value->id)
-                ->join('images', 'images.id','=','image_id')
-                ->select('images.*','attribute_icons.id as icon_id')
-                ->first();
-        }
-        return $values;*/
     }
 
     public function icons()
@@ -72,60 +61,8 @@ class Attribute extends Model
             ->get();
     }
 
-    public function shopFilterAttributes()
-    {
-        return $this->values();
-
-        return Attribute::select('attributes_groups.id as group_id','attributes.name')
-            ->join('attributes_groups','attributes_groups.id','=','attributes.group_id')
-            ->get()
-            ->toArray();
-        /*$attributes_by_group = Attribute::all()
-            ->groupBy('group_id');
-
-        $attributes = [];
-        foreach ($attributes_by_group as $group_id => $group_attributes) {
-            array_push($attributes,
-                [
-                    'group_id' => $group_id,
-                    'group_name' => AttributesGroup::find($group_id)->title,
-                    'attributes' => self::getAttributesWithValues($group_attributes)
-                ]
-            );
-        }
-
-        return json_encode($attributes);*/
-    }
-
     public function icon()
     {
         return $this->morphOne('App\Image', 'imageable');
     }
-
-
-    private static function getAttributesWithValues($attributes)
-    {
-        foreach ($attributes as $attribute) {
-            $values = [];
-            foreach ($attribute->values() as $i => $value) {
-                array_push($values , [
-                    'id' => $value->id,
-                    'value' => $value->value
-                ]);
-                if($attribute->type == 'icon')
-                {
-                    $image_id = DB::table('attribute_icons')
-                        ->where('attribute_value_id', $value->id)->get()->pluck('image_id');
-                    $image = Image::find($image_id)->first();
-                    $values[$i]['icon'] = $image->icon;
-                }
-            }
-            $attribute->values = $values;
-        }
-
-        return $attributes;
-    }
-
-
-
 }

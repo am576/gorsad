@@ -80,23 +80,23 @@
                     </div>
                     <div class="col-lg-9 col-sm-8">
                         <div v-if="isTagType(attribute)">
-                            <span class="attr-tag" v-for="value in attribute.values">{{value}}</span>
+                            <span class="attr-tag" v-for="attr_value in attribute.values">{{attr_value.value}}</span>
                         </div>
                         <div v-if="attribute.type === 'range'">
-                            {{attribute.values[0]}} - {{attribute.values[1]}}
+                            {{attribute.values[0].value}} - {{attribute.values[1].value}}
                         </div>
-                        <div v-if="attribute.type === 'text' && !isTagType(attribute)">
-                            {{attribute.values[0]}}
+                        <div v-if="attribute.type === 'text' && !isTagType(attribute)" v-for="attr_value in attribute.values">
+                            {{attr_value.value}}
                         </div>
                         <div v-if="attribute.type === 'color'">
                         <span class="attr-color" v-for="color in attribute.values"
-                              v-bind:style="{background: color}">
+                              v-bind:style="{background: color.value}">
                         </span>
                         </div>
                         <div v-if="attribute.type === 'icon'" class="d-flex align-items-center">
                             <div class="d-flex align-items-center" v-for="(attr_value, index) in attribute.values">
-                                <span>{{attr_value}}</span>
-                                <img height="40" :src="'/storage/images/' + attribute.icon[index]" alt="">
+                                <span>{{attr_value.value}}</span>
+                                <img height="40" :src="'/storage/images/' + attr_value.icon.image.icon" alt="">
                             </div>
 
                         </div>
@@ -191,7 +191,9 @@
                 ];
                 Object.keys(this.product.variants).forEach((type) => {
                     this.product.variants[type].forEach(variant => {
-                        this.variants_table_data.items.hasOwnProperty(type) ?
+                        if(!this.variants_table_data.items.hasOwnProperty(type)) {
+                            this.$set(this.variants_table_data.items, type, []);
+                        }
                         this.variants_table_data.items[type].push({
                             id: variant.id,
                             height: this.rangeFormatted(variant.height, 'см') || '',
@@ -200,7 +202,7 @@
                             quantity: 1,
                             buy: variant,
                             bonus: variant
-                        }) : this.$set(this.variants_table_data.items, type, []);
+                        });
                         this.quantities[variant.id] = 0;
                     });
                 })
@@ -225,10 +227,9 @@
             }
         },
         created() {
+            this.setVariantsTableData();
             this.replaceMissingImages();
             this.setCurrentImage(this.product.images[0]);
-            this.$set(this.product, 'additional_info', JSON.parse(this.product.additional_info));
-            this.setVariantsTableData();
             if(this.hasVariants) {
                 this.setActiveTab(Object.keys(this.variants_table_data.items)[0])
             }

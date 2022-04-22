@@ -102,65 +102,28 @@ class HomeController extends Controller
 
     public function productPage($product_id)
     {
-        $user = $this->getAuthUser();
         $product = Product::where('id', $product_id)
-            ->with('images')
-            ->with('reviews')
+            ->with(['images','reviews'])
             ->first();
 
-        $variants_types = ['st','mtst','sol'];
-        $cart = session()->get('cart');
+        $product->variants = $product->variants()->get()->mapToGroups(function($variant) {
+            return [$variant['type'] => $variant];
+        })->toArray();
 
-        foreach ($variants_types as $type) {
-            $product_variants[$type] = $product->variants()
-                ->where('type', $type)
-                ->get();
-        }
-        $attributes = [];
-        foreach ($product->savedAttributes() as $attribute) {
-            $selected_values = [];
-            $icons = [];
-            foreach ($attribute->selected_values as $value_id) {
-                if($attribute->type == 'icon')
-                {
-                    $attribute_icon_id = DB::table('attribute_icons')
-                        ->where('attribute_value_id', $value_id)
-                        ->first()
-                        ->image_id;
+        $product->attributes = $product->attributes();
+        $product->images = $product->images->toArray();
 
-                    $image_path = Image::where('id',$attribute_icon_id)
-                        ->first()
-                        ->icon;
-                    array_push($icons, $image_path);
-                }
-
-                array_push($selected_values, DB::table('attributes_values')->find($value_id)->value);
-            }
-
-            array_push($attributes,
-            [
-                'name' => $attribute->name,
-                'type' => $attribute->type,
-                'values' => $selected_values,
-                'icon' => $icons
-            ]);
-            if($attribute->type == 'icon') unset($attributes['icon']);
-        }
-
-        $product['attributes'] = $attributes;
-        $product['variants'] = $product_variants;
+        $user = $this->getAuthUser();
 
         return view('frontend.product-page')
-            ->with('product', $product)
-            ->with('cart', json_encode($cart))
-            ->with('user', json_encode($user));
+            ->with(['product'=> $product, 'user' => json_encode($user)]);
     }
 
     public function showCart()
     {
         $cart = session()->get('cart');
 
-        return view('frontend.cart')->with('cart',json_encode($cart));
+        return view('frontend.cart')->with('cart', json_encode($cart));
     }
 
     public function showCheckoutPage()

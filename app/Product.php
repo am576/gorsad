@@ -27,12 +27,22 @@ class Product extends Model
 
     public function attributes()
     {
-         return DB::table('attributes')
-             ->whereIn('attributes.id', DB::table('products_attributes')->select('attribute_id')->where('product_id', $this->id))
-             ->join('products_attributes','attributes.id','=','products_attributes.attribute_id')
-             ->select('attributes.*', 'products_attributes.attribute_value_id as value_id', 'products_attributes.id as saved_id', 'products_attributes.attribute_id')
-             ->where('products_attributes.product_id', '=',$this->id)
-             ->get();
+        $pa = ProductsAttribute::where('product_id',$this->id)
+            ->select('attribute_value_id')
+            ->get()
+            ->map(function($item) {
+                return $item['attribute_value_id'];
+            })->toArray();
+
+        $a = Attribute::with(['values' => function($query) use ($pa){
+            $query->whereIn('id',$pa);
+        }, 'values.icon.image:icon,id'])
+            ->get()
+            ->reject(function($attribute) {
+                return count($attribute->relations['values']) == 0;
+            });
+
+        return array_values($a->toArray());
     }
 
     public function variants()
@@ -88,7 +98,7 @@ class Product extends Model
 
     public function image()
     {
-        return $this->MorphOne('App\Image','imageable');
+        return $this->morphOne('App\Image','imageable');
     }
 
     public function images()
