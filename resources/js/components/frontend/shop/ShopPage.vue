@@ -37,7 +37,7 @@
                             </button>
                         </template>
                     </shop-navigation>
-                    <products-list v-show="!showComparison" :products="products" :productsToCompare="productsToCompare" :cart="cart" :user="user" @toggleFilters="toggleFilters"></products-list>
+                    <products-list v-show="!showComparison" :products="products" :productsToCompare="productsToCompare" :cart="cart" :user="user" @toggleFilters="toggleFilters" :hasFilterOptions="hasFilterOptions"></products-list>
                     <comparison-page v-if="showComparison" :comparison="compareProducts" @closeComparison="closeComparison"></comparison-page>
                 </div>
             </div>
@@ -76,12 +76,21 @@
                 isMobileView: false,
                 showComparison: false,
                 productsToCompare: [],
-                compareProducts: []
+                compareProducts: [],
+                hasFilterOptions: false
             }
         },
         methods: {
-            filterProducts(products) {
-                this.products = products
+            filterProducts(products, filter_options) {
+                this.products = 'data' in products ? products.data : products;
+                if(Object.keys(filter_options).length > 0) {
+                    this.hasFilterOptions = true;
+                }
+                else {
+                    this.hasFilterOptions = false;
+                    this.$eventBus.$emit('resetLoader')
+                }
+
             },
             toggleFilters() {
                 this.showFilters = !this.showFilters;

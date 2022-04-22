@@ -100,28 +100,6 @@ class HomeController extends Controller
         return view('frontend.maintenance');
     }
 
-    public function categoryPage($url_title)
-    {
-        $view_data = [];
-        $category = Category::where('url_title', $url_title)->first();
-        $child_categories = $category->getChildrenCategories();
-        $products = $category->products()->with('images')->get();
-
-        $view_data['category'] = (object)$category;
-
-        if(!$child_categories->isEmpty())
-        {
-            $view_data['child_categories'] = $child_categories;
-        }
-
-        if(!$products->isEmpty())
-        {
-            $view_data['products'] = $products;
-        }
-
-        return view('frontend.category-page', $view_data);
-    }
-
     public function productPage($product_id)
     {
         $user = $this->getAuthUser();

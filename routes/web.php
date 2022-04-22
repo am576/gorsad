@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/','HomeController@index');
-Route::get('/categories/{url_title}', ['uses' => 'HomeController@categoryPage']);
 Route::get('/products/{product_id}', ['uses' => 'HomeController@productPage']);
 
 Route::post('/search', 'HomeController@ApplyFilter');

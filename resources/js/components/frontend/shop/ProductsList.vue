@@ -1,7 +1,7 @@
 <template>
     <div class="row wr1">
         <div class="row wr2">
-            <div class="row wr3">
+            <div class="row wr3 justify-content-center">
                 <div  class="product-wrapper" v-for="(product, index) in products" style="" infinite-wrapper>
                     <a class="product-link" :href="'/products/'+product.id" @mouseenter="hoverProduct(index)" @mouseleave="unHover()">
                         <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}" :class="{scaled: hoveredIndex === index + 1}">
@@ -14,7 +14,7 @@
                         </div>
                     </a>
                 </div>
-                <infinite-loading @distance="1000" @infinite="infiniteHandler" force-use-infinite-wrapper></infinite-loading>
+                <infinite-loading v-show="!hasFilterOptions" :identifier="infiniteId" @distance="100" @infinite="infiniteHandler" force-use-infinite-wrapper></infinite-loading>
             </div>
         </div>
         <signin-form ref="signinForm"></signin-form>
@@ -33,7 +33,8 @@
             productsToCompare: {
                 type: Array,
                 default: []
-            }
+            },
+            hasFilterOptions: Boolean
         },
         data() {
             return {
@@ -42,7 +43,7 @@
                 filterShown: true,
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 hoveredIndex : 0,
-
+                infiniteId: +new Date(),
             }
         },
         methods: {
@@ -114,27 +115,35 @@
                 this.$eventBus.$emit('showCart')
             },
             infiniteHandler($state) {
-                axios.get('/shop/load?page='+this.page)
-                    .then(response => {
-                        return response.data;
+                if(!this.hasFilterOptions) {
+                    axios.get('/shop/load?page=' + this.page)
+                        .then(response => {
+                            return response.data;
 
-                    }).then(data => {
-                    $.each(data.data, (key, value)=> {
-                        this.products.push(value);
+                        }).then(data => {
+                        $.each(data.data, (key, value) => {
+                            this.products.push(value);
+                        });
+                        $state.loaded();
                     });
-                    $state.loaded();
-                });
 
-                this.page = this.page + 1;
+                    this.page = this.page + 1;
+                }
             },
+            resetLoader() {
+                console.log(1)
+                this.page = 1;
+                this.products = [];
+                this.infiniteId += 1;
+            }
         },
         computed: {
-
             isGuest() {
                 return this.user == null;
             },
         },
         created() {
+            this.$eventBus.$on('resetLoader', this.resetLoader)
             // this.getUserFavorites();
         }
     }
@@ -233,6 +242,10 @@
         .show_compare {
             background-color: #868278;;
         }
+    }
+    .infinite-loading-container [class^="loading-"] {
+        width: 60px !important;
+        height: 60px !important;
     }
 
 </style>

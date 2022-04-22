@@ -47,7 +47,7 @@
                     filter: this.filter_options
                 })
                 .then(response => {
-                    this.$emit('filterProducts', response.data)
+                    this.$emit('filterProducts', response.data, this.filter_options)
                 })
             },
             handleView() {

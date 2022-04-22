@@ -19,7 +19,15 @@ class ShopController extends Controller
         $product_name = $request->get('product_name');
         $filter_parameters = $request->get('filter');
 
-        $filtered_products = StaticTools::filterProducts($product_name, $filter_parameters);
+        if(count($filter_parameters) > 0)
+        {
+            $filtered_products = StaticTools::filterProducts($product_name, $filter_parameters);
+        }
+        else
+        {
+            $filtered_products = Product::with('image')
+                ->paginate(config('shop.paginate'));
+        }
 
         return response()->json($filtered_products);
     }
