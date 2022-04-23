@@ -34,7 +34,6 @@
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 sign_type: 'signin',
-                active_company: {}
             }
         },
         methods: {
@@ -56,7 +55,6 @@
 
         },
         created() {
-            if(!this.isGuest)this.active_company = this.user.company;
         }
     }
 </script>

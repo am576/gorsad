@@ -9,11 +9,50 @@ use App\Product;
 use App\Service;
 use App\ServiceOrder;
 use App\Utils\StaticTools;
+use App\Utils\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
 {
+    public function showShopPage()
+    {
+        $user = User::getAuthUser();
+
+        $products = Product::with('image')
+            ->paginate(config('shop.paginate'));
+
+        $attributes = StaticTools::getAttributesByGroup();
+
+        return view('frontend.shop.index')
+            ->with(
+                [
+                    'products'=> $products->toJson(),
+                    'attributes' => $attributes,
+                    'user' => json_encode($user)
+                ]
+            );
+    }
+
+    public function productPage($product_id)
+    {
+        $product = Product::where('id', $product_id)
+            ->with(['images','reviews'])
+            ->first();
+
+        $product->variants = $product->variants()->get()->mapToGroups(function($variant) {
+            return [$variant['type'] => $variant];
+        })->toArray();
+
+        $product->attributes = $product->attributes();
+        $product->images = $product->images->toArray();
+
+        $user = User::getAuthUser();
+
+        return view('frontend.shop.product-page')
+            ->with(['product'=> $product, 'user' => json_encode($user)]);
+    }
+
     public function applyFilter(Request $request)
     {
         $product_name = $request->get('product_name');

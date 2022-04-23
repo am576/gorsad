@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/','HomeController@index');
-Route::get('/products/{product_id}', ['uses' => 'HomeController@productPage']);
+
 
 Route::post('/search', 'HomeController@ApplyFilter');
 Route::get('/getfavorites','UserController@getUserFavorites');
@@ -26,11 +26,16 @@ Route::post('/favorite', 'UserController@toggleProductFavorite');
 Route::post('/postreview','UserController@postReview');
 Route::post('/donotreview','UserController@doNotReview');
 
-Route::get('/shop', 'HomeController@showShopPage')->name('shop');
-Route::post('/shop/addProductsToCompare','ShopController@addProductsToCompare');
-Route::get('/shop/comparison', 'ShopController@getProductsForComparison');
-Route::post('/shop/filter', 'ShopController@applyFilter')->name('filter');
-Route::get('shop/load', 'ShopController@loadProducts');
+Route::prefix('shop')->group(function() {
+    Route::get('/', 'ShopController@showShopPage')->name('shop');
+    Route::get('/products/{product_id}',  'ShopController@productPage');
+    Route::post('addProductsToCompare','ShopController@addProductsToCompare');
+    Route::get('comparison', 'ShopController@getProductsForComparison');
+    Route::post('filter', 'ShopController@applyFilter')->name('filter');
+    Route::get('load', 'ShopController@loadProducts');
+});
+
+
 
 Route::get('/cart', 'HomeController@showCart');
 Route::get('/cart/add/', 'CartController@addProduct');
@@ -40,7 +45,6 @@ Route::get('/cart/removeproduct', 'CartController@removeProduct');
 Route::get('/cart/removeproductvariant', 'CartController@removeProductVariant');
 Route::get('/cart/getCart', 'ApiController@getCart');
 Route::post('/cart/usebonuses', 'CartController@useBonuses');
-
 Route::get('/cart/checkout', 'HomeController@showCheckoutPage');
 Route::post('/cart/checkout', 'CartController@createQuery');
 Route::post('/cart/clear','CartController@clearCart');

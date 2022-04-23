@@ -79,7 +79,7 @@
                             <ul class="dropdown-menu dropdown-menu-right" role="menu">
                                 <li>
                                     <div class="dropdown-text">
-                                        <div v-if="company_id === 0">{{auth_user.name}}</div>
+                                        <div v-if="company_id === 0">{{user.name}}</div>
                                         <div v-else>{{user.companies[0].name}}</div>
                                         <a href="/profile" class="text-small">Личный кабинет</a>
                                     </div>
@@ -184,7 +184,6 @@
 <script>
     export default {
         props: {
-            auth_user: '',
             user: {},
         },
         data() {
@@ -282,13 +281,6 @@
                     this.$eventBus.$emit('changeLoginType', 'user')
                 })
             },
-            checkActiveCompany() {
-                this.user.companies.forEach((company) => {
-                    if(company.is_active) {
-                        this.company_id = company.id;
-                    }
-                })
-            },
             doLogin() {
                 axios.post('/login', this.loginCred)
                     .then(response => {
@@ -323,7 +315,7 @@
         },
         computed: {
             isGuest() {
-                return this.auth_user == null;
+                return this.user == null;
             },
             unreadNotificationsAmount() {
                 let amount = 0;
@@ -361,7 +353,6 @@
         },
         created() {
             this.handleView();
-            // this.checkActiveCompany();
             window.addEventListener('resize', this.handleView);
             document.body.addEventListener('touchmove', function(e){
                 document.getElementsByTagName('html')[0]. style .height = "100vh !important";

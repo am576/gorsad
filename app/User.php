@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->hasMany('App\UserCompany', 'user_id','id');
     }
 
+    public function active_company()
+    {
+        return $this->companies()->where('is_active', 1)->first();
+    }
+
     public function queries()
     {
         $queries = $this->hasMany('App\UserQuery', 'user_id', 'id')->get();
@@ -105,11 +110,6 @@ class User extends Authenticatable
         }
 
         return $suggested_products;
-    }
-
-    public function activeCompany()
-    {
-        return $this->companies()->where('is_active', 1)->first();
     }
 
     public function bonusesTotal()

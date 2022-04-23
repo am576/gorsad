@@ -68,14 +68,12 @@
                     }
                 }).then(res => {
                     this.active_company = company;
-                    // this.$eventBus.$emit('changeLoginType', 'company', this.company_id)
                 })
             },
             logAsUser() {
                 axios.get('/logasuser'
                 ).then(res => {
                     this.active_company = {};
-                    // this.$eventBus.$emit('changeLoginType', 'user')
                 })
             },
             logout() {
@@ -91,7 +89,7 @@
             }
         },
         created() {
-            this.active_company = this.user.company;
+            this.active_company = this.user.active_company;
         }
     }
 </script>
