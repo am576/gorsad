@@ -11,8 +11,6 @@
                 <div class="p-3">
                     <h3>{{product.title}}</h3>
                     <h5 class="text-muted">{{product.title_lat}}</h5>
-<!--                    <h5 class="text-success">{{product.additional_info.family}}</h5>-->
-<!--                    <h5 class="text-muted">{{product.additional_info.common_name}}</h5>-->
                     <div>----</div>
                     <div>
                         <p v-html="product.description"></p>
@@ -49,7 +47,7 @@
                                     <span v-if="variant.price > 0">{{variant.price}}</span>
                                 </td>
                                 <td>
-                                    <input class="quantity-input" type="number" oninput="validity.valid||(value='1');" v-model="quantities[variant.id]" v-if="variant.price > 0">
+                                    <input class="quantity-input" type="number" oninput="(value>0 ||validity.valid)||(value='1');" onchange="value = validity.valid && value > 0 ? value : 1" v-model="quantities[variant.id]" v-if="variant.price > 0">
                                 </td>
                                 <td>
                                     <button class="buy-btn" @click="addToCart(variant.id)" v-if="variant.price > 0">
@@ -132,12 +130,14 @@
                 tabVariants: {
                     'st':{label: 'Штамб(St)'},
                     'mtst':{label: 'Мультиштамб(MtSt)'},
-                    'sol':{label: 'Солитер(Sol)'}
+                    'sol':{label: 'Солитер(Sol)'},
+                    'h':{label: '(H)'},
                 },
                 variants_table_data: {
                     fields: [],
                     items: {}
-                }
+                },
+                isGuest: false
             }
         },
         methods: {
@@ -154,7 +154,7 @@
                 this.current_image = image;
             },
             addToCart(variant_id) {
-                let quantity = variant_id in this.quantities ? this.quantities[variant_id] : 1;
+                let quantity = (variant_id in this.quantities && this.quantities[variant_id] > 0) ? this.quantities[variant_id] : 1;
                 axios.get('/cart/add', {
                     params: {
                         'product_id': this.product.id,

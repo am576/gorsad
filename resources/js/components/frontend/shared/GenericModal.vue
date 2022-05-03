@@ -1,7 +1,7 @@
 <template>
     <div class="modal-overlay" :class="[showModal ? 'd-flex' : 'd-none']">
         <div class="gmodal" :class="modal_class">
-            <span class="close-modal mdi mdi-48px mdi-close-circle-outline" @click="showModal = false"></span>
+            <span class="close-modal mdi mdi-close-circle-outline" @click="showModal = false"></span>
             <slot name="header"></slot>
             <slot></slot>
             <slot name="footer"></slot>
@@ -40,9 +40,3 @@
         }
     }
 </script>
-<style lang="scss">
-
-
-
-
-</style>

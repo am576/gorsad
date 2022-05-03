@@ -1,5 +1,5 @@
 <template>
-    <div id="shop-navigation" class="shop-nav row space-between">
+    <div id="shop-navigation" class="shop-nav row space-between m-0">
         <slot name="back_btn"></slot>
         <div class="d-flex" v-if="!isMobileView">
             <slot name="additional_buttons"></slot>

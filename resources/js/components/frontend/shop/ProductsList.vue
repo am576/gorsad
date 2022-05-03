@@ -3,7 +3,7 @@
         <div class="row wr2">
             <div class="row wr3 justify-content-center">
                 <div  class="product-wrapper" v-for="(product, index) in products" style="" infinite-wrapper>
-                    <a class="product-link" :href="'/products/'+product.id" @mouseenter="hoverProduct(index)" @mouseleave="unHover()">
+                    <a class="product-link" :href="'/shop/products/'+product.id" @mouseenter="hoverProduct(index)" @mouseleave="unHover()">
                         <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}" :class="{scaled: hoveredIndex === index + 1}">
                             <span v-if="!isGuest" class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
                             <span class="compare mdi mdi-24px mdi-format-horizontal-align-center" v-bind:class="isSetToCompare(product.id)" @click.prevent="toggleProductCompare(product.id)"></span>

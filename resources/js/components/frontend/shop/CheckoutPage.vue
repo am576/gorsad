@@ -1,39 +1,37 @@
 <template>
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <button class="btn btn-primary back-btn" @click="goToCart">Назад</button>
-                <div class="products">
-                    <div v-for="(product, id) in products" class="product-details">
-                        <div class="mt-1 mb-2"><strong>{{product['title']}}</strong></div>
-                        <div class="row">
-                            <div class="col-3">
-                                <img :src="'/storage/images/' + product['image']" alt="">
-
-                            </div>
-                            <div class="col-9 d-flex flex-column">
-                                <div class="row" v-for="(variant, index) in product.variants">
-                                    <div class="col-3">
-                                        {{variantTitle(variant)}}
-                                    </div>
-                                    <div class="col-3 d-flex">
-                                        {{variant.quantity}} шт.
-                                    </div>
-                                    <div class="col-3">
-                                        {{variant.price * variant.quantity}} &#8381
-                                    </div>
-                                </div>
-                                <div class="mt-2"><strong>Сумма: {{product['price']}}</strong></div>
-                            </div>
+    <div class="row">
+        <div class="col-12 checkout-details">
+            <div v-for="product in products" class="row product-details">
+                <div class="col-2">
+                    <img :src="'/storage/images/' + product['image']" style="width: 100px; height: 100px;" alt="">
+                </div>
+                <div class="col-12 col-md-12 col-lg-10">
+                    <div class="row">
+                        <div class="col-10">
+                            <strong>{{product['title']}}</strong>
                         </div>
                     </div>
-                    <h5 v-if="bonuses > 0">Использовано баллов: {{bonuses}}</h5>
-                    <h4 v-if="bonuses === 0" class="total-price">Всего: {{price_total}} &#8381</h4>
-                    <h4 v-else class="total-price">Всего: <s>{{price_total}}</s> {{bonus_price}} &#8381</h4>
+                    <div class="row variant-row" v-for="variant in product.variants">
+                        <div class="col-6">
+                            {{variantTitle(variant)}}
+                        </div>
+                        <div class="col-3">
+                            {{variant.quantity}} шт.
+                        </div>
+                        <div class="col-3">
+                            {{variant.price * variant.quantity}} &#8381
+                        </div>
+                    </div>
                 </div>
-                <div class="text-center mb-2">
-                    <button class="btn btn-primary btn-lg" @click="doCheckout">Подтвердить заказ</button>
-                </div>
+                <div class="mt-2"><strong>Сумма: {{product['price']}}</strong></div>
+            </div>
+        </div>
+        <div class="col-12 d-flex flex-wrap mt-3">
+            <div class="total-price text-center">
+                Сумма: {{price_total}} &#8381;
+            </div>
+            <div class="confirm-order text-center mb-5">
+                <button class="btn btn-primary btn-lg" @click="doCheckout">Подтвердить заказ</button>
             </div>
         </div>
     </div>
@@ -43,13 +41,11 @@
     export default {
         props: {
             order_products: {},
-            bonuses: 0,
         },
         data() {
             return {
                 products: {},
                 price_total: 0,
-                bonus_price: 0
             }
         },
         methods: {
@@ -57,7 +53,6 @@
                 axios.get('/cart/totalprice')
                 .then(response => {
                     this.price_total = response.data;
-                    this.bonus_price = this.price_total - Math.floor(this.bonuses / 10)
                 })
             },
             goToCart() {
@@ -92,8 +87,9 @@
                 })
             },
             variantTitle(variant) {
-                const height = variant.height.split(',');
-                return `${variant.type.replace(/\b\w/g, l => l.toUpperCase())} ${height[0]} - ${height[1]} м.`
+                const variant_title = variant.height ? variant.height.split(',') : variant.width.split(',');
+                const variant_type = variant.height ? 'Высота' : 'Обхват';
+                return `${variant.type.replace(/\b\w/g, l => l.toUpperCase())} ${variant_type} ${variant_title[0]} - ${variant_title[1]} см.`
             }
         },
         created() {
@@ -105,11 +101,18 @@
 </script>
 
 <style lang="scss" scoped>
-    .products {
-        max-height: 500px;
-        padding: 20px 10px;
-        margin-bottom: 20px;
+    .checkout-details {
+        height: 40vh;
         overflow-y: auto;
+
+        .variant-row {
+            margin-top: 15px;
+            background: #fbe4b9;
+        }
+    }
+    .products {
+        padding: 20px 0;
+        margin-bottom: 10px;
     }
     .product-details {
         padding: 10px;
@@ -133,6 +136,18 @@
         font-size: 26px;
         font-weight: bold;
         padding: 0 20px;
-        margin-top: 40px;
+        @media (max-height:500px) {
+            width: 50%;
+        }
+        @media (min-height:500px) {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+    .confirm-order {
+        width: 100%;
+        @media (max-height: 500px) {
+            width: 50%;
+        }
     }
 </style>

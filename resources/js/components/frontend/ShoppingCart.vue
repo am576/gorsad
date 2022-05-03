@@ -1,14 +1,24 @@
 <template>
     <g-modal id="modal-cart" ref="cartModal" class="shopping-cart">
         <template v-slot:header>
-            <header class="modal-header">
-                <h5 class="modal-title" v-html="modalTitle"></h5>
+            <header class="modal-header align-items-center justify-content-md-between justify-content-start">
+                <div class="col-md-4 col-4" v-if="showCheckout">
+                    <i class="mdi mdi-chevron-left mdi-36px text-black-50 curpointer"  @click="goToCart" />
+                </div>
+                <div class="col-md-5 col-4 text-center">
+                    <h4 class="modal-title justify-content-start">
+                        <i class="mdi mdi-cart mdi-36px text-black-50" v-if="!showCheckout"/>
+                        {{modalTitle}}
+                    </h4>
+                </div>
+                <div class="col-md-4 col-8 text-right" v-show="!isCartEmpty && !showCheckout">
+                    <button  class="checkout-btn btn btn-primary btn-lg" @click="goToCheckout">Оформить заказ</button>
+                </div>
             </header>
         </template>
         <div class="container-fluid">
             <div class="row justify-content-center" v-if="!showCheckout">
                 <div v-if="!isCartEmpty" class="col-12 order-details">
-                    <h3>Обзор заказа</h3>
                     <!--<v-select :options="options" label="title" @search="onSearch" v-model="selectedOption" :filterable="false" @search:blur="clearSearch" @option:selected="addProduct">
                         <template slot="no-options">
                             быстрый поиск растений...
@@ -30,59 +40,43 @@
                         <div class="col-2">
                             <img :src="'/storage/images/' + product['image']" alt="">
                         </div>
-                        <div class="col-10">
-                            <div class="row">
-                                <div class="col-10">
-                                    <a class="product-link" :href="'/products/' + id" target="_blank"><strong>{{product['title']}}</strong></a>
+                        <div class="col-lg-10 col-md-12 col-12">
+                            <div class="row align-items-center">
+                                <div class="col-10 d-flex align-items-center">
+                                    <a class="product-link mr-4" :href="'/products/' + id" target="_blank"><strong class="product-title">{{product['title']}}</strong></a>
+                                    <span class="remove-product mdi mdi-close mdi-24px" @click="removeProduct(id)"></span>
                                 </div>
                                 <div class="col-2">
-                                    <span class="remove-product mdi mdi-close-circle mdi-24px text-danger" @click="removeProduct(id)"></span>
+
                                 </div>
                             </div>
-                            <div class="row" v-for="(variant, index) in product.variants">
-                                <div class="col-3">
+                            <div class="row variant-row" v-for="(variant, index) in product.variants">
+                                <div class="col-sm-5 col-8">
                                     {{variantTitle(variant)}}
                                 </div>
-                                <div class="col-3 d-flex">
-                                    <input type="number" min="1" oninput="validity.valid||(value='1');" class="form-control" v-model="variant.quantity" @change="changeQuantity(id, index, variant.quantity)">
+                                <div class="col-3 d-flex justify-content-between">
+                                    <div class="variant-quantity d-flex align-items-center w-50 justify-content-between">
+                                        <i class="mdi mdi-minus-circle mdi-24px" @click="changeQuantity(id, index, Number(variant.quantity)-1)"></i>
+                                        <span>{{variant.quantity}}</span>
+                                        <i class="mdi mdi-plus-circle mdi-24px" @click="changeQuantity(id, index, Number(variant.quantity)+1)"></i>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-12 d-flex justify-content-between align-items-center">
+                                    {{variant.price * variant.quantity}} &#8381
                                     <span class="remove-product-variant mdi mdi-trash-can-outline mdi-24px" @click="removeProductVariant(id, index)"></span>
                                 </div>
-                                <div class="col-3">
-                                    {{variant.price * variant.quantity}} &#8381
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row" v-if="useBonuses">
-                        <div class="col-7">
-                            <h4>Доступно <b>{{userBonuses}}</b> баллов</h4>
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <h5>Сколько баллов Вы хотите использовать?</h5>
-                                </div>
-                                <div class="col-6">
-                                    <input type="text" class="form-control" v-model="bonusesToUseAmount" @blur="calcBonusesPrice"></input>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="total-price row">
-                        <div class="col-8">
-                            <div class="d-inline-block mr-3">Сумма: {{totalPrice}} &#8381;</div>
-                            <p-check v-if="userBonuses > 0" name="check" color="success" v-model="useBonuses" @change="test()">Использовать баллы</p-check>
-                        </div>
-
-                        <div class="col-3">+{{totalBonuses}} баллов</div>
-                    </div>
-                    <div class="text-center">
-                        <button class="btn btn-primary btn-lg" @click="goToCheckout">Оформить заказ</button>
+                    <div class="total-price text-center">
+                        Сумма: {{totalPrice}} &#8381;
                     </div>
                 </div>
                 <div v-else>
                     <h3>Ваша корзина пуста</h3>
                 </div>
             </div>
-            <checkout-page v-if="showCheckout" :order_products="products" :bonuses="bonusesToUseAmount" @goToCart="goToCart"></checkout-page>
+            <checkout-page v-if="showCheckout" :order_products="products"></checkout-page>
         </div>
     </g-modal>
 </template>
@@ -95,36 +89,14 @@
                 options: [],
                 selectedOption: {},
                 showCheckout: false,
-                useBonuses: false,
-                userBonuses: 0,
-                bonusesToUseAmount: 0,
             }
         },
         methods: {
-            test() {
-                if(!this.useBonuses)
-                    this.bonusesToUseAmount = 0;
-            },
             onSearch(search, loading) {
                 if(search.length) {
                     loading(true);
                     this.search(search, loading, this);
                 }
-            },
-            search(search, loading, vm)  {
-                axios({
-                    method: 'GET',
-                    url:`/api/searchProduct`,
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded'
-                    },
-                    params: {
-                        q: search
-                    }})
-                    .then(res => {
-                        this.options = res.data;
-                        loading(false);
-                    })
             },
             clearSearch() {
                 this.options = [];
@@ -135,15 +107,15 @@
                         'product_id': this.selectedOption.id
                     }
                 })
-                    .then(response => {
-                        if(response.status == 200)
-                        {
-                            axios.get('/cart/getCart')
-                            .then(response => {
-                                this.products = response.data;
-                            })
-                        }
-                    })
+                .then(response => {
+                    if(response.status == 200)
+                    {
+                        axios.get('/cart/getCart')
+                        .then(response => {
+                            this.products = response.data;
+                        })
+                    }
+                })
             },
             removeProduct(id) {
                 axios.get('/cart/removeproduct', {
@@ -169,7 +141,7 @@
                     if(response.status == 200)
                     {
                         this.$delete(this.products[product_id]['variants'], variant_index);
-                        if(this.products[product_id]['variants'].length === 0)
+                        if(Object.keys(this.products[product_id]['variants']).length === 0)
                         {
                             this.$delete(this.products, product_id);
                             this.removeProduct(product_id);
@@ -177,37 +149,35 @@
                     }
                 })
             },
-            productPrice(id) {
-                let price = 0;
-                this.products[id].variants.forEach(variant => {
-                    this.products[id].price += (variant.price * variant.quantity);
-                })
-
-                return this.products[id].price;
-            },
-            changeQuantity(id, variant_index, quantity) {
-                quantity = quantity === '' ? 1 : quantity;
+            changeQuantity(id, variant_id, quantity) {
                 axios.get('/cart/changequantity', {
-                    params : {
+                    params: {
                         product_id: id,
-                        variant_index: variant_index,
+                        variant_id: variant_id,
                         quantity: quantity
                     }
                 }).then(res => {
-                    this.products[id].price = 0;
-                    this.products[id].variants.forEach(variant => {
-                        this.products[id].price += variant.price * variant.quantity
-                    })
+                    this.products[id].variants[variant_id].quantity = quantity;
+                    this.calcProductPrice(id);
                 })
             },
             getCartContents() {
                 axios.get('/cart/getCart').then(response => {
                     this.products = response.data.products || [];
-                    this.userBonuses = response.data.user_bonuses;
+                    Object.keys(this.products).forEach(id => {
+                        this.calcProductPrice(id);
+                    })
+                })
+            },
+            calcProductPrice(id) {
+                this.products[id].price = 0;
+                Object.values(this.products[id].variants).forEach(variant => {
+                    this.products[id].price += variant.price * variant.quantity
                 })
             },
             showModal() {
                 this.getCartContents();
+                this.goToCart();
                 this.$refs.cartModal.setModalVisibility(true);
             },
             goToCheckout() {
@@ -220,14 +190,14 @@
                 .catch(error => {
                     alert('Недостаточно баллов')
                 })
-                //
             },
             goToCart() {
               this.showCheckout = false;
             },
             variantTitle(variant) {
-                const height = variant.height.split(',');
-                return `${variant.type.replace(/\b\w/g, l => l.toUpperCase())} ${height[0]} - ${height[1]} м.`
+                const variant_title = variant.height ? variant.height.split(',') : variant.width.split(',');
+                const variant_type = variant.height ? 'Высота' : 'Обхват';
+                return `${variant.type.replace(/\b\w/g, l => l.toUpperCase())} ${variant_type} ${variant_title[0]} - ${variant_title[1]} см.`
             },
             calcBonusesPrice(e) {
                 if(isNaN(this.bonusesToUseAmount)) {
@@ -242,16 +212,15 @@
                 axios.post('/cart/usebonuses', {
                     amount: this.bonusesToUseAmount
                 })
-            }
+            },
+
         },
         computed: {
             totalPrice() {
                 let price = 0;
-                Object.keys(this.products).forEach(key => {
-                    price += this.products[key]['price']
+                Object.values(this.products).forEach(product => {
+                    price += product.price;
                 })
-                price = price - this.calcBonusesPrice()
-                price = price >= 0 ? price : 0;
 
                 return price;
             },
@@ -269,13 +238,7 @@
               return Object.keys(this.products).length === 0
             },
             modalTitle() {
-                let title = '<span class=\'mdi mdi-36px mdi-cart text-black-50\'></span> '
-                if(!this.showCheckout) {
-                    return  title + 'Корзина';
-                }
-                else {
-                    return title + 'Подтверждение заказа';
-                }
+                return this.showCheckout ? 'Подтверждение заказа' : 'Корзина';
             }
         },
         created() {
@@ -284,43 +247,48 @@
                 this.showModal();
             })
         },
-        mounted() {
-            this.$root.$on('bv::modal::hidden', (bvEvent, modalId) => {
-                this.showCheckout = false;
-            })
-        }
     }
 </script>
 
 <style lang="scss" scoped>
-    .shopping-cart {
-        * {
-            color: #000000;
-        }
-        .modal-title {
-            display: flex;
-            align-items: center;
-        }
-    }
     .order-details {
-        padding: 15px;
+        height: 60vh;
+        overflow: scroll;
+        padding: 15px 15px 0 15px !important;
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
     }
     .product-row {
         padding: 10px 20px;
-        border-top: 1px solid #ececec;
-        margin-bottom: 20px;
+        background: #e4e8e9;
+        margin-bottom: 1rem;
 
         a.product-link {
+            .product-title {
+                font-size: 20px;
+            }
             &:hover {
                 text-decoration: none;
             }
         }
     }
-
+    .variant-row {
+        align-items: center;
+        margin-bottom: 2vh;
+        background: #e1e3e3;
+        .variant-quantity {
+            i {
+                cursor: pointer;
+            }
+        }
+    }
     .remove-product {
         cursor: pointer;
+        color: #888484;
     }
-
     .remove-product-variant {
         cursor: pointer;
         &:hover {
@@ -328,14 +296,17 @@
         }
     }
     .total-price {
-        font-size: 22px;
+        font-size: 2rem !important;
         font-weight: bold;
-        padding: 0 20px;
-        margin-top: 40px;
-        margin-bottom: 40px;
+        padding: 20px;
     }
 
     .back_btn {
         margin-left: 20px;
+    }
+    .checkout-btn {
+        @media (max-width: 900px) {
+            font-size: 1rem;
+        }
     }
 </style>

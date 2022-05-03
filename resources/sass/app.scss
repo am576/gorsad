@@ -815,6 +815,46 @@ footer.home-footer {
         background-color: #ffffff;
         height: max-content;
         width: 500px;
+        @media (max-height: 600px) {
+            margin-top: 5%;
+        }
+    }
+    .close-modal {
+        font-size: 48px;
+    }
+}
+
+#modal-cart {
+    * {
+        color: #353535;
+    }
+
+    .gmodal {
+        background-color: #ebf0f1 !important;
+        @media (max-width: 669px) {
+            width: 100vw;
+        }
+        @media (min-width: 670px) {
+            width: 75vw;
+        }
+        @media (min-width: 1200px) {
+            width: 50vw;
+        }
+    }
+
+    .modal-title {
+        display: flex;
+        align-items: center;
+        @media (max-height: 500px) {
+            font-size: 1rem;
+        }
+    }
+
+    button {
+        padding: 10px;
+        background: #494441 !important;
+        border-color: #494441 !important;
+        color: #ffffff;
     }
 }
 
@@ -822,18 +862,20 @@ footer.home-footer {
     .close-modal {
         position: absolute;
         cursor: pointer;
+        color: #ffffff !important;
     }
 
     @media (min-width: 670px) {
         .close-modal {
             top: -50px;
             right: -50px;
-            color: #ffffff;
+            font-size: 48px;
         }
     }
     @media (max-width: 670px) {
         .close-modal {
-            top: -1rem;
+            top: -3.2rem;
+            font-size: 40px;
             right: 0;
             color: #000000;
         }

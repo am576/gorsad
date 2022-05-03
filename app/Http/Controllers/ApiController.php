@@ -167,12 +167,9 @@ class ApiController extends Controller
     public function getCart()
     {
         $cart = [];
-        $auth_user = Auth::user();
-        if(isset($auth_user) && session()->has('cart'))
+        if(session()->has('cart'))
         {
             $cart['products'] =  session()->get('cart');
-            $user = User::where('id', auth()->user()->id)->first();
-            $cart['user_bonuses'] = $user->bonusesTotal();
         }
 
         return response()->json($cart);

@@ -42,6 +42,8 @@ class ShopController extends Controller
 
         $product->variants = $product->variants()->get()->mapToGroups(function($variant) {
             return [$variant['type'] => $variant];
+        })->reject(function($variant, $type) {
+            return empty($type);
         })->toArray();
 
         $product->attributes = $product->attributes();
@@ -58,7 +60,7 @@ class ShopController extends Controller
         $product_name = $request->get('product_name');
         $filter_parameters = $request->get('filter');
 
-        if(count($filter_parameters) > 0)
+        if(count($filter_parameters) > 0 || !empty($product_name))
         {
             $filtered_products = StaticTools::filterProducts($product_name, $filter_parameters);
         }
