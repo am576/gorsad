@@ -12,6 +12,7 @@ use App\Utils\StaticTools;
 use App\Utils\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function Symfony\Component\String\indexOf;
 
 class ShopController extends Controller
 {
@@ -86,64 +87,46 @@ class ShopController extends Controller
 
             return session()->get('products_to_compare');
         }
+    }
 
-        return 0;
+    public function removeFromCompare(Request $request)
+    {
+        if(isset($request->product_id) && session()->has('products_to_compare')) {
+            $products = session()->get('products_to_compare');
+            if(in_array($request->product_id, $products))
+            {
+                array_splice($products, array_search($request->product_id, $products), 1);
+
+                session()->put('products_to_compare', $products);
+            }
+        }
     }
 
     public function getProductsForComparison()
     {
         if(session()->has('products_to_compare')) {
             $product_ids = session()->get('products_to_compare');
+
             $products = Product::whereIn('id', $product_ids)
+                ->with('image')
                 ->select(['id', 'title'])
                 ->get();
 
-            $products_compared = [];
+            foreach ($products as $product) {
+                $product['attributes'] = collect($product->attributes())->mapWithKeys(function($attribute) {
+                    return [$attribute['id'] => $attribute];
+                });
+            }
 
+            $products_compared['products'] = $products;
             $products_compared['attributes'] = DB::table('products_attributes')
                 ->join('attributes_values', 'attribute_value_id', '=', 'attributes_values.id')
                 ->join('attributes', 'products_attributes.attribute_id', '=', 'attributes.id')
-                ->whereIn('product_id', [1, 5])
+                ->whereIn('product_id', $product_ids)
                 ->select(DB::raw('group_concat(value) as `values`'), DB::raw('group_concat(attributes_values.id) as `ids`'), 'attributes.id', 'attributes.type', 'attributes.name')
                 ->groupBy('attributes.id')
                 ->get();
 
-            foreach ($products as $product) {
-                $attributes = [];
-
-                foreach ($product->savedAttributes() as $attribute) {
-                    $selected_values = [];
-                    $img_path = '';
-                    foreach ($attribute->selected_values as $value_id) {
-                        if ($attribute->type == 'icon') {
-                            $img_path = Image::select('icon')
-                                ->where('id',
-                                    DB::table('attribute_icons')
-                                        ->select('image_id')
-                                        ->where('attribute_value_id', $value_id)
-                                        ->pluck('image_id'))
-                                ->first()->icon;
-                        }
-                        if ($attribute->type == 'text') {
-                            array_push($selected_values, $value_id);
-                        } else if ($attribute->type == 'range' || 'color') {
-                            array_push($selected_values, DB::table('attributes_values')->find($value_id)->value);
-                        }
-
-                    }
-                    $attributes[$attribute->id] = [
-                        'type' => $attribute->type,
-                        'values' => $selected_values,
-                        'icon' => $img_path
-                    ];
-
-                }
-                $image = $product->images()->first();
-                $product['attributes'] = $attributes;
-                $product['image'] = !is_null($image) ? $image['medium'] : config('product.noimage.path') . config('product.noimage.medium');
-            }
-
-            $products_compared['products'] = $products;
             return $products_compared;
         }
     }
@@ -172,6 +155,5 @@ class ShopController extends Controller
             ->paginate(config('shop.paginate'));
 
         return response()->json($products);
-
     }
 }

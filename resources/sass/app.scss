@@ -35,7 +35,10 @@ main {
     overflow-x: visible !important;
     max-width: 1920px;
 }
-
+a.link-passive, a.link-passive:hover {
+    color: white;
+    text-decoration: none;
+}
 .theme--dark.v-overlay {
   color: #fff;
 }

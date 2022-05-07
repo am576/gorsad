@@ -31,7 +31,7 @@
                             </div>
                         </template>
                         <template slot="additional_buttons" v-if="productsToCompare.length > 1">
-                            <button class="nav-btn show_compare" @click="toggleComparisonPage">
+                            <button class="nav-btn show_compare mr-4" @click="toggleComparisonPage">
                                 <i class="mdi mdi-24px mdi-format-horizontal-align-center mr-1 mr-l1"></i>
                                 Показать сравнение
                             </button>
@@ -107,8 +107,21 @@
             showCart() {
                 this.$eventBus.$emit('showCart')
             },
+            getComparison() {
+                axios.get('/shop/comparison')
+                    .then(response => {
+                        if(response.data) {
+                            this.productsToCompare = [];
+                            this.compareProducts = response.data;
+                            this.compareProducts.products.forEach(product => {
+                                this.productsToCompare.push(product.id)
+                            })
+                        }
+                    })
+            },
             toggleComparisonPage() {
                 this.toggleFilters();
+                this.getComparison();
                 if(this.showComparison === false) {
                     this.showComparison = true;
                     axios.get('/shop/comparison')
@@ -121,21 +134,28 @@
                 }
             },
             closeComparison() {
+                this.getComparison();
                 this.showComparison = false;
             },
             toggleProductCompare(id) {
                 if(this.productsToCompare.includes(id)) {
-                    this.$delete(this.productsToCompare, this.productsToCompare.indexOf(id))
+                    this.$delete(this.productsToCompare, this.productsToCompare.indexOf(id));
                 }
                 else {
-                    this.productsToCompare.push(id);
+                    if(this.productsToCompare.length < 5) {
+                        this.productsToCompare.push(id);
+                    }
+                    else {
+                        return;
+                    }
                 }
                 const formData = new FormData();
                 this.productsToCompare.forEach(id => {
                     formData.append('products[]', id);
                 })
-                axios.post('/shop/addProductsToCompare', formData);
+                axios.post('/shop/compare/add', formData);
             },
+
         },
         computed: {
             isGuest() {
@@ -148,15 +168,7 @@
         created() {
             this.products = 'data' in this.products_all ? this.products_all.data : this.products_all;
             this.handleView();
-            axios.get('/shop/comparison')
-                .then(response => {
-                    if(response.data) {
-                        this.compareProducts = response.data;
-                        this.compareProducts.products.forEach(product => {
-                            this.productsToCompare.push(product.id)
-                        })
-                    }
-                })
+            this.getComparison();
             this.$eventBus.$on('toggleProductCompare', this.toggleProductCompare);
 
         }

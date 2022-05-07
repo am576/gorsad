@@ -101,9 +101,6 @@
                 if(product.image) {
                     return `url(/storage/images/${product.image.medium})`
                 }
-                else {
-                    return 'url(/storage/images/products/noimage/noimage_medium.png)'
-                }
             },
             showSigninForm() {
                 this.$refs.signinForm.showModal();

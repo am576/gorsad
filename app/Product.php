@@ -98,7 +98,14 @@ class Product extends Model
 
     public function image()
     {
-        return $this->morphOne('App\Image','imageable');
+        return $this->morphOne('App\Image','imageable')->withDefault(function() {
+            return new Image([
+                'icon' => config('product.noimage.path').config('product.noimage.icon'),
+                'small' => config('product.noimage.path').config('product.noimage.small'),
+                'medium' => config('product.noimage.path').config('product.noimage.medium'),
+                'large' => config('product.noimage.path').config('product.noimage.large'),
+            ]);
+        });
     }
 
     public function images()

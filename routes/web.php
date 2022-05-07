@@ -3,18 +3,6 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-
 Auth::routes();
 
 Route::get('/','HomeController@index');
@@ -29,13 +17,12 @@ Route::post('/donotreview','UserController@doNotReview');
 Route::prefix('shop')->group(function() {
     Route::get('/', 'ShopController@showShopPage')->name('shop');
     Route::get('/products/{product_id}',  'ShopController@productPage');
-    Route::post('addProductsToCompare','ShopController@addProductsToCompare');
+    Route::post('/compare/add','ShopController@addProductsToCompare');
+    Route::post('/compare/remove','ShopController@removeFromCompare');
     Route::get('comparison', 'ShopController@getProductsForComparison');
     Route::post('filter', 'ShopController@applyFilter')->name('filter');
     Route::get('load', 'ShopController@loadProducts');
 });
-
-
 
 Route::get('/cart', 'HomeController@showCart');
 Route::get('/cart/add/', 'CartController@addProduct');
@@ -109,4 +96,3 @@ Route::prefix('admin')->group(function(){
 
     Route::post('/images-upload', 'ImagesController@upload');
 });
-
