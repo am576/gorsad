@@ -51,7 +51,7 @@
                 axios.post('/favorite', {
                     product_id : id
                 })
-                .then(res => {
+                .then(() => {
                     if(this.favorites.includes(id)) {
                         this.$delete(this.favorites, this.favorites.indexOf(id))
                     }
@@ -67,10 +67,12 @@
                 this.hoveredIndex = -1;
             },
             getUserFavorites() {
-                axios.get('/getfavorites')
-                .then(res => {
-                    this.favorites = res.data;
-                })
+                if(this.user !== null) {
+                    axios.get('/getfavorites')
+                        .then(res => {
+                            this.favorites = res.data;
+                        })
+                }
             },
             isProductFavorite(id) {
                 return {
@@ -141,7 +143,7 @@
         },
         created() {
             this.$eventBus.$on('resetLoader', this.resetLoader)
-            // this.getUserFavorites();
+            this.getUserFavorites();
         }
     }
 </script>
@@ -244,5 +246,4 @@
         width: 60px !important;
         height: 60px !important;
     }
-
 </style>

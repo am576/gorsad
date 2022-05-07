@@ -16,6 +16,7 @@
                         <li>
                             <a class="nav-link" href="#" @click.prevent="setActiveTab('favorites')" :class="{active: isTabActive('favorites')}">
                                 ИЗБРАННОЕ
+                                <b-badge v-if="favoritesCount" variant="light">{{favoritesCount}}</b-badge>
                             </a>
                         </li>
                         <li>
@@ -93,7 +94,7 @@
                     </div>
                     <div class="tab-pane card-body" :class="{active: isTabActive('favorites')}">
                         <div class="card-text">
-                            <favorites-list :data="user.favorites"></favorites-list>
+                            <favorites-list :favorites="user.favorites"></favorites-list>
                         </div>
                     </div>
                     <div class="tab-pane card-body" :class="{active: isTabActive('user_cabinet')}">
@@ -325,11 +326,11 @@
         },
 
         computed: {
-
-
-
             profileTitle() {
                 return this.company.id ? this.company.name : this.user.name
+            },
+            favoritesCount() {
+                return this.user.favorites.length;
             }
         },
         mounted() {

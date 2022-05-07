@@ -9,7 +9,7 @@ use App\Product;
 use App\Service;
 use App\ServiceOrder;
 use App\Utils\StaticTools;
-use App\Utils\User;
+use App\Utils\User as UserUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function Symfony\Component\String\indexOf;
@@ -18,7 +18,7 @@ class ShopController extends Controller
 {
     public function showShopPage()
     {
-        $user = User::getAuthUser();
+        $user = UserUtils::getAuthUser();
 
         $products = Product::with('image')
             ->paginate(config('shop.paginate'));
@@ -50,7 +50,7 @@ class ShopController extends Controller
         $product->attributes = $product->attributes();
         $product->images = $product->images->toArray();
 
-        $user = User::getAuthUser();
+        $user = UserUtils::getAuthUser();
 
         return view('frontend.shop.product-page')
             ->with(['product'=> $product, 'user' => json_encode($user)]);

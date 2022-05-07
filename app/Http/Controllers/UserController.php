@@ -24,7 +24,7 @@ class UserController extends Controller
 
         $user->queries = $user->queries();
         $user->orders = $user->orders();
-        $user->favorites = $user->favorites();
+        $user->favorites = $user->favoriteProducts();
         $user->suggested_products = $user->suggestedReviews();
         $user->bonuses = $user->bonusesTotal();
         $user->bonuses_history = $user->bonusesHistory();
@@ -94,34 +94,35 @@ class UserController extends Controller
 
     public function getUserFavorites()
     {
-        $user = auth()->user();
-        return $user->favorites()->pluck('id');
+        return auth()->user()->favorites();
     }
 
     public function toggleProductFavorite(Request $request)
     {
-        $user = auth()->user();
-        $product_id = $request->product_id;
-
-        $res = DB::table('user_favorites')
-            ->where('user_id', $user->id)
-            ->where('product_id', $product_id)
-            ->get();
-
-        if(count($res))
+        if(isset($request->product_id))
         {
-            DB::table('user_favorites')
-                ->where('user_id', $user->id)
-                ->where('product_id', $product_id)
-                ->delete();
-        }
-        else
-        {
-            DB::table('user_favorites')
-                ->insert([
-                   'user_id' => $user->id,
-                   'product_id' => $product_id
-                ]);
+            $user = auth()->user();
+            $product_id = $request->product_id;
+            $favorites = $user->favorites();
+
+            if($favorites->count() < 100)
+            {
+                if($favorites->contains($product_id))
+                {
+                    DB::table('user_favorites')
+                        ->where('user_id', $user->id)
+                        ->where('product_id', $product_id)
+                        ->delete();
+                }
+                else
+                {
+                    DB::table('user_favorites')
+                        ->insert([
+                            'user_id' => $user->id,
+                            'product_id' => $product_id
+                        ]);
+                }
+            }
         }
     }
 
