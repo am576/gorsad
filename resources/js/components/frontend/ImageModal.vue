@@ -1,10 +1,14 @@
 <template>
-    <div class="modal-overlay" :class="showModal ? 'd-flex' : 'd-none'">
+    <div class="modal-overlay" :class="showModal ? 'd-flex' : 'd-none'" @click.prevent.stop="test">
         <div class="imodal">
-            <span class="close-modal mdi mdi-48px mdi-close-circle-outline text-white" @click="showModal = false"></span>
-            <img :src="'/storage/images/'+current_image.large" alt="" style="width: 100%;">
-            <span class="left-control mdi mdi-chevron-left text-white" v-show="!isFirstImage" @click="showPreviousImage"></span>
-            <span class="right-control mdi mdi-chevron-right text-white" v-show="!isLastImage" @click="showNextImage"></span>
+            <span class="close-modal mdi mdi-48px mdi-close-circle-outline text-white" @click.stop="showModal = false"></span>
+            <div class="image d-flex position-relative">
+                <img :src="'/storage/images/'+current_image.large" alt="" @click.stop>
+                <span class="left-control mdi mdi-chevron-left text-white" v-show="!isFirstImage"
+                      @click.stop="showPreviousImage"></span>
+                <span class="right-control mdi mdi-chevron-right text-white" v-show="!isLastImage"
+                      @click.stop="showNextImage"></span>
+            </div>
         </div>
         <div class="close">
         </div>
@@ -25,9 +29,20 @@
         },
         methods: {
             keyPressed(event) {
-                if (event.keyCode === 27) {
-                    this.showModal = false;
+                switch (event.keyCode) {
+                    case 27:
+                        this.showModal = false;
+                        break;
+                    case 39:
+                        this.showNextImage();
+                        break;
+                    case 37:
+                        this.showPreviousImage();
+                        break;
                 }
+            },
+            test() {
+                this.showModal = false;
             },
             setModalVisibility(image_index) {
                 this.current_image = this.images[image_index];
@@ -52,13 +67,12 @@
                 return this.image_index === 0;
             },
             isLastImage() {
-                console.log(this.images.length - 1)
                 return this.image_index === this.images.length - 1;
             }
         },
         created: function() {
             document.addEventListener('keyup', this.keyPressed);
-            this.$eventBus.$on('showModal', this.setModalVisibility);
+            this.$eventBus.$on('showImageModal', this.setModalVisibility);
             this.current_image = this.images[0];
         }
     }
@@ -78,23 +92,43 @@
             position: relative;
             text-align: center;
             max-height: 700px;
-            width: 700px;
+            width: 60vw;
             margin-top: 5%;
+            padding-bottom: 10vh;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
 
-            .left-control, .right-control {
-                position: absolute;
-                font-size: 100px;
-                cursor: pointer;
-            }
-            .left-control {
-                left: -100px;
-            }
-            .right-control {
-                right: -100px;
+            .image {
+                max-height: 70vh;
+                width: 60vw;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .left-control, .right-control {
+                    position: absolute;
+                    font-size: 100px;
+                    cursor: pointer;
+                }
+
+                .left-control {
+                    left: -100px;
+                }
+
+                .right-control {
+                    right: -100px;
+                }
+
+                img {
+                    max-width: 100%;
+                    max-height: 100%;
+                }
             }
         }
+        .close-modal {
+            position: static !important;
+            align-self: end;
+        }
     }
-
 </style>
