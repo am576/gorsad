@@ -2,7 +2,7 @@
     <div class="d-flex wr1">
         <div class="row wr2">
             <div class="row wr3 justify-content-center">
-                <div class="product-wrapper" v-for="(product, index) in products" style="" infinite-wrapper>
+                <div class="product-wrapper" v-for="(product, index) in products_all" style="" infinite-wrapper>
                     <a class="product-link" :href="'/shop/products/'+product.id" @mouseenter="hoverProduct(index)" @mouseleave="unHover()">
                         <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}" :class="{scaled: hoveredIndex === index + 1}">
                             <span v-if="!isGuest" class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
@@ -38,6 +38,9 @@
         },
         data() {
             return {
+                products_all: {
+                    type: Array
+                },
                 page: 2,
                 favorites: [],
                 filterShown: true,
@@ -101,7 +104,7 @@
             },
             productThumbnail(product) {
                 if(product.image) {
-                    return `url(/storage/images/${product.image.small})`
+                    return `url(/storage/images/${product.image.medium})`
                 }
             },
             showSigninForm() {
@@ -121,7 +124,7 @@
 
                         }).then(data => {
                         $.each(data.data, (key, value) => {
-                            this.products.push(value);
+                            this.products_all.push(value);
                         });
                         $state.loaded();
                     });
@@ -130,10 +133,13 @@
                 }
             },
             resetLoader() {
-                console.log(1)
                 this.page = 1;
-                this.products = [];
+                this.products_all = [];
                 this.infiniteId += 1;
+            },
+            updateProductsList(products, isFilter) {
+                this.products_all = products;
+                this.hasFilterOptions = isFilter;
             }
         },
         computed: {
@@ -142,7 +148,9 @@
             },
         },
         created() {
+            this.products_all = this.products;
             this.$eventBus.$on('resetLoader', this.resetLoader)
+            this.$eventBus.$on('updateProductsList', this.updateProductsList)
             this.getUserFavorites();
         }
     }

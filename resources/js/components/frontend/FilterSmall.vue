@@ -74,7 +74,6 @@
                 this.$forceUpdate();
             },
             applyFilter() {
-                console.log(this.selected_filter_options)
                 const formData = new FormData();
 
                 formData.append('product_name', this.product_name);

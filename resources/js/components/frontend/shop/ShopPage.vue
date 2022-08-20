@@ -60,7 +60,7 @@
                 type: Object
             },
             filter_options: {
-                type: Object
+                type: Array
             },
             filtered_name: {
                 type: String,
@@ -82,15 +82,10 @@
         },
         methods: {
             filterProducts(products, filter_options) {
+                let isFilter = false;
                 this.products = 'data' in products ? products.data : products;
-                if(Object.keys(filter_options).length > 0) {
                     this.hasFilterOptions = true;
-                }
-                else {
-                    this.hasFilterOptions = false;
-                    this.$eventBus.$emit('resetLoader')
-                }
-
+                this.$eventBus.$emit('updateProductsList', this.products, true);
             },
             toggleFilters() {
                 this.showFilters = !this.showFilters;
