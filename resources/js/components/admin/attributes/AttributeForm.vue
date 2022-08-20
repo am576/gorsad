@@ -282,7 +282,8 @@
                                 }
                             }).catch(error => {
                             if (error.response.status === 422) {
-                                this.errors = error.response.data.errors || {};
+                                this.errors = error.response.data || {};
+                                alert(error.response.data);
                             }
                         });
                     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Attribute;
 use App\Image;
+use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -90,7 +91,7 @@ class AttributeController extends Controller
     public function edit($id)
     {
         $attribute = Attribute::find($id);
-        $attribute['values'] = $attribute->values();
+        $attribute['values'] = $attribute->values()->get();
         if($attribute->type == 'icon')
         {
             $attribute['iconset_id'] = $attribute->iconset();
@@ -111,21 +112,32 @@ class AttributeController extends Controller
         if(isset($request->delete_values))
         {
             $delete_values = json_decode($request->delete_values);
-
+            $values_in_use = Product::usedAttributeValues();
+            $values_ids = [];
             foreach ($delete_values as $delete_value) {
-                if(isset($delete_value->id))
-                {
-                    DB::table('attributes_values')
-                        ->where('id', $delete_value->id)
-                        ->delete();
-                    if(isset($delete_value->image))
+                array_push($values_ids, $delete_value->id);
+            }
+
+            if(count(array_intersect($values_ids, $values_in_use)) == 0)
+            {
+                foreach ($delete_values as $delete_value) {
+                    if(isset($delete_value->id))
                     {
-                        DB::table('attribute_icons')
-                            ->where('attribute_id', $delete_value->attribute_id)
-                            ->where('attribute_value_id', $delete_value->id)
+                        DB::table('attributes_values')
+                            ->where('id', $delete_value->id)
                             ->delete();
+                        if(isset($delete_value->image))
+                        {
+                            DB::table('attribute_icons')
+                                ->where('attribute_id', $delete_value->attribute_id)
+                                ->where('attribute_value_id', $delete_value->id)
+                                ->delete();
+                        }
                     }
                 }
+            }
+            else {
+                return response()->json('Ошибка - некоторые из удалённых вами значений используются в тоаварах', 422);
             }
         }
 

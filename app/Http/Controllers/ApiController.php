@@ -61,7 +61,7 @@ class ApiController extends Controller
     public function getAttributeValues(Request $request)
     {
         $attribute = Attribute::find($request->attribute_id);
-        $values = $attribute->values();
+        $values = $attribute->values()->get();
 
         return response()->json($values);
     }

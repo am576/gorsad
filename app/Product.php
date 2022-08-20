@@ -117,4 +117,9 @@ class Product extends Model
     {
         return $this->hasMany('App\UserReview', 'product_id','id')->with('user');
     }
+
+    public static function usedAttributeValues()
+    {
+        return ProductsAttribute::select('attribute_value_id')->groupBy('attribute_value_id')->get()->pluck('attribute_value_id')->toArray();
+    }
 }
