@@ -37,14 +37,20 @@ class ReverseProducts extends Command
 
     public function handle()
     {
-        Product::where('id','!=',1)
+        Product::where('id','!=',0)
             ->delete();
         DB::table('products_attributes')
             ->where('product_id','!=',1)
             ->delete();
         ProductVariant::where('product_id','!=',1)
             ->delete();
-        Image::where('imageable_type','App\Product')
-            ->delete();
+
+        //$images = Image::where('imageable_type','App\Product')->delete();
+        $images = Image::where('imageable_type','App\Product')->get();
+
+        foreach ($images as $image) {
+            $image->deleteImages();
+            $image->destroy($image->id);
+        }
     }
 }

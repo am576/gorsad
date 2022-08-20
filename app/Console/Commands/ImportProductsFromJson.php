@@ -6,8 +6,11 @@ use App\Attribute;
 use App\Image;
 use App\Product;
 use App\ProductVariant;
+use App\Utils\ImageUtils;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use function Symfony\Component\String\lower;
 
 class ImportProductsFromJson extends Command
@@ -92,14 +95,15 @@ class ImportProductsFromJson extends Command
                     {
                         foreach ($match as $index => $label) {
                             $path = 'products/' . $image_files[$index];
+                            $filename = public_path(config('images.storage_path').'products/' . $image_files[$index]);
                             $image = new Image([
                                 'label' => $label,
                                 'mimetype' => 'image/jpeg',
                                 'imageable_type' => 'App\Product',
                                 'imageable_id' => $product->id,
-                                'icon' => $path,
-                                'small' => $path,
-                                'medium' => $path,
+                                'icon' => ImageUtils::createResizedImage('icon', $filename, 'products', config('images.size.icon')),
+                                'small' => ImageUtils::createResizedImage('small', $filename, 'products',config('images.size.small')),
+                                'medium' => ImageUtils::createResizedImage('medium', $filename, 'products',config('images.size.medium')),
                                 'large' => $path,
                             ]);
                             $image->save();
@@ -249,7 +253,7 @@ class ImportProductsFromJson extends Command
 
     private function getRusName($product)
     {
-        preg_match('/([\p{Cyrillic}\s\'«»\"\.]+)/u', $product['Title'], $match);
+        preg_match('/([\p{Cyrillic}\s\-\'«»\"\.]+[^()]+)/u', $product['Title'], $match);
         if(isset($match[1]))
         {
             return $match[1];
@@ -258,7 +262,7 @@ class ImportProductsFromJson extends Command
     }
     private function getLatName($product)
     {
-        preg_match('/\(([\w\s\']+)\)/', $product['Title'], $match);
+        preg_match('/\(([\w\s\'-`]+)\)/', $product['Title'], $match);
         if(isset($match[1]))
         {
             return $match[1];
