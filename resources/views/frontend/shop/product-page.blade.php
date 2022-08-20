@@ -19,7 +19,9 @@
         <div class="col-1"></div>
     </div>
     <div class="container-fluid mt-2" style="padding: 50px 0 !important; background: #434242">
+        @if(count($product['images']))
         <product-images :product="{{$product}}"></product-images>
+        @endif
     </div>
 </div>
 @endsection

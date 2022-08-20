@@ -212,7 +212,6 @@
                     login: []
                 },
                 device: {}
-
             }
         },
         methods: {

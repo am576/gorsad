@@ -159,10 +159,10 @@
         position: absolute;
         background: #3e3b3b;
         z-index: 1;
-        @media (min-width: 591px) {
+        @media (min-width: 1000px) {
             width: 20% !important;
         }
-        @media (max-width: 591px) {
+        @media (max-width: 1000px) {
             width: 100% !important;
             padding-left: 4vw;
             padding-top: 4vw;

@@ -7,7 +7,7 @@
                     <div class="product-name-lat">{{product.title_lat}}</div>
                 </div>
             </div>
-            <div class="col-md-5 col-sm-12">
+            <div class="col-lg-5 col-md-12 col-sm-12">
                 <div class="p-3">
                     <h3>{{product.title}}</h3>
                     <h5 class="text-muted">{{product.title_lat}}</h5>
@@ -269,7 +269,6 @@
             }
         }
         .display-image {
-            min-width: 600px;
             min-height: 600px;
             display: flex;
             flex-direction: column;
@@ -286,14 +285,31 @@
             }
 
             .product-name-rus {
-                font-size: 6.5vh;
-
+                text-align: center;
                 font-weight: bold;
                 color: #ffffff !important;
+                @media (min-width: 0px) {
+                    font-size: 1.7rem;
+                }
+                @media (min-width: 460px) {
+                    font-size: 2rem;
+                }
+                @media (min-width: 900px) {
+                    font-size: 2.5rem;
+                }
             }
             .product-name-lat {
-                font-size: 30px;
                 color: #ffffff !important;
+                text-align: center;
+                @media (min-width: 0px) {
+                    font-size: 1.2rem;
+                }
+                @media (min-width: 460px) {
+                    font-size: 1.5rem;
+                }
+                @media (min-width: 900px) {
+                    font-size: 2rem;
+                }
             }
         }
         .tabs-wrapper {

@@ -64,15 +64,17 @@
 <style lang="scss" scoped>
     .filter {
         color: #fff;
+        margin-left: 0;
+        margin-right: 0;
     }
     .filter-group {
         display: flex;
         flex-direction: column;
-        @media (min-width: 591px) {
+        @media (min-width: 1000px) {
             flex: 0 0 20%;
             max-width: 20%;
         }
-        @media (max-width: 590px) {
+        @media (max-width: 1000px) {
             flex: 0 0 100%;
             max-width: 100%;
             align-items: center;
@@ -85,10 +87,10 @@
             }
         }
         #name-search {
-            @media (min-width: 591px) {
+            @media (min-width: 1000px) {
                 width: 90%;
             }
-            @media (max-width: 590px) {
+            @media (max-width: 1000px) {
                 width: 70%;
             }
         }

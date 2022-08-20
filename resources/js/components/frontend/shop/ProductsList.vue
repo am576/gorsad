@@ -1,8 +1,8 @@
 <template>
-    <div class="row wr1">
+    <div class="d-flex wr1">
         <div class="row wr2">
             <div class="row wr3 justify-content-center">
-                <div  class="product-wrapper" v-for="(product, index) in products" style="" infinite-wrapper>
+                <div class="product-wrapper" v-for="(product, index) in products" style="" infinite-wrapper>
                     <a class="product-link" :href="'/shop/products/'+product.id" @mouseenter="hoverProduct(index)" @mouseleave="unHover()">
                         <div class="product-card" v-bind:style="{'background-image':productThumbnail(product)}" :class="{scaled: hoveredIndex === index + 1}">
                             <span v-if="!isGuest" class="favorite mdi mdi-24px" v-bind:class="isProductFavorite(product.id)" @click.prevent="toggleProductFavorite(product.id)"></span>
@@ -101,7 +101,7 @@
             },
             productThumbnail(product) {
                 if(product.image) {
-                    return `url(/storage/images/${product.image.medium})`
+                    return `url(/storage/images/${product.image.small})`
                 }
             },
             showSigninForm() {
@@ -149,11 +149,21 @@
 </script>
 <style lang="scss">
     .product-wrapper {
-        @media (min-width: 591px) {
-            width: 20%; padding: 10px
+        padding: 10px;
+        @media (min-width: 0px) {
+            width: 100%;
         }
-        @media (max-width: 591px) {
-            width: 50%; padding: 10px
+        @media (min-width: 400px) {
+            width: 50%;
+        }
+        @media (min-width: 800px) {
+            width: 33.33333%;
+        }
+        @media (min-width: 1200px) {
+            width: 25%;
+        }
+        @media (min-width: 1600px) {
+            width: 20%;
         }
     }
     .product-link {
