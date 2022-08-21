@@ -137,7 +137,7 @@ class AttributeController extends Controller
                 }
             }
             else {
-                return response()->json('Ошибка - некоторые из удалённых вами значений используются в тоаварах', 422);
+                return response()->json('Ошибка - некоторые из удалённых вами значений используются', 422);
             }
         }
 

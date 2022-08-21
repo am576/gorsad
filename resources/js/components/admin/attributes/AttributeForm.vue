@@ -92,7 +92,7 @@
         </div>
 
         <div class="form-group">
-            <input type="submit" :value="submit_title">
+            <input v-if="is_edit_form && attribute.type!=='range'" type="submit" :value="submit_title">
         </div>
     </form>
 </template>
