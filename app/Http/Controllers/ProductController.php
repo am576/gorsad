@@ -218,12 +218,11 @@ class ProductController extends Controller
             }
         }
 
-        DB::table('product_variants')
-            ->where('product_id', $product->id)
-            ->delete();
-
         if(isset($request->variants))
         {
+            DB::table('product_variants')
+                ->where('product_id', $product->id)
+                ->delete();
             $variants = json_decode($request->get('variants'));
             foreach ($variants as $variant) {
                 DB::table('product_variants')->insert(
