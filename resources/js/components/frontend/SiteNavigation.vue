@@ -32,7 +32,7 @@
                     <span :class="{hovered : isHovered === (3)}"></span>
                     <a href="/projects" class="nav-link">Проекты</a>
                 </li>
-                <li class="nav-item menu-link" @mouseenter.stop="menuHover(4)" @mouseleave.stop="unHover">
+                <li class="nav-item menu-link" :class="{selected: isSelected ==='knowhow'}" @mouseenter.stop="menuHover(4)" @mouseleave.stop="unHover">
                     <span :class="{hovered : isHovered === (4)}"></span>
                     <a href="/knowhow" class="nav-link">Советы</a>
                 </li>
@@ -304,7 +304,7 @@
                 this.$eventBus.$emit('showCart')
             },
             setSelectedItem() {
-                let items = ['services', 'projects', 'styles', 'contacts'];
+                let items = ['services', 'projects', 'knowhow', 'styles', 'contacts'];
                 items.forEach(item => {
                     if(window.location.href.includes(item)) {
                         this.isSelected = item;

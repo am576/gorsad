@@ -48,7 +48,22 @@ Route::get('/projects', 'HomeController@showProjectsPage')->name('projects.index
 Route::get('/projects/all', 'HomeController@showProjects')->name('projects.all');
 Route::get('/projects/{id}', 'HomeController@showProjectPage');
 
+//**** STATIC PAGES *****/
 Route::get('/knowhow','HomeController@showKnowhowPage');
+Route::get('/knowhow/planning',function() {
+    return view('frontend.knowhow.planning');
+})->name('planning');
+Route::get('/knowhow/ordering',function() {
+    return view('frontend.knowhow.ordering');
+})->name('trees_ordering');
+Route::get('/knowhow/shape_trees',function() {
+    return view('frontend.knowhow.shape_trees
+    ');
+})->name('shape_trees');
+Route::get('/knowhow/trees_transport',function() {
+    return view('frontend.knowhow.trees_transport
+    ');
+})->name('trees_transport');
 Route::get('/styles','HomeController@showStylesPage');
 
 Route::get('/services', 'HomeController@showServicesPage');
