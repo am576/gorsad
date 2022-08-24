@@ -1,0 +1,97 @@
+@use 'knowhow_page';
+
+.knowhow-title {
+    text-shadow: 0 0 30px rgba(0,0,0,0.7);
+    color: #ffffff
+}
+.colorbar {
+    height: 20px;
+    width: 100%;
+    background: #eaddc6;
+}
+.page-content {
+    .knowhow-section {
+        padding: 40px 0;
+        .read-more-btn {
+            color: #1E1E1E;
+            text-decoration: none;
+            font-size: 18px;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 0 15px;
+            width: max-content;
+            display: flex;
+            font-weight: normal;
+            &:hover {
+                text-decoration: none;
+                background: rgba(194, 183, 167, 0.8);
+            }
+        }
+    }
+    .section-details {
+        max-width: 1150px;
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        display: flex;
+        .section-text {
+            .section-description, .section-list * {
+                display: flex;
+                font-size: 1.4rem !important;
+                font-weight: lighter;
+            }
+            .section-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 40px;
+                margin-top: 30px;
+                padding-left: 20px;
+                div {
+                    width: 45%;
+                }
+            }
+        }
+    }
+    #planning {
+        background: #f2edd9;
+        p {
+            flex-direction: column;
+            line-height: 40px;
+            padding-right: 50px;
+        }
+    }
+    #topiary{
+        background: #efefef;
+        h3 {
+            padding-left: 50px;
+        }
+        p {
+            flex-direction: column;
+            line-height: 40px;
+            padding-left: 50px;
+        }
+        img {
+            border-radius: 200px;
+            height: max-content;
+        }
+    }
+    #ordering {
+        background: #ffffff;
+        p {
+            line-height: 40px;
+            padding-right: 50px;
+        }
+    }
+    #transport {
+        background: #ffecd0;
+    }
+    #planting {
+        background: #ffffff;
+    }
+    #pruning {
+        background: #fcfff8;
+        img {
+            height: 50px;
+        }
+    }
+}
