@@ -2,14 +2,14 @@
 @section('title', 'Gorsad - Советы - Формовые и топиарные деревья')
 @section('content')
 @push('styles')
-    <link href="{{ asset('css/knowhow_page.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/staticinfo_page.css') }}" rel="stylesheet">
 @endpush
     <div class="container-fluid">
         <div class="row justify-content-center">
             @include('frontend.knowhow.menu')
             <section class="page-bg col-md-12 p-0">
-                <div class="knowhow-img-main" style="background-image: url('/storage/images/public/knowhow/topiary_bg.jpg'); ">
-                    <h1 class="knowhow-title" style="">Топиарные и формованные виды деревьев</h1>
+                <div class="page-img-main" style="background-image: url('/storage/images/public/knowhow/topiary_bg.jpg'); ">
+                    <h1 class="page-img-title" style="">Топиарные и формованные виды деревьев</h1>
                 </div>
             </section>
             <div class="colorbar" style="background: #b3c5ed;"></div>

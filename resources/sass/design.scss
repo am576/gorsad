@@ -1,0 +1,22 @@
+@use 'staticinfo_page';
+.colorbar {
+    background: #b3c18f;
+}
+.page-content {
+    #balance {
+        background: #fffef6;
+    }
+    #roofs {
+        background: #efefef;
+        img {
+        }
+        ul {
+            li {
+                line-height: 30px;
+            }
+        }
+    }
+    #lighting {
+        background: #e8cece;
+    }
+}

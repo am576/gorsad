@@ -2,14 +2,14 @@
 @section('title', 'Gorsad - Советы - Заказ')
 @section('content')
 @push('styles')
-    <link href="{{ asset('css/knowhow_page.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/staticinfo_page.css') }}" rel="stylesheet">
 @endpush
     <div class="container-fluid">
         <div class="row justify-content-center">
             @include('frontend.knowhow.menu')
             <section class="page-bg col-md-12 p-0">
-                <div class="knowhow-img-main" style="background-image: url('/storage/images/public/knowhow/ordering_bg.jpg'); ">
-                    <h1 class="knowhow-title" style="">Как выделить выбранные деревья в ТЗ (техническом задании)?</h1>
+                <div class="page-img-main" style="background-image: url('/storage/images/public/knowhow/ordering_bg.jpg'); ">
+                    <h1 class="page-img-title" style="">Как выделить выбранные деревья в ТЗ (техническом задании)?</h1>
                 </div>
             </section>
             <div class="colorbar"  style="background: #626738;"></div>

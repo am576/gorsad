@@ -114,16 +114,6 @@ class HomeController extends Controller
         return view('frontend.projects.project_page')->with('project', Project::with('images')->find($id));
     }
 
-    public function showKnowhowPage()
-    {
-        return view('frontend.knowhow.index');
-    }
-
-    public function showStylesPage()
-    {
-        return view('frontend.styles');
-    }
-
     public function showServicesPage()
     {
         $service_groups = ServiceGroup::with(['images'])->get();

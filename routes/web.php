@@ -49,7 +49,9 @@ Route::get('/projects/all', 'HomeController@showProjects')->name('projects.all')
 Route::get('/projects/{id}', 'HomeController@showProjectPage');
 
 //**** STATIC PAGES *****/
-Route::get('/knowhow','HomeController@showKnowhowPage');
+Route::get('/knowhow',function() {
+    return view('frontend.knowhow.index');
+});
 Route::get('/knowhow/planning',function() {
     return view('frontend.knowhow.planning');
 })->name('planning');
@@ -64,7 +66,28 @@ Route::get('/knowhow/trees_transport',function() {
     return view('frontend.knowhow.trees_transport
     ');
 })->name('trees_transport');
-Route::get('/styles','HomeController@showStylesPage');
+
+Route::get('/design',function() {
+    return view('frontend.design.index');
+});
+Route::get('/design/styles',function() {
+    return view('frontend.design.design_styles');
+})->name('design_styles');
+Route::get('/design/outdoor',function() {
+    return view('frontend.design.outdoor_design');
+})->name('outdoor_design');
+Route::get('/design/ecology',function() {
+    return view('frontend.design.ecology');
+})->name('ecology');
+Route::get('/design/roofs-and-containers',function() {
+    return view('frontend.design.roofs');
+})->name('roofs');
+Route::get('/design/street-profiles',function() {
+    return view('frontend.design.streets');
+})->name('street_profiles');
+Route::get('/design/street-lighting',function() {
+    return view('frontend.design.lighting');
+})->name('street_lighting');
 
 Route::get('/services', 'HomeController@showServicesPage');
 Route::get('/services/{id}', 'HomeController@showServicePage');
