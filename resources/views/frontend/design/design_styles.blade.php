@@ -1,9 +1,14 @@
 @extends('frontend.layouts.app')
 @section('title', 'Gorsad')
 @section('content')
-    <div class="container-fluid design-styles layout-spacing">
+@push('styles')
+    <link href="{{ asset('css/staticinfo_page.css') }}" rel="stylesheet">
+@endpush
+    <div class="container-fluid design-styles">
         <div class="row justify-content-center">
+            @include('frontend.design.menu')
             <div class="col-md-12 p-0">
+
                 <div class="styles-bg-main" style="background-image: url('/storage/images/public/stylesbg.jpg'); ">
                     <h1 class="styles-title" style="">Стили в ландшафтном дизайне</h1>
                 </div>

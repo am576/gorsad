@@ -1,7 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/css/staticinfo_page.css": "/css/staticinfo_page.css",
     "/css/knowhow.css": "/css/knowhow.css",
-    "/css/knowhow_page.css": "/css/knowhow_page.css",
+    "/css/design.css": "/css/design.css",
     "/css/admin.css": "/css/admin.css"
 }

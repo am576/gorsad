@@ -8,13 +8,13 @@
     <div class="row justify-content-center">
         @include('frontend.knowhow.menu')
         <section class="page-bg col-md-12 p-0">
-            <div class="knowhow-img-main" style="background-image: url('/storage/images/public/knowhowbg.jpg'); ">
-                <h1 class="knowhow-title">Посадка деревьев и менеджмент озеленения</h1>
+            <div class="page-img-main" style="background-image: url('/storage/images/public/knowhowbg.jpg'); ">
+                <h1 class="page-img-title">Посадка деревьев и менеджмент озеленения</h1>
             </div>
         </section>
         <div class="colorbar"></div>
         <section class="page-content col-md-12 p-0">
-            <div id="planning" class="knowhow-section">
+            <div id="planning" class="static-page-section">
                 <div class="section-details">
                     <div class="section-text">
                         <h3>Посадочный план: особенности посадки деревьев</h3>
@@ -36,7 +36,7 @@
                     <img src="{{asset('storage/images/public/knowhow/planning.jpg')}}" alt="">
                 </div>
             </div>
-            <div id="ordering" class="knowhow-section">
+            <div id="ordering" class="static-page-section">
                 <div class="section-details">
                     <div class="section-text">
                         <h3>Как выделить выбранные деревья в ТЗ (техническом задании)?</h3>
@@ -52,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <div id="topiary" class="knowhow-section">
+            <div id="topiary" class="static-page-section">
                 <div class="section-details">
                     <img src="{{asset('storage/images/public/knowhow/topiary.jpg')}}" alt="">
                     <div class="section-text">
@@ -72,8 +72,7 @@
                     </div>
                 </div>
             </div>
-
-            <div id="transport" class="knowhow-section">
+            <div id="transport" class="static-page-section">
                 <div class="section-details">
                     <div class="section-text">
                         <h3>Погрузка, транспортировка и разгрузка товара</h3>
@@ -90,7 +89,7 @@
                 </div>
             </div>
             {{--UNCOMMENT WHENT LINKS ARE PROVIDED BY CLIENT--}}
-            {{--<div id="planting" class="knowhow-section">
+            {{--<div id="planting" class="static-page-section">
                 <div class="section-details">
                     <div class="section-text">
                         <h3>Основные правила посадки</h3>
@@ -117,7 +116,7 @@
                     </div>
                 </div>
             </div>--}}
-            <div id="pruning" class="knowhow-section">
+            <div id="pruning" class="static-page-section">
                 <div class="section-details">
 
                     <div class="section-text">
