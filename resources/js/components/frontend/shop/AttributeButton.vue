@@ -7,7 +7,7 @@
             </div>
             <span class="mdi mdi-18px mdi-close ml-auto" v-show="hasSelectedOptions" @click.prevent.stop="clearSelectedValues()"></span>
         </div>
-        <div class="attribute-values" v-show="selected">
+        <div class="attribute-values" v-show="selected" v-bind:class="{w20:attribute.values.length < 10 && attribute.type !=='icon'}">
             <div v-if="attribute.type === 'text'">
                 <div class="mb-3 bv-no-focus-ring">
                     <div class="custom-control custom-checkbox" v-for="attr_value in attribute.values">
@@ -160,7 +160,7 @@
         background: #3e3b3b;
         z-index: 1;
         @media (min-width: 1000px) {
-            width: 20% !important;
+            /*width: 20% !important;*/
         }
         @media (max-width: 1000px) {
             width: 100% !important;
@@ -223,7 +223,7 @@
         word-break: break-word;
     }
 
-    .w-20 {
+    .w-20, .w20 {
         width: 20% !important;
     }
 
