@@ -8,7 +8,7 @@
                 :url="url"
                 :attribution="attribution"
             />
-            <l-marker v-for="(project, index) in projects" :key="index" :lat-lng="[project['lat'], project['long']]" :icon="icon" @click="gotoProject(project.id)">
+            <l-marker v-for="(project, index) in projects" :key="index" :lat-lng="[project['lat'], project['long']]" :icon="mapIcon(index)" @click="gotoProject(project.id)">
                 <l-tooltip :options="{ permanent: false, interactive: true }">
                     <div>
                         {{project.name}}
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    // import { latLng, icon } from "leaflet";
+    import { latLng, icon } from "leaflet";
     import { LMap, LTileLayer, LMarker, LPopup, LTooltip, LIcon } from "vue2-leaflet";
 
     export default {
@@ -42,21 +42,31 @@
                 zoom: 10,
                 center: latLng(54.7064900, 20.5109500),
                 url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                attribution:
-                    '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                // attribution:
+                //     '&copy; <a style="font-size: 12px;" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 mapOptions: {
-                    zoomSnap: 0.5
+                    zoomSnap: 0.5,
+                    attributionControl: false
                 },
                 icon: icon({
                     iconUrl: "/storage/images/public/tree-marker.png",
-                    iconSize: [64, 64],
+                    iconSize: [54, 72],
                     iconAnchor: [16, 37]
                 }),
+                iconsAvailable : 6
             }
         },
         methods: {
             gotoProject(id) {
                 window.location.href = `/projects/${id}`;
+            },
+            mapIcon(index) {
+                let iconIndex = index - this.iconsAvailable*(Math.trunc(index/this.iconsAvailable));
+                return icon({
+                    iconUrl: `/storage/images/public/map/marker${iconIndex}.png`,
+                    iconSize: [31, 42],
+                    iconAnchor: [16, 37]
+                })
             }
         },
         mounted() {
