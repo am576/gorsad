@@ -4,7 +4,7 @@
 @endsection
 @section('content')
     <?php
-//        dd($attribute);
+//        dd($iv);
     ?>
 <attribute-form :is_edit_form="true" attribute_data="{{$attribute}}"></attribute-form>
 @endsection

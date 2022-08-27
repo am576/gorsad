@@ -73,11 +73,11 @@
                 <div class="form-group m-0">
                     <input type="text" name="value_title" id="value_title" v-model="value.value" placeholder="Название" required>
                 </div>
-                <div class="form-group m-0">
-                    <v-select v-model="value.image" :options="options">
+                <div class="form-group icon-select m-0">
+                    <v-select v-model="selected_image" :value="selected_image" :options="options" @option:selected="selectIcon($event, index)">
                         <template #selected-option="{ icon }">
-                            <div style="display: flex; align-items: baseline;">
-                                <img height="50px" :src="'/storage/images/' + value.image.icon" />
+                            <div style="display: flex; align-items: baseline; ">
+                                <img height="50px" :src="'/storage/images/' + value.icon" />
                             </div>
                         </template>
 
@@ -92,7 +92,7 @@
         </div>
 
         <div class="form-group">
-            <input v-if="is_edit_form && attribute.type!=='range'" type="submit" :value="submit_title">
+            <input v-if="!(is_edit_form && attribute.type==='range')" type="submit" :value="submit_title">
         </div>
     </form>
 </template>
@@ -129,6 +129,7 @@
                 range_min:0,
                 range_max:1,
                 range_step:1,
+                selected_image : {'a':1}
             }
         },
         methods: {
@@ -145,7 +146,7 @@
                     {
                         if(this.attribute.type === 'icon') {
                             response.data.forEach(value => {
-                                this.tags.push(value.value)
+                                // this.tags.push(value.value)
                             });
                         }
                         else {
@@ -190,7 +191,8 @@
                     }
                 })
                     .then((response) => {
-                        this.icons = response.data;
+                        this.attribute.values = this.icons = response.data;
+
                     })
             },
             changeAttributeType() {
@@ -242,7 +244,9 @@
                 )
             },
             removeIcon(index) {
-                this.addValueToDelete(this.attribute.values[index]);
+                if(this.attribute.values[index].hasOwnProperty('id')) {
+                    this.addValueToDelete(this.attribute.values[index]);
+                }
                 this.$delete(this.attribute.values, index);
             },
             addValueToDelete(value) {
@@ -255,6 +259,10 @@
                     {value: this.range_max},
                     {value: this.range_step},
                 )
+            },
+            selectIcon(selectedOption, value_index) {
+                this.attribute.values[value_index].icon = selectedOption.icon;
+                this.attribute.values[value_index].image_id = selectedOption.id;
             },
             submit() {
                 if(this.validate()) {
@@ -363,3 +371,8 @@
         },
     }
 </script>
+<style lang="scss" scoped>
+    .vs__dropdown-menu {
+        background: rgba(125,125,125,0.81) !important;
+    }
+</style>

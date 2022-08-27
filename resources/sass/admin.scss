@@ -165,3 +165,9 @@ form.table-delete-entity {
 .v-select {
     min-width: 150px !important;
 }
+.icon-select > .v-select {
+    background: #E3E3E3 !important;
+}
+.vs__dropdown-menu {
+    background: rgba(125,125,125,0.81) !important;
+}

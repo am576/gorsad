@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Attribute;
+use App\AttributeIcon;
+use App\AttributesValue;
 use App\Image;
 use App\Product;
 use Illuminate\Http\Request;
@@ -60,18 +62,18 @@ class AttributeController extends Controller
             else
             {
                 foreach($values as $key=>$value) {
-                    $value_id = DB::table('attributes_values')->insertGetId([
+                    $attribute_value = AttributesValue::create([
                         'attribute_id' => $attribute->id,
                         'value' => $value->value,
                         'ext_value' => isset($value->ext_value) ? $value->ext_value : ''
                     ]);
-                    if(isset($value->image))
+
+                    if(isset($value->image_id))
                     {
-                        $image = $value->image;
-                        DB::table('attribute_icons')->insert([
+                        AttributeIcon::create([
                             'attribute_id' => $attribute->id,
-                            'attribute_value_id' => $value_id,
-                            'image_id' => $image->id,
+                            'attribute_value_id' => $attribute_value->id,
+                            'image_id' => $value->image_id,
                             'iconset_id' => $request->iconset_id
                         ]);
                     }
@@ -96,8 +98,8 @@ class AttributeController extends Controller
         {
             $attribute['iconset_id'] = $attribute->iconset();
         }
-
-        return view('admin.attributes.edit')->with(['attribute' => $attribute]);
+        $iv = $attribute->icons();
+        return view('admin.attributes.edit')->with(['attribute' => $attribute, 'iv' => $iv]);
     }
 
     public function update(Request $request, $id)
@@ -111,7 +113,9 @@ class AttributeController extends Controller
 
         if(isset($request->delete_values))
         {
+
             $delete_values = json_decode($request->delete_values);
+
             $values_in_use = Product::usedAttributeValues();
             $values_ids = [];
             foreach ($delete_values as $delete_value) {
@@ -152,6 +156,61 @@ class AttributeController extends Controller
                 return response()->json('error', 422);
             }
         }
+        else if($attribute->type == 'icon')
+        {
+            foreach($values as $value)
+            {
+                if(isset($value->id))
+                {
+                    if(isset($value->value)) {
+                        $attribute_value = AttributesValue::find($value->id);
+
+                        $attribute_value->value = $value->value;
+                        $attribute_value->save();
+                    }
+                    if(isset($value->attribute_icon_id)) {
+                        $attribute_icon = AttributeIcon::find($value->attribute_icon_id);
+
+                        $attribute_icon->image_id = $value->image_id;
+                        $attribute_icon->iconset_id = $request->iconset_id;
+                        $attribute_icon->attribute_value_id = $value->id;
+                        $attribute_icon->save();
+                    }
+                }
+                else
+                {
+                    $attribute_value = AttributesValue::create([
+                        'attribute_id' => $attribute->id,
+                        'value' => $value->value,
+                    ]);
+
+                    $attribute_icon = AttributeIcon::create([
+                        'attribute_id' => $attribute->id,
+                        'attribute_value_id' => $attribute_value->id,
+                        'image_id' => $value->image_id,
+                        'iconset_id' => $request->iconset_id
+                    ]);
+                }
+
+
+                      /*  DB::table('attribute_icons')
+                            ->where('attribute_id',$attribute->id)
+                            ->where('attribute_value_id',$value->id)
+                            ->update([
+                                'image_id' => $image->id,
+                                'iconset_id' => $request->iconset_id
+                            ]);
+                    }
+                    else{
+                        DB::table('attribute_icons')->insert([
+                            'attribute_id' => $attribute->id,
+                            'attribute_value_id' => $value_id,
+                            'image_id' => $image->id,
+                            'iconset_id' => $request->iconset_id
+                        ]);*/
+
+            }
+        }
         else
         {
             foreach($values as $key=>$value)
@@ -174,29 +233,7 @@ class AttributeController extends Controller
                         'ext_value' => isset($value->ext_value) ? $value->ext_value : ''
                     ]);
                 }
-                if(isset($value->image))
-                {
-                    $image = $value->image;
 
-                    if(isset($value->id))
-                    {
-                        DB::table('attribute_icons')
-                            ->where('attribute_id',$attribute->id)
-                            ->where('attribute_value_id',$value->id)
-                            ->update([
-                                'image_id' => $image->id,
-                                'iconset_id' => $request->iconset_id
-                            ]);
-                    }
-                    else{
-                        DB::table('attribute_icons')->insert([
-                            'attribute_id' => $attribute->id,
-                            'attribute_value_id' => $value_id,
-                            'image_id' => $image->id,
-                            'iconset_id' => $request->iconset_id
-                        ]);
-                    }
-                }
             }
             return redirect()->intended(route('attributes.index'));
         }

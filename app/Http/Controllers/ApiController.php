@@ -92,9 +92,8 @@ class ApiController extends Controller
 
     public function getIconsets()
     {
-        $iconsets = IconSet::with('images')->get();
-
-        return IconSet::with('images')->get();
+        return IconSet::with(['images:icon,imageable_id,id'])
+            ->get();
     }
 
     public function searchProducts(Request $request)

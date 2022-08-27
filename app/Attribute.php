@@ -29,10 +29,27 @@ class Attribute extends Model
 
     public function icons()
     {
-        return DB::table('attribute_icons')
+        /*return DB::table('attribute_icons')
             ->where('attribute_id', $this->id)
             ->join('images', 'images.id','=','image_id')
             ->select('images.*')
+            ->get();*/
+
+        return DB::table('attributes_values')
+            ->where('attributes_values.attribute_id', $this->id)
+            ->join('attribute_icons', 'attributes_values.id','=','attribute_icons.attribute_value_id')
+            ->join('images', 'images.id','=','image_id')
+            ->select('images.icon','attributes_values.value','attributes_values.id as id', 'attribute_icons.id as attribute_icon_id', 'images.id as image_id')
+            ->get();
+    }
+
+    public function iconValues()
+    {
+        return DB::table('attributes_values')
+            ->where('attributes_values.attribute_id', $this->id)
+            ->join('attribute_icons', 'attributes_values.id','=','attribute_icons.attribute_value_id')
+            ->join('images', 'images.id','=','image_id')
+            ->select('images.icon','attributes_values.value','attributes_values.id')
             ->get();
     }
 

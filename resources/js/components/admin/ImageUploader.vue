@@ -5,7 +5,7 @@
             <div class="card-body">
                 <div class="images-preview" v-show="existing_images.length">
                     <div class="img-wrapper" v-for="(image, index) in existing_images" :key="index">
-                        <img :src="'/storage/images/' +image.icon" :alt="index">
+                        <img :src="'/storage/images/' +image.icon" :alt="index" :title="image.icon.match(/[^\/]*$/)">
                         <i class="mdi mdi-close-circle-outline" @click.prevent="removeProductImage(image.id, index)"></i>
                     </div>
                 </div>
@@ -146,11 +146,12 @@
                     }
                 })
                 .then(response => {
+                    if(!this.isSingleImage){
+                        this.existing_images = this.entity.images;
+                    }
                     if(this.isSingleImage)
                         if(typeof this.entity.images[0] !== 'undefined')
                         this.current_image = this.entity.images[0];
-                    else
-                        this.existing_images = this.entity.images;
                 })
             },
 
