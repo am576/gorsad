@@ -14,7 +14,8 @@
 <script>
     export default {
         props: {
-            modal_class: ''
+            modal_class: '',
+            id: ''
         },
         data() {
             return {
@@ -28,7 +29,10 @@
                 }
             },
             setModalVisibility(args) {
-                this.showModal = args;
+                if(this.id && this.id === args) {
+                    this.showModal = args;
+                }
+
             },
         },
         computed: {

@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <g-modal>
+        <g-modal :id="'service-modal'">
             <form class="h-100" @submit.prevent="orderService">
                 <div class="form-text modal-form-caption">- Заказ услуги -</div>
                 <div class="form-text font-weight-bold">{{selected_service.name || ''}}</div>
@@ -68,7 +68,7 @@
         methods: {
             showModal(service) {
                 this.selected_service = service;
-                this.$eventBus.$emit('showModal', service.id);
+                this.$eventBus.$emit('showModal', 'service-modal');
             },
             setActiveTab(service_name) {
                 this.activeTab = service_name;

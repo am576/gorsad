@@ -1,5 +1,5 @@
 <template>
-    <g-modal :modal_class="'shop-login-modal'" ref="shopLoginModal">
+    <g-modal :modal_class="'shop-login-modal'" :id="'shop-login-modal'" ref="shopLoginModal">
         <template v-slot:header>
             <header class="modal-header">
                 <h5 class="modal-title">{{sign_type.form_title}}</h5>
@@ -110,7 +110,7 @@
         },
         methods: {
             showModal() {
-                this.$refs.shopLoginModal.setModalVisibility(true);
+                this.$refs.shopLoginModal.setModalVisibility('shop-login-modal');
             },
             submitForm(signType) {
                 axios.post(signType.action, this.loginCred)

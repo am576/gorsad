@@ -178,7 +178,7 @@
             showModal() {
                 this.getCartContents();
                 this.goToCart();
-                this.$refs.cartModal.setModalVisibility(true);
+                this.$refs.cartModal.setModalVisibility('modal-cart');
             },
             goToCheckout() {
                 // this.putBonuses();
