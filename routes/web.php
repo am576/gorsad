@@ -7,7 +7,6 @@ Auth::routes();
 
 Route::get('/','HomeController@index');
 
-
 Route::post('/search', 'HomeController@ApplyFilter');
 Route::get('/getfavorites','UserController@getUserFavorites');
 Route::post('/favorite', 'UserController@toggleProductFavorite');

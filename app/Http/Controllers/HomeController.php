@@ -45,9 +45,13 @@ class HomeController extends Controller
     public function ApplyFilter(Request $request)
     {
         $product_name = $request->get('product_name');
-        $filter_parameters = json_decode($request->get('filter_options'));
+        $filter_parameters =  json_decode($request->get('filter_options'));
+        if(is_null($filter_parameters))
+        {
+            $filter_parameters = [];
+        }
 
-        if(isset($filter_parameters))
+        if(isset($filter_parameters) || !empty($product_name))
         {
             $filtered_products = StaticTools::filterProducts($product_name, $filter_parameters);
         }
@@ -60,7 +64,7 @@ class HomeController extends Controller
         return view('frontend.shop.index')
             ->with(
                 [
-                    'user' => json_encode($this->getAuthUser()),
+                    'user' => json_encode(UserUtils:: getAuthUser()),
                     'products'=> json_encode($filtered_products),
                     'attributes' => json_encode(StaticTools::getAttributesByGroup()),
                     'filter_options' => json_encode($filter_parameters),
