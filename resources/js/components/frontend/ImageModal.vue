@@ -1,9 +1,9 @@
 <template>
-    <div class="modal-overlay" :class="showModal ? 'd-flex' : 'd-none'" @click.prevent.stop="test">
+    <div class="modal-overlay" :class="showModal ? 'd-flex' : 'd-none'" @click.prevent.stop="hideModal">
         <div class="imodal">
             <span class="close-modal mdi mdi-48px mdi-close-circle-outline text-white" @click.stop="showModal = false"></span>
             <div class="image d-flex position-relative">
-                <img :src="'/storage/images/'+current_image.large" alt="" @click.stop>
+                <img :data-url="'/storage/images/'+current_image.large" alt="" @click.stop>
                 <span class="left-control mdi mdi-chevron-left text-white" v-show="!isFirstImage"
                       @click.stop="showPreviousImage"></span>
                 <span class="right-control mdi mdi-chevron-right text-white" v-show="!isLastImage"
@@ -41,7 +41,7 @@
                         break;
                 }
             },
-            test() {
+            hideModal() {
                 this.showModal = false;
             },
             setModalVisibility(image_index) {
@@ -60,7 +60,7 @@
                     this.current_image = this.images[this.image_index + 1]
                     this.image_index++;
                 }
-            }
+            },
         },
         computed: {
             isFirstImage() {

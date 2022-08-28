@@ -18,10 +18,12 @@
                             <div class="col-5 col-sm-5 col-md-5">Место</div>
                             <div class="col-5 col-sm-5 col-md-5">{{$project->place}}</div>
                         </div>
+                        @if($project->area)
                         <div class="row">
                             <div class="col-5 col-sm-5 col-md-5">Площадь</div>
                             <div class="col-5 col-sm-5 col-md-5">{{$project->area}} м<sup>2</sup></div>
                         </div>
+                        @endif
                         @if($project->client)
                         <div class="row">
                             <div class="col-5 col-sm-5 col-md-5">Заказчик</div>
@@ -32,7 +34,7 @@
                             <div class="col-5 col-sm-5 col-md-5">Растения</div>
                             <div class="col-5 col-sm-5 col-md-5">
                                 @foreach($project->plants() as $plant)
-                                    <a class="plant-tag mt-2" style="line-height: 40px;" href="{{'/products/'.$plant->id}}" target="_blank">{{$plant->text}}</a>
+                                    <a class="plant-tag mt-2" style="line-height: 40px;" href="{{'/shop/products/'.$plant->id}}" target="_blank">{{$plant->text}}</a>
                                 @endforeach
                             </div>
                         </div>

@@ -51,7 +51,7 @@
         },
         methods: {
             showImage(slide, e) {
-                this.$eventBus.$emit('showModal', e.index)
+                this.$eventBus.$emit('showImageModal', e.index)
                 this.current_image = this.images[e.index];
             },
             setCurrentImage(image) {
