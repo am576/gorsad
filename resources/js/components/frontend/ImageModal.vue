@@ -3,7 +3,7 @@
         <div class="imodal">
             <span class="close-modal mdi mdi-48px mdi-close-circle-outline text-white" @click.stop="showModal = false"></span>
             <div class="image d-flex position-relative">
-                <img :data-url="'/storage/images/'+current_image.large" alt="" @click.stop>
+                <img :src="'/storage/images/'+current_image.large" alt="загрузка изображения..." @click.stop>
                 <span class="left-control mdi mdi-chevron-left text-white" v-show="!isFirstImage"
                       @click.stop="showPreviousImage"></span>
                 <span class="right-control mdi mdi-chevron-right text-white" v-show="!isLastImage"
@@ -106,6 +106,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                color: #ffffff !important;
                 .left-control, .right-control {
                     position: absolute;
                     font-size: 100px;
