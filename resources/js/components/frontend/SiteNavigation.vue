@@ -408,7 +408,7 @@
         @media (min-width: 601px) {
             background: rgba(0, 0, 0, 0.6);
             z-index: 1000;
-
+            padding: 9px;
         }
         @media (max-width:600px) {
             background-color: #ffffff;
