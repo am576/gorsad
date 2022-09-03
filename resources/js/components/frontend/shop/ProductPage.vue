@@ -132,6 +132,7 @@
                     'mtst':{label: 'Мультиштамб(MtSt)'},
                     'sol':{label: 'Солитер(Sol)'},
                     'h':{label: '(H)'},
+                    'stbu':{label: 'STBU)'},
                 },
                 variants_table_data: {
                     fields: [],
@@ -216,7 +217,7 @@
             replaceMissingImages() {
                 if(this.product.images.length === 0) {
                    this.product.images.push({
-                       large: 'products/noimage/noimage_large.png'
+                       large: 'products/noimage/noimage_large.jpg'
                    })
                 }
             }

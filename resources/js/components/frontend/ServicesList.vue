@@ -29,7 +29,7 @@
                         description: 'Ищете, кто может помочь в высадке/пересадке деревьев?',
                         btn_title: 'Воспользуйтесь нашей услугой',
                         image: '/storage/images/public/home-blocks/home-block1.jpg',
-                        url: '/'
+                        url: '/services/3'
                     },
                     {
                         title: 'Как ухаживать за деревьями',
@@ -43,7 +43,7 @@
                         description: 'Аксессуары для деревьев, которые меняют привычное восприятие общественного пространства',
                         btn_title: 'Посмотрите, как это выглядит',
                         image: '/storage/images/public/home-blocks/home-block3.jpg',
-                        url: '/'
+                        url: '/services/6'
                     },
                     {
                         title: 'Проекты, которыми можно гордиться',
@@ -57,14 +57,14 @@
                         description: 'Познакомьтесь со всеми основными стилями и выберите лучшего специалиста для себя',
                         btn_title: 'Посмотреть все стили',
                         image: '/storage/images/public/home-blocks/home-block5.jpg',
-                        url: '/styles'
+                        url: '/design/styles'
                     },
                     {
                         title: 'С чего начать, чтобы потом не переделывать',
                         description: 'Познакомьтесь с правилами ландшафтного искусства при организации своего пространства',
                         btn_title: 'Советы, которые работают',
                         image: '/storage/images/public/home-blocks/home-block6.jpg',
-                        url: '/'
+                        url: '/knowhow'
                     }
                 ]
             }
