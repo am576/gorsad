@@ -12,6 +12,7 @@ use App\User;
 use App\Utils\StaticTools;
 use Illuminate\Http\Request;
 use App\Utils\User as UserUtils;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -128,5 +129,29 @@ class HomeController extends Controller
     public function showServicePage($id)
     {
         return view('frontend.services.service_page')->with('service_group', ServiceGroup::with(['images', 'services'])->find($id));
+    }
+
+    public function showGuidePage(string $guide_name)
+    {
+        if(isset($guide_name))
+        {
+            $image_names = Storage::disk('images')->files('guides/'.$guide_name);
+
+            if(count($image_names))
+            {
+            $image_names = json_encode(array_map(
+                function ($name) {
+                    return '/storage/images/' . $name;
+                },
+                $image_names));
+
+
+                return view('frontend.guide', compact('image_names'));
+            }
+
+            return redirect('/');
+        }
+
+        return redirect('/');
     }
 }

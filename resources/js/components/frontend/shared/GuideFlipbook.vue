@@ -1,36 +1,13 @@
 <template>
-    <flipbook class="flipbook" :pages="images" :zooms="[1,2]"></flipbook>
+    <flipbook class="flipbook" :pages="image_names" :zooms="[1,2]"></flipbook>
 </template>
 
 <script>
     export default {
         components: { Flipbook },
         props: {
-            guide_name: ''
+            image_names: []
         },
-        data()  {
-            return {
-                images: [
-
-                ],
-                names : []
-            }
-        },
-        methods: {
-            getImageNames() {
-                axios.get('/api/getGuideImageNames',
-                    {
-                        params: {
-                            guide_name: this.guide_name
-                        }
-                    }).then(response => {
-                        this.images = response.data;
-                })
-            }
-        },
-        created() {
-            this.getImageNames();
-        }
     }
 </script>
 <style lang="scss">

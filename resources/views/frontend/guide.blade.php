@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>@yield('title')</title>
+    <title>Gorsad - Руководство</title>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
@@ -13,7 +13,9 @@
 </head>
 <body>
 <div id="app" data-app class="frontend">
-    @yield('body')
+    <div class="container-fluid">
+        <guide-flipbook :image_names="{{$image_names}}"></guide-flipbook>
+    </div>
 </div>
 </body>
 </html>

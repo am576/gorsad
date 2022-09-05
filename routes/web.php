@@ -66,12 +66,9 @@ Route::prefix('knowhow')->group(function() {
         return view('frontend.knowhow.trees_transport
     ');
     })->name('trees_transport');
-    Route::get('/pruning-guide',function() {
-        return view('frontend.knowhow.pruning-guide
-    ');
-    })->name('pruning_guide');
-});
 
+});
+Route::get('/guide/{guide_name}', 'HomeController@ShowGuidePage')->name('guide');
 
 Route::get('/design',function() {
     return view('frontend.design.index');
