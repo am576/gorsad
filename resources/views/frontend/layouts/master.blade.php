@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.2.45/css/materialdesignicons.min.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @stack('styles')
+    @stack('scripts')
 </head>
 <body>
 @yield('body')

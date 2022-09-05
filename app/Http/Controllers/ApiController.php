@@ -15,6 +15,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use MongoDB\Driver\Session;
 
 class ApiController extends Controller
@@ -182,5 +183,17 @@ class ApiController extends Controller
     public function paginateServices(Request $request)
     {
         return Service::with(['group'])->paginate($request->per_page)->toJson();
+    }
+
+    public function getGuideImageNames(Request $request)
+    {
+        $names = Storage::disk('images')->files('guides/'.$request->guide_name);
+
+        return array_map(
+            function ($name) {
+                return '/storage/images/' . $name;
+                },
+            $names);
+
     }
 }

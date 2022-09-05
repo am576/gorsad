@@ -38,3 +38,4 @@ Route::get('getServiceGroups', 'ApiController@getServiceGroups');
 
 Route::get('paginateProjects', 'ApiController@paginateProjects');
 Route::get('paginateServices', 'ApiController@paginateservices');
+Route::get('getGuideImageNames', 'ApiController@getGuideImageNames');

@@ -1,9 +1,6 @@
-@extends('frontend.layouts.app')
+@extends('frontend.design.layout')
 @section('title', 'Gorsad - Дизайн')
-@section('content')
-    @push('styles')
-        <link href="{{ asset('css/design.css') }}" rel="stylesheet">
-    @endpush
+@section('page')
     <div class="container-fluid">
         <div class="row justify-content-center">
             @include('frontend.design.menu')
@@ -119,5 +116,4 @@
             </section>
         </div>
     </div>
-
 @endsection
