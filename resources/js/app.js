@@ -17,6 +17,7 @@ import { BPagination } from "bootstrap-vue/esm/components/pagination";
 import { BBadge } from "bootstrap-vue/esm/components/badge";
 import { BCollapse } from "bootstrap-vue/esm/components/collapse";
 import { VBToggle } from "bootstrap-vue/esm/directives/toggle";
+import Flipbook from 'flipbook-vue/dist/vue2/flipbook.min';
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -24,6 +25,7 @@ Vue.use(PrettyCheckbox);
 Vue.use( CKEditor );
 Vue.use( vSelect );
 Vue.use( ClassicEditor );
+Vue.use( Flipbook );
 
 Vue.component('v-select', vSelect);
 Vue.component('InfiniteLoading', require('vue-infinite-loading'));
@@ -105,6 +107,7 @@ Vue.component('review-form', require('./components/frontend/ReviewForm').default
 Vue.component('g-modal', require('./components/frontend/shared/GenericModal').default);
 Vue.component('image-modal', require('./components/frontend/ImageModal').default);
 Vue.component('account-dropdown', require('./components/frontend/shared/AccountDropdown').default);
+Vue.component('guide-flipbook', require('./components/frontend/shared/GuideFlipbook').default);
 /* End Shared components */
 
 /** End Client side components **/

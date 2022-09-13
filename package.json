@@ -19,7 +19,7 @@
         "lodash": "^4.17.21",
         "popper.js": "^1.12",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.54.5",
+        "sass": "^1.54.8",
         "sass-loader": "^8.0.2",
         "vue": "^2.7.10",
         "vue-template-compiler": "^2.7.10"
@@ -33,6 +33,7 @@
         "@splidejs/vue-splide": "^0.3.5",
         "bootstrap-icons": "^1.9.1",
         "bootstrap-vue": "^2.21.2",
+        "flipbook-vue": "^1.0.0-alpha.4",
         "leaflet": "^1.8.0",
         "moment": "^2.29.4",
         "pretty-checkbox-vue": "^1.1.9",

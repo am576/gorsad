@@ -22,4 +22,5 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/staticinfo_page.scss', 'public/css')
     .sass('resources/sass/knowhow.scss', 'public/css')
     .sass('resources/sass/design.scss', 'public/css')
-    .sass('resources/sass/admin.scss', 'public/css');
+    .sass('resources/sass/admin.scss', 'public/css')
+    .sass('resources/sass/guide_page.scss', 'public/css');

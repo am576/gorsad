@@ -1,9 +1,6 @@
-@extends('frontend.layouts.app')
+@extends('frontend.knowhow.layout')
 @section('title', 'Gorsad - Советы')
-@section('content')
-@push('styles')
-    <link href="{{ asset('css/knowhow.css') }}" rel="stylesheet">
-@endpush
+@section('page')
 <div class="container-fluid">
     <div class="row justify-content-center">
         @include('frontend.knowhow.menu')
@@ -128,13 +125,12 @@
                                 применением обрезки: особенности работы с топиарными и формованными деревьями. Также мы написали все
                                 о правильном проведении санитарной обрезки.
                             </span>
-                            Прочитать больше об обрезке
+                            <a href="{{route('guide', ['guide_name' => 'pruning'])}}" target="_blank">Прочитать больше об обрезке</a>
                         </p>
                     </div>
                 </div>
             </div>
         </section>
-
     </div>
 </div>
 @endsection
