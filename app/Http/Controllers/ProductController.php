@@ -175,7 +175,7 @@ class ProductController extends Controller
         $product->fill($input);
         $product->save();
 
-        /*if(isset($request->images))
+        if(isset($request->images))
         {
             foreach ($request->images as $index => $file) {
                 $fullname = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -217,7 +217,7 @@ class ProductController extends Controller
                     ]);
                 }
             }
-        }*/
+        }
 
         if(isset($request->variants))
         {
