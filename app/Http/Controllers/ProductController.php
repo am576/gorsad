@@ -129,10 +129,23 @@ class ProductController extends Controller
                     array_push($ids, $attribute->id);
                     foreach ($attribute->values as $attribute_value)
                     {
+                        if($attribute->type == 'range')
+                        {
+                            $attribute_value_id = is_object($attribute_value) ? $attribute_value->id :
+                                DB::table('attributes_values')
+                                    ->where('attribute_id',$attribute->id)
+                                    ->where('value',$attribute_value)
+                                    ->value('id');
+                        }
+                        else
+                        {
+                            $attribute_value_id = $attribute_value->id;
+                        }
+
                         DB::table('products_attributes')->insert([
                             'product_id' => $product->id,
                             'attribute_id' => $attribute->id,
-                            'attribute_value_id' => $attribute_value
+                            'attribute_value_id' => $attribute_value_id
                         ]);
                     }
                 }
@@ -158,7 +171,6 @@ class ProductController extends Controller
 
     public function update(ProductUpdate $request, $id)
     {
-//        return dd(json_decode($request['attributes']));
         $product = Product::findOrFail($id);
 
         $input = $request->except(['attribute_id', 'attribute_value_id', 'attributes']);
@@ -258,7 +270,6 @@ class ProductController extends Controller
                     }
                     foreach ($attribute->values as $attribute_value)
                     {
-
                         if($attribute->type == 'range')
                         {
                             $attribute_value_id = is_object($attribute_value) ? $attribute_value->id :

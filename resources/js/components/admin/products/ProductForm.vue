@@ -90,7 +90,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group" style="width:200px" v-if="product_attribute">
-                                    <attribute-values :attribute_id="product_attribute.id" :type="attribute_types[index]" :index="index" :values="product_attribute.attribute_values" :selected="selected_values[index]"></attribute-values>
+                                    <attribute-values :attribute_id="product_attribute.id" :type="attribute_types[index]" :index="index" :values="product_attribute.attribute_values" :selected_values="product_attribute.values"></attribute-values>
                                 </div>
                                 <button type="button" class="btn btn-danger delete" tabindex="-1"
                                         @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
@@ -176,40 +176,20 @@
                         attribute_id: select.value
                     }
                 }).then(response => {
-                    this.$set(this.product.attributes[index], 'id', select.value);
-                    this.$set(this.product.attributes[index], 'attribute_values', response.data);
-                    if(this.attribute_types[index] === 'range') {
-                        this.$set(this.product.attributes[index], 'values', [response.data[0].id,response.data[response.data.length-1].id]);
-                        this.$set(this.product.attributes[index].attribute_values, 'range', [response.data[0].id,response.data[response.data.length-1].id]);
-                    }
-                    else if(this.attribute_types[index] === 'color') {
-                        this.$set(this.product.attributes[index], 'values', []);
-                    }
-                    else if(this.attribute_types[index] === 'icon') {
-                        this.$set(this.product.attributes[index], 'values', []);
-                        axios.get('/api/getAttributeIcons', {
-                            params: {
-                                attribute_id: this.product.attributes[index].id
-                            }
-                        }).then(response => {
-                            this.$set(this.product.attributes[index].attribute_values, 'icons', response.data);
-                            this.product.attributes[index].attribute_values['icons'].forEach((value, i) => {
-                                this.$set(this.product.attributes[index].attribute_values['icons'][i], 'value_id', this.product.attributes[index].attribute_values[i].id);
-                            })
-                        })
+                    this.$set(this.product.attributes, index, {
+                        'id': select.value,
+                        'type': selected.type,
+                        'attribute_values': response.data.attribute_values,
+                        'values': []
+                    })
+                    if(selected.type === 'range') {
+                        this.$set(this.product.attributes[index], 'attribute_values', [response.data.attribute_values[0].value, response.data.attribute_values[1].value])
                     }
 
                 })
             },
             setAttributeValues(index, values) {
-                this.$set(this.product.attributes[index], 'values', values);
-                if(this.attribute_types[index] === 'color' || this.attribute_types[index] === 'text') {
-                    this.$set(this.selected_values, index, values)
-                }
-                else if(this.attribute_types[index] === 'icon') {
-                    this.$set(this.selected_values, index, values);
-                    this.$set(this.product.attributes[index],'values',[values[0].value_id])
-                }
+                this.$set(this.product.attributes[index], 'values', values)
             },
             setProductImages(images) {
                 this.images = images;
