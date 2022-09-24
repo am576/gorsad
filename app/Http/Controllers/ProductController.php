@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AttributesValue;
 use App\Http\Requests\ProductStore;
 use App\Http\Requests\ProductUpdate;
 use App\Image;
@@ -174,7 +175,7 @@ class ProductController extends Controller
         $product->fill($input);
         $product->save();
 
-        if(isset($request->images))
+        /*if(isset($request->images))
         {
             foreach ($request->images as $index => $file) {
                 $fullname = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -216,7 +217,7 @@ class ProductController extends Controller
                     ]);
                 }
             }
-        }
+        }*/
 
         if(isset($request->variants))
         {
@@ -248,18 +249,35 @@ class ProductController extends Controller
             {
                 if(!is_null($attribute))
                 {
-                    DB::table('products_attributes')
-                        ->where('attribute_id','=', $attribute->id)
-                        ->where('product_id','=', $id)
-                        ->delete();
                     foreach ($attribute->values as $attribute_value)
                     {
+                        DB::table('products_attributes')
+                            ->where('attribute_id', '=', $attribute->id)
+                            ->where('product_id', '=', $id)
+                            ->delete();
+                    }
+                    foreach ($attribute->values as $attribute_value)
+                    {
+
+                        if($attribute->type == 'range')
+                        {
+                            $attribute_value_id = is_object($attribute_value) ? $attribute_value->id :
+                            DB::table('attributes_values')
+                                ->where('attribute_id',$attribute->id)
+                                ->where('value',$attribute_value)
+                                ->value('id');
+                        }
+                        else
+                        {
+                            $attribute_value_id = $attribute_value->id;
+                        }
+
                         DB::table('products_attributes')->insert([
                             'product_id' => $product->id,
                             'attribute_id' => $attribute->id,
-                            'attribute_value_id' => $attribute_value
+                            'attribute_value_id' => $attribute_value_id
                         ]);
-                    }
+                }
                 }
             }
         }

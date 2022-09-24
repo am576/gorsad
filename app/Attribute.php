@@ -27,6 +27,11 @@ class Attribute extends Model
         return $this->hasMany('App\AttributesValue');
     }
 
+    public function attribute_values()
+    {
+        return $this->hasMany('App\AttributesValue');
+    }
+
     public function icons()
     {
         /*return DB::table('attribute_icons')

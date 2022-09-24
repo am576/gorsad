@@ -61,10 +61,9 @@ class ApiController extends Controller
 
     public function getAttributeValues(Request $request)
     {
-        $attribute = Attribute::find($request->attribute_id);
-        $values = $attribute->values()->get();
-
-        return response()->json($values);
+        return Attribute::with('attribute_values.icon.image:icon,id')
+            ->where('id', $request->attribute_id)
+            ->first();
     }
 
     public function getAttributeIcons(Request $request)

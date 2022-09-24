@@ -1,6 +1,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import Vuetify from 'vuetify';
 
 import VueTagsInput from '@johmun/vue-tags-input';
 import CKEditor from '@ckeditor/ckeditor5-vue';
@@ -21,6 +22,7 @@ import Flipbook from 'flipbook-vue/dist/vue2/flipbook.min';
 
 Vue.prototype.$eventBus = new Vue();
 
+Vue.use(Vuetify);
 Vue.use(PrettyCheckbox);
 Vue.use( CKEditor );
 Vue.use( vSelect );
@@ -39,7 +41,7 @@ Vue.directive('b-toggle', VBToggle);
 /* Admin side components */
 Vue.component('category-selector', require('./components/admin/CategorySelector.vue').default);
 Vue.component('attribute-selector', require('./components/admin/attributes/AttributeSelector.vue').default);
-Vue.component('attribute-selector-edit', require('./components/admin/attributes/AttributeSelectorEdit.vue').default);
+// Vue.component('attribute-selector-edit', require('./components/admin/attributes/AttributeSelectorEdit.vue').default);
 Vue.component('image-uploader', require('./components/admin/ImageUploader').default);
 
 Vue.component('product-form', require('./components/admin/products/ProductForm').default);
@@ -115,4 +117,5 @@ Vue.component('guide-flipbook', require('./components/frontend/shared/GuideFlipb
 const app = new Vue({
     VueTagsInput,
     el: '#app',
+    vuetify: new Vuetify(),
 });

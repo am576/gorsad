@@ -11,7 +11,7 @@
         </nav>
 
         <form class="product-edit-form" @submit.prevent="submit">
-            <v-overlay :value="overlay">
+            <v-overlay :value="overlay" :z-index="10000">
                 <p class="display-4 d-inline">Сохранение...</p>
                 <v-progress-circular indeterminate size="64"></v-progress-circular>
             </v-overlay>
@@ -88,16 +88,16 @@
                     <div class="col-md-8">
                         <div class="attributes-list">
                             <h3>Атрибуты</h3>
-                            <div class="form-row" v-for="(item, index) in attrs" :key="index">
+                            <div class="form-row" v-for="(attribute, index) in attrs" :key="index">
                                 <div class="form-group" data-app>
                                     <label>Название</label>
-                                    <select name="attribute_id[]" @change="getAttributeValues($event.target, index)" v-model="attrs[index].id">
+                                    <select name="attribute_id[]" @change="getAttributeValues($event.target, index)" v-model="attrs[index].id" :disabled="isSaved(attribute)">
                                         <option value="0">...</option>
                                         <option v-for="attribute in attributes" :data-type="attribute.type" :value="attribute.id">{{attribute.name}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group" style="width:300px">
-                                    <attribute-values :attribute_id="attrs[index].id" :type="attrs[index].type" :index="index" :selected="attrs[index].selected_values" :values="attrs[index].attribute_values"></attribute-values>
+                                    <attribute-values :attribute_id="attrs[index].id" :type="attrs[index].type" :index="index" :selected_values="attrs[index].values" :values="attrs[index].attribute_values"></attribute-values>
                                 </div>
                                 <button type="button" class="btn btn-danger delete" tabindex="-1" @click="removeAttributeRow(index)"><i class="mdi mdi-minus"></i></button>
                             </div>
@@ -118,7 +118,7 @@
                     <product-variants :product="product" @changeVariant="updateVariant" @removeVariant="removeVariant"></product-variants>
                 </div>
             </div>
-            <button type="button" @click="submit" class="btn btn-primary white--text">Сохранить</button>
+            <button type="button" @click="submit" class="btn btn-primary white--text" :disabled="isSubmitting">Сохранить</button>
         </form>
     </div>
 </template>
@@ -144,15 +144,11 @@
             return {
                 images: [],
                 errors: {},
-                attribute_rows : [],
                 attributes: [],
                 attrs:[],
-                attribute_values: [],
-                selected_values: [],
                 images_to_delete: [],
                 attributes_to_delete: [],
                 category_fields: [],
-                text_options: {},
                 additional_info:{},
                 overlay: false,
                 editor: ClassicEditor,
@@ -168,6 +164,7 @@
                         'heading', 'bulletedList', 'numberedList', 'fontSize', 'undo', 'redo'
                     ],
                 },
+                isSubmitting: false
             }
         },
 
@@ -201,24 +198,11 @@
                     this.$set(this.attrs, index, {
                         'id': select.value,
                         'type': selected.type,
-                        'attribute_values': response.data,
-                        'selected_values': []
+                        'attribute_values': response.data.attribute_values,
+                        'values': []
                     })
                     if(selected.type === 'range') {
-                        this.$set(this.attrs[index].attribute_values, 'range', [response.data[0].id, response.data[1].id])
-                    }
-                    else if(selected.type === 'icon') {
-                        axios.get('/api/getAttributeIcons', {
-                            params: {
-                                attribute_id: select.value
-                            }
-                        }).then(icons => {
-                            this.$set(this.attrs[index].attribute_values, 'icons', icons.data);
-                            this.attrs[index].attribute_values['icons'].forEach((value, i) => {
-                                this.$set(this.attrs[index].attribute_values['icons'][i], 'value_id', this.attrs[index].attribute_values[i].id);
-                            })
-                            this.$eventBus.$emit('setAttributeOptions', index,  response.data.icons);
-                        })
+                        this.$set(this.attrs[index], 'attribute_values', [response.data.attribute_values[0].value, response.data.attribute_values[1].value])
                     }
                 })
             },
@@ -232,69 +216,11 @@
                     }
                 }).then(response => {
                     this.attributes = response.data;
-                    if (this.attrs.length > 0) {
-                        this.attrs.forEach((attribute, index) => {
-                            axios.get('/api/getAttributeValues', {
-                                params: {
-                                    attribute_id: attribute.attribute_id
-                                }
-                            }).then(values => {
-                                this.$set(this.attrs[index], 'attribute_values', values.data);
-                                this.attrs[index].selected_values.forEach((value, i) => {
-                                    this.$set(this.attrs[index].selected_values, i, Number(value))
-                                })
-                                this.$set(this.selected_values, index, values.data.selected_values)
-                                if (attribute.type === 'range') {
-                                    this.$set(this.attrs[index].attribute_values, 'range', [this.attrs[index].selected_values[0],this.attrs[index].selected_values[1]]);
-                                    this.$eventBus.$emit('setAttributeValues', attribute.attribute_id, response.data);
-                                }
-                                else if(attribute.type === 'color') {
-                                    this.$eventBus.$emit('setAttributeValues', attribute.attribute_id, values.data);
-                                }
-                                else if(attribute.type === 'icon') {
-                                    axios.get('/api/getAttributeIcons', {
-                                        params: {
-                                            attribute_id: attribute.attribute_id
-                                        }
-                                    }).then(icons => {
-                                        this.$set(this.attrs[index].attribute_values, 'icons', icons.data);
-                                        this.attrs[index].attribute_values['icons'].forEach((value, i) => {
-                                            this.$set(this.attrs[index].attribute_values['icons'][i], 'value_id', this.attrs[index].attribute_values[i].id);
-                                        })
-                                        icons.data.forEach(icon => {
-                                            if(icon.icon_id === this.attrs[index].selected_values[0]) {
-                                                this.$set(this.attrs[index].selected_values, 0, icon);
-                                            }
-                                        })
-                                        this.$eventBus.$emit('setAttributeValues', attribute.attribute_id, {
-                                            'icons': icons.data,
-                                            'selected': this.attrs[index].selected_values[0]
-                                        });
-                                    })
-                                }
-                                else {
-                                    this.$eventBus.$emit('setAttributeValues', attribute.attribute_id, values.data);
-                                }
-                            })
-                        })
-                    }
                 })
             },
 
             setAttributeValues(index, values) {
-                if(this.attrs[index].type === 'icon') {
-                    this.attrs[index].selected_values = [];
-                    this.selected_values = []
-                    values.forEach(value => {
-                        this.attrs[index].selected_values.push(value.value_id);
-                        this.selected_values.push(value.value_id);
-                    })
-                }
-                else {
-                    this.$set(this.attrs[index], 'selected_values', values);
-                    this.$set(this.selected_values, index, values)
-                }
-
+                this.$set(this.attrs[index], 'values', values);
             },
             createAttributeRow()
             {
@@ -302,7 +228,7 @@
             },
             removeAttributeRow(index)
             {
-                this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.attrs[index].attribute_id);
+                this.$set(this.attributes_to_delete, this.attributes_to_delete.length, this.attrs[index].id);
                 this.$delete(this.attrs, index);
             },
 
@@ -322,6 +248,7 @@
                 }
             },
             submit() {
+                this.isSubmitting = true;
                 this.overlay = true;
                 this.errors = {};
                 const formData = new FormData();
@@ -341,19 +268,15 @@
 
                 let attributes_to_save = []
                 this.attrs.forEach(attribute => {
-                    let selected_values = attribute.selected_values;
-                    if(attribute.type === 'icon') {
-                        selected_values = attribute.selected_values
-                    }
                     attributes_to_save.push(
                         {
                             'id': attribute.id,
-                            'values': selected_values
+                            'values': attribute.values
                         })
                 })
                 formData.append('variants', JSON.stringify(this.product.variants));
                 formData.append('additional_info', JSON.stringify(this.additional_info));
-                formData.append('attributes', JSON.stringify(attributes_to_save));
+                formData.append('attributes', JSON.stringify(this.attrs));
 
                 this.attributes_to_delete.forEach(attr_id => {
                     formData.append('attributes_to_delete[]', attr_id)
@@ -372,10 +295,14 @@
                     }
                 }).catch(error => {
                     this.overlay = false;
+                    this.isSubmitting = false;
                     if ([422, 500].includes(error.response.status)) {
                         this.errors = error.response.data.errors || {};
                     }
                 });
+            },
+            isSaved(attribute) {
+                return attribute.hasOwnProperty('group_id');
             }
         },
         created: function () {
