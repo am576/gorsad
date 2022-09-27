@@ -1,9 +1,9 @@
 @php
 $entity_config = config('admin.menu.'.$entity);
 $title = '';
-$submenu = isset($entity_config['submenu']) ? $entity_config['submenu'] : [];
 if (isset($mode))
 {
+    $submenu = isset($entity_config['submenu']) && $mode == 'index' ? $entity_config['submenu'] : [];
     if($mode == 'index')
     {
         $title = Str::ucfirst($entity_config['title']);
