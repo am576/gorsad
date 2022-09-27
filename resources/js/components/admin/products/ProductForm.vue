@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="status">Статус</label>
-                                    <select name="status" id="status" v-model="product.status">
+                                    <select name="status" id="status" class="form-control" v-model="product.status">
                                         <option value="1">Активный</option>
                                         <option value="0">Неактивный</option>
                                     </select>

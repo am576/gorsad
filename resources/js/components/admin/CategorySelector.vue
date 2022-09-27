@@ -1,5 +1,5 @@
 <template>
-        <select :name="select_name" id="category_id" @change="changeCategory" v-model="category_id">
+        <select :name="select_name" id="category_id" @change="changeCategory" class="form-control" v-model="category_id">
             <option value="0">...</option>
             <option v-for="category in categories" :value="category.id" :key="category.id">{{category.title}}</option>
         </select>

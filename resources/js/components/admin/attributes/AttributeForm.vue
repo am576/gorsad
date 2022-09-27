@@ -1,108 +1,116 @@
 <template>
     <div class="admin-form">
         <form @submit.prevent="submit">
-            <div class="form-group">
-                <label>Категория</label>
-                <category-selector :children_only="true" :category="attribute.category_id"></category-selector>
-                <div v-if="errors && errors.category_id" class="text-danger">{{errors.category_id[0]}}</div>
-            </div>
-            <div class="form-group">
-                <label>Группа</label>
-                <select name="group_id" id="group_id" v-model="attribute.group_id">
-                    <option value="0">...</option>
-                    <option v-for="group in groups" :value="group.id" :key="group.id">{{group.title}}</option>
-                </select>
-                <div v-if="errors && errors.category_id" class="text-danger">{{errors.group_id[0]}}</div>
-            </div>
-            <div class="form-group">
-                <label for="name">Название</label>
-                <input type="text" id="name" name="name" v-model="attribute.name" autocomplete="off">
-                <div v-if="errors && errors.name" class="text-danger">{{errors.name[0]}}</div>
-            </div>
-            <div class="form-group">
-                <label>Тип</label>
-                <select name="type" id="type" v-model="attribute.type" @change="changeAttributeType">
-                    <option value="0">...</option>
-                    <option v-for="(title, type) in attr_types" :value="type" :key="type">{{title}}</option>
-                </select>
-                <select v-show="attribute.type === 'icon' && iconsets.length" v-model="attribute.iconset_id"
-                        name="iconset" id="iconset" @change="getIconsForSet($event.target)">
-                    <option value="0">...</option>
-                    <option v-for="(iconset,index) in iconsets" :value="iconset.id" :key="index" :data-index="index">
-                        {{iconset.name}}
-                    </option>
-                </select>
-            </div>
-            <div class="form-group" v-show="attribute.type === 'text' || attribute.type === 'list'">
-                <label>Значения</label>
-                <vue-tags-input
-                    v-model="tag"
-                    :tags="tags"
-                    @tags-changed="newTags => tags = newTags"
-                    @before-deleting-tag="removeTag"
-                    @before-adding-tag="addTag"
-                    :placeholder="'Введите значение и нажмите Enter'"
-                />
-            </div>
-            <div class="form-group" v-show="attribute.type === 'range'">
-                <div class="form-group row">
-                    <label for="range_min">Мин. значение</label>
-                    <input type="text" name="range_min" id="range_min" class="col-sm-2" v-model="range_min"
-                           maxlength="2">
-                </div>
-                <div class="form-group row">
-                    <label for="range_max">Макс. значение</label>
-                    <input type="text" name="range_max" id="range_max" class="col-sm-2" v-model="range_max"
-                           maxlength="3" max="100">
-                </div>
-                <div class="form-group row">
-                    <label for="range_step">Шаг слайдера</label>
-                    <input type="text" name="range_step" id="range_step" class="col-sm-2" v-model="range_step"
-                           maxlength="3">
-                </div>
-            </div>
-            <div class="form-group" v-if="attribute.type === 'color'">
-                <div class="d-flex align-items-center" style="width: 30%" v-for="(color,index) in attribute.values"
-                     :key="index">
-                    <verte menuPosition="center" :value="attribute.values[index].value" :showHistory="false"
-                           :enableAlpha="false" model="hex" v-model="attribute.values[index].value"></verte>
-                    <div class="d-block ml-3">
-                        <input type="text" class="form-control" v-model="attribute.values[index].ext_value"
-                               placeholder="Название цвета" autocomplete="off" @focus="clearErrors('color_names')">
-                        <small class="text-danger" v-show="hasErrors('color_names')">
-                            {{errors.hasOwnProperty('color_names')?errors.color_names[index]:''}}
-                        </small>
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>Категория</label>
+                        <category-selector :children_only="true" :category="attribute.category_id"></category-selector>
+                        <div v-if="errors && errors.category_id" class="text-danger">{{errors.category_id[0]}}</div>
                     </div>
+                    <div class="form-group">
+                        <label>Группа</label>
+                        <select name="group_id" id="group_id" class="form-control" v-model="attribute.group_id">
+                            <option value="0">...</option>
+                            <option v-for="group in groups" :value="group.id" :key="group.id">{{group.title}}</option>
+                        </select>
+                        <div v-if="errors && errors.category_id" class="text-danger">{{errors.group_id[0]}}</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Название</label>
+                        <input type="text" id="name" name="name" class="form-control" v-model="attribute.name" autocomplete="off">
+                        <div v-if="errors && errors.name" class="text-danger">{{errors.name[0]}}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Тип</label>
+                        <select name="type" id="type" v-model="attribute.type" class="form-control" @change="changeAttributeType">
+                            <option value="0">...</option>
+                            <option v-for="(title, type) in attr_types" :value="type" :key="type">{{title}}</option>
+                        </select>
+                        <select v-show="attribute.type === 'icon' && iconsets.length" v-model="attribute.iconset_id"
+                                name="iconset" id="iconset" @change="getIconsForSet($event.target)">
+                            <option value="0">...</option>
+                            <option v-for="(iconset,index) in iconsets" :value="iconset.id" :key="index"
+                                    :data-index="index">
+                                {{iconset.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group" v-show="attribute.type === 'text' || attribute.type === 'list'">
+                        <label>Значения</label>
+                        <vue-tags-input
+                            v-model="tag"
+                            :tags="tags"
+                            @tags-changed="newTags => tags = newTags"
+                            @before-deleting-tag="removeTag"
+                            @before-adding-tag="addTag"
+                            :placeholder="'Введите значение и нажмите Enter'"
+                        />
+                    </div>
+                    <div class="form-group" v-show="attribute.type === 'range'">
+                        <div class="form-group row">
+                            <label for="range_min">Мин. значение</label>
+                            <input type="text" name="range_min" id="range_min" class="col-sm-2" v-model="range_min"
+                                   maxlength="2">
+                        </div>
+                        <div class="form-group row">
+                            <label for="range_max">Макс. значение</label>
+                            <input type="text" name="range_max" id="range_max" class="col-sm-2" v-model="range_max"
+                                   maxlength="3" max="100">
+                        </div>
+                        <div class="form-group row">
+                            <label for="range_step">Шаг слайдера</label>
+                            <input type="text" name="range_step" id="range_step" class="col-sm-2" v-model="range_step"
+                                   maxlength="3">
+                        </div>
+                    </div>
+                    <div class="form-group" v-if="attribute.type === 'color'">
+                        <div class="d-flex align-items-center" style="width: 30%"
+                             v-for="(color,index) in attribute.values"
+                             :key="index">
+                            <verte menuPosition="center" :value="attribute.values[index].value" :showHistory="false"
+                                   :enableAlpha="false" model="hex" v-model="attribute.values[index].value"></verte>
+                            <div class="d-block ml-3">
+                                <input type="text" class="form-control" v-model="attribute.values[index].ext_value"
+                                       placeholder="Название цвета" autocomplete="off"
+                                       @focus="clearErrors('color_names')">
+                                <small class="text-danger" v-show="hasErrors('color_names')">
+                                    {{errors.hasOwnProperty('color_names')?errors.color_names[index]:''}}
+                                </small>
+                            </div>
 
-                    <span class="btn mdi mdi-minus mdi-24px" @click="removeColor(index)"></span>
-                </div>
-                <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="addColor()"><i
-                    class="mdi mdi-plus"></i></button>
-            </div>
-            <div v-if="attribute.type === 'icon'">
-                <div class="form-group row align-items-center" v-for="(value, index) in attribute.values" :key="index">
-                    <div class="form-group m-0">
-                        <input type="text" name="value_title" id="value_title" v-model="value.value"
-                               placeholder="Название" required>
+                            <span class="btn mdi mdi-minus mdi-24px" @click="removeColor(index)"></span>
+                        </div>
+                        <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="addColor()"><i
+                            class="mdi mdi-plus"></i></button>
                     </div>
-                    <div class="form-group icon-select m-0">
-                        <v-select v-model="selected_image" :value="selected_image" :options="options"
-                                  @option:selected="selectIcon($event, index)">
-                            <template #selected-option="{ icon }">
-                                <div style="display: flex; align-items: baseline; ">
-                                    <img height="50px" :src="'/storage/images/' + value.icon"/>
-                                </div>
-                            </template>
+                    <div v-if="attribute.type === 'icon'">
+                        <div class="form-group row align-items-center" v-for="(value, index) in attribute.values"
+                             :key="index">
+                            <div class="form-group m-0">
+                                <input type="text" name="value_title" id="value_title" v-model="value.value"
+                                       placeholder="Название" required>
+                            </div>
+                            <div class="form-group icon-select m-0">
+                                <v-select v-model="selected_image" :value="selected_image" :options="options"
+                                          @option:selected="selectIcon($event, index)">
+                                    <template #selected-option="{ icon }">
+                                        <div style="display: flex; align-items: baseline; ">
+                                            <img height="50px" :src="'/storage/images/' + value.icon"/>
+                                        </div>
+                                    </template>
 
-                            <template slot="option" slot-scope="option">
-                                <img height="50px" :src="'/storage/images/' + option.icon"/>
-                            </template>
-                        </v-select>
+                                    <template slot="option" slot-scope="option">
+                                        <img height="50px" :src="'/storage/images/' + option.icon"/>
+                                    </template>
+                                </v-select>
+                            </div>
+                            <span class="btn mdi mdi-minus mdi-24px" @click="removeIcon(index)"></span>
+                        </div>
+                        <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="addIcon"><i
+                            class="mdi mdi-plus"></i></button>
                     </div>
-                    <span class="btn mdi mdi-minus mdi-24px" @click="removeIcon(index)"></span>
                 </div>
-                <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="addIcon"><i
-                    class="mdi mdi-plus"></i></button>
             </div>
 
             <div class="form-group">
