@@ -94,7 +94,6 @@ return [
   ],
   'attributes_types' => [
       'text' => 'Текст',
-      'list' => 'Список',
       'range' => 'Слайдер',
       'bool' => 'Да/Нет',
       'color' => 'Цвет',

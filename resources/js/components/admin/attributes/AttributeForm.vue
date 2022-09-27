@@ -2,7 +2,7 @@
     <div class="admin-form">
         <form @submit.prevent="submit">
             <div class="row">
-                <div class="col-4">
+                <div class="col-5">
                     <div class="form-group">
                         <label>Категория</label>
                         <category-selector :children_only="true" :category="attribute.category_id"></category-selector>
@@ -27,7 +27,8 @@
                             <option value="0">...</option>
                             <option v-for="(title, type) in attr_types" :value="type" :key="type">{{title}}</option>
                         </select>
-                        <select v-show="attribute.type === 'icon' && iconsets.length" v-model="attribute.iconset_id"
+                        <label v-show="attribute.type === 'icon'" class="mt-3">Набор иконок</label>
+                        <select v-show="attribute.type === 'icon' && iconsets.length" class="form-control" v-model="attribute.iconset_id"
                                 name="iconset" id="iconset" @change="getIconsForSet($event.target)">
                             <option value="0">...</option>
                             <option v-for="(iconset,index) in iconsets" :value="iconset.id" :key="index"
@@ -48,24 +49,24 @@
                         />
                     </div>
                     <div class="form-group" v-show="attribute.type === 'range'">
-                        <div class="form-group row">
+                        <div class="form-group">
                             <label for="range_min">Мин. значение</label>
                             <input type="text" name="range_min" id="range_min" class="col-sm-2" v-model="range_min"
                                    maxlength="2">
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group">
                             <label for="range_max">Макс. значение</label>
                             <input type="text" name="range_max" id="range_max" class="col-sm-2" v-model="range_max"
                                    maxlength="3" max="100">
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group">
                             <label for="range_step">Шаг слайдера</label>
                             <input type="text" name="range_step" id="range_step" class="col-sm-2" v-model="range_step"
                                    maxlength="3">
                         </div>
                     </div>
                     <div class="form-group" v-if="attribute.type === 'color'">
-                        <div class="d-flex align-items-center" style="width: 30%"
+                        <div class="d-flex align-items-center"
                              v-for="(color,index) in attribute.values"
                              :key="index">
                             <verte menuPosition="center" :value="attribute.values[index].value" :showHistory="false"
@@ -79,16 +80,16 @@
                                 </small>
                             </div>
 
-                            <span class="btn mdi mdi-minus mdi-24px" @click="removeColor(index)"></span>
+                            <span class="btn mdi mdi-minus mdi-24px text-white" @click="removeColor(index)"></span>
                         </div>
-                        <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="addColor()"><i
+                        <button type="button" class="btn btn-success clonspan mt-4" tabindex="-1" @click="addColor()"><i
                             class="mdi mdi-plus"></i></button>
                     </div>
-                    <div v-if="attribute.type === 'icon'">
-                        <div class="form-group row align-items-center" v-for="(value, index) in attribute.values"
+                    <div v-if="attribute.type === 'icon'" class="mt-5">
+                        <div class="form-group d-flex justify-content-between align-items-center" v-for="(value, index) in attribute.values"
                              :key="index">
                             <div class="form-group m-0">
-                                <input type="text" name="value_title" id="value_title" v-model="value.value"
+                                <input type="text" name="value_title" id="value_title" class="form-control" v-model="value.value"
                                        placeholder="Название" required>
                             </div>
                             <div class="form-group icon-select m-0">
@@ -105,7 +106,7 @@
                                     </template>
                                 </v-select>
                             </div>
-                            <span class="btn mdi mdi-minus mdi-24px" @click="removeIcon(index)"></span>
+                            <span class="btn mdi mdi-minus mdi-24px text-white" @click="removeIcon(index)"></span>
                         </div>
                         <button type="button" class="btn btn-success clonspan" tabindex="-1" @click="addIcon"><i
                             class="mdi mdi-plus"></i></button>
@@ -113,7 +114,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-5">
                 <input v-if="!(is_edit_form && attribute.type==='range')" type="submit" class="btn btn-rounded btn-lg btn-blue" :value="submit_title">
             </div>
         </form>
@@ -167,16 +168,9 @@
                 }).then(response => {
                     if(response.status == 200)
                     {
-                        if(this.attribute.type === 'icon') {
-                            response.data.forEach(value => {
-                                // this.tags.push(value.value)
-                            });
-                        }
-                        else {
-                            response.data.forEach(value => {
-                                this.tags.push({"text":value.value,"tiClasses":["ti-valid"]})
-                            });
-                        }
+                        response.data.attribute_values.forEach(value => {
+                            this.tags.push({"text":value.value,"tiClasses":["ti-valid"]})
+                        });
                     }
                 })
             },

@@ -302,9 +302,7 @@ $select_height: 3rem;
         .form-group {
             width: 40%;
             margin-bottom: 0!important;
-            .vs__dropdown-toggle {
-                min-height: $select_height;
-            }
+
         }
     }
 }
@@ -321,4 +319,19 @@ $select_height: 3rem;
     select {
         height: 100%;
     }
+}
+
+.ti-tag {
+    background: #1694ee !important;
+    * {
+        color: #fff !important;
+        font-size: 1rem;
+        line-height: 1rem;
+    }
+
+}
+.vs__dropdown-toggle {
+    min-height: $select_height;
+    background: #8b8e9b !important;
+    border-radius: 0 !important;
 }

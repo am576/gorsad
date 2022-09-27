@@ -297,10 +297,6 @@ form.table-delete-entity {
   margin-bottom: 0 !important;
 }
 
-#product-attributes .form-row .form-group .vs__dropdown-toggle {
-  min-height: 3rem;
-}
-
 .my-tooltip-class {
   font-size: 30px !important;
 }
@@ -311,5 +307,21 @@ form.table-delete-entity {
 
 .table-filter select {
   height: 100%;
+}
+
+.ti-tag {
+  background: #1694ee !important;
+}
+
+.ti-tag * {
+  color: #fff !important;
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+.vs__dropdown-toggle {
+  min-height: 3rem;
+  background: #8b8e9b !important;
+  border-radius: 0 !important;
 }
 
