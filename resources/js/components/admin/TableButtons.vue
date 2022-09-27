@@ -1,10 +1,10 @@
 <template>
-    <div>
-        <a :href="edit_url" title="Изменить" class="btn btn-sm btn-primary pull-right edit">
+    <div class="table-buttons">
+        <a :href="edit_url" title="Изменить" class="btn btn-rounded btn-sm btn-blue pull-right edit">
             <i class="mdi mdi-lead-pencil"></i> <span class="hidden-xs hidden-sm">Изменить</span>
         </a>
         <form class="table-delete-entity">
-            <button @click="deleteRow()" type="button" title="Удалить" class="btn btn-sm btn-danger pull-right delete hidden-xs hidden-sm"
+            <button @click="deleteRow()" type="button" title="Удалить" class="btn btn-rounded btn-sm btn-red pull-right delete hidden-xs hidden-sm"
                      value="Удалить">Удалить</button>
         </form>
     </div>

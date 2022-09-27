@@ -22,7 +22,7 @@
                         <div class="panel panel-bordered">
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table id="dataTable" class="table table-hover">
+                                    <table id="dataTable" class="table">
                                         <thead>
                                         <tr>
                                             <th>ID запроса</th>
@@ -64,7 +64,7 @@
                         <div class="panel panel-bordered">
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table id="dataTable" class="table table-hover">
+                                    <table id="dataTable" class="table">
                                         <thead>
                                         <tr>
                                             <th>ID заказа</th>
@@ -106,7 +106,7 @@
                         <div class="panel panel-bordered">
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                    <table id="dataTable" class="table table-hover">
+                                    <table id="dataTable" class="table">
                                         <thead>
                                         <tr>
                                             <th>Имя</th>

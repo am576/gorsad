@@ -1,5 +1,6 @@
 @php
 $entity_config = config('admin.menu.'.$entity);
+$title = '';
 if (isset($mode))
 {
     if($mode == 'index')
@@ -8,21 +9,21 @@ if (isset($mode))
     }
     elseif ($mode == 'edit')
     {
-        $title = 'Изменить ' . $entity_config['singular'];
+        $title = 'Редактирование ' . $entity_config['genitive'];
+    }
+    elseif ($mode == 'create')
+    {
+        $title = 'Создание ' . $entity_config['genitive'];
     }
 }
-else
-{
-    $title = '';
-}
 @endphp
-<div class="container-fluid">
+<div class="table-header">
     <h1 class="page-title">
         <i class="mdi mdi-{{ $entity_config['icon'] }}"></i>
         {{$title}}
     </h1>
     @if($with_buttons ?? '')
-        <a href="{{ route($entity_config['route'].'.create') }}" class="btn btn-success btn-add-new">
+        <a href="{{ route($entity_config['route'].'.create') }}" class="btn btn-rounded btn-green btn-add-new">
             <i class="mdi mdi-plus"></i>
             <span>Создать</span>
         </a>
@@ -32,7 +33,7 @@ else
         </a>--}}
     @endif
     @if($create_group ?? '')
-        <a href="{{ route($entity_config['route'].'.create_group') }}" class="btn btn-success btn-add-new">
+        <a href="{{ route($entity_config['route'].'.create_group') }}" class="btn btn-green btn-add-new">
             <i class="mdi mdi-plus"></i>
             <span>Создать группу</span>
         </a>

@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <form @submit.prevent="submit">
+    <div class="admin-form">
+        <form @submit.prevent="submit" class="d-flex flex-column">
             <v-overlay :value="overlay">
                 <p class="display-4 d-inline">Сохранение...</p>
                 <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -34,7 +34,9 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">{{submitCaption}}</button>
+            <div class="text-center">
+                <button type="submit" class="btn btn-lg btn-rounded btn-blue border-2">{{submitCaption}}</button>
+            </div>
         </form>
     </div>
 </template>

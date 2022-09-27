@@ -1,16 +1,16 @@
 <template>
     <div>
-        <table-filter :filter_fields="filter_fields" @filter="filterTable"></table-filter>
+        <table-filter :filter_fields="filter_fields" @filter="filterTable"/>
         <div class="table-responsive">
-            <table id="dataTable" class="table table-hover">
+            <table id="dataTable" class="table">
                 <thead>
                 <tr>
                     <th>Название</th>
-                    <th>Код товара</th>
+<!--                    <th>Код товара</th>-->
                     <th>Категория</th>
                     <th>Цена</th>
                     <th>Скидка</th>
-                    <th>Количество</th>
+<!--                    <th>Количество</th>-->
                     <th>Статус</th>
                     <th>Добавлен</th>
                     <th></th>
@@ -19,11 +19,11 @@
                 <tbody>
                 <tr v-for="(product, index) in products.data" :key="index">
                     <td>{{product.title }}</td>
-                    <td>{{product.code}}</td>
+<!--                    <td>{{product.code}}</td>-->
                     <td>{{product_category(product)}}</td><!---->
                     <td>{{product.price}}</td>
                     <td>{{product.discount}}</td>
-                    <td>{{product.quantity}}</td>
+<!--                    <td>{{product.quantity}}</td>-->
                     <td :class="colorStatus(product.status)">{{statuses[product.status]}}</td>
                     <td>{{ moment(product.created_at).format("DD-MM-YYYY hh:mm") }}</td>
                     <td>
@@ -32,8 +32,7 @@
                 </tr>
                 </tbody>
             </table>
-            <table-pagination :pagination="products" :offset="4" @paginate="getProducts" @changePerPage="changePerPage">
-            </table-pagination>
+            <table-pagination :pagination="products" :offset="4" @paginate="getProducts" @changePerPage="changePerPage"/>
         </div>
     </div>
 </template>

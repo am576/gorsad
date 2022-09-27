@@ -1,6 +1,5 @@
 <template>
-    <nav>
-
+    <nav class="pl-4">
         <ul class="pagination">
             <li class="page-item" v-if="pagination.current_page > 1">
                 <a class="page-link" href="javascript:void(0)" aria-label="Назад" v-on:click.prevent="changePage(pagination.current_page - 1)">

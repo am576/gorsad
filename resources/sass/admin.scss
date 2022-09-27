@@ -1,9 +1,25 @@
 $sidebar-width : 60px;
+$dark-bg : #2e303d;
+$lighter-bg : #3b4052;
+$blue-bg: #207ec9;
+$blueish-bg : #304058;
+$blueish-lighter-bg : #424457;
+$text-color-light : #bdc1d7;
+$green : #20c962;
+$red : #dc3545;
+
+#app {
+    margin: auto;
+    max-width: 1400px;
+    min-height: 1100px;
+    position: relative !important;
+    overflow-x: hidden !important;
+}
 
 .app-container {
     min-height: 100%;
     position: relative;
-    background: #ececec;
+    background: #2e303d;
     padding-bottom: 30px;
 }
 
@@ -12,8 +28,8 @@ $sidebar-width : 60px;
 }
 
 .app-container .content-container .side-menu {
-    width: $sidebar-width;
-    z-index: 9999;
+    top: 60px;
+    background: #323544;
 }
 
 .navbar-fixed-top {
@@ -22,11 +38,11 @@ $sidebar-width : 60px;
 }
 
 .side-menu.sidebar {
-    position: fixed;
     height: 100%;
-    width: 250px;
-    background-image: linear-gradient(45deg, rgb(53, 61, 71), rgb(33, 41, 46));
-    transition: width .5s cubic-bezier(.19,1,.22,1);
+    width: 100px;
+    padding: 20px;
+    /*background-image: linear-gradient(45deg, rgb(53, 61, 71), rgb(33, 41, 46));
+    transition: width .5s cubic-bezier(.19,1,.22,1);*/
 }
 
 .side-menu.sidebar ul li {
@@ -34,19 +50,83 @@ $sidebar-width : 60px;
 }
 
 .side-menu.sidebar:hover {
-    width: 250px;
+    //width: 250px;
 }
 
 .side-menu.sidebar span.mdi {
     display: inline-block;
     text-align: center;
     width: 70px;
-    font-size: 26px;
+    font-size: 46px;
+    color: #bdc1d7 !important;
 }
 
 .app-container .content-container .side-body.padding-top {
     padding-top: 62px;
 }
+
+.table-header {
+    background: $blueish-bg;
+}
+
+.table {
+    color: $text-color-light !important;
+    thead th {
+        font-size: 22px !important;
+        border-top: none !important;
+        padding-left: 2rem !important;
+    }
+    td {
+        font-size: 18px !important;
+        border-top: 1px solid #dee2e621 !important;
+        vertical-align: middle !important;
+        padding-left: 2rem !important;
+    }
+}
+
+.btn-rounded {
+    font-size: 18px;
+    border-radius: 50px !important;
+    color: $text-color-light !important;
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+}
+
+.btn-green {
+    color: #fff !important;
+    border: 3px solid $green !important;
+    &:hover {
+        background: green !important;
+    }
+}
+
+.btn-blue {
+    border: 1px solid $blue-bg !important;
+    &:hover {
+        background: $blueish-bg !important;
+    }
+}
+
+.btn-red {
+    border: 1px solid $red !important;
+    &:hover {
+        background: #7b0811 !important;
+    }
+}
+
+label {
+    color: #bdc1d7;
+}
+
+.admin-form {
+    background: $lighter-bg;
+    padding: 2rem;
+}
+
+
+
+
+
 
 .breadcrumb {
     list-style: none;
@@ -57,11 +137,6 @@ $sidebar-width : 60px;
     border: 1px solid #f9f9f9;
     font-size: 12px;
     padding: 4px 15px 4px 10px;
-}
-
-.app-container .side-body {
-    margin-left: 50px;
-    margin-right: 12px;
 }
 
 .container.dashboard {
@@ -83,7 +158,7 @@ $sidebar-width : 60px;
     line-height: 43px;
     margin-top: 3px;
     padding-top: 28px;
-    color: #555;
+    color: $text-color-light;
     position: relative;
     padding-left: 75px;
     margin-bottom: 0;
@@ -93,7 +168,7 @@ $sidebar-width : 60px;
 
 .panel {
     margin-bottom: 22px;
-    background-color: #fff;
+    background-color: $blueish-lighter-bg;
     border: 1px solid transparent;
     border-radius: 4px;
     box-shadow: 0 2px 10px rgba(0,0,0,.05);
@@ -120,6 +195,24 @@ $sidebar-width : 60px;
     text-decoration: none;
 }
 
+
+.nav-tabs {
+    border-bottom: 1px solid #757575 !important;
+    .nav-link {
+        font-size: 1.5rem !important;
+        color: #757575;
+        &:hover {
+            border-color: #757575 #757575 #757575 !important;
+        }
+    }
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    border: none !important;
+    background:  $lighter-bg !important;
+    color: $text-color-light !important;
+}
+
 form.table-delete-entity {
     display: inline-block;
 }
@@ -142,7 +235,8 @@ form.table-delete-entity {
 }
 
 .attributes-list {
-    margin-bottom: 30px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .attribute-color {
@@ -170,4 +264,39 @@ form.table-delete-entity {
 }
 .vs__dropdown-menu {
     background: rgba(125,125,125,0.81) !important;
+}
+
+$select_height: 3rem;
+#product-attributes {
+    .form-row {
+        justify-content: space-between;
+        align-items: center;
+        background: #f7f7f7;
+        padding: 20px;
+        border-bottom: 1px solid #dddcdc;
+        select {
+            height: $select_height;
+        }
+        .form-group {
+            width: 40%;
+            margin-bottom: 0!important;
+            .vs__dropdown-toggle {
+                min-height: $select_height;
+            }
+        }
+    }
+}
+
+.my-tooltip-class {
+    font-size: 30px!important;
+}
+
+.border-2 {
+    border-width: 2px !important;
+}
+
+.table-filter {
+    select {
+        height: 100%;
+    }
 }

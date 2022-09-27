@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="admin-form">
         <form @submit.prevent="submit">
             <v-overlay :value="overlay">
                 <p class="display-4 d-inline">Сохранение...</p>

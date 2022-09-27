@@ -1,16 +1,13 @@
 @extends('admin.master')
 @section('content')
-    <div class="container dashboard">
-        <div class="row">
-            @foreach(config('admin.menu') as $menu_item)
-                <div style="width: 20%; padding: 5px 20px; margin-bottom: 20px;">
-                    <a href="/admin/{{$menu_item['route']}}" class="admin-link">
-                        <span class="mdi mdi-{{$menu_item['icon']}}"></span>
-                        {{$menu_item['title']}}
-                    </a>
-                </div>
-            @endforeach
-
+    <div class="dashboard">
+        <div class="row w-100 justify-content-between flex-nowrap" style="gap: 20px">
+            <div class="p-4 font-weight-bold" style="height: 300px; width: 50%; background: #323544">
+                <h3 class="font-weight-bold" style="color: #eeeff8">Недавние запросы</h3>
+            </div>
+            <div class="p-4" style="height: 300px; width: 50%; background: #323544">
+                <h3 class="font-weight-bold" style="color: #eeeff8">Недавние заказы</h3>
+            </div>
         </div>
     </div>
 

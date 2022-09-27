@@ -38,35 +38,6 @@ Vue.component('b-badge', BBadge);
 Vue.component('b-collapse', BCollapse);
 Vue.directive('b-toggle', VBToggle);
 
-/* Admin side components */
-Vue.component('category-selector', require('./components/admin/CategorySelector.vue').default);
-Vue.component('attribute-selector', require('./components/admin/attributes/AttributeSelector.vue').default);
-// Vue.component('attribute-selector-edit', require('./components/admin/attributes/AttributeSelectorEdit.vue').default);
-Vue.component('image-uploader', require('./components/admin/ImageUploader').default);
-
-Vue.component('product-form', require('./components/admin/products/ProductForm').default);
-Vue.component('product-edit-form', require('./components/admin/products/ProductEditForm').default);
-Vue.component('products-table', require('./components/admin/products/ProductsTable').default);
-Vue.component('product-variants', require('./components/admin/products/ProductVariants').default);
-
-Vue.component('table-filter', require('./components/admin/TableFilter').default);
-Vue.component('table-pagination', require('./components/admin/TablePagination').default);
-Vue.component('category-form', require('./components/admin/CategoryForm').default);
-Vue.component('table-buttons', require('./components/admin/TableButtons').default);
-Vue.component('attribute-form', require('./components/admin/attributes/AttributeForm').default);
-Vue.component('attribute-values', require('./components/admin/attributes/AttributeValues').default);
-Vue.component('iconset-form', require('./components/admin/IconsetForm').default);
-Vue.component('user-query-editor', require('./components/admin/UserQueryEditor').default);
-
-Vue.component('projects-table', require('./components/admin/projects/ProjectsTable').default);
-Vue.component('project-form', require('./components/admin/projects/ProjectForm').default);
-
-Vue.component('services-table', require('./components/admin/services/ServicesTable').default);
-Vue.component('service-form', require('./components/admin/services/ServiceForm').default);
-Vue.component('service-group-form', require('./components/admin/services/ServiceGroupForm').default);
-
-Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
-
 /** Client side components **/
 Vue.component('site-navigation', require('./components/frontend/SiteNavigation').default);
 Vue.component('account-links', require('./components/frontend/AccountLinks').default);

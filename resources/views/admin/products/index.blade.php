@@ -8,16 +8,9 @@
             )
 @endsection
 @section('content')
-
-    <div class="page-content browse container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-bordered">
-                    <div class="panel-body">
-                        <products-table></products-table>
-                    </div>
-                </div>
-            </div>
+    <div class="panel panel-bordered">
+        <div class="panel-body">
+            <products-table></products-table>
         </div>
     </div>
 @endsection

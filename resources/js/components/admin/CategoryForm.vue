@@ -1,33 +1,36 @@
 <template>
-    <form @submit.prevent="submit">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label>Название</label>
-                    <input type="text" class="form-control" v-model="category.title">
+    <div class="admin-form">
+        <form @submit.prevent="submit">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Название</label>
+                        <input type="text" class="form-control" v-model="category.title">
+                    </div>
+                    <div class="form-group">
+                        <label>Принадлежит</label>
+                        <category-selector :select_name="'parent_id'" :owner_id="category.id ? category.id : 0"
+                                           :parent_id="category.parent_id" :except_self="edit_form"></category-selector>
+                    </div>
+                    <div class="form-group">
+                        <label>Описание</label>
+                        <input type="text" class="form-control" v-model="category.description">
+                    </div>
+                    <div class="form-group">
+                        <label>URL-title </label><i class="mdi mdi-help-circle"></i>
+                        <input type="text" class="form-control" v-model="category.url_title">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>
-                <div class="form-group">
-                    <label>Принадлежит</label>
-                    <category-selector :select_name="'parent_id'" :owner_id="category.id ? category.id : 0" :parent_id="category.parent_id" :except_self="edit_form"></category-selector>
-                </div>
-                <div class="form-group">
-                    <label>Описание</label>
-                    <input type="text" class="form-control" v-model="category.description">
-                </div>
-                <div class="form-group">
-                    <label>URL-title </label><i class="mdi mdi-help-circle"></i>
-                    <input type="text" class="form-control" v-model="category.url_title">
-                </div>
-                <button type="submit" class="btn btn-primary">Сохранить</button>
-            </div>
-            <div class="col-md-6">
-                <image-uploader :entity_id="category_id" :entity_model="'Category'" :entity="category"
-                                :isSingleImage="true" :storage="'categories/'" @removeImage="removeImage">
+                <div class="col-md-6">
+                    <image-uploader :entity_id="category_id" :entity_model="'Category'" :entity="category"
+                                    :isSingleImage="true" :storage="'categories/'" @removeImage="removeImage">
 
-                </image-uploader>
+                    </image-uploader>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </template>
 
 <script>

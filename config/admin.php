@@ -5,12 +5,14 @@ return [
       'product' => [
           'title' => 'товары',
           'singular' => 'товар',
+          'genitive' => 'товара',
           'route' => 'products',
           'icon'  => 'cart'
       ],
       'service' => [
           'title' => 'услуги',
           'singular' => 'услуга',
+          'genitive' => 'услуги',
           'route' => 'services',
           'icon'  => 'bulldozer',
           'submenu' => [
@@ -25,12 +27,14 @@ return [
       'category' => [
           'title' => 'категории',
           'singular' => 'категория',
+          'genitive' => 'категории',
           'route' => 'categories',
           'icon'  => 'format-list-bulleted-square'
       ],
       'attribute'=>[
           'title' => 'атрибуты',
           'singular' => 'атрибут',
+          'genitive' => 'атрибута',
           'route' => 'attributes',
           'icon'  => 'google-circles-extended',
           'submenu' => [
@@ -57,6 +61,7 @@ return [
       'order' => [
           'title' => 'заказы',
           'singular' => 'заказ',
+          'genitive' => 'заказа',
           'route' => 'orders',
           'icon' => 'download-box'
       ],
@@ -75,6 +80,7 @@ return [
       'project' => [
           'title' => 'проекты',
           'singular' => 'проект',
+          'genitive' => 'проекта',
           'route' => 'projects',
           'icon' => 'map-check-outline'
       ]
