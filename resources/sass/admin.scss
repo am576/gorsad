@@ -37,12 +37,20 @@ $red : #dc3545;
     width: 100%;
 }
 
+.dashboard-link {
+    font-size: 1.5rem;
+    color: $text-color-light !important;
+    text-decoration: none !important;
+    &:hover {
+        text-decoration: none !important;
+        color: #dee2ef !important;
+    }
+}
+
 .side-menu.sidebar {
     height: 100%;
     width: 100px;
     padding: 20px;
-    /*background-image: linear-gradient(45deg, rgb(53, 61, 71), rgb(33, 41, 46));
-    transition: width .5s cubic-bezier(.19,1,.22,1);*/
 }
 
 .side-menu.sidebar ul li {

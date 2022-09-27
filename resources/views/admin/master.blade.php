@@ -24,11 +24,7 @@
         <nav class="navbar navbar-default navbar-fixed-top navbar-top" style="background: #323443">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <ol class="breadcrumb hidden-xs">
-                        <li class="active">
-                            <a href="http://127.0.0.1:8000/admin"><i class="mdi mdi-home"></i>Панель управления</a>
-                        </li>
-                    </ol>
+                    <a class="dashboard-link" href="{{config('admin.url')}}"><i class="mdi mdi-home mdi-36px"></i></a>
                 </div>
                 <ul class="nav navbar-nav  navbar-right ">
 
