@@ -328,10 +328,11 @@
                 margin: 10px;
                 justify-content: space-between;
                 box-shadow: 5px 5px 20px #000;
-                background: #fff;
+                background: #e8e8e8;
 
                 img {
-                    max-height: 150px;
+                    max-height: 250px;
+                    min-height: 150px;
                 }
 
                 img.single-image {
