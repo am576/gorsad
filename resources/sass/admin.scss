@@ -67,6 +67,26 @@ $red : #dc3545;
 
 .table-header {
     background: $blueish-bg;
+    display: flex;
+    align-items: center;
+
+    .table-header-caption {
+        display: flex;
+        padding: 1.5rem 3rem;
+    }
+
+    .table-header-link {
+        padding: 1.5rem;
+
+        a {
+            color: #9598a6;
+            //text-decoration: underline !important;
+            &:hover {
+                color: #fff !important;
+            }
+        }
+
+    }
 }
 
 .table {
@@ -152,18 +172,12 @@ label {
 
 .page-title {
     display: inline-block;
-    height: auto;
     font-size: 30px;
-    height: 100px;
     line-height: 43px;
-    margin-top: 3px;
-    padding-top: 28px;
     color: $text-color-light;
     position: relative;
-    padding-left: 75px;
-    margin-bottom: 0;
     font-weight: 700;
-    margin-right: 20px;
+    margin: 0 1rem 0 0 ;
 }
 
 .panel {

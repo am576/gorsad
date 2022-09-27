@@ -52,15 +52,6 @@
                             <span id="{{$menu_title}}" class="mdi mdi-{{$menu_item['icon']}}" v-b-tooltip.hover.right="{ customClass: 'my-tooltip-class' }" title="{{Str::ucfirst($menu_item['title'])}}"></span>
 {{--                            <span class="title">{{Str::ucfirst($menu_item['title'])}}</span>--}}
                         </a>
-                        @if(array_key_exists(('submenu'),$menu_item))
-
-                            @foreach($menu_item['submenu'] as $submenu_item)
-                                <a class="submenu-link" href="{{ url('/admin/'.$submenu_item['route']) }}">
-                                    <span class="menu-icon mdi mdi-{{$submenu_item['icon']}}"></span>
-{{--                                    <span class="title">{{Str::ucfirst($submenu_item['title'])}}</span>--}}
-                                </a>
-                            @endforeach
-                        @endif
                     </li>
                 @endforeach
             </ul>

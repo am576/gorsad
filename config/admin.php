@@ -16,9 +16,10 @@ return [
           'route' => 'services',
           'icon'  => 'bulldozer',
           'submenu' => [
-              [
+              'service_group' => [
                   'title' => 'группы услуг',
                   'singular' => 'группа услуг',
+                  'genitive' => 'группы услуг',
                   'route'=> 'service_groups',
                   'icon'  => 'bulldozer'
               ]
@@ -38,15 +39,17 @@ return [
           'route' => 'attributes',
           'icon'  => 'google-circles-extended',
           'submenu' => [
-              [
+              'attributes_group' => [
                   'title' => 'группы атрибутов',
                   'singular' => 'группа атрибутов',
+                  'genitive' => 'группы атрибутов',
                   'route' => 'attributes_groups',
                   'icon'  => 'menu-right-outline'
               ],
-              [
+              'icon_set' => [
                   'title' => 'наборы иконок',
                   'singular' => 'набор иконок',
+                  'genitive' => 'набора иконок',
                   'route' => 'icon_sets',
                   'icon'  => 'image'
               ]

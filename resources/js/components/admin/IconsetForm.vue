@@ -1,20 +1,22 @@
 <template>
-    <form @submit.prevent="submit">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label>Название</label>
-                    <input type="text" class="form-control" v-model="iconset.name">
+    <div class="admin-form">
+        <form @submit.prevent="submit">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Название</label>
+                        <input type="text" class="form-control" v-model="iconset.name">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>
-                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <div class="col-md-6">
+                    <image-uploader :entity_id="iconset_id" :entity_model="'IconSet'" :entity="iconset"
+                                    :isSingleImage="false" :storage="'attributes/'" @removeImage="removeImage">
+                    </image-uploader>
+                </div>
             </div>
-            <div class="col-md-6">
-                <image-uploader :entity_id="iconset_id" :entity_model="'IconSet'" :entity="iconset"
-                                :isSingleImage="false" :storage="'attributes/'" @removeImage="removeImage">
-                </image-uploader>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </template>
 
 <script>
