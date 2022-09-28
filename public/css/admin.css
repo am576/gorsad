@@ -325,3 +325,18 @@ form.table-delete-entity {
   border-radius: 0 !important;
 }
 
+.query-editor-form .form-label {
+  font-size: 1.5rem;
+  color: #bdc1d7;
+}
+
+.query-editor-form .query-row {
+  color: #bdc1d7;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid;
+}
+
+.text-color-light {
+  color: #bdc1d7 !important;
+}
+

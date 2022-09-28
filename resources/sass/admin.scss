@@ -335,3 +335,19 @@ $select_height: 3rem;
     background: #8b8e9b !important;
     border-radius: 0 !important;
 }
+
+.query-editor-form {
+    .form-label {
+        font-size: 1.5rem;
+        color: $text-color-light;
+    }
+    .query-row {
+        color: $text-color-light;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid;
+    }
+}
+
+.text-color-light {
+    color: $text-color-light !important;
+}

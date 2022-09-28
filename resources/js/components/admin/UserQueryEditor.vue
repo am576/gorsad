@@ -1,11 +1,11 @@
 <template>
-    <div class="container">
-        <div class="row w-100 justify-content-between">
-            <div class="col-4">Название</div>
-            <div class="col-4">Цена</div>
-            <div class="col-4">Количество</div>
+    <div class="container query-editor-form">
+        <div class="row w-100 justify-content-between mb-4">
+            <div class="col-4 form-label">Название</div>
+            <div class="col-4 form-label">Цена</div>
+            <div class="col-4 form-label">Количество</div>
         </div>
-        <div class="row" v-for="(product,index) in products" :key="index">
+        <div class="row query-row" v-for="(product,index) in products" :key="index">
             <div class="w-100">
                 <p v-show="!product.edit" class="product-title">
                     <span class="d-inline-block mr-2">{{product.title}}</span>
@@ -13,8 +13,8 @@
                 </p>
                 <input v-show="product.edit" type="text" :ref="'custom_name'+index" v-model="product.custom_name" @blur="hideCustomNameInput(index)" @keyup.enter="hideCustomNameInput(index)">
             </div>
-            <div class="row w-100" v-for="variant in product.variants">
-                <div class="col-4">{{variant.type}}</div>
+            <div class="row w-100 align-items-center" v-for="variant in product.variants">
+                <div class="col-4 text-color-light">{{variant.type}}</div>
                 <div class="col-4">
                     <input type="number" oninput="validity.valid||(value='1');" class="form-control w-25 d-inline-block" v-model="variant.price"> &#8381;
                 </div>
@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <h4>Сумма: {{totalPrice()}} &#8381;</h4>
+        <h4 class="text-color-light mt-4 text-white">Сумма: {{totalPrice()}} &#8381;</h4>
         <h4 v-if="query.bonuses">Сумма с учётом баллов: <b>{{priceWithBonuses}} &#8381;</b></h4>
         <div class="row justify-content-end">
             <button class="btn btn-primary" @click="submit()">Сохранить и отправить</button>
@@ -90,6 +90,9 @@
 </script>
 <style lang="scss" scoped>
     .product-title {
+         * {
+             font-size: 1.2rem;
+         }
         .mdi {
             cursor: pointer;
         }
