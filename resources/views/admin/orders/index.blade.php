@@ -1,6 +1,30 @@
 @extends('admin.master')
 
 @section('content')
+    <?php
+    $order_statuses = [
+        'new' => [
+            'class' => 'text-primary',
+            'value' => 'новый'
+        ],
+        'complete' => [
+            'class' => 'text-success',
+            'value' => 'выполнен'
+        ],
+        'approved' => [
+            'class' => 'text-success',
+            'value' => 'одобрен'
+        ],
+        'completed' => [
+            'class' => 'text-success',
+            'value' => 'выполнен'
+        ],
+        'cancelled' => [
+            'class' => 'text-danger',
+            'value' => 'отменён'
+        ]
+    ]
+    ?>
     <div class="page-content browse container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -37,9 +61,9 @@
                                         <tbody>
                                         @foreach($queries as $query)
                                             <tr>
-                                                <td>{{sprintf('%08d', $query->id)}}</td>
+                                                <td>{{sprintf('%06d', $query->id)}}</td>
                                                 <td>{{$query->user()->name}}</td>
-                                                <td class="text-success">{{$query->status}}</td>
+                                                <td class="{{$order_statuses[$query->status]['class']}}">{{$order_statuses[$query->status]['value']}}</td>
                                                 <td>
                                                     <a href="{{'/admin/querypdf?user_id='.$query->user_id.'&query_id='.$query->id}}">
                                                         <span class="mdi mdi-file-document mdi-24px text-primary"></span>
@@ -48,9 +72,14 @@
                                                 <td class="text-right">{{date('d.m.Y', strtotime($query->created_at))}}</td>
                                                 <td class="text-right">@if($query->status!='new'){{date('d.m.Y', strtotime($query->updated_at))}}@else&mdash;@endif</td>
                                                 <td>
+                                                    @if($query->status == 'new' || $query->status == 'processing')
                                                     <a class="btn btn-primary" href="/admin/queries/{{$query->id}}">
                                                         <i class="mdi mdi-arrow-right-bold mdi-18px"></i>
                                                     </a>
+                                                    @endif
+                                                    @if($query->status == 'approved')
+                                                        <b-cancel-query :query_id="{{$query->id}}"/>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -119,29 +148,14 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php
-                                        $service_order_statuses = [
-                                            'new' => [
-                                                'class' => 'text-primary',
-                                                'value' => 'новый'
-                                            ],
-                                            'complete' => [
-                                                'class' => 'text-success',
-                                                'value' => 'выполнен'
-                                            ],
-                                            'cancelled' => [
-                                                'class' => 'text-danger',
-                                                'value' => 'отменён'
-                                            ]
-                                        ]
-                                        ?>
+
                                         @foreach($service_orders as $service_order)
                                             <tr>
                                                 <td>{{$service_order->client_name}}</td>
                                                 <td>{{$service_order->client_email}}</td>
                                                 <td>{{empty($service_order->client_phone) ? '-' : $service_order->client_phone}}</td>
                                                 <td>{{$service_order->service->name}}</td>
-                                                <td class="{{$service_order_statuses[$service_order->status]['class']}}">{{$service_order_statuses[$service_order->status]['value']}}</td>
+                                                <td class="{{$order_statuses[$service_order->status]['class']}}">{{$order_statuses[$service_order->status]['value']}}</td>
                                                 <td>{{date('d.m.Y', strtotime($service_order->created_at))}}</td>
                                                 @if($service_order->status == 'new')
                                                     <td>

@@ -97,11 +97,7 @@ Route::get('/services/{id}', 'HomeController@showServicePage');
 Route::post('/services/{id}/order', 'ShopController@createOrderService');
 
 /*Admin routes*/
-Route::get('/admin/orders', 'OrderController@index')->name('orders.index');
-Route::get('/admin/orders/{id}', 'OrderController@show');
-Route::get('/admin/queries/{id}', 'OrderController@showUserQuery');
-Route::post('/admin/queries/{id}/approve', 'OrderController@createOrderFromQuery');
-Route::get('/admin/clients', 'ClientController@index');
+
 
 
 Route::prefix('admin')->group(function(){
@@ -118,6 +114,13 @@ Route::prefix('admin')->group(function(){
         return view('admin.settings.prices');
     });
     Route::post('/prices','SettingsController@SaveAndApplyExtraPrice');
+
+    Route::get('/orders', 'OrderController@index')->name('orders.index');
+    Route::get('/orders/{id}', 'OrderController@show');
+    Route::get('/queries/{id}', 'OrderController@showUserQuery');
+    Route::post('/queries/{id}/approve', 'OrderController@createOrderFromQuery');
+    Route::post('/queries/{id}/cancel', 'OrderController@CancelUserQuery');
+    Route::get('/clients', 'ClientController@index');
 
     Route::get('/querypdf','OrderController@getQueryPdf');
     Route::get('/orderpdf','OrderController@getOrderPdf');

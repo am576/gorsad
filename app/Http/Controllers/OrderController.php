@@ -89,6 +89,33 @@ class OrderController extends Controller
         return response('Unexpected error', 300);
     }
 
+    public function CancelUserQuery($id)
+    {
+        $query = UserQuery::findOrFail($id);
+        $responseMsg = '';
+        $responseCode = 200;
+
+        if($query->status != 'cancelled')
+        {
+            $query->status = 'cancelled';
+            if($query->save())
+            {
+                $responseMsg = 'OK';
+            }
+            else {
+                $responseMsg = 'Error saving query status';
+                $responseCode = 422;
+            }
+        }
+        else {
+            $responseMsg = 'Query is already cancelled';
+            $responseCode = 422;
+        }
+
+        return response($responseMsg, $responseCode);
+
+    }
+
     public function show($id)
     {
         $order = Order::findOrFail($id);

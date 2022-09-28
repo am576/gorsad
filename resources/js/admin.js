@@ -57,6 +57,7 @@ Vue.component('attribute-form', require('./components/admin/attributes/Attribute
 Vue.component('attribute-values', require('./components/admin/attributes/AttributeValues').default);
 Vue.component('iconset-form', require('./components/admin/IconsetForm').default);
 Vue.component('user-query-editor', require('./components/admin/UserQueryEditor').default);
+Vue.component('b-cancel-query', require('./components/admin/orders/CancelQueryButton').default);
 
 Vue.component('projects-table', require('./components/admin/projects/ProjectsTable').default);
 Vue.component('project-form', require('./components/admin/projects/ProjectForm').default);

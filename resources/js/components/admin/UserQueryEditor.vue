@@ -16,7 +16,7 @@
             <div class="row w-100 align-items-center" v-for="variant in product.variants">
                 <div class="col-4 text-color-light">{{variant.type}}</div>
                 <div class="col-4">
-                    <input type="number" oninput="validity.valid||(value='1');" class="form-control w-25 d-inline-block" v-model="variant.price"> &#8381;
+                    <input type="number" oninput="validity.valid||(value='1');" class="form-control query-variant-price d-inline-block" v-model="variant.price"> &#8381;
                 </div>
                 <div class="col-4">
                     <input type="number" min="1" oninput="validity.valid||(value='1');" class="form-control w-25" v-model="variant.quantity">
@@ -26,8 +26,9 @@
 
         <h4 class="text-color-light mt-4 text-white">Сумма: {{totalPrice()}} &#8381;</h4>
         <h4 v-if="query.bonuses">Сумма с учётом баллов: <b>{{priceWithBonuses}} &#8381;</b></h4>
-        <div class="row justify-content-end">
-            <button class="btn btn-primary" @click="submit()">Сохранить и отправить</button>
+        <div class="row justify-content-end" style="gap: 20px">
+            <button v-if="isNotApproved" class="btn btn-primary" @click="submit()">Сохранить и отправить</button>
+            <button class="btn btn-danger" @click="cancelQuery()">Отменить запрос</button>
         </div>
     </div>
 </template>
@@ -76,11 +77,28 @@
                 .then(res => {
                     window.location.href = '/admin/orders';
                 })
+            },
+            cancelQuery() {
+                if(confirm('Отменить запрос ' + this.query.id + '?')) {
+                    axios.post(window.location.href + '/cancel')
+                        .then(response =>{
+                            if(response.status === 200) {
+                                window.location.href = '/admin/orders';
+                            }
+                        }).catch(error => {
+                        if (error.response.status === 422) {
+                            alert("Ошибка сохранения статуса запроса")
+                        }
+                    })
+                }
             }
         },
         computed: {
             priceWithBonuses() {
                 return this.totalPrice() - Math.floor(this.query.bonuses / 10);
+            },
+            isNotApproved() {
+                return this.query.status !== 'approved'
             }
         },
         created() {
@@ -96,5 +114,9 @@
         .mdi {
             cursor: pointer;
         }
+
+    }
+    .query-variant-price {
+        width: 40% !important;
     }
 </style>
