@@ -35,6 +35,8 @@ Route::get('/cart/checkout', 'HomeController@showCheckoutPage');
 Route::post('/cart/checkout', 'CartController@createQuery');
 Route::post('/cart/clear','CartController@clearCart');
 
+Route::get('/user/orders/{id}', 'UserController@getOrder')->middleware(['owns_order']);
+
 Route::get('/profile/{tab?}', 'UserController@showProfilePage');
 Route::post('/profile/notification', 'UserController@readNotification');
 Route::get('/profile/notification/readall', 'UserController@readAllNotifications');

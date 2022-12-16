@@ -49,8 +49,12 @@
                     </div>
                     <div class="tab-pane card-body" :class="{active: isTabActive('orders')}">
                         <div class="card-text">
-                            <b-table :fields="tabs.orders.data.fields" :items="tabs.orders.data.items" :per-page="perPage"
-                                     :current-page="currentOrdersPage">
+                            <b-table :fields="tabs.orders.data.fields"
+                                     :items="tabs.orders.data.items"
+                                     :per-page="perPage"
+                                     :current-page="currentOrdersPage"
+
+                            >
                                 <template #cell(file)="data">
                                     <a :href="'/orderpdf?id='+data.value">
                                         <span class="mdi mdi-file-document"></span>
@@ -62,8 +66,8 @@
                                 <template #cell(sum)="data">
                                     <span>{{data.item.sum}} &#8381;</span>
                                 </template>
-                                <template #cell(buy)="data" v-if="company_id === 1">
-                                    <button class="btn btn-primary" v-if="data.item.status === 'new'">Оплата</button>
+                                <template #cell(buy)="data">
+                                    <button class="btn btn-primary" v-if="data.item.status === 'new'" @click="test(data.item)">Открыть</button>
                                 </template>
                             </b-table>
                             <b-pagination
@@ -104,6 +108,19 @@
                     </div>
                 </div>
             </div>
+            <g-modal :id="'order-modal'" ref="orderModal" :modal_class="'order-modal'">
+                <template v-slot:header>
+                    <header class="modal-header align-items-center justify-content-md-between justify-content-start">
+                        <h4 class="modal-title justify-content-start">
+                            Заказ {{}}
+                        </h4>
+                    </header>
+                </template>
+                <div class="container-fluid">
+                    <div class="row justify-content-center" v-if="!showCheckout">
+                    </div>
+                </div>
+            </g-modal>
         </div>
     </div>
 </template>
@@ -128,6 +145,7 @@
                 currentOrdersPage: 1,
                 currentQueriesPage: 1,
                 currentBonusesPage: 1,
+                selected_order: {},
                 tabIndex: this.tab,
                 isMobileView: false,
                 query_status : {
@@ -187,6 +205,9 @@
             }
         },
         methods: {
+            test(order) {
+                axios.get('/user/orders/' + order.id);
+            },
             setNotificationRead(id) {
                 this.user.user_notifications.forEach((notification, index) => {
                     if(notification.id === id) {
@@ -285,7 +306,7 @@
                 let orders = [];
                 this.user.orders.forEach(order => {
                     orders.push({
-                        id: String(order.query_id).padStart(8, '0'),
+                        id: String(order.id).padStart(8, '0'),
                         products_count: order.products_count,
                         sum: order.sum,
                         status: order.status,

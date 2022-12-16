@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use App\User;
 use App\UserNotification;
 use App\UserReview;
@@ -159,5 +160,16 @@ class UserController extends Controller
             ->update([
                'do_not_review' => 1
             ]);
+    }
+
+    public function getOrder(Request $request)
+    {
+        $user_id = auth()->user()->id;
+        if(isset($request->id))
+        {
+            $order = Order::findOrFail($request->id);
+
+            dd($order->products());
+        }
     }
 }
