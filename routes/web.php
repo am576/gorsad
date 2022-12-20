@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('getToken', function() {
+    dd(csrf_token());
+});
+
 Route::get('/','HomeController@index');
 
 Route::post('/search', 'HomeController@ApplyFilter');
