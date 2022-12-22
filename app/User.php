@@ -75,7 +75,7 @@ class User extends Authenticatable
         $orders = $this->hasMany('App\Order','user_id','id')->get();
 
         foreach ($orders as $order) {
-            $order->products_count = DB::table('orders_products')->where('order_id', $order->id)->count();
+            $order->products_count = $order->productsCount();
             $order->sum = $order->sumTotal();
         }
 

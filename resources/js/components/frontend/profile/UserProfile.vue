@@ -5,23 +5,11 @@
                 <div class="col-auto profile-tabs-wrapper">
                     <ul class="nav nav-pills flex-column card-header h-100 border-bottom-0 rounded-0 tab-controls">
                         <li class="nav-item" v-for="(tab, tab_name) in tabs">
-                            <a class="nav-link" href="#" @click.prevent="setActiveTab(tab_name)" :class="{active: isTabActive(tab_name)}">{{tab.tab_name}}</a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="#" @click.prevent="setActiveTab('notifications')" :class="{active: isTabActive('notifications')}">
-                                УВЕДОМЛЕНИЯ
-                                <b-badge v-if="unreadNotificationsCount()" variant="light">{{unreadNotificationsCount()}}</b-badge>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="#" @click.prevent="setActiveTab('favorites')" :class="{active: isTabActive('favorites')}">
-                                ИЗБРАННОЕ
-                                <b-badge v-if="favoritesCount" variant="light">{{favoritesCount}}</b-badge>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="#" @click.prevent="setActiveTab('user_cabinet')" :class="{active: isTabActive('user_cabinet')}">
-                                ЛИЧНЫЙ КАБИНЕТ
+                            <a class="nav-link" href="#" @click.prevent="setActiveTab(tab_name)" :class="{active: isTabActive(tab_name)}">
+                                {{tab.tab_name}}
+                                <span v-if="tab.hasBadge">
+                                    <b-badge v-if="call(tab.badge_content)" variant="light">{{call(tab.badge_content)}}</b-badge>
+                                </span>
                             </a>
                         </li>
                     </ul>
@@ -53,7 +41,6 @@
                                      :items="tabs.orders.data.items"
                                      :per-page="perPage"
                                      :current-page="currentOrdersPage"
-
                             >
                                 <template #cell(file)="data">
                                     <a :href="'/orderpdf?id='+data.value">
@@ -130,10 +117,8 @@
 
     export default {
         props: {
-            data: {
-                type: Object
-            },
-            tab: 0
+            data: {},
+            tab: '',
         },
         data() {
             return {
@@ -146,7 +131,7 @@
                 currentQueriesPage: 1,
                 currentBonusesPage: 1,
                 selected_order: {},
-                tabIndex: this.tab,
+                tabIndex: '',
                 isMobileView: false,
                 query_status : {
                     'new': {
@@ -187,26 +172,43 @@
                 tabs: {
                     queries: {
                         tab_name: 'ЗАПРОСЫ',
-                        hasBadge: true,
                         data: {}
                     },
                     orders: {
                         tab_name: 'ЗАКАЗЫ',
-                        hasBadge: true,
-                        data: {}
                     },
                     bonuses_history: {
                         tab_name: 'БАЛЛЫ',
+                    },
+                    notifications: {
+                        tab_name: 'УВЕДОМЛЕНИЯ',
+                        hasBadge: true,
+                        badge_content: 'this.unreadNotificationsCount',
+                        data: {}
+                    },
+                    favorites: {
+                        tab_name: 'ИЗБРАННОЕ',
+                        hasBadge: true,
+                        badge_content: 'this.favoritesCount',
+                        data: {}
+                    },
+                    user_cabinet: {
+                        tab_name: 'ЛИЧНЫЙ КАБИНЕТ',
                         hasBadge: false,
                         data: {}
                     }
                 },
-                active_tab: ''
+                active_tab: '',
             }
         },
         methods: {
             test(order) {
-                axios.get('/user/orders/' + order.id);
+                axios.get('/user/orders/' + order.id)
+                .then((response) => {
+                    this.selectedOrder = response.data;
+                    console.log(this.selected_order.data);
+                })
+                // this.$eventBus.$emit('showModal', 'order-modal');
             },
             setNotificationRead(id) {
                 this.user.user_notifications.forEach((notification, index) => {
@@ -224,16 +226,7 @@
                     }
                 })
             },
-            unreadNotificationsCount() {
-                let count = 0;
-                this.user.user_notifications.forEach(notification => {
-                    if(notification.status === 'unread') {
-                        count++;
-                    }
-                })
 
-                return count;
-            },
             changeLoginType(newType, companyId) {
                 if(newType === 'user') {
                     this.company_id = 0
@@ -344,20 +337,33 @@
                     items: history
                 }
             },
+            call(fn) {
+                return eval(fn)
+            },
         },
 
         computed: {
             profileTitle() {
                 return this.company.id ? this.company.name : this.user.name
             },
+            unreadNotificationsCount() {
+                let count = 0;
+                this.user.user_notifications.forEach(notification => {
+                    if(notification.status === 'unread') {
+                        count++;
+                    }
+                })
+                return count;
+            },
             favoritesCount() {
                 return this.user.favorites.length;
             }
         },
         mounted() {
-            this.$nextTick(() => this.tabIndex = this.tab);
+            // this.$nextTick(() => this.tabIndex = this.tab);
         },
         created() {
+            console.log(this['tab']);
             this.user = this.data;
             this.fillTableData();
             this.$eventBus.$on('setNotificationRead', this.setNotificationRead);
@@ -365,6 +371,7 @@
             this.$eventBus.$on('changeLoginType', this.changeLoginType);
             this.activeCompanyId();
             this.handleView();
+            this.setActiveTab(this.tab.toString());
             document.title += ' | Личный кабинет';
         }
     }

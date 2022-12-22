@@ -81,22 +81,22 @@
                                     <div class="dropdown-text">
                                         <div v-if="company_id === 0">{{user.name}}</div>
                                         <div v-else>{{user.companies[0].name}}</div>
-                                        <a href="/profile" class="text-small">Личный кабинет</a>
+                                        <a href="/profile?tab=user_cabinet" class="text-small">Личный кабинет</a>
                                     </div>
                                 </li>
                                 <li>
                                     <a href="#" class="dropdown-item">Мои баллы</a>
                                 </li>
                                 <li>
-                                    <a href="/profile?tab=4" class="dropdown-item">
+                                    <a href="/profile?tab=notifications" class="dropdown-item">
                                         Уведомления <span v-if="unreadNotificationsAmount" class="text-danger">{{unreadNotificationsAmount}}</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="profile?tab=1" class="dropdown-item">Мои запросы</a>
+                                    <a href="profile?tab=queries" class="dropdown-item">Мои запросы</a>
                                 </li>
                                 <li>
-                                    <a href="profile?tab=2" class="dropdown-item">Мои заказы</a>
+                                    <a href="profile?tab=orders" class="dropdown-item">Мои заказы</a>
                                 </li>
                                 <li>
                                     <a role="menuitem" href="#" target="_self">

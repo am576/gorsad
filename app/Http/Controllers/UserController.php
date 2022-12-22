@@ -33,7 +33,7 @@ class UserController extends Controller
         $params_with = ['user' => $user];
         if(isset($request->all()['tab']))
         {
-            $params_with['tabIndex'] = $request->all()['tab'];
+            $params_with['tab'] = "'". $request->get('tab') . "'";
         }
 
         return view('frontend/user.profile')->with($params_with);
@@ -164,12 +164,11 @@ class UserController extends Controller
 
     public function getOrder(Request $request)
     {
-        $user_id = auth()->user()->id;
         if(isset($request->id))
         {
             $order = Order::findOrFail($request->id);
 
-            dd($order->products());
+            return $order->products();
         }
     }
 }

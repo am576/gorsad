@@ -14,7 +14,6 @@
                           class="mdi mdi-alert-circle mdi-24px text-primary"></span>
                     <strong>{{notification.title}}</strong>
                 </div>
-                <div class="mt-3 mb-3">{{truncateMessage(notification.message, 200)}}</div>
                 <div class="d-flex">
 
                     <div class="font-italic">{{moment(notification.created_at).format('DD.MM.YY hh:mm')}}</div>
@@ -144,6 +143,10 @@
         border: 1px #d2d2d2 solid;
         border-radius: 5px;
         background-color: #fff;
+
+        &:hover {
+            background-color: #fff4e6;
+        }
     }
 
 </style>

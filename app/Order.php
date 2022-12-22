@@ -41,6 +41,11 @@ class Order extends Model
         return $products;
     }
 
+    public function productsCount()
+    {
+        return DB::table('orders_products')->where('order_id', $this->id)->count();
+    }
+
     public function sumTotal()
     {
         $total = 0;
