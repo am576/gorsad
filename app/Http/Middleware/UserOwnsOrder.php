@@ -16,8 +16,12 @@ class UserOwnsOrder
      */
     public function handle($request, Closure $next)
     {
-        $order_id = ltrim($request->id, '0');
-        if (!Auth::user()->orders()->find($order_id)) abort(403);
+        if(isset($request->id))
+        {
+            $order_id = ltrim($request->id, '0');
+            if (!Auth::user()->orders()->find($order_id)) abort(403);
+        }
+
         return $next($request);
     }
 }

@@ -164,11 +164,27 @@ class UserController extends Controller
 
     public function getOrder(Request $request)
     {
-        if(isset($request->id))
-        {
-            $order = Order::findOrFail($request->id);
+        $order = Order::findOrFail($request->id);
 
-            return $order->products();
+        $order['products'] = $order->products();
+        $order['sum_total'] = $order->sumTotal();
+
+        return $order;
+    }
+
+    public function cancelOrder(Request $request)
+    {
+        $order = Order::findOrFail($request->id);
+
+        $order->status = 'canceled';
+        if($order->save())
+        {
+            return response('OK', 200);
         }
+        else
+        {
+            return response('Error saving order status', 422);
+        }
+
     }
 }

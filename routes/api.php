@@ -1,6 +1,10 @@
 <?php
 
+use App\Order;
+use App\UserNotification;
+use App\UserQuery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,4 +44,24 @@ Route::get('paginateProjects', 'ApiController@paginateProjects');
 Route::get('paginateServices', 'ApiController@paginateservices');
 Route::get('getGuideImageNames', 'ApiController@getGuideImageNames');
 
+Route::post('approveQuery', function (Request $request) {
+    $order_data = $request->all();
 
+    $order = new Order([
+        'user_id' => $order_data['user_id'],
+        'query_id' => $order_data['query_id'],
+        'status' => 'new',
+        'order_file_link' => '/some/location/file.pdf'
+    ]);
+
+    if($order->save())
+    {
+        $query = UserQuery::where('id', $order->query_id)->first();
+        $query->status = 'approved';
+        $query->save();
+
+        return response('Order approved', 200);
+    }
+
+    return response('Error creating order', 300);
+});
