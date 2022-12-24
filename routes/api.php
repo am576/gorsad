@@ -60,7 +60,7 @@ Route::post('approveQuery', function (Request $request) {
         $query->status = 'approved';
         $query->save();
 
-        return response('Order approved', 200);
+        return response('Запрос одобрен, id заказа = ' . $order->id, 200);
     }
 
     return response('Error creating order', 300);
