@@ -138,7 +138,7 @@
                 this.$delete(this.user.suggested_products, this.user.suggested_products.indexOf(product));
             },
             productImage(product) {
-                return product.images.length > 0 ? product.images[0].icon : 'products/noimage/noimage_icon.png'
+                return product.images.length > 0 ? product.images[0].icon : 'products/noimage/noimage_icon.jpg'
             }
         },
         created() {

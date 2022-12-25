@@ -13,6 +13,7 @@ class Order extends Model
     {
         $products =  Product::whereIn('id',
             DB::table('orders_products')->select('product_id')->where('order_id', $this->id))
+            ->with('image')
             ->get();
 
         foreach ($products as $product) {
@@ -28,6 +29,8 @@ class Order extends Model
                 ->where('product_id', $product->id)
                 ->get()
                 ->pluck('custom_price')[0];
+
+            $product->sum = $product->custom_price * $product->quantity;
 
             $product->variants =  DB::table('product_variants')
                 ->join('orders_products','product_variants.id','=','orders_products.variant_id')

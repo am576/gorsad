@@ -54,7 +54,7 @@
                                     <span>{{data.item.sum}} &#8381;</span>
                                 </template>
                                 <template #cell(buy)="data">
-                                    <button class="btn btn-primary" v-if="data.item.status === 'new'" @click="test(data.item)">Открыть</button>
+                                    <button class="btn btn-primary" v-if="data.item.status === 'new'" @click="showOrderDetails(data.item)">Открыть</button>
                                 </template>
                             </b-table>
                             <b-pagination
@@ -99,12 +99,34 @@
                 <template v-slot:header>
                     <header class="modal-header align-items-center justify-content-md-between justify-content-start">
                         <h4 class="modal-title justify-content-start">
-                            Заказ {{}}
+                            Заказ #{{selected_order.id}}
                         </h4>
+                        <a href="#" @click="cancelOrder(selected_order.id)">Отменить заказ</a>
                     </header>
                 </template>
                 <div class="container-fluid">
-                    <div class="row justify-content-center" v-if="!showCheckout">
+                    <div class="row justify-content-center">
+                        <div class="row w-100" v-for="product in selected_order.products">
+                            <!--<img :src="'/storage/images/' + product.image.icon">-->
+                            <div class="col-3">
+                                {{product.custom_name || product.title}}
+                            </div>
+                            <div class="col-3">
+                                {{product.custom_price}} &#8381;
+                            </div>
+                            <div class="col-3">
+                                {{product.quantity}}
+                            </div>
+                            <div class="col-3">
+                                {{product.sum}} &#8381;
+                            </div>
+                        </div>
+                        <div class="row w-100">
+                            {{selected_order.sum_total}} &#8381;
+                        </div>
+                        <div class="row w-100 justify-content-center">
+                            <button type="button" class="btn-primary btn btn-blue btn-lg">Получить счёт на оплату</button>
+                        </div>
                     </div>
                 </div>
             </g-modal>
@@ -202,13 +224,12 @@
             }
         },
         methods: {
-            test(order) {
+            showOrderDetails(order) {
                 axios.get('/user/orders/' + order.id)
                 .then((response) => {
-                    this.selectedOrder = response.data;
-                    console.log(this.selected_order.data);
+                    this.selected_order = response.data;
                 })
-                // this.$eventBus.$emit('showModal', 'order-modal');
+                this.$eventBus.$emit('showModal', 'order-modal');
             },
             setNotificationRead(id) {
                 this.user.user_notifications.forEach((notification, index) => {
@@ -337,6 +358,14 @@
                     items: history
                 }
             },
+            cancelOrder(id) {
+                if(confirm('Вы уверены, что хотите отменить этот заказ?')) {
+                    axios.post(`user/orders/${id}/cancel`)
+                        .then(response => {
+                            console.log(response.data);
+                        })
+                }
+            },
             call(fn) {
                 return eval(fn)
             },
@@ -363,7 +392,6 @@
             // this.$nextTick(() => this.tabIndex = this.tab);
         },
         created() {
-            console.log(this['tab']);
             this.user = this.data;
             this.fillTableData();
             this.$eventBus.$on('setNotificationRead', this.setNotificationRead);

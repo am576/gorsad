@@ -40,6 +40,7 @@ Route::post('/cart/checkout', 'CartController@createQuery');
 Route::post('/cart/clear','CartController@clearCart');
 
 Route::get('/user/orders/{id}', 'UserController@getOrder')->middleware(['owns_order']);
+Route::post('/user/orders/{id}/cancel', 'UserController@cancelOrder')->middleware(['owns_order']);
 
 Route::get('/profile/{tab?}', 'UserController@showProfilePage');
 Route::post('/profile/notification', 'UserController@readNotification');
@@ -102,12 +103,14 @@ Route::get('/services', 'HomeController@showServicesPage');
 Route::get('/services/{id}', 'HomeController@showServicePage');
 Route::post('/services/{id}/order', 'ShopController@createOrderService');
 
+//**** END STATIC PAGES *****/
+
+
 /*Admin routes*/
 
 
 
 Route::prefix('admin')->group(function(){
-
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
     Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
     Route::get('logout/', 'Auth\AdminLoginController@logout')->name('admin.logout');
