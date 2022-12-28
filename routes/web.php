@@ -111,6 +111,10 @@ Route::get('/services', 'HomeController@showServicesPage');
 Route::get('/services/{id}', 'HomeController@showServicePage');
 Route::post('/services/{id}/order', 'ShopController@createOrderService');
 
+Route::get('/contacts', function() {
+    return view('frontend.contacts');
+});
+
 //**** END STATIC PAGES *****/
 
 

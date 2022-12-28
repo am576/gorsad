@@ -42,7 +42,7 @@
                 </li>
                 <li class="nav-item menu-link" ref="contacts" :class="{selected: isSelected ==='contacts'}" @mouseenter.stop="menuHover(6)" @mouseleave.stop="unHover">
                     <span :class="{hovered : isHovered ===(6)}"></span>
-                    <a href="#" class="nav-link">Контакты</a>
+                    <a href="/contacts" class="nav-link">Контакты</a>
                 </li>
             </ul>
             <ul class="nav nav-pills" v-if="isMobileView">
