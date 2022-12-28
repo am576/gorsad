@@ -1,5 +1,5 @@
 @extends('frontend.layouts.shop')
-@section('title', $product->title)
+@section('title', 'Gorsad - ' . $product->title)
 @section('content')
 
 <div class="container-fluid p-0">

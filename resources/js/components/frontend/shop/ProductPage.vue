@@ -14,13 +14,12 @@
                     <div>----</div>
                     <div>
                         <p v-html="product.description"></p>
-                        <h5>Характеристики</h5>
                     </div>
                 </div>
             </div>
         </div>
         <div class="divider"></div>
-        <nav class="nav-tabs product-variants" v-if="hasVariants">
+        <!--<nav class="nav-tabs product-variants" v-if="hasVariants">
             <div class="tabs" horizintal="">
                 <div class="tabs-wrapper d-flex justify-content-start">
                     <ul class="nav nav-tabs" role="tablist">
@@ -66,11 +65,11 @@
                     </div>
                 </div>
             </div>
-        </nav>
+        </nav>-->
         <div class="d-flex justify-content-center pb-5 mb-4 mt-4">
             <div class="all-specs">
                 <div class="specs-header">
-                    <h4 class="font-weight-bold">ВСЕ ХАРАКТЕРИСТИКИ</h4>
+                    <h4 class="font-weight-bold">ХАРАКТЕРИСТИКИ</h4>
                 </div>
                 <div class="row" v-for="attribute in product.attributes">
                     <div class="col-lg-3 col-sm-4 d-flex align-items-center">
