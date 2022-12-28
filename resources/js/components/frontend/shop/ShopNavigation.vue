@@ -3,20 +3,20 @@
         <slot name="back_btn"></slot>
         <div class="d-flex" v-if="!isMobileView">
             <slot name="additional_buttons"></slot>
-            <div class="text-light" v-if="isGuest">
+            <!--<div class="text-light" v-if="isGuest">
                 <button class="nav-btn" id="btn-login" @click="showSigninForm">
                     <i class="mdi mdi-login"></i>
                     Войти
                 </button>
-            </div>
+            </div>-->
             <div class="d-flex align-items-center" v-if="!isGuest">
                 <a class="nav-link curpointer" @click="showCart">
                     <span class="mdi mdi-cart"></span>
                 </a>
-                <account-dropdown :user="user"></account-dropdown>
+<!--                <account-dropdown :user="user"></account-dropdown>-->
             </div>
         </div>
-        <signin-form ref="signinForm"></signin-form>
+<!--        <signin-form ref="signinForm"></signin-form>-->
 
     </div>
 </template>

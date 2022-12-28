@@ -70,7 +70,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <div v-if="!isGuest">
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" id="account-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -115,8 +115,8 @@
                             </ul>
                         </div>
                     </div>
-                </li>
-                <li class="nav-item" v-if="isGuest">
+                </li>-->
+                <!--<li class="nav-item" v-if="isGuest">
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="login-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="mdi mdi-36px mdi-account"></div>
@@ -157,7 +157,7 @@
                             </form>
                         </div>
                     </div>
-                </li>
+                </li>-->
             </ul>
             <form action="/search" method="post" style="display: none">
                 <input type="hidden" name="_token" :value="csrf">
@@ -176,7 +176,7 @@
             </div>
             <i class="mdi mdi-close" @click="toggleMobileNav" v-if="navOpen"></i>
         </div>
-        <shopping-cart></shopping-cart>
+<!--        <shopping-cart></shopping-cart>-->
     </div>
 
 </template>

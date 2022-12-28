@@ -110,7 +110,7 @@
                 <b-card-text>Комментарий: {{review.comment}}</b-card-text>
             </b-card>
         </div>-->
-        <shopping-cart></shopping-cart>
+<!--        <shopping-cart></shopping-cart>-->
     </div>
 </template>
 

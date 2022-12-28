@@ -9,12 +9,12 @@
                 <a class="home-link" href="/"><img src="storage/images/logo/shop-logo.png" alt="">
                     <span class="logo-text">GORSAD</span>
                 </a>
-                <div class="d-flex align-items-center" v-if="!isGuest">
+                <!--<div class="d-flex align-items-center" v-if="!isGuest">
                     <a class="nav-link curpointer" @click="showCart">
                         <span class="mdi mdi-cart"></span>
                     </a>
                     <account-dropdown :user="user"></account-dropdown>
-                </div>
+                </div>-->
             </div>
             <div class="col-md-10 shop-content">
                 <div class="pt-3">
@@ -43,7 +43,7 @@
             </div>
             <div class="col-1"></div>
         </div>
-        <shopping-cart></shopping-cart>
+<!--        <shopping-cart></shopping-cart>-->
     </div>
 </template>
 
