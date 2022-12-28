@@ -98,7 +98,8 @@
 </body>
 <style>
     * {
-        font-family: times !important;
+        /*font-family: times !important;*/
+     font-family: DejaVu Sans;
     }
     html{
         width: 100%;
@@ -106,6 +107,7 @@
         padding: 0;
         margin: 0;
     }
+    {{--body { font-family: DejaVu Sans }</style>--}}
     @media print {
         body {
             margin: 0 !important;

@@ -284,7 +284,7 @@
                     {key: 'id', label: 'Номер заказа', sortable: true},
                     {key: 'products_count', 'label': 'Количество'},
                     {key: 'status', 'label': 'Статус'},
-                    // {key: 'file', 'label': 'PDF'},
+                    {key: 'file', 'label': 'PDF'},
                     {key: 'created_at', label: 'Дата', sortable: true},
                 ];
                 let queries = [];
