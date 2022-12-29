@@ -13,6 +13,7 @@ use App\Utils\User as UserUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function Symfony\Component\String\indexOf;
+use Illuminate\Support\Facades\Cookie;
 
 class ShopController extends Controller
 {
@@ -25,14 +26,24 @@ class ShopController extends Controller
 
         $attributes = StaticTools::getAttributesByGroup();
 
-        return view('frontend.shop.index')
-            ->with(
-                [
-                    'products'=> $products->toJson(),
-                    'attributes' => $attributes,
-                    'user' => json_encode($user)
-                ]
-            );
+        $view_with =
+        [
+            'products'=> $products->toJson(),
+            'attributes' => $attributes,
+            'user' => json_encode($user),
+        ];
+
+        $showBanner = session()->get('showBanner');
+        if(isset($showBanner)) {
+            $showBanner = session()->get('showBanner');
+            $view_with['showBanner'] = var_export($showBanner,true);
+        }
+        else {
+            session()->put('showBanner', true);
+            $view_with['showBanner'] =  var_export(true,true);
+        }
+
+        return  view('frontend.shop.index')->with($view_with);
     }
 
     public function productPage($product_id)

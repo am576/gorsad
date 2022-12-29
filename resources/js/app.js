@@ -81,6 +81,7 @@ Vue.component('g-modal', require('./components/frontend/shared/GenericModal').de
 Vue.component('image-modal', require('./components/frontend/ImageModal').default);
 Vue.component('account-dropdown', require('./components/frontend/shared/AccountDropdown').default);
 Vue.component('guide-flipbook', require('./components/frontend/shared/GuideFlipbook').default);
+Vue.component('g-banner', require('./components/frontend/shared/GenericBanner').default);
 /* End Shared components */
 
 /** End Client side components **/

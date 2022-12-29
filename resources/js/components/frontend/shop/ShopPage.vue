@@ -17,6 +17,13 @@
                 </div>-->
             </div>
             <div class="col-md-10 shop-content">
+                <g-banner v-if="show_banner">
+                    <div>
+                        Внимание! В данный момент заказы принимаются по телефону или <a href="/contacts">форму</a> обратной связи.
+                        <br>
+                        Регистрация и добавление товаров в корзину временно не доступны.
+                    </div>
+                </g-banner>
                 <div class="pt-3">
                     <transition name="filter-slide">
                         <shop-filter v-if="showFilters" :attributes_groups="attributes" :filtered_name="filtered_name" :selected_options="filter_options || {}" @filterProducts="filterProducts"></shop-filter>
@@ -66,7 +73,11 @@
                 type: String,
                 default: ''
             },
-            cart: {}
+            cart: {},
+            show_banner: {
+                type: Boolean,
+                default: true
+            }
         },
         data() {
             return {

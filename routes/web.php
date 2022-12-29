@@ -118,10 +118,7 @@ Route::get('/contacts', function() {
 //**** END STATIC PAGES *****/
 
 
-/*Admin routes*/
-
-
-
+//**** ADMIN ROUTES ****//
 Route::prefix('admin')->group(function(){
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
     Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
@@ -161,3 +158,10 @@ Route::prefix('admin')->group(function(){
 
     Route::post('/images-upload', 'ImagesController@upload');
 });
+//**** END ADMIN ROUTES ****//
+
+//**** MISC ROUTES  ****//
+Route::post('/closeBanner', function() {
+    session()->put('showBanner', false);
+});
+//**** END MISC ROUTES  ****//
