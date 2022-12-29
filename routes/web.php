@@ -164,4 +164,5 @@ Route::prefix('admin')->group(function(){
 Route::post('/closeBanner', function() {
     session()->put('showBanner', false);
 });
+Route::post('/sendMessage', 'HomeController@sendMessage');
 //**** END MISC ROUTES  ****//

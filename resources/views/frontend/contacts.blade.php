@@ -2,8 +2,9 @@
 @section('title', 'Gorsad')
 @section('content')
     <div class="container-fluid layout-spacing">
-        <div class="row justify-content-center">
-            <div class="col-md-12 p-0">
+        <div class="row justify-content-center" style="margin-top: 300px">
+            <div class="col-md-6 p-0">
+                <contact-form></contact-form>
             </div>
         </div>
     </div>

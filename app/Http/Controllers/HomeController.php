@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Attribute;
 use App\Category;
+use App\ContactMessage;
+use App\Http\Requests\ContactFormRequest;
 use App\Image;
 use App\Product;
 use App\Project;
@@ -16,16 +18,6 @@ use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-//        $this->middleware('auth');
-    }
-
     public function index()
     {
         $root_category = Category::where('url_title', 'root')->first();
@@ -145,7 +137,6 @@ class HomeController extends Controller
                 },
                 $image_names));
 
-
                 return view('frontend.guide', compact('image_names'));
             }
 
@@ -154,4 +145,13 @@ class HomeController extends Controller
 
         return redirect('/');
     }
+
+    public function sendMessage(ContactFormRequest $request)
+    {
+        $validated = $request->validated();
+
+        $newMessage = new ContactMessage($validated);
+        $newMessage->save();
+    }
+
 }
