@@ -14,7 +14,7 @@ class ContactFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|regex:/^[a-zA-Z\p{Cyrillic}]*$/u|max:64',
+            'name' => 'required|regex:/^[ a-zA-Z\p{Cyrillic}]*$/u|max:64',
             'email' => 'required|email|max:64',
             'phone' => 'max:32|regex:/^([+\d]?)(?:([ \(\)-])?[\d]+([ \(\)-])?)+$/',
             'message' => 'required|max:1000'

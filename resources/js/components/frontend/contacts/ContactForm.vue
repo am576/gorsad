@@ -76,9 +76,10 @@
             sendMessage() {
                 axios.post('/sendMessage', this.message)
                     .then(response => {
-                        // if(response.data.statusCode === 200) {
-                        //     alert('OK')
-                        // }
+                        if(response.status === 200) {
+                            alert('Спасибо за обращение! В ближайшее время с вами свяжется наш менеджер.');
+                            window.location.href = '/';
+                        }
                     }).catch(error => {
                         if(error.response.status === 422) {
                             this.errors = error.response.data.errors;
