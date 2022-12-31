@@ -1,6 +1,9 @@
 <template>
     <div class="site-nav">
         <div class="header-contacts" v-if="!isMobileView">
+            <a href="/" class="logo-link" v-if="isBreakPoint890">
+                <img src="/storage/images/public/logov2.png" alt="" v-if="!isMobileView">
+            </a>
             <div>
                 <span class="mdi mdi-phone mdi-24px"></span>
                 +7(4012) 52-21-11
@@ -15,7 +18,7 @@
             </div>
         </div>
         <nav id="header-navbar" class="navbar">
-            <a href="/">
+            <a href="/" class="logo-link" v-if="!isBreakPoint890 || isMobileView">
                 <img src="/storage/images/public/logov2.png" alt="" v-if="!isMobileView">
                 <img src="/storage/images/public/logov2m.png" alt="" v-if="isMobileView">
             </a>
@@ -189,6 +192,7 @@
         data() {
             return {
                 isMobileView: false,
+                isBreakPoint890: false,
                 showNav: false,
                 navOpen : false,
                 isHovered: 0,
@@ -217,6 +221,7 @@
         methods: {
             handleView() {
                 this.isMobileView = window.innerWidth <= 600;
+                this.isBreakPoint890 = window.innerWidth <= 890;
                 this.width = $(window).width();
                 this.device = {
                     width: $(window).width(),
@@ -374,24 +379,51 @@
             width: 100%;
             z-index: 100;
         }
+
         & a.nav-link, .btn-link .mdi, .mdi {
+            @media (min-width: 870px) {
+                font-weight: 800;
+            }
             color: #fff !important;
             text-transform: uppercase;
-            font-weight: 800;
+            font-weight: normal;
         }
-
+        & .logo-link {
+            @media (min-width: 600px) {
+                /*margin: auto;*/
+            }
+        }
         img {
-            height: 70px;
+            @media (min-width: 360px) {
+                height: 8vh;
+            }
+            @media (min-width: 768px) {
+                height: 70px;
+            }
+
         }
     }
 </style>
 <style lang="scss" scoped>
     .header-contacts {
         display: flex;
-        padding: 15px 0 15px 15%;
+
+        padding: 15px 0 15px 0;
         background: rgba(0, 0, 0, 0.8);
         color: #dfdfdf;
 
+        @media(min-width: 600px) {
+            justify-content: flex-end;
+            gap: 20px;
+            padding-right: 30px;
+        }
+        @media(min-width: 870px) {
+            justify-content: space-evenly;
+        }
+        @media(min-width: 1200px) {
+            justify-content: center;
+            gap: 30px;
+        }
         .mdi {
             color: #83b950 !important;
             margin-right: 5px;
@@ -400,20 +432,27 @@
         div {
             display: flex;
             align-items: center;
-            margin-right: 50px;
             font-size: 14px;
+            @media(min-width: 600px) {
+                max-width: 30%;
+                font-size: 12px;
+            }
         }
     }
     #header-navbar {
-        @media (min-width: 601px) {
+        z-index: 1000;
+        @media (min-width: 600px) {
             background: rgba(0, 0, 0, 0.6);
-            z-index: 1000;
             padding: 9px;
+            font-weight: normal;
         }
         @media (max-width:600px) {
             background-color: #ffffff;
             padding: 0 0 0 10px;
             border-bottom: 1px solid #b6b9bd;
+        }
+        @media (min-width:870px) {
+            font-weight: 800;
         }
     }
     .nav-item.menu-link {
@@ -469,7 +508,7 @@
         i {
             color: #000000 !important;
         }
-        @media (max-width:590px) {
+        @media (max-width:600px) {
             width: 40vw;
         }
     }
