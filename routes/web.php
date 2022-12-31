@@ -143,7 +143,9 @@ Route::prefix('admin')->group(function(){
     Route::get('/querypdf','OrderController@getQueryPdf');
     Route::get('/orderpdf','OrderController@getOrderPdf');
 
-    route::get('/service_order/{id}','OrderController@setServiceOrderStatus');
+    Route::get('/service_order/{id}','OrderController@setServiceOrderStatus');
+
+    Route::get('/messages', 'ContactMessagesController@index');
 
     Route::resources([
         'products'    => 'ProductController',

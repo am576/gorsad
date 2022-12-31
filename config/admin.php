@@ -87,6 +87,13 @@ return [
           'genitive' => 'проекта',
           'route' => 'projects',
           'icon' => 'map-check-outline'
+      ],
+      'message' => [
+          'title' => 'сообщения',
+          'singular' => 'сообщение',
+          'genitive' => 'сообщения',
+          'route' => 'messages',
+          'icon' => 'email-outline'
       ]
   ],
   'per_page' => [
