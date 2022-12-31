@@ -41,7 +41,7 @@
                     <label>Телефон</label>
                     <input type="text" class="form-control" v-model="message.phone" @focus="clearErrors">
                     <small class="text-danger">
-                        {{errors.hasOwnProperty('phone')?errros.phone[0]:''}}
+                        {{errors.hasOwnProperty('phone')?errors.phone[0]:''}}
                     </small>
                 </div>
             </div>
