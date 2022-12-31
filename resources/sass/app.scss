@@ -1,5 +1,5 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+//@import url('https://fonts.googleapis.com/css?family=Nunito');
 @import "~@mdi/font/scss/materialdesignicons.scss";
 // Variables
 @import 'variables';
@@ -625,7 +625,7 @@ footer.home-footer {
 }
 
 .layout-spacing {
-    margin-top: -88px;
+    margin-top: $layout-margin;
     @media (max-width: 590px) {
         padding-top: 70px !important;
         margin-top: 0;
@@ -895,4 +895,8 @@ footer.home-footer {
 
 .height-max-content {
     height: max-content !important;
+}
+
+.contacts-header {
+    padding: $contacts-header-margin;
 }
