@@ -13,7 +13,7 @@
         <section class="page-content col-md-12 p-0">
             <div id="planning" class="static-page-section">
                 <div class="section-details">
-                    <div class="section-text">
+                    <div class="section-text col-md-6 col-sm-12">
                         <h3>Посадочный план: особенности посадки деревьев</h3>
                         <p>
                             <span class="section-description">
@@ -30,7 +30,9 @@
                             <a href="{{route('planning')}}" class="read-more-btn">Читать далее <i class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i> </a>
                         </p>
                     </div>
-                    <img src="{{asset('storage/images/public/knowhow/planning.jpg')}}" alt="">
+                    <div class="section-image col-md-6 col-sm-12">
+                        <img src="{{asset('storage/images/public/knowhow/planning.jpg')}}" alt="" style="width: 100%">
+                    </div>
                 </div>
             </div>
             <div id="ordering" class="static-page-section">

@@ -44,8 +44,8 @@
                 </div>
                 <div class="container">
                     <div class="d-flex">
-                        <img src="{{asset('storage/images/public/knowhow/multistem.jpg')}}" style="height: max-content;" alt="">
-                        <div class="pt-3 pl-5">
+                        <img src="{{asset('storage/images/public/knowhow/multistem.jpg')}}" class="col-md-6 multistem-img" style="height: max-content;" alt="">
+                        <div class="pt-3 pl-5 col-md-6">
                             <h2>Деревья с множеством стволов</h2>
 
                             Питомник «Натуралист» включает в себя множество разнообразных видов многоствольных деревьев
