@@ -39,7 +39,7 @@ return [
     'digits_between' => 'The :attribute must be between :min and :max digits.',
     'dimensions' => 'The :attribute has invalid image dimensions.',
     'distinct' => 'The :attribute field has a duplicate value.',
-    'email' => 'The :attribute must be a valid email address.',
+    'email' => 'Некорректный формат :attribute.',
     'ends_with' => 'The :attribute must end with one of the following: :values.',
     'exists' => 'The selected :attribute is invalid.',
     'file' => 'The :attribute must be a file.',
@@ -95,8 +95,8 @@ return [
     'numeric' => 'The :attribute must be a number.',
     'password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
-    'regex' => 'The :attribute format is invalid.',
-    'required' => 'The :attribute field is required.',
+    'regex' => ':attribute содержит недопустимые символы.',
+    'required' => 'Пожалуйста, укажите :attribute.',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_unless' => 'The :attribute field is required unless :other is in :values.',
     'required_with' => 'The :attribute field is required when :values is present.',
@@ -133,6 +133,20 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'name' => [
+            'max' => 'Имя слишком длинное, максимальная длина - :max символов.'
+        ],
+        'email' => [
+            'max' => 'Email слишком длинный, максимальная длина - :max символов.'
+        ],
+        'phone' => [
+            'regex' => 'Некорректный формат телефона',
+            'max' => 'Телефон слишком длинный, максимальная длина - :max символов.'
+        ],
+        'message' => [
+            'required' => 'Пожалуйста, напишите Ваше сообщение',
+            'max' => 'Сообщение слишком длинное, максимальная длина - :max символов.'
+        ]
     ],
 
     /*
@@ -146,6 +160,12 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'Имя',
+        'phone' => 'Телефон',
+        'password' => 'Пароль',
+        'message' => 'Сообщение',
+        'email' => 'Email'
+    ],
 
 ];
