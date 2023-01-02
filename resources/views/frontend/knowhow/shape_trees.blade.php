@@ -7,6 +7,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             @include('frontend.knowhow.menu')
+            @include('frontend.knowhow.mmenu')
             <section class="page-bg col-md-12 p-0">
                 <div class="page-img-main" style="background-image: url('/storage/images/public/knowhow/topiary_bg.jpg'); ">
                     <h1 class="page-img-title" style="">Топиарные и формованные виды деревьев</h1>

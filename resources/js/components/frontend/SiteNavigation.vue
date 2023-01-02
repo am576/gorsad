@@ -374,7 +374,7 @@
 
 <style lang="scss">
     .site-nav {
-        @media (max-width: 590px) {
+        @media (max-width: 600px) {
             position: fixed;
             width: 100%;
             z-index: 100;

@@ -7,6 +7,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             @include('frontend.knowhow.menu')
+            @include('frontend.knowhow.mmenu')
             <section class="page-bg col-md-12 p-0">
                 <div class="page-img-main" style="background-image: url('/storage/images/public/knowhow/transport_bg.jpg'); ">
                     <h1 class="page-img-title" style="">Погрузка, транспортировка и разгрузка товара</h1>

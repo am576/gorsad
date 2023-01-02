@@ -4,10 +4,12 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         @include('frontend.knowhow.menu')
+        @include('frontend.knowhow.mmenu')
         <section class="page-bg col-md-12 p-0">
             <div class="page-img-main" style="background-image: url('/storage/images/public/knowhowbg.jpg'); ">
                 <h1 class="page-img-title">Посадка деревьев и менеджмент озеленения</h1>
             </div>
+
         </section>
         <div class="colorbar"></div>
         <section class="page-content col-md-12 p-0">
