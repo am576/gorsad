@@ -900,3 +900,14 @@ footer.home-footer {
 .contacts-header {
     padding: $contacts-header-margin;
 }
+
+.mobile-hide {
+    @media(max-width: 600px) {
+        display: none;
+    }
+}
+.mobile-show {
+    @media(min-width: 600px) {
+        display: initial;
+    }
+}

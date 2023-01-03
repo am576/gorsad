@@ -59,6 +59,12 @@
                 text-decoration: none;
                 background: rgba(194, 183, 167, 0.8);
             }
+            @media(max-width: 600px) {
+                width: 100%;
+                justify-content: center;
+                background: #FBFFF6;
+
+                }
         }
     }
     .section-details {
@@ -83,6 +89,26 @@
                     width: 45%;
                 }
             }
+            @media(max-width: 600px) {
+                p, p > span, ul > li {
+                    font-size: 1.5rem;
+                }
+                padding-left: 1rem;
+                padding-right: 1rem;
+                h3 {
+                    font-size: 2rem;
+                    margin-bottom: 1rem;
+                    font-weight: bold;
+                }
+                p {
+                    text-align: justify;
+                    word-break: break-word;
+                }
+                ul li {
+                    margin-top: 1.5rem;
+                }
+            }
+
         }
     }
 }
@@ -116,6 +142,9 @@
             text-decoration: none;
             color: #828282;
         }
+    }
+    @media(max-width: 600px) {
+        gap: 20px;
     }
 }
 .page-img-main {
