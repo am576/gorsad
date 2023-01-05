@@ -44,7 +44,7 @@ Vue.component('account-links', require('./components/frontend/AccountLinks').def
 Vue.component('home-slider', require('./components/frontend/HomeSlider').default);
 Vue.component('filter-small', require('./components/frontend/FilterSmall').default);
 Vue.component('services-list', require('./components/frontend/ServicesList').default);
-Vue.component('projects-list', require('./components/frontend/ProjectsList').default);
+Vue.component('projects-list', require('./components/frontend/projects/ProjectsList').default);
 Vue.component('project-images', require('./components/frontend/ProjectImages').default);
 
 Vue.component('product-bar', require('./components/frontend/ProductBar').default);

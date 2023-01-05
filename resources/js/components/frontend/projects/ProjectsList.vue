@@ -7,7 +7,6 @@
                 <p class="project-name">{{project.name}}</p>
             </div>
         </div>
-
     </div>
 </template>
 

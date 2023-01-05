@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 500px">
+    <div id="map-wrapper">
         <l-map ref="projectsMap"
                :center="center"
                :zoom="zoom"
@@ -46,14 +46,15 @@
                 //     '&copy; <a style="font-size: 12px;" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
                 mapOptions: {
                     zoomSnap: 0.5,
-                    attributionControl: false
+                    attributionControl: false,
+                    zoomControl: true
                 },
                 icon: icon({
                     iconUrl: "/storage/images/public/tree-marker.png",
                     iconSize: [54, 72],
                     iconAnchor: [16, 37]
                 }),
-                iconsAvailable : 6
+                iconsAvailable : 6,
             }
         },
         methods: {
@@ -67,12 +68,27 @@
                     iconSize: [31, 42],
                     iconAnchor: [16, 37]
                 })
-            }
+            },
+            handleView() {
+                this.mapOptions.zoomControl = !(window.innerWidth <= 600);
+            },
         },
         mounted() {
             this.$nextTick(() => {
                 this.map = this.$refs.projectsMap.mapObject;
             });
         },
+        created() {
+            this.handleView();
+        }
     }
 </script>
+
+<style lang="scss" scoped>
+    #map-wrapper {
+        height: 500px;
+        @media(max-width: 600px) {
+            height: 50vh;
+        }
+    }
+</style>

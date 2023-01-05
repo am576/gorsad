@@ -377,7 +377,7 @@
         @media (max-width: 600px) {
             position: fixed;
             width: 100%;
-            z-index: 100;
+            z-index: 1000;
         }
 
         & a.nav-link, .btn-link .mdi, .mdi {
