@@ -1,10 +1,10 @@
 <template>
-    <div class="row slider-wrapper project-images">
+    <div class="d-flex slider-wrapper project-images">
         <splide :options="options" @splide:click="showImage">
             <splide-slide v-for="image in images" :key="image.path" >
                 <img :src="'/storage/images/'+image.medium" alt="">
             </splide-slide>
-            <template v-slot:controls>
+            <template v-slot:controls v-if="!isMobileView">
                 <div class="splide__arrows">
                     <button class="splide__arrow splide__arrow--prev">
                         <span class="mdi mdi-chevron-left"></span>
@@ -36,7 +36,7 @@
                 current_image: '',
                 options: {
                     type: 'slide',
-                    width: '100%',
+                    width: '1150px',
                     height: 300,
                     gap   : '2rem',
                     pagination: false,
@@ -44,8 +44,22 @@
                     perPage: 1,
                     fixedWidth:300,
                     cover: true,
-                    isMobileView: false
+                    mediaQuery: 'max',
+                    keyboard: false,
+                    breakpoints: {
+                        600: {
+                            width: '100%',
+                            arrows: false
+                        },
+                        1200: {
+                            width: '100%'
+                        },
+                        1300: {
+                            width: '900px'
+                        }
+                    }
                 },
+                isMobileView: false,
                 images: []
             }
         },
@@ -58,12 +72,7 @@
                 this.current_image = image;
             },
             handleView() {
-                this.isMobileView = window.innerWidth <= 600;
-                if(this.isMobileView) {
-                    this.options.height = 200;
-                    this.options.fixedWidth = 200;
-                    this.options.width = window.innerWidth;
-                }
+                this.isMobileView = window.innerWidth <= 1200;
             },
         },
         created() {
@@ -96,7 +105,16 @@
 
     .project-images.slider-wrapper {
         padding: 0 30px;
-        max-width: 1150px !important;
+        @media(max-width: 1300px) {
+            max-width: 900px !important;
+        }
+        @media(max-width: 1200px) {
+            max-width: 100% !important;
+        }
+        @media(max-width: 600px) {
+            max-width: 100% !important;
+        }
+
         .splide__arrow {
             width: 4rem;
             height: 4rem;

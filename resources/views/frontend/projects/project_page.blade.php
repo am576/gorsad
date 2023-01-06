@@ -1,13 +1,16 @@
 @extends('frontend.layouts.app')
 @section('title', 'Gorsad - Проекты')
 @section('content')
-<div class="container-fluid project-page">
-    <div class="row justify-content-center">
+@push('styles')
+    <link href="{{ asset('css/projects.css') }}" rel="stylesheet">
+@endpush
+<div class="project-page">
+    <div class="d-flex justify-content-center">
         <div class="col-md-12 p-0">
            <div class="project-img-main" style="background-image: url({{'/storage/images/'.$project->images[0]['large']}} );">
                <p class="project-name">{{$project->name}}</p>
            </div>
-            <div class="row justify-content-center flex-column align-items-center">
+            <div class="d-flex justify-content-center flex-column align-items-center">
                 <div class="project-details text-left">
                     <p class="project-description">
                         {!!$project->description!!}
@@ -47,7 +50,7 @@
                     </div>
                     </div>
                 </div>
-                <div class="images-wrapper row w-100 justify-content-center" style="background-color: #efefef;">
+                <div class="images-wrapper d-flex w-100 justify-content-center" style="background-color: #efefef;">
                     <project-images :project="{{$project}}"></project-images>
                 </div>
 
