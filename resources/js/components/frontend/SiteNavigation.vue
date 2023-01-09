@@ -172,9 +172,9 @@
             <div class="menu-inner" :style="{'width': device.width + 'px', height: device.height + 'px'}" v-show="showNav">
                 <a href="/shop">Каталог растений</a>
                 <a href="/services">Услуги</a>
-                <a href="/projects/all">Проекты</a>
-                <a href="/shop">Советы</a>
-                <a href="/styles">Дизайн</a>
+                <a href="/projects">Проекты</a>
+                <a href="/knowhow">Советы</a>
+                <a href="/design">Дизайн</a>
                 <a href="/contacts">Контакты</a>
             </div>
             <i class="mdi mdi-close" @click="toggleMobileNav" v-if="navOpen"></i>

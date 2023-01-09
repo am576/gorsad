@@ -1,10 +1,1 @@
-html,
-body {
-  background: #4a4a4a;
-}
-
-#app {
-  background: #4a4a4a;
-  padding-top: 2rem;
-}
-
+#app,body,html{background:#4a4a4a}#app{padding-top:2rem}

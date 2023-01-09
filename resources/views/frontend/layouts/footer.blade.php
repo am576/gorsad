@@ -34,11 +34,12 @@
             <div class="menu col-4">
                 <div class="title">Узнайте больше</div>
                 <ul class="color-grey">
-                    <li>Деревья</li>
-                    <li>Услуги</li>
-                    <li>Проекты</li>
-                    <li>Дизайн</li>
-                    <li>Контакты</li>
+                    <li><a href="{{config('links.shop')}}">Деревья</a></li>
+                    <li><a href="{{config('links.services')}}">Услуги</a></li>
+                    <li><a href="{{config('links.projects')}}">Проекты</a></li>
+                    <li><a href="{{config('links.knowhow')}}">Советы</a></li>
+                    <li><a href="{{config('links.design')}}">Дизайн</a></li>
+                    <li><a href="{{config('links.contacts')}}">Контакты</a></li>
                 </ul>
             </div>
             <div class="contacts col-4">
