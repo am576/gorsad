@@ -1,5 +1,5 @@
 <template>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center m-0">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width: 100%;">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -31,11 +31,11 @@
 
 <style lang="scss" scoped>
     .carousel-inner {
-        @media (min-width: 590px) {
+        @media (min-width: 600px) {
             height: 820px;
             min-height: 820px;
         }
-        @media (max-width:589px) {
+        @media (max-width:600px) {
             height: 40vh;
             min-height: 40vh;
         }
@@ -53,10 +53,10 @@
          .description {
              font-weight: bold;
              max-width: 50%;
-             @media (min-width: 590px) {
+             @media (min-width: 600px) {
                  font-size: 6vh;
              }
-             @media (max-width:589px) {
+             @media (max-width:600px) {
                  font-size: 4vh;
              }
 

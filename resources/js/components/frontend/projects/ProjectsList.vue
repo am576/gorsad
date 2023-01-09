@@ -83,7 +83,7 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 justify-content: center;
             }
 
@@ -95,7 +95,7 @@
                         height: 300px;
                     }
                 }
-                @media (max-width: 590px) {
+                @media (max-width: 600px) {
                     width: 50vh;
                     img {
                         width: 100%;

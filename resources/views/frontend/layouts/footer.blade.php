@@ -28,7 +28,7 @@
                 </div>
                 <div class="desc color-grey mt-3">
                     <div style="">
-                        ГОРОДСКОЙ САДОВНИК <br>Комплексное озеленение и саженцы оптом в Калининграде</div>
+                        <span class="title-footer">ГОРОДСКОЙ САДОВНИК<br></span> Комплексное озеленение и саженцы оптом в Калининграде</div>
                 </div>
             </div>
             <div class="menu col-4">
@@ -70,7 +70,7 @@
     <div class="copyright">
         <div class="container">
             <div class="row justify-content-between align-items-center">
-                <div class="color-grey">&#169; Все права защищены 2021, ООО Городской садовник</div>
+                <div class="color-grey">&#169; Все права защищены 2023, ООО Городской садовник</div>
                 <div class="color-grey">
                     <span class="mdi mdi-instagram mdi-24px"></span>
                     <span class="mdi mdi-whatsapp mdi-24px"></span>

@@ -230,12 +230,12 @@
             .mdi {
                 margin-right: 5px;
             }
-            @media (max-width:590px) {
+            @media (max-width:600px) {
                 width: 100%;
                 justify-content: center;
             }
         }
-        @media (max-width:590px) {
+        @media (max-width:600px) {
             width: 100%;
             justify-content: center;
         }

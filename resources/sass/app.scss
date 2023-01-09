@@ -16,7 +16,7 @@ body {
     font-size: 1rem !important;
 }
 main {
-    @media (max-width: 590px) {
+    @media (max-width: 600px) {
         padding: 0 !important;
     }
 }
@@ -185,7 +185,7 @@ a.link-passive, a.link-passive:hover {
 }
 
 #app.shop {
-    @media (min-width: 590px) {
+    @media (min-width: 600px) {
         padding-top: 1.5rem;
         padding-bottom: 1.5rem;
     }
@@ -205,12 +205,12 @@ footer.home-footer {
         font-size: 18px;
         max-width: 80%;
         line-height: 30px;
-        @media (max-width:590px) {
+        @media (max-width:600px) {
             font-size: 14px;
         }
     }
     .footer-main {
-        @media (max-width:590px) {
+        @media (max-width:600px) {
             padding: 0 2vw;
         }
     }
@@ -227,23 +227,31 @@ footer.home-footer {
         flex-direction: column;
         padding: 0 !important;
     }
+    .title-footer {
+        @media(max-width: 600px) {
+            display: none;
+        }
+    }
 
     .menu, .contacts {
         margin-top: 25px;
-        @media (max-width:590px) {
+        @media (max-width:600px) {
             margin-top: 70px;
             font-size: 14px;
         }
 
         .title {
             margin-bottom: 15px;
+            @media(max-width: 600px) {
+                display: none;
+            }
         }
     }
 
     .company {
         img {
             height: 50px;
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
 
             }
         }
@@ -284,7 +292,7 @@ footer.home-footer {
         img {
             height: 36px;
             margin-right: 15px;
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 display: none;
             }
         }
@@ -299,14 +307,14 @@ footer.home-footer {
             display: flex;
             justify-content: space-evenly;
             width: 60%;
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 width: 100%;
             }
         }
 
         img {
             height: 120px;
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 height: 90px;
             }
         }
@@ -317,7 +325,7 @@ footer.home-footer {
         display: flex;
         padding: 30px 0;
         background: #1b240b;
-        @media (max-width: 590px) {
+        @media (max-width: 600px) {
             padding: 10px 20px;
             font-size: 14px;
         }
@@ -359,7 +367,7 @@ footer.home-footer {
     img {
         height: 125px;
     }
-    @media (max-width: 590px) {
+    @media (max-width: 600px) {
         .partners-title {
             padding-top: 20px;
         }
@@ -373,7 +381,7 @@ footer.home-footer {
 .design-styles {
     .styles-page-heading {
         padding: 3em 0; max-width: 1150px;
-        @media (max-width: 590px) {
+        @media (max-width: 600px) {
             width: 100%;
             padding: 2em;
         }
@@ -388,7 +396,7 @@ footer.home-footer {
         height: 0;
         background-position: center;
         background-size: cover;
-        @media (max-width: 590px) {
+        @media (max-width: 600px) {
             height: 40vh;
             min-height: 40vh;
             padding: 0 !important;
@@ -404,7 +412,7 @@ footer.home-footer {
             padding-left: 150px;
             text-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
             color: #ffffff;
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 font-size: 23px;
                 padding-left: 0;
             }
@@ -423,13 +431,13 @@ footer.home-footer {
         }
         p.odd {
             padding: 1em 0 0 3em;
-            @media (max-width:590px) {
+            @media (max-width:600px) {
                 padding: 1em 2em;
             }
         }
         p.even {
             padding: 1em 3em 0 0;
-            @media (max-width:590px) {
+            @media (max-width:600px) {
                 padding: 1em 2em;
             }
         }
@@ -480,7 +488,7 @@ footer.home-footer {
 
 .layout-spacing {
     margin-top: $layout-margin;
-    @media (max-width: 590px) {
+    @media (max-width: 600px) {
         padding-top: 70px !important;
         margin-top: 0;
     }
@@ -559,20 +567,20 @@ footer.home-footer {
 
 
 .filler {
-    @media (max-width: 590px) {
+    @media (max-width: 600px) {
         display: none;
     }
 }
 
 .profile-tabs-wrapper, .service-tabs-wrapper {
     width: 25% !important;
-    @media (max-width:590px) {
+    @media (max-width:600px) {
         width: 100% !important;
     }
 }
 .service-tabs-wrapper {
     width: 35% !important;
-    @media (max-width:590px) {
+    @media (max-width:600px) {
         width: 100% !important;
     }
 }
