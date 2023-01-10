@@ -21,8 +21,7 @@ class ShopController extends Controller
     {
         $user = UserUtils::getAuthUser();
 
-        $products = Product::with('image')
-            ->paginate(config('shop.paginate'));
+        $products = Product::getAndPaginateActiveProducts();
 
         $attributes = StaticTools::getAttributesByGroup();
 
@@ -78,8 +77,7 @@ class ShopController extends Controller
         }
         else
         {
-            $filtered_products = Product::with('image')
-                ->paginate(config('shop.paginate'));
+            $filtered_products = Product::getAndPaginateActiveProducts();
         }
 
         return response()->json($filtered_products);
@@ -163,6 +161,7 @@ class ShopController extends Controller
     public function loadProducts()
     {
         $products = Product::with('image')
+            ->where('status', '=', 1)
             ->paginate(config('shop.paginate'));
 
         return response()->json($products);

@@ -106,6 +106,7 @@ class StaticTools
                 $query->where('title','like', '%'.$product_name.'%');
             }
             })
+            ->where('status', '=', 1)
             ->select(['products.id','title', 'title_lat'])
             ->join('products_attributes', 'products.id','=','products_attributes.product_id')
             ->where(function ($query) use ($filter_values) {
