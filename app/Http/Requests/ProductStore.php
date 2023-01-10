@@ -25,15 +25,15 @@ class ProductStore extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'title_lat' => 'string',
-            'category_id' => 'required | numeric',
+            'title' => 'string | required | max:255',
+            'title_lat' => 'string | max:255',
+            'category_id' => 'required | integer | size: 255',
 //            'code'  =>  'required | unique:App\Product',
-            'description'  =>  'required',
-            'price' =>  'required | numeric | max:1000000',
-            'discount' => 'numeric | max:100',
-            'quantity' => 'numeric | max:1000000',
-            'status' => 'required | numeric'
+            'description'  =>  'required | string |size: 3000',
+            'price' =>  'required | integer | size: 1000000',
+            'discount' => 'integer | size:100',
+            'quantity' => 'integer | size:10000',
+            'status' => 'required | boolean'
         ];
     }
 }
