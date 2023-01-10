@@ -168,8 +168,12 @@
                     ],
                 },
                 product: {
+                    title: 'ТЕСТ',
+                    title_lat: 'Test',
+                    price: 1,
+                    description: 'test',
                     attributes: [],
-                    status: 1,
+                    status: 0,
                     variants: []
                 },
                 images: [],

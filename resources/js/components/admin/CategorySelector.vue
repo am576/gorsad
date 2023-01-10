@@ -30,6 +30,7 @@
                 axios.get('/api/getChildCategories')
                     .then((response) => {
                         this.categories = response.data;
+                        this.category_id = this.categories[0].id;
                     })
             },
             getAllCategories: function(){
