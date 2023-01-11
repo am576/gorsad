@@ -59,16 +59,7 @@ Vue.component('service-page', require('./components/frontend/services/ServicePag
 
 Vue.component('contact-form', require('./components/frontend/contacts/ContactForm').default);
 
-/* Shop components */
-Vue.component('products-list', require('./components/frontend/shop/ProductsList').default);
-Vue.component('shop-page', require('./components/frontend/shop/ShopPage').default);
-Vue.component('checkout-page', require('./components/frontend/shop/CheckoutPage').default);
-Vue.component('product-page', require('./components/frontend/shop/ProductPage').default);
-Vue.component('shop-filter', require('./components/frontend/shop/ShopFilter').default);
-Vue.component('attribute-button', require('./components/frontend/shop/AttributeButton').default);
-Vue.component('shop-navigation', require('./components/frontend/shop/ShopNavigation').default);
-Vue.component('comparison-page', require('./components/frontend/shop/ComparisonPage').default);
-/* End Shop components */
+
 
 /* Account page components */
 Vue.component('user-profile', require('./components/frontend/profile/UserProfile').default);
