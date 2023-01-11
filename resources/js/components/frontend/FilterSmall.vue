@@ -1,5 +1,5 @@
 <template>
-    <div id="filter" class="pl-4 pr-4"">
+    <div id="filter" class="container-lg pl-4 pr-4">
             <div class="filter-small col-md-12">
                 <div class="filter-attributes">
                     <div class="filter-seg">
@@ -106,6 +106,7 @@
             width: 100% !important;
         }
     }
+
     .filter-small-wrapper {
         justify-content: center;
     }
@@ -138,14 +139,14 @@
             background: rgba(0, 0, 0, 0.7);
 
             .btn {
-                @media (min-width: 591px) {
+                @media (min-width: 600px) {
                     color: #ffffff;
                     border: none;
                     border-radius: 5px;
                     width: 100%;
                     padding: 12px 0;
                     font-size: 18px;
-
+                    white-space: nowrap;
                     &.filter-btn {
                         background: #707072;
                         font-weight: bold;
