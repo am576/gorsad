@@ -93,7 +93,7 @@
                         <div v-if="attribute.type === 'icon'" class="d-flex align-items-center">
                             <div class="d-flex align-items-center" v-for="(attr_value, index) in attribute.values">
                                 <span>{{attr_value.value}}</span>
-                                <img height="40" :src="'/storage/images/' + attr_value.icon.image.icon" alt="">
+                                <img height="40" :src="'/storage/images/' + attr_value.icon.image.icon" alt="" style="margin-left: 10px;">
                             </div>
 
                         </div>
