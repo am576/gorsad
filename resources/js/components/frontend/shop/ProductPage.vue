@@ -80,7 +80,9 @@
                             <span class="attr-tag" v-for="attr_value in attribute.values">{{attr_value.value}}</span>
                         </div>
                         <div v-if="attribute.type === 'range'">
-                            {{attribute.values[0].value}} - {{attribute.values[1].value}}
+                            <span v-if="attribute.values .length > 1">{{attribute.values[0].value}} - {{attribute.values[1].value}}</span>
+                            <span v-else-if="attribute.values .length === 1">{{attribute.values[0].value}}</span>
+                            м.
                         </div>
                         <div v-if="attribute.type === 'text' && !isTagType(attribute)" v-for="attr_value in attribute.values">
                             {{attr_value.value}}
