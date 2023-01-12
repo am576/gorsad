@@ -27,12 +27,12 @@ class ProductStore extends FormRequest
         return [
             'title' => 'string | required | max:255',
             'title_lat' => 'string | max:255',
-            'category_id' => 'required | integer | size: 255',
+            'category_id' => 'required | integer | min:0 | max: 255',
 //            'code'  =>  'required | unique:App\Product',
-            'description'  =>  'required | string |size: 3000',
-            'price' =>  'required | integer | size: 1000000',
-            'discount' => 'integer | size:100',
-            'quantity' => 'integer | size:10000',
+            'description'  =>  'required | string |max: 3000',
+            'price' =>  'required | integer | max: 1000000',
+            'discount' => 'integer | min:0 | max:100',
+            'quantity' => 'integer | min:0 | max:10000',
             'status' => 'required | boolean'
         ];
     }
