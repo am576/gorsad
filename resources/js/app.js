@@ -47,9 +47,6 @@ Vue.component('services-list', require('./components/frontend/ServicesList').def
 Vue.component('projects-list', require('./components/frontend/projects/ProjectsList').default);
 Vue.component('project-images', require('./components/frontend/projects/ProjectImages').default);
 
-Vue.component('product-bar', require('./components/frontend/ProductBar').default);
-Vue.component('product-images', require('./components/frontend/ProductImages').default);
-
 Vue.component('shopping-cart', require('./components/frontend/ShoppingCart').default);
 Vue.component('signin-form', require('./components/frontend/user/SigninForm').default);
 
@@ -58,8 +55,6 @@ Vue.component('services-page', require('./components/frontend/services/ServicesP
 Vue.component('service-page', require('./components/frontend/services/ServicePage').default);
 
 Vue.component('contact-form', require('./components/frontend/contacts/ContactForm').default);
-
-
 
 /* Account page components */
 Vue.component('user-profile', require('./components/frontend/profile/UserProfile').default);
@@ -74,7 +69,7 @@ Vue.component('g-modal', require('./components/frontend/shared/GenericModal').de
 Vue.component('image-modal', require('./components/frontend/ImageModal').default);
 Vue.component('account-dropdown', require('./components/frontend/shared/AccountDropdown').default);
 Vue.component('guide-flipbook', require('./components/frontend/shared/GuideFlipbook').default);
-Vue.component('g-banner', require('./components/frontend/shared/GenericBanner').default);
+
 /* End Shared components */
 
 /** End Client side components **/
