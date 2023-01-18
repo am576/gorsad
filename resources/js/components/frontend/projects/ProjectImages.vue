@@ -2,7 +2,7 @@
     <div class="d-flex slider-wrapper project-images">
         <splide :options="options" @splide:click="showImage">
             <splide-slide v-for="image in images" :key="image.path" >
-                <img :src="'/storage/images/'+image.medium" alt="">
+                <div class="splide-cover" v-bind:style="{'background-image':'url(/storage/images/' + image.medium +')'}"></div>
             </splide-slide>
             <template v-slot:controls v-if="!isMobileView">
                 <div class="splide__arrows">
@@ -35,29 +35,14 @@
             return {
                 current_image: '',
                 options: {
-                    type: 'slide',
+                    type: 'loop',
                     width: '1150px',
-                    height: 300,
+                    height: '300px',
                     gap   : '2rem',
                     pagination: false,
-                    rewind: true,
-                    perPage: 1,
-                    fixedWidth:300,
-                    cover: true,
-                    mediaQuery: 'max',
-                    keyboard: false,
-                    breakpoints: {
-                        600: {
-                            width: '100%',
-                            arrows: false
-                        },
-                        1200: {
-                            width: '100%'
-                        },
-                        1300: {
-                            width: '900px'
-                        }
-                    }
+                    perPage: 10,
+                    heightRatio: 2,
+
                 },
                 isMobileView: false,
                 images: []
@@ -138,5 +123,14 @@
         .splide__slide {
             cursor: pointer;
         }
+        li {
+            width: 300px !important;
+            .splide-cover {
+                width: 300px;
+                height: 100%;
+                background-size: cover;
+            }
+        }
+
     }
 </style>
