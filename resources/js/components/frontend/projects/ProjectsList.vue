@@ -3,7 +3,9 @@
         <p class="projects-page-title">Проекты, которыми стоит гордиться</p>
         <div class="row projects-container">
             <div class="project-block"  v-for="project in projects" @click="loadProjectPage(project.id)">
-                <img height="100" :src="'/storage/images/'+project.images[0].medium" alt="">
+
+                <div class="project-image" v-bind:style="{'background-image':'url(/storage/images/' + project.images[0].medium +')'}"></div>
+                <div class="project-bg" v-bind:style="{'background-image':'url(/storage/images/' + project.images[0].medium +')'}"/>
                 <p class="project-name">{{project.name}}</p>
             </div>
         </div>
@@ -90,9 +92,29 @@
             .project-block {
                 @media (min-width: 591px) {
                     width: 30%;
+                    height: 300px;
+                    /*filter: blur(8px);*/
                     img {
                         width: 100%;
                         height: 300px;
+                    }
+                    .project-bg {
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        background-size: 200%;
+                        background-repeat: no-repeat;
+                        filter: blur(3px);
+                        -webkit-filter: blur(3px);
+                    }
+                    .project-image {
+                        width: 250px;
+                        height: 100%;
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        z-index: 10;
                     }
                 }
                 @media (max-width: 600px) {
@@ -118,8 +140,10 @@
                     width: 100%;
                     background: rgba(0, 0, 0, 0.15);
                     color: #fff;
+                    margin: 0;
                     font-size: 30px;
                     font-weight: bold;
+                    z-index: 11;
                 }
             }
         }
