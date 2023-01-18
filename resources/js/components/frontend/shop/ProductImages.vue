@@ -2,7 +2,7 @@
     <div class="row slider-wrapper product-images justify-content-center">
         <splide :options="options" @splide:click="showImage">
             <splide-slide v-for="image in product.images" :key="image.medium" >
-                <img :src="'/storage/images/' + image.medium" alt="">
+                <div class="splide-cover" v-bind:style="{'background-image':'url(/storage/images/' + image.medium +')'}"></div>
             </splide-slide>
             <template v-slot:controls >
                 <div class="splide__arrows" v-show="!isMobileView">
@@ -35,16 +35,13 @@
             return {
                 current_image: '',
                 options: {
-                    type: 'slide',
+                    type: 'loop',
                     width: '100%',
                     height: 300,
                     gap   : '2rem',
                     keyboard: false,
                     pagination: false,
-                    rewind: false,
-                    perPage: 1,
-                    fixedWidth:300,
-                    cover: true,
+                    perPage: 10,
                     isMobileView: false
                 },
                 isMobileView: false,
@@ -53,8 +50,12 @@
         },
         methods: {
             showImage(slide, e) {
-                this.$eventBus.$emit('showImageModal', e.index)
-                this.current_image = this.images[e.index];
+                let image_index = e.index;
+                if(e.index > (this.images.length - 1)) {
+                    image_index = e.index - this.images.length;
+                }
+                this.setCurrentImage(this.images[image_index]);
+                this.$eventBus.$emit('showImageModal', image_index)
             },
             setCurrentImage(image) {
                 this.current_image = image;
@@ -98,5 +99,13 @@
 
     .slider-wrapper {
         padding: 0 30px;
+        li {
+            width: 300px !important;
+            .splide-cover {
+                width: 300px;
+                height: 100%;
+                background-size: cover;
+            }
+        }
     }
 </style>

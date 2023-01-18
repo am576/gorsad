@@ -15,7 +15,7 @@ Vue.component('shop-filter', require('./components/frontend/shop/ShopFilter').de
 Vue.component('attribute-button', require('./components/frontend/shop/AttributeButton').default);
 Vue.component('shop-navigation', require('./components/frontend/shop/ShopNavigation').default);
 Vue.component('comparison-page', require('./components/frontend/shop/ComparisonPage').default);
-Vue.component('product-images', require('./components/frontend/ProductImages').default);
+Vue.component('product-images', require('./components/frontend/shop/ProductImages').default);
 /* End Shop components */
 
 /* Shared components */
