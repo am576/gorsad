@@ -48,7 +48,7 @@
                     <li>
                         <span>
                             <img src="/storage/images/public/icons/marker.png" alt="">
-                            ул. Богатырская 35, Калиниград, Россия, 236038
+                            ул. Еловая аллея, д.26, Калиниград, Россия, 236038
                         </span>
                     </li>
                     <li>
@@ -60,7 +60,7 @@
                     <li>
                         <span>
                             <img src="/storage/images/public/icons/mail.png" alt="">
-                            info@group-zg.com
+                            mail@gorsad39.ru
                         </span>
                     </li>
                 </ul>

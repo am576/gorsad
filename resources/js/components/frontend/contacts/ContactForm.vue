@@ -5,7 +5,7 @@
             <div class="contacts-list">
                 <div>
                     <i class="mdi mdi-36px mdi-map-marker-outline"></i>
-                    <span>г.Калининград, ул. Еловая аллея,д.26</span>
+                    <span>г.Калининград, ул. Еловая аллея, д.26</span>
                 </div>
                 <div>
                     <i class="mdi mdi-36px mdi-email-open-outline"></i>

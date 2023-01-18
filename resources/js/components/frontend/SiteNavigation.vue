@@ -10,7 +10,7 @@
             </div>
             <div>
                 <span class="mdi mdi-email-open-outline mdi-24px"></span>
-                info@group-zg.com
+                mail@gorsad39.ru
             </div>
             <div>
                 <span class="mdi mdi-clock-time-four-outline mdi-24px"></span>
