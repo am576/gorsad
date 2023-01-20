@@ -111,7 +111,7 @@
                                     </div>
                                     <div class="form-group" v-if="product_attribute">
                                         <attribute-values :attribute_id="product_attribute.id"
-                                                          :type="attribute_types[index]" :index="index"
+                                                          :type="product_attribute.type" :index="index"
                                                           :values="product_attribute.attribute_values"
                                                           :selected_values="product_attribute.values"></attribute-values>
                                     </div>
@@ -174,13 +174,9 @@
                 },
                 images: [],
                 errors: {},
-                attribute_rows: [],
                 attributes: [],
-                attribute_types: [],
                 category_fields: [],
                 additional_info: {},
-                text_options: {},
-                selected_values: [],
             }
         },
         methods: {
@@ -200,27 +196,33 @@
             },
             getAttributeValues(select, index) {
                 const selected = select.options[select.options.selectedIndex].dataset;
-                this.$set(this.attribute_types, index, selected.type)
 
                 axios.get('/api/getAttributeValues', {
                     params: {
                         attribute_id: select.value
                     }
                 }).then(response => {
-                    this.$set(this.product.attributes, index, {
+                    let attribute = {
                         'id': select.value,
                         'type': selected.type,
-                        'attribute_values': response.data.attribute_values,
                         'values': []
-                    })
+                    };
                     if (selected.type === 'range') {
-                        this.$set(this.product.attributes[index], 'attribute_values', [response.data.attribute_values[0].value, response.data.attribute_values[1].value])
-                    }
+                            attribute.attribute_values = [response.data.attribute_values[0].value, response.data.attribute_values[1].value];
+                            this.$set(this.product.attributes, index, attribute)
+                            this.$eventBus.$emit('initRangeValues', attribute.attribute_values);
+                        }
+                        else {
+                            attribute.attribute_values = response.data.attribute_values;
+                        this.$set(this.product.attributes, index, attribute)
+                        }
 
                 })
             },
             setAttributeValues(index, values) {
-                this.$set(this.product.attributes[index], 'values', values)
+                console.log(values)
+                this.product.attributes[index].values = values;
+                // this.$set(this.product.attributes[index], 'values', values)
             },
             setProductImages(images) {
                 this.images = images;
@@ -229,8 +231,6 @@
                 this.$set(this.product.attributes, this.product.attributes.length, {})
             },
             removeAttributeRow(index) {
-                Vue.delete(this.attribute_types, index);
-                Vue.delete(this.selected_values, index);
                 this.$delete(this.product.attributes, index);
                 this.$forceUpdate();
             },

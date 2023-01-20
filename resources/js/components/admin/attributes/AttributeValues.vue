@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="attr-value">
         <div v-if="type === 'text'">
             <v-select multiple v-model="selected_values"  label="value" :options="values" @option:selected="changeAttributeValue" @option:deselected="changeAttributeValue"/>
         </div>
@@ -28,6 +28,7 @@
                 :data-label="'value'"
                 :min="range_min"
                 :max="range_max"
+                :min-range="1"
                 :lazy="true"
                 @change="changeAttributeRange"
             ></vue-slider>
@@ -77,28 +78,32 @@
         },
         data() {
             return {
-
                 range: [],
                 range_min: 0,
                 range_max: 50
             }
         },
         methods: {
-            changeAttributeRange(va) {
-                this.$eventBus.$emit('changeAttributeValue', this.index, this.range)
+            changeAttributeRange() {
+                this.$eventBus.$emit('changeAttributeValue', this.index, this.range);
             },
             changeAttributeValue() {
-                this.$eventBus.$emit('changeAttributeValue', this.index, this.selected_values)
+                this.$eventBus.$emit('changeAttributeValue', this.index, this.selected_values);
             },
             setRangeValues() {
                 if(this.selected_values.length) {
-                    this.range[0] = this.selected_values[0].value
-                    this.range[1] = this.selected_values[1].value
+                    this.range[0] = this.selected_values[0].value;
+                    this.range[1] = this.selected_values[1].value;
                 }
                 else {
                     this.range[0] = this.range_min;
                     this.range[1] = this.range_max;
                 }
+            },
+            initRangeValues(range_values) {
+                this.range[0] = ~~range_values[0];
+                this.range[1] = ~~range_values[1];
+                this.changeAttributeRange();
             }
         },
         computed: {
@@ -107,10 +112,10 @@
                 get: function() {
                     if (this.type === 'range' ) {
                         if(this.selected_values.length) {
-                            return [this.range[0], this.range[1] = this.range[1]]
+                            return [this.range[0], this.range[1] = this.range[1]];
                         }
                         else {
-                            return [this.range_min, this.range_max]
+                            return [this.range_min, this.range_max];
                         }
                     }
                 },
@@ -121,7 +126,7 @@
             },
         },
         created() {
-            // this.selected_values = this.selected;
+            this.$eventBus.$on('initRangeValues', this.initRangeValues);
             if(this.type === 'range') {
                 this.setRangeValues();
             }
