@@ -11,11 +11,13 @@
             <div class="pt-3 border-bottom">
                 <div class="home-text">
                     <div class="container">
-                        <h4><strong>Lorem ipsum dolor</strong></h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sin autem est in ea, quod quidam
-                            volunt, nihil impedit hanc nostram comprehensionem summi boni. Ego quoque, inquit, didicerim
-
+                        <p style="font-size: 25px; font-weight: lighter;">
+                            «Городской садовник» является частью большого процесса по преобразованию городских
+                            пространств, и мы гордимся этим. Работая с заказчиками мы стремимся привносить новые и
+                            современные подходы в то, что может показаться стандартной и рутинной работой. Прежде чем
+                            приступить к работе, мы внимательно анализируем проектное решение, предлагая оптимальные
+                            варианты реализации. Наш опыт помогает оперативно решать проблемы, экономя ваше время и
+                            деньги.
                         </p>
                     </div>
                 </div>
@@ -73,13 +75,9 @@
             </div>
             <div class="home-text2">
                 <div class="container">
-                    <h4>Lorem ipsum dolor</h4>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sin autem est in ea, quod quidam
-                        volunt, nihil impedit hanc nostram comprehensionem summi boni. Ego quoque, inquit, didicerim
-                        libentius si quid attuleris, quam te reprehenderim. Estne, quaeso, inquam, sitienti in bibendo
-                        voluptas? Duo Reges: constructio interrete. Quid est igitur, inquit, quod requiras? Quod autem
-                        ratione actum est, id officium appellamus.
+                    <p style="font-size: 25px; font-weight: lighter;">
+                        От Балтийска до Краснознаменска, от Светлогорска до Багратионовска и от Советска до
+                        Железнодорожного. Выполняем работы по всей области.
                     </p>
                 </div>
             </div>
