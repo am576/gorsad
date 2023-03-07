@@ -47,7 +47,8 @@
                 mapOptions: {
                     zoomSnap: 0.5,
                     attributionControl: false,
-                    zoomControl: true
+                    zoomControl: true,
+                    scrollWheelZoom: false
                 },
                 icon: icon({
                     iconUrl: "/storage/images/public/tree-marker.png",
