@@ -6,11 +6,11 @@
             </a>
             <div>
                 <span class="mdi mdi-phone mdi-24px"></span>
-                +7(4012) 52-21-11
+                <a href="tel:+74012522111">7(4012) 52-21-11</a>
             </div>
             <div>
                 <span class="mdi mdi-email-open-outline mdi-24px"></span>
-                mail@gorsad39.ru
+                <a href="mailto:mail@gorsad39.ru">mail@gorsad39.ru</a>
             </div>
             <div>
                 <span class="mdi mdi-clock-time-four-outline mdi-24px"></span>
@@ -411,6 +411,10 @@
         padding: 15px 0 15px 0;
         background: rgba(0, 0, 0, 0.8);
         color: #dfdfdf;
+
+        a[href^="mailto:"], a[href^="tel:"] {
+            color: #dfdfdf
+        }
 
         @media(min-width: 600px) {
             justify-content: flex-end;
