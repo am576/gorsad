@@ -38,7 +38,7 @@ Vue.component('b-tooltip', BTooltip);
 Vue.directive('b-toggle', VBToggle);
 Vue.directive('b-tooltip', VBTooltip);
 
-/* Admin side components */
+/** Admin side components **/
 Vue.component('category-selector', require('./components/admin/CategorySelector.vue').default);
 Vue.component('attribute-selector', require('./components/admin/attributes/AttributeSelector.vue').default);
 // Vue.component('attribute-selector-edit', require('./components/admin/attributes/AttributeSelectorEdit.vue').default);
@@ -68,6 +68,9 @@ Vue.component('service-group-form', require('./components/admin/services/Service
 
 Vue.component('vue-tags-input', require('@johmun/vue-tags-input').default);
 
+Vue.component('messages-table', require('./components/admin/messages/MessagesTable').default);
+/** END Admin side components **/
+
 /** Client side components **/
 
 /* Shared components */
@@ -75,7 +78,7 @@ Vue.component('g-modal', require('./components/frontend/shared/GenericModal').de
 Vue.component('image-modal', require('./components/frontend/ImageModal').default);
 /* End Shared components */
 
-/** End Client side components **/
+/** END Client side components **/
 
 const app = new Vue({
     VueTagsInput,

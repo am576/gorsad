@@ -54,7 +54,7 @@
                 color: #e0e0e0;
             }
         }
-        @media (max-width:590px) {
+        @media (max-width:600px) {
             height: 80vw;
             margin-bottom: 6vh;
             .mdi-trash-can {

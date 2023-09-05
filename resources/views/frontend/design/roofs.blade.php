@@ -7,6 +7,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             @include('frontend.design.menu')
+            @include('frontend.design.mmenu')
             <section class="page-bg col-md-12 p-0">
                 <div class="page-img-main" style="background-image: url('/storage/images/public/design/roofs_bg.jpg'); ">
                     <h1 class="page-img-title" style="">Кровельное и контейнерное озеленение</h1>
@@ -45,7 +46,7 @@
                             повреждение высокоствольных деревьев будет заметно для окружающих людей.
                             Топиарные деревья идеально подходят для посадки на крыше за счет среза кроны один раз в год.
                             Сломанная в кроне ветка легко устраняется во время очередного ежегодного среза. Специалисты
-                            питомника «Натуралист» помогут вам подобрать подходящий ассортимент в кратчайшие сроки.
+                            питомника «Городской садовник» помогут вам подобрать подходящий ассортимент в кратчайшие сроки.
                         </div>
                     </div>
                 </div>

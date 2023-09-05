@@ -14,13 +14,12 @@
                     <div>----</div>
                     <div>
                         <p v-html="product.description"></p>
-                        <h5>Характеристики</h5>
                     </div>
                 </div>
             </div>
         </div>
         <div class="divider"></div>
-        <nav class="nav-tabs product-variants" v-if="hasVariants">
+        <!--<nav class="nav-tabs product-variants" v-if="hasVariants">
             <div class="tabs" horizintal="">
                 <div class="tabs-wrapper d-flex justify-content-start">
                     <ul class="nav nav-tabs" role="tablist">
@@ -66,11 +65,11 @@
                     </div>
                 </div>
             </div>
-        </nav>
+        </nav>-->
         <div class="d-flex justify-content-center pb-5 mb-4 mt-4">
             <div class="all-specs">
                 <div class="specs-header">
-                    <h4 class="font-weight-bold">ВСЕ ХАРАКТЕРИСТИКИ</h4>
+                    <h4 class="font-weight-bold">ХАРАКТЕРИСТИКИ</h4>
                 </div>
                 <div class="row" v-for="attribute in product.attributes">
                     <div class="col-lg-3 col-sm-4 d-flex align-items-center">
@@ -81,7 +80,9 @@
                             <span class="attr-tag" v-for="attr_value in attribute.values">{{attr_value.value}}</span>
                         </div>
                         <div v-if="attribute.type === 'range'">
-                            {{attribute.values[0].value}} - {{attribute.values[1].value}}
+                            <span v-if="attribute.values .length > 1">{{attribute.values[0].value}} - {{attribute.values[1].value}}</span>
+                            <span v-else-if="attribute.values .length === 1">{{attribute.values[0].value}}</span>
+                            м.
                         </div>
                         <div v-if="attribute.type === 'text' && !isTagType(attribute)" v-for="attr_value in attribute.values">
                             {{attr_value.value}}
@@ -94,7 +95,7 @@
                         <div v-if="attribute.type === 'icon'" class="d-flex align-items-center">
                             <div class="d-flex align-items-center" v-for="(attr_value, index) in attribute.values">
                                 <span>{{attr_value.value}}</span>
-                                <img height="40" :src="'/storage/images/' + attr_value.icon.image.icon" alt="">
+                                <img height="40" :src="'/storage/images/' + attr_value.icon.image.icon" alt="" style="margin-left: 10px;">
                             </div>
 
                         </div>
@@ -110,7 +111,7 @@
                 <b-card-text>Комментарий: {{review.comment}}</b-card-text>
             </b-card>
         </div>-->
-        <shopping-cart></shopping-cart>
+<!--        <shopping-cart></shopping-cart>-->
     </div>
 </template>
 
@@ -265,7 +266,7 @@
         }
         .image-wrapper {
             padding: 10px;
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 padding: 0;
             }
         }
@@ -278,7 +279,7 @@
             background-size: cover;
             background-position: center;
 
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 width: 100vw;
                 height: 50vh;
                 min-height: 0;
@@ -315,7 +316,7 @@
         }
         .tabs-wrapper {
             width: 75%;
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 width: 100%;
             }
         }
@@ -368,7 +369,7 @@
         }
         .all-specs {
             width: 60%;
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 width: 90%;
                 .specs-header {
                     text-align: center;
@@ -379,7 +380,7 @@
                 margin-bottom: 5px;
                 font-size: 18px;
                 font-weight: 600;
-                @media (max-width:590px) {
+                @media (max-width:600px) {
                     flex-wrap: nowrap;
                 }
             }
@@ -399,7 +400,7 @@
 
         .attr-row {
             margin: 10px 0;
-            @media (max-width:590px) {
+            @media (max-width:600px) {
                 flex-wrap: nowrap;
             }
         }
@@ -428,7 +429,7 @@
         }
         .tabs {
             width: 70%;
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 width: 100%;
             }
         }

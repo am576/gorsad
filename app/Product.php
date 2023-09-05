@@ -143,4 +143,11 @@ class Product extends Model
     {
         return ProductsAttribute::select('attribute_value_id')->groupBy('attribute_value_id')->get()->pluck('attribute_value_id')->toArray();
     }
+
+    public static function getAndPaginateActiveProducts()
+    {
+        return Product::with('image')
+            ->where('status', '=', 1)
+            ->paginate(config('shop.paginate'));
+    }
 }

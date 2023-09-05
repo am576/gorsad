@@ -2,7 +2,23 @@
 .colorbar {
     background: #eaddc6;
 }
+.page-img-main .page-img-title {
+
+}
 .page-content {
+    .section-text {
+        @media (min-width: 360px) {
+            padding: 0 30px 0 50px;
+        }
+        @media (min-width: 1200px) {
+            padding: 0;
+        }
+    }
+    .section-image {
+        @media(max-width:768px) {
+            display: none;
+        }
+    }
     #planning {
         background: #f2edd9;
         p {
@@ -13,17 +29,31 @@
     }
     #topiary{
         background: #efefef;
+        @media(max-width: 576px) {
+            text-align: left;
+        }
         h3 {
             padding-left: 50px;
+            @media(max-width: 576px) {
+                padding-right: 50px;
+                padding-left: 0;
+            }
         }
         p {
             flex-direction: column;
             line-height: 40px;
             padding-left: 50px;
+            @media(max-width: 576px) {
+                padding-right: 50px;
+                padding-left: 0;
+            }
         }
         img {
             border-radius: 200px;
             height: max-content;
+            @media(max-width: 576px) {
+                display: none;
+            }
         }
     }
     #ordering {

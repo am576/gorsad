@@ -7,6 +7,7 @@
     <div class="container-fluid design-styles">
         <div class="row justify-content-center">
             @include('frontend.design.menu')
+            @include('frontend.design.mmenu')
             <div class="col-md-12 p-0">
 
                 <div class="styles-bg-main" style="background-image: url('/storage/images/public/stylesbg.jpg'); ">

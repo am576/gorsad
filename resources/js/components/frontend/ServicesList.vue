@@ -85,7 +85,7 @@
         }
 
         .hbwr {
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 margin-bottom: 3vh;
             }
         }

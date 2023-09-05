@@ -4,6 +4,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             @include('frontend.design.menu')
+            @include('frontend.design.mmenu')
             <section class="page-bg col-md-12 p-0">
                 <div class="page-img-main"
                      style="background-image: url('/storage/images/public/design/design_bg.jpg'); ">
@@ -21,14 +22,15 @@
                                 Дизайн внешнего пространства является результатом взаимодействия нескольких элементов,
                                 среди
                                 которых обязательная роль отводится выбору подходящего растения.
-                                Основная цель питомника «Натуралист» – это выращивание уникальных растений с
+                                Основная цель питомника «Городской садовник» – это выращивание уникальных растений с
                                 неповторимыми
                                 особенностями – формой, цветом и областью применения.
                                 Так мы создаем идеальную атмосферу, благоприятствующую разнообразию флоры вашей жилой и
                                 рабочей среды.
                             </span>
-                                <a href="{{route('outdoor_design')}}" class="read-more-btn">Узнайте больше об ассортименте и особенностях
-                                    природного баланса. <i
+                                <a href="{{route('outdoor_design')}}" class="read-more-btn">Узнайте больше <span class="mobile-hide">об
+                                        ассортименте и особенностях
+                                        природного баланса. </span><i
                                         class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i> </a>
                             </p>
                         </div>
@@ -36,7 +38,7 @@
                 </div>
                 <div id="styles" class="static-page-section">
                     <div class="section-details font-weight-lighter">
-                        <div class="section-text mw-50 pr-4"
+                        <div class="section-text mw pr-md-4 pr-sm-0"
                              style="border-right: 2px solid rgba(138,138,138,0.1); padding-right: 2rem;">
                             <h3>Стили для дизайна ландшафта</h3>
                             <p>
@@ -46,11 +48,12 @@
                                     стилей озеленения, которая создавалась в разных уголках мира на протяжении нескольких веков.
                                     Все они имеют свои особенности и тематический ассортимент.
                                 </span>
-                                <a href="{{route('design_styles')}}" class="read-more-btn">Подробно о стилях ландшафтного дизайна <i
+                                <a href="{{route('design_styles')}}" class="read-more-btn">Подробно о стилях <span class="mobile-hide">ландшафтного
+                                        дизайна</span> <i
                                         class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i> </a>
                             </p>
                         </div>
-                        <div class="section-text mw-50" style="padding-left: 2rem">
+                        <div class="section-text mw" style="padding-left: 2rem">
                             <h3>Модернизация, развитие и экологические особенности дизайна</h3>
                             <p>
                                 <span>
@@ -66,7 +69,7 @@
                 </div>
                 <div id="roofs" class="static-page-section">
                     <div class="section-details">
-                        <img class="mw-50" src="{{asset('storage/images/public/design/roofs.jpg')}}" alt="">
+                        <img class="mw" src="{{asset('storage/images/public/design/roofs.jpg')}}" alt="">
                         <div class="section-text pl-5">
                             <h3>Озеленение крыш и благоустройство территории с помощью контейнерных растений</h3>
                             <ul>
@@ -92,7 +95,7 @@
                                 Но одновременно с этим специалисты рекомендуют разнообразить дизайн различными
                                 функциями, что обеспечит более привлекательный внешний вид. Это лучшее достижение.
                             </p>
-                            <a href="{{route('street_profiles')}}" class="read-more-btn">Идеи от питомника «Натуралист» <i
+                            <a href="{{route('street_profiles')}}" class="read-more-btn">Идеи от питомника «Городской садовник» <i
                                     class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i></a>
                         </div>
                     </div>

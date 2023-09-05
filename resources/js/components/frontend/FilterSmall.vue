@@ -1,5 +1,5 @@
 <template>
-    <div id="filter" class="pl-4 pr-4" :class="{container: !isMobileView}">
+    <div id="filter" class="container-lg pl-4 pr-4">
             <div class="filter-small col-md-12">
                 <div class="filter-attributes">
                     <div class="filter-seg">
@@ -22,6 +22,7 @@
                 </div>
                 <div class="filter-attribute-values">
                     <div v-show="attribute.id === selected_attribute.id" class="attribute-values" v-for="attribute in filter_attributes">
+                        <i class="close-filter mdi mdi-48px mdi-close-circle-outline" @click="closeFilter"></i>
                         <div class="attribute-value" v-for="value in attribute.values" v-bind:class="{selected:isValueSelected(attribute.id, value.id)}">
                             <div class="form-check" @click="setSelectedValue(attribute.id, value.id)">
                                 <div v-if="attribute.type === 'color'" class="d-flex curpointer">
@@ -87,6 +88,9 @@
             },
             isValueSelected(attribute_id, value_id) {
                 return (attribute_id in this.selected_filter_options && this.selected_filter_options[attribute_id].includes(value_id))
+            },
+            closeFilter() {
+                this.selected_attribute = {};
             }
         },
         created() {
@@ -96,27 +100,28 @@
 </script>
 <style lang="scss" scoped>
     #filter {
-        @media (max-width: 590px) {
+        @media (max-width: 600px) {
             padding: 0 !important;
             margin: 0 !important;
             width: 100% !important;
         }
     }
+
     .filter-small-wrapper {
         justify-content: center;
     }
     .filter-small {
-        @media (max-width: 590px) {
+        @media (max-width: 600px) {
             padding: 0 !important;
         }
         .filter-attributes {
             display: flex;
-            @media (min-width: 591px) {
+            @media (min-width: 600px) {
                 flex-direction: row;
                 padding: 60px 20px 50px;
                 background: rgba(0, 0, 0, 0.7);
             }
-            @media (max-width: 590px) {
+            @media (max-width: 600px) {
                 flex-direction: column;
                 padding: 2vh 6vh;
                 background-color: #e0d9cf;
@@ -134,14 +139,14 @@
             background: rgba(0, 0, 0, 0.7);
 
             .btn {
-                @media (min-width: 591px) {
+                @media (min-width: 600px) {
                     color: #ffffff;
                     border: none;
                     border-radius: 5px;
                     width: 100%;
                     padding: 12px 0;
                     font-size: 18px;
-
+                    white-space: nowrap;
                     &.filter-btn {
                         background: #707072;
                         font-weight: bold;
@@ -151,7 +156,7 @@
                         text-transform: uppercase;
                     }
                 }
-                @media (max-width: 590px) {
+                @media (max-width: 600px) {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -176,6 +181,7 @@
                     }
                 }
             }
+
         }
 
         .filter-attribute-values {
@@ -200,16 +206,28 @@
                 .attribute-value.selected {
                     border: 1px solid #ffffff;
                 }
-                @media (max-width: 590px) {
-                    width: 50%;
+                @media (max-width: 600px) {
+                    width: 90%;
+                    justify-content: flex-start;
+                    left: 5vw;
                     z-index: 10;
                     padding-left: 2vh;
                     padding-top: 2vh;
                     background: rgba(59, 59, 55, 0.94);
                     top: -60vh;
                     .attribute-value {
-                        width: 100%;
+                        width: 50%;
                     }
+                }
+                .close-filter {
+                    display: none;
+                    @media(max-width: 600px) {
+                        display: block;
+                    }
+                    top: 0;
+                    right: 2vw;
+                    position: absolute;
+                    cursor: pointer;
                 }
             }
             .attribute-color {

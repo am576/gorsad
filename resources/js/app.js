@@ -44,11 +44,8 @@ Vue.component('account-links', require('./components/frontend/AccountLinks').def
 Vue.component('home-slider', require('./components/frontend/HomeSlider').default);
 Vue.component('filter-small', require('./components/frontend/FilterSmall').default);
 Vue.component('services-list', require('./components/frontend/ServicesList').default);
-Vue.component('projects-list', require('./components/frontend/ProjectsList').default);
-Vue.component('project-images', require('./components/frontend/ProjectImages').default);
-
-Vue.component('product-bar', require('./components/frontend/ProductBar').default);
-Vue.component('product-images', require('./components/frontend/ProductImages').default);
+Vue.component('projects-list', require('./components/frontend/projects/ProjectsList').default);
+Vue.component('project-images', require('./components/frontend/projects/ProjectImages').default);
 
 Vue.component('shopping-cart', require('./components/frontend/ShoppingCart').default);
 Vue.component('signin-form', require('./components/frontend/user/SigninForm').default);
@@ -57,16 +54,7 @@ Vue.component('projects-map', require('./components/frontend/projects/ProjectsMa
 Vue.component('services-page', require('./components/frontend/services/ServicesPage').default);
 Vue.component('service-page', require('./components/frontend/services/ServicePage').default);
 
-/* Shop components */
-Vue.component('products-list', require('./components/frontend/shop/ProductsList').default);
-Vue.component('shop-page', require('./components/frontend/shop/ShopPage').default);
-Vue.component('checkout-page', require('./components/frontend/shop/CheckoutPage').default);
-Vue.component('product-page', require('./components/frontend/shop/ProductPage').default);
-Vue.component('shop-filter', require('./components/frontend/shop/ShopFilter').default);
-Vue.component('attribute-button', require('./components/frontend/shop/AttributeButton').default);
-Vue.component('shop-navigation', require('./components/frontend/shop/ShopNavigation').default);
-Vue.component('comparison-page', require('./components/frontend/shop/ComparisonPage').default);
-/* End Shop components */
+Vue.component('contact-form', require('./components/frontend/contacts/ContactForm').default);
 
 /* Account page components */
 Vue.component('user-profile', require('./components/frontend/profile/UserProfile').default);
@@ -81,6 +69,7 @@ Vue.component('g-modal', require('./components/frontend/shared/GenericModal').de
 Vue.component('image-modal', require('./components/frontend/ImageModal').default);
 Vue.component('account-dropdown', require('./components/frontend/shared/AccountDropdown').default);
 Vue.component('guide-flipbook', require('./components/frontend/shared/GuideFlipbook').default);
+
 /* End Shared components */
 
 /** End Client side components **/

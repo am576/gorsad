@@ -28,17 +28,18 @@
                 </div>
                 <div class="desc color-grey mt-3">
                     <div style="">
-                        ГОРОДСКОЙ САДОВНИК <br>Комплексное озеленение и саженцы оптом в Калининграде</div>
+                        <span class="title-footer">ГОРОДСКОЙ САДОВНИК<br></span> Комплексное озеленение и саженцы оптом в Калининграде</div>
                 </div>
             </div>
             <div class="menu col-4">
                 <div class="title">Узнайте больше</div>
                 <ul class="color-grey">
-                    <li>Деревья</li>
-                    <li>Услуги</li>
-                    <li>Проекты</li>
-                    <li>Дизайн</li>
-                    <li>Контакты</li>
+                    <li><a href="{{config('links.shop')}}">Деревья</a></li>
+                    <li><a href="{{config('links.services')}}">Услуги</a></li>
+                    <li><a href="{{config('links.projects')}}">Проекты</a></li>
+                    <li><a href="{{config('links.knowhow')}}">Советы</a></li>
+                    <li><a href="{{config('links.design')}}">Дизайн</a></li>
+                    <li><a href="{{config('links.contacts')}}">Контакты</a></li>
                 </ul>
             </div>
             <div class="contacts col-4">
@@ -47,7 +48,7 @@
                     <li>
                         <span>
                             <img src="/storage/images/public/icons/marker.png" alt="">
-                            ул. Богатырская 35, Калиниград, Россия, 236038
+                            ул. Еловая аллея, д.26, Калиниград, Россия, 236038
                         </span>
                     </li>
                     <li>
@@ -59,7 +60,7 @@
                     <li>
                         <span>
                             <img src="/storage/images/public/icons/mail.png" alt="">
-                            info@group-zg.com
+                            mail@gorsad39.ru
                         </span>
                     </li>
                 </ul>
@@ -70,7 +71,7 @@
     <div class="copyright">
         <div class="container">
             <div class="row justify-content-between align-items-center">
-                <div class="color-grey">&#169; Все права защищены 2021, ООО Городской садовник</div>
+                <div class="color-grey">&#169; Все права защищены 2023, ООО Городской садовник</div>
                 <div class="color-grey">
                     <span class="mdi mdi-instagram mdi-24px"></span>
                     <span class="mdi mdi-whatsapp mdi-24px"></span>

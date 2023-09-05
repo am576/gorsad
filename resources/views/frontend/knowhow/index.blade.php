@@ -4,16 +4,18 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         @include('frontend.knowhow.menu')
+        @include('frontend.knowhow.mmenu')
         <section class="page-bg col-md-12 p-0">
             <div class="page-img-main" style="background-image: url('/storage/images/public/knowhowbg.jpg'); ">
                 <h1 class="page-img-title">Посадка деревьев и менеджмент озеленения</h1>
             </div>
+
         </section>
         <div class="colorbar"></div>
         <section class="page-content col-md-12 p-0">
             <div id="planning" class="static-page-section">
                 <div class="section-details">
-                    <div class="section-text">
+                    <div class="section-text col-md-6 col-sm-12">
                         <h3>Посадочный план: особенности посадки деревьев</h3>
                         <p>
                             <span class="section-description">
@@ -30,7 +32,9 @@
                             <a href="{{route('planning')}}" class="read-more-btn">Читать далее <i class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i> </a>
                         </p>
                     </div>
-                    <img src="{{asset('storage/images/public/knowhow/planning.jpg')}}" alt="">
+                    <div class="section-image col-md-6 col-sm-12">
+                        <img src="{{asset('storage/images/public/knowhow/planning.jpg')}}" alt="" style="width: 100%">
+                    </div>
                 </div>
             </div>
             <div id="ordering" class="static-page-section">
@@ -42,7 +46,7 @@
                                 Для реализации задуманного дизайна заказчику рекомендуется точно определить качество
                                 дерева для будущего ландшафтного проекта.
                                 С целью 100% уверенности в сделанном выборе, достаточно просто приехать в питомник
-                                «Натуралист» и выбрать деревья самостоятельно.
+                                «Городской садовник» и выбрать деревья самостоятельно.
                             </span>
                             <a href="{{route('trees_ordering')}}" class="read-more-btn">Читать далее <i class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i> </a>
                         </p>
@@ -77,10 +81,10 @@
                             <span class="section-description">
                                 Выбор подходящего оборудования является гарантией безопасности в процессе перемещения дерева к
                                 назначенному месту.
-                                Питомник «Натуралист» сочетает в себе деревья высочайшего качества, специализированное оборудование
+                                Питомник «Городской садовник» сочетает в себе деревья высочайшего качества, специализированное оборудование
                                 и опытных профессионалов, которые бережно транспортируют деревья к вашему участку для озеленения.
                             </span>
-                            <a class="mt-4" href="{{route('trees_transport')}}">Безопасная доставка из питомника «Натуралист»</a>
+                            <a class="mt-4" href="{{route('trees_transport')}}">Безопасная доставка из питомника «Городской садовник»</a>
                         </p>
                     </div>
                 </div>

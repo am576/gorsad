@@ -7,6 +7,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             @include('frontend.design.menu')
+            @include('frontend.design.mmenu')
             <section class="page-bg col-md-12 p-0">
                 <div class="page-img-main" style="background-image: url('/storage/images/public/design/streets_bg.jpg'); ">
                     <h1 class="page-img-title" style="">Дизайн улиц и аллей</h1>
@@ -58,7 +59,7 @@
                             <div class="mw-50 pl-4" style="padding-left: 2rem;">
                                  Робиния очень
                                 утонченная, немного причудлива, а ее структура и листья создают воздушную крону.
-                                Специалисты питомника «Натуралист» помогут Вам сделать правильный выбор.
+                                Специалисты питомника «Городской садовник» помогут Вам сделать правильный выбор.
                                 <a href="/contacts" class="mt-2 read-more-btn">Свяжитесь с нами<i
                                         class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i> </a>
                             </div>

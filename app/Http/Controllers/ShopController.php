@@ -13,6 +13,7 @@ use App\Utils\User as UserUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function Symfony\Component\String\indexOf;
+use Illuminate\Support\Facades\Cookie;
 
 class ShopController extends Controller
 {
@@ -20,19 +21,28 @@ class ShopController extends Controller
     {
         $user = UserUtils::getAuthUser();
 
-        $products = Product::with('image')
-            ->paginate(config('shop.paginate'));
+        $products = Product::getAndPaginateActiveProducts();
 
         $attributes = StaticTools::getAttributesByGroup();
 
-        return view('frontend.shop.index')
-            ->with(
-                [
-                    'products'=> $products->toJson(),
-                    'attributes' => $attributes,
-                    'user' => json_encode($user)
-                ]
-            );
+        $view_with =
+        [
+            'products'=> $products->toJson(),
+            'attributes' => $attributes,
+            'user' => json_encode($user),
+        ];
+
+        $showBanner = session()->get('showBanner');
+        if(isset($showBanner)) {
+            $showBanner = session()->get('showBanner');
+            $view_with['showBanner'] = var_export($showBanner,true);
+        }
+        else {
+            session()->put('showBanner', true);
+            $view_with['showBanner'] =  var_export(true,true);
+        }
+
+        return  view('frontend.shop.index')->with($view_with);
     }
 
     public function productPage($product_id)
@@ -67,8 +77,7 @@ class ShopController extends Controller
         }
         else
         {
-            $filtered_products = Product::with('image')
-                ->paginate(config('shop.paginate'));
+            $filtered_products = Product::getAndPaginateActiveProducts();
         }
 
         return response()->json($filtered_products);
@@ -152,6 +161,7 @@ class ShopController extends Controller
     public function loadProducts()
     {
         $products = Product::with('image')
+            ->where('status', '=', 1)
             ->paginate(config('shop.paginate'));
 
         return response()->json($products);

@@ -7,6 +7,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             @include('frontend.knowhow.menu')
+            @include('frontend.knowhow.mmenu')
             <section class="page-bg col-md-12 p-0">
                 <div class="page-img-main" style="background-image: url('/storage/images/public/knowhow/planning_bg.jpg'); ">
                     <h1 class="page-img-title">Посадочный план: особенности посадки деревьев</h1>
@@ -75,7 +76,7 @@
                             соответствии с вашим видением и мечтой.
                             Главные деревья, определяющие внешний вид вашего дизайна (бульварные варианты, деревья с
                             множеством
-                            стволов, солитеры и т.д.) рекомендуется выбирать в самом питомнике «Натуралист». Наш
+                            стволов, солитеры и т.д.) рекомендуется выбирать в самом питомнике «Городской садовник». Наш
                             дизайнер
                             поможет сделать правильный выбор с учетом ваших желаний, климата местности и предполагаемого
                             бюджета.

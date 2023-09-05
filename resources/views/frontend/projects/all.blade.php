@@ -1,6 +1,9 @@
 @extends('frontend.layouts.app')
 @section('title', 'Gorsad - Проекты')
 @section('content')
+@push('styles')
+    <link href="{{ asset('css/projects.css') }}" rel="stylesheet">
+@endpush
 <div class="container-fluid projects-all">
     <div class="row justify-content-center">
         <div class="col-md-12 p-0 projects-wrapper flex-column align-items-center">

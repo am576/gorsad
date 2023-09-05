@@ -169,7 +169,7 @@
                 },
                 product: {
                     attributes: [],
-                    status: 1,
+                    status: 0,
                     variants: []
                 },
                 images: [],

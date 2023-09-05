@@ -9,14 +9,21 @@
                 <a class="home-link" href="/"><img src="storage/images/logo/shop-logo.png" alt="">
                     <span class="logo-text">GORSAD</span>
                 </a>
-                <div class="d-flex align-items-center" v-if="!isGuest">
+                <!--<div class="d-flex align-items-center" v-if="!isGuest">
                     <a class="nav-link curpointer" @click="showCart">
                         <span class="mdi mdi-cart"></span>
                     </a>
                     <account-dropdown :user="user"></account-dropdown>
-                </div>
+                </div>-->
             </div>
             <div class="col-md-10 shop-content">
+                <g-banner v-if="show_banner">
+                    <div>
+                        Внимание! В данный момент заказы принимаются по телефону или через <a href="/contacts">форму</a> обратной связи.
+                        <br>
+                        Регистрация и добавление товаров в корзину временно не доступны.
+                    </div>
+                </g-banner>
                 <div class="pt-3">
                     <transition name="filter-slide">
                         <shop-filter v-if="showFilters" :attributes_groups="attributes" :filtered_name="filtered_name" :selected_options="filter_options || {}" @filterProducts="filterProducts"></shop-filter>
@@ -43,7 +50,7 @@
             </div>
             <div class="col-1"></div>
         </div>
-        <shopping-cart></shopping-cart>
+<!--        <shopping-cart></shopping-cart>-->
     </div>
 </template>
 
@@ -66,7 +73,11 @@
                 type: String,
                 default: ''
             },
-            cart: {}
+            cart: {},
+            show_banner: {
+                type: Boolean,
+                default: true
+            }
         },
         data() {
             return {
@@ -219,12 +230,12 @@
             .mdi {
                 margin-right: 5px;
             }
-            @media (max-width:590px) {
+            @media (max-width:600px) {
                 width: 100%;
                 justify-content: center;
             }
         }
-        @media (max-width:590px) {
+        @media (max-width:600px) {
             width: 100%;
             justify-content: center;
         }

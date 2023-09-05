@@ -1,13 +1,16 @@
 <template>
     <div class="site-nav">
         <div class="header-contacts" v-if="!isMobileView">
+            <a href="/" class="logo-link" v-if="isBreakPoint890">
+                <img src="/storage/images/public/logov2.png" alt="" v-if="!isMobileView">
+            </a>
             <div>
                 <span class="mdi mdi-phone mdi-24px"></span>
-                +7(4012) 52-21-11
+                <a href="tel:+74012522111">7(4012) 52-21-11</a>
             </div>
             <div>
                 <span class="mdi mdi-email-open-outline mdi-24px"></span>
-                info@group-zg.com
+                <a href="mailto:mail@gorsad39.ru">mail@gorsad39.ru</a>
             </div>
             <div>
                 <span class="mdi mdi-clock-time-four-outline mdi-24px"></span>
@@ -15,7 +18,7 @@
             </div>
         </div>
         <nav id="header-navbar" class="navbar">
-            <a href="/">
+            <a href="/" class="logo-link" v-if="!isBreakPoint890 || isMobileView">
                 <img src="/storage/images/public/logov2.png" alt="" v-if="!isMobileView">
                 <img src="/storage/images/public/logov2m.png" alt="" v-if="isMobileView">
             </a>
@@ -42,7 +45,7 @@
                 </li>
                 <li class="nav-item menu-link" ref="contacts" :class="{selected: isSelected ==='contacts'}" @mouseenter.stop="menuHover(6)" @mouseleave.stop="unHover">
                     <span :class="{hovered : isHovered ===(6)}"></span>
-                    <a href="#" class="nav-link">Контакты</a>
+                    <a href="/contacts" class="nav-link">Контакты</a>
                 </li>
             </ul>
             <ul class="nav nav-pills" v-if="isMobileView">
@@ -70,7 +73,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <div v-if="!isGuest">
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" id="account-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -115,8 +118,8 @@
                             </ul>
                         </div>
                     </div>
-                </li>
-                <li class="nav-item" v-if="isGuest">
+                </li>-->
+                <!--<li class="nav-item" v-if="isGuest">
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="login-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="mdi mdi-36px mdi-account"></div>
@@ -157,7 +160,7 @@
                             </form>
                         </div>
                     </div>
-                </li>
+                </li>-->
             </ul>
             <form action="/search" method="post" style="display: none">
                 <input type="hidden" name="_token" :value="csrf">
@@ -169,14 +172,14 @@
             <div class="menu-inner" :style="{'width': device.width + 'px', height: device.height + 'px'}" v-show="showNav">
                 <a href="/shop">Каталог растений</a>
                 <a href="/services">Услуги</a>
-                <a href="/projects/all">Проекты</a>
-                <a href="/shop">Советы</a>
-                <a href="/styles">Дизайн</a>
+                <a href="/projects">Проекты</a>
+                <a href="/knowhow">Советы</a>
+                <a href="/design">Дизайн</a>
                 <a href="/contacts">Контакты</a>
             </div>
             <i class="mdi mdi-close" @click="toggleMobileNav" v-if="navOpen"></i>
         </div>
-        <shopping-cart></shopping-cart>
+<!--        <shopping-cart></shopping-cart>-->
     </div>
 
 </template>
@@ -189,6 +192,7 @@
         data() {
             return {
                 isMobileView: false,
+                isBreakPoint890: false,
                 showNav: false,
                 navOpen : false,
                 isHovered: 0,
@@ -217,6 +221,7 @@
         methods: {
             handleView() {
                 this.isMobileView = window.innerWidth <= 600;
+                this.isBreakPoint890 = window.innerWidth <= 890;
                 this.width = $(window).width();
                 this.device = {
                     width: $(window).width(),
@@ -369,29 +374,60 @@
 
 <style lang="scss">
     .site-nav {
-        @media (max-width: 590px) {
+        @media (max-width: 600px) {
             position: fixed;
             width: 100%;
-            z-index: 100;
-        }
-        & a.nav-link, .btn-link .mdi, .mdi {
-            color: #fff !important;
-            text-transform: uppercase;
-            font-weight: 800;
+            z-index: 1000;
         }
 
+        & a.nav-link, .btn-link .mdi, .mdi {
+            @media (min-width: 870px) {
+                font-weight: 800;
+            }
+            color: #fff !important;
+            text-transform: uppercase;
+            font-weight: normal;
+        }
+        & .logo-link {
+            @media (min-width: 600px) {
+                /*margin: auto;*/
+            }
+        }
         img {
-            height: 70px;
+            @media (min-width: 360px) {
+                height: 8vh;
+            }
+            @media (min-width: 768px) {
+                height: 70px;
+            }
+
         }
     }
 </style>
 <style lang="scss" scoped>
     .header-contacts {
         display: flex;
-        padding: 15px 0 15px 15%;
+
+        padding: 15px 0 15px 0;
         background: rgba(0, 0, 0, 0.8);
         color: #dfdfdf;
 
+        a[href^="mailto:"], a[href^="tel:"] {
+            color: #dfdfdf
+        }
+
+        @media(min-width: 600px) {
+            justify-content: flex-end;
+            gap: 20px;
+            padding-right: 30px;
+        }
+        @media(min-width: 870px) {
+            justify-content: space-evenly;
+        }
+        @media(min-width: 1200px) {
+            justify-content: center;
+            gap: 30px;
+        }
         .mdi {
             color: #83b950 !important;
             margin-right: 5px;
@@ -400,20 +436,27 @@
         div {
             display: flex;
             align-items: center;
-            margin-right: 50px;
             font-size: 14px;
+            @media(min-width: 600px) {
+                max-width: 30%;
+                font-size: 12px;
+            }
         }
     }
     #header-navbar {
-        @media (min-width: 601px) {
+        z-index: 1000;
+        @media (min-width: 600px) {
             background: rgba(0, 0, 0, 0.6);
-            z-index: 1000;
             padding: 9px;
+            font-weight: normal;
         }
         @media (max-width:600px) {
             background-color: #ffffff;
             padding: 0 0 0 10px;
             border-bottom: 1px solid #b6b9bd;
+        }
+        @media (min-width:870px) {
+            font-weight: 800;
         }
     }
     .nav-item.menu-link {
@@ -469,7 +512,7 @@
         i {
             color: #000000 !important;
         }
-        @media (max-width:590px) {
+        @media (max-width:600px) {
             width: 40vw;
         }
     }

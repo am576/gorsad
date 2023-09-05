@@ -7,6 +7,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             @include('frontend.knowhow.menu')
+            @include('frontend.knowhow.mmenu')
             <section class="page-bg col-md-12 p-0">
                 <div class="page-img-main" style="background-image: url('/storage/images/public/knowhow/topiary_bg.jpg'); ">
                     <h1 class="page-img-title" style="">Топиарные и формованные виды деревьев</h1>
@@ -44,11 +45,11 @@
                 </div>
                 <div class="container">
                     <div class="d-flex">
-                        <img src="{{asset('storage/images/public/knowhow/multistem.jpg')}}" style="height: max-content;" alt="">
-                        <div class="pt-3 pl-5">
+                        <img src="{{asset('storage/images/public/knowhow/multistem.jpg')}}" class="col-md-6 multistem-img" style="height: max-content;" alt="">
+                        <div class="pt-3 pl-5 col-md-6">
                             <h2>Деревья с множеством стволов</h2>
 
-                            Питомник «Натуралист» включает в себя множество разнообразных видов многоствольных деревьев
+                            Питомник «Городской садовник» включает в себя множество разнообразных видов многоствольных деревьев
                             для посадки на любой территории. Мы предоставим для вашего доступа книгу «Многоствольные
                             деревья», которая вдохновит Вас на создание своего видения идеального ландшафта.
 
