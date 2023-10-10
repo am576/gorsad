@@ -6,7 +6,7 @@
             </a>
             <div>
                 <span class="mdi mdi-phone mdi-24px"></span>
-                <a href="tel:+74012522111">7(4012) 52-21-11</a>
+                <a href="tel:+74012719511">+7 (4012) 71-95-11</a>
             </div>
             <div>
                 <span class="mdi mdi-email-open-outline mdi-24px"></span>

@@ -20,7 +20,7 @@
                         </ul>
                     </div>
                     <div class="tab-content col" id="myTabContent">
-                        <div class="tab-pane fade" :class="{ 'active show': isTabActive(service.name) }"v-for="service in service_group.services">
+                        <div class="tab-pane fade" :class="{ 'active show': isTabActive(service.name) }" v-for="service in service_group.services">
                             <div class="service-description">
                                 <div>
                                     <h2 class="text-center">{{service.name}}</h2>

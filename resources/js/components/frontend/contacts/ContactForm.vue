@@ -13,7 +13,11 @@
                 </div>
                 <div>
                     <i class="mdi mdi-36px mdi-phone-classic"></i>
-                    <span>52-22-11</span>
+                    <span>+7 (4012) 71-95-11</span>
+                </div>
+                <div>
+                    <i class="mdi mdi-36px mdi-phone-classic"></i>
+                    <span>+7 (4012) 52-22-11</span>
                 </div>
             </div>
         </div>

@@ -34,7 +34,7 @@
                     <li>
                         <span>
                             <img src="/storage/images/public/icons/281830-48.png" alt="" style="height: 34px">
-                            +7 (4012) 52-22-11
+                            +7 (4012) 71-95-11
                         </span>
                     </li>
                     <li>
