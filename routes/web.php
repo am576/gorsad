@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\FeatureEnabled;
 
-//Auth::routes();
+
 
 Route::get('getToken', function() {
     dd(csrf_token());
@@ -12,12 +13,6 @@ Route::get('getToken', function() {
 Route::get('/','HomeController@index');
 
 Route::post('/search', 'HomeController@ApplyFilter');
-/*
- * Route::get('/getfavorites','UserController@getUserFavorites');
-Route::post('/favorite', 'UserController@toggleProductFavorite');
-Route::post('/postreview','UserController@postReview');
-Route::post('/donotreview','UserController@doNotReview');
-*/
 
 Route::prefix('shop')->group(function() {
     Route::get('/', 'ShopController@showShopPage')->name('shop');
@@ -28,35 +23,6 @@ Route::prefix('shop')->group(function() {
     Route::post('filter', 'ShopController@applyFilter')->name('filter');
     Route::get('load', 'ShopController@loadProducts');
 });
-
-/*
- * Route::get('/cart', 'HomeController@showCart');
-Route::get('/cart/add/', 'CartController@addProduct');
-Route::get('/cart/changequantity', 'CartController@changeProductQuantity');
-Route::get('/cart/totalprice', 'CartController@getTotalPrice');
-Route::get('/cart/removeproduct', 'CartController@removeProduct');
-Route::get('/cart/removeproductvariant', 'CartController@removeProductVariant');
-Route::get('/cart/getCart', 'ApiController@getCart');
-Route::post('/cart/usebonuses', 'CartController@useBonuses');
-Route::get('/cart/checkout', 'HomeController@showCheckoutPage');
-Route::post('/cart/checkout', 'CartController@createQuery');
-Route::post('/cart/clear','CartController@clearCart');
-*/
-
-/*
- * Route::get('/user/orders/{id}', 'UserController@getOrder')->middleware(['owns_order']);
-Route::post('/user/orders/{id}/cancel', 'UserController@cancelOrder')->middleware(['owns_order']);
-*/
-
-/*
- * Route::get('/profile/{tab?}', 'UserController@showProfilePage');
-Route::post('/profile/notification', 'UserController@readNotification');
-Route::get('/profile/notification/readall', 'UserController@readAllNotifications');
-Route::get('/querypdf','UserController@getQueryPdf');
-Route::get('/orderpdf','UserController@getOrderPdf');
-Route::get('/logascompany','UserController@setCompanyActive');
-Route::get('/logasuser','UserController@setCompaniesNotActive');
-*/
 
 Route::get('/projects', 'HomeController@showProjectsPage');
 Route::get('/projects/all', 'HomeController@showProjects')->name('projects.all');
@@ -168,3 +134,32 @@ Route::post('/closeBanner', function() {
 });
 Route::post('/sendMessage', 'HomeController@sendMessage');
 //**** END MISC ROUTES  ****//
+
+
+Route::group(['middleware'=>'feature_enabled:user_module'], function(){
+    Auth::routes();
+    Route::get('/profile/{tab?}', 'UserController@showProfilePage');
+    Route::post('/profile/notification', 'UserController@readNotification');
+    Route::get('/profile/notification/readall', 'UserController@readAllNotifications');
+    Route::get('/querypdf','UserController@getQueryPdf');
+    Route::get('/orderpdf','UserController@getOrderPdf');
+    Route::get('/logascompany','UserController@setCompanyActive');
+    Route::get('/logasuser','UserController@setCompaniesNotActive');
+    Route::get('/cart', 'HomeController@showCart');
+    Route::get('/cart/add/', 'CartController@addProduct');
+    Route::get('/cart/changequantity', 'CartController@changeProductQuantity');
+    Route::get('/cart/totalprice', 'CartController@getTotalPrice');
+    Route::get('/cart/removeproduct', 'CartController@removeProduct');
+    Route::get('/cart/removeproductvariant', 'CartController@removeProductVariant');
+    Route::get('/cart/getCart', 'ApiController@getCart');
+    Route::post('/cart/usebonuses', 'CartController@useBonuses');
+    Route::get('/cart/checkout', 'HomeController@showCheckoutPage');
+    Route::post('/cart/checkout', 'CartController@createQuery');
+    Route::post('/cart/clear','CartController@clearCart');
+    Route::get('/user/orders/{id}', 'UserController@getOrder')->middleware(['owns_order']);
+    Route::post('/user/orders/{id}/cancel', 'UserController@cancelOrder')->middleware(['owns_order']);
+    Route::get('/getfavorites','UserController@getUserFavorites');
+    Route::post('/favorite', 'UserController@toggleProductFavorite');
+    Route::post('/postreview','UserController@postReview');
+    Route::post('/donotreview','UserController@doNotReview');
+});

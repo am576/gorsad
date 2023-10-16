@@ -72,8 +72,7 @@
                         <span class="mdi mdi-cart mdi-36px"></span>
                     </a>
                 </li>
-
-                <!--<li class="nav-item">
+                <li class="nav-item" v-if="isUserEnabled">
                     <div v-if="!isGuest">
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" id="account-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -118,8 +117,8 @@
                             </ul>
                         </div>
                     </div>
-                </li>-->
-                <!--<li class="nav-item" v-if="isGuest">
+                </li>
+                <li class="nav-item" v-if="isUserEnabled && isGuest">
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="login-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="mdi mdi-36px mdi-account"></div>
@@ -160,7 +159,7 @@
                             </form>
                         </div>
                     </div>
-                </li>-->
+                </li>
             </ul>
             <form action="/search" method="post" style="display: none">
                 <input type="hidden" name="_token" :value="csrf">
@@ -208,6 +207,7 @@
                     email: '',
                     password: ''
                 },
+                isUserEnabled: false,
                 refs: {},
                 emailerror: '',
                 loginErrors: {
@@ -315,7 +315,14 @@
                         this.isSelected = item;
                     }
                 })
-            }
+            },
+            isUserModuleEnabled() {
+                axios.get('/api/isFeatureEnabled/' + 'user_module', {
+                })
+                .then(res => {
+                    this.isUserEnabled = res.data;
+                })
+            },
         },
         computed: {
             isGuest() {
@@ -362,6 +369,7 @@
                 document.getElementsByTagName('html')[0]. style .height = "100vh !important";
                 document.getElementsByTagName('html')[0]. style. overflow = "hidden !important";
             });
+            this.isUserModuleEnabled()
         },
         mounted() {
             this.$nextTick(()=>{

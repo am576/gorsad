@@ -178,6 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Fomvasss\Punycode\PunycodeServiceProvider::class,
+        LaravelFeature\Provider\FeatureServiceProvider::class
 
     ],
 
@@ -233,6 +234,7 @@ return [
         'InterventionImage' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
+        'Feature' => \LaravelFeature\Facade\Feature::class,
 
     ],
 

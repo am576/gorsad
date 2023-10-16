@@ -65,3 +65,5 @@ Route::post('approveQuery', function (Request $request) {
 
     return response('Error creating order', 300);
 });
+
+Route::get('isFeatureEnabled/{name}', 'ApiController@isFeatureEnabled');

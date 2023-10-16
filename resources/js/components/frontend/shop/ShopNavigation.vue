@@ -3,20 +3,20 @@
         <slot name="back_btn"></slot>
         <div class="d-flex" v-if="!isMobileView">
             <slot name="additional_buttons"></slot>
-            <!--<div class="text-light" v-if="isGuest">
+            <div class="text-light" v-if="isUserEnabled && isGuest">
                 <button class="nav-btn" id="btn-login" @click="showSigninForm">
                     <i class="mdi mdi-login"></i>
                     Войти
                 </button>
-            </div>-->
+            </div>
             <div class="d-flex align-items-center" v-if="!isGuest">
                 <a class="nav-link curpointer" @click="showCart">
                     <span class="mdi mdi-cart"></span>
                 </a>
-<!--                <account-dropdown :user="user"></account-dropdown>-->
+               <account-dropdown :user="user" v-if="isUserEnabled"></account-dropdown>
             </div>
         </div>
-<!--        <signin-form ref="signinForm"></signin-form>-->
+       <signin-form ref="signinForm" v-if="isUserEnabled"></signin-form>
 
     </div>
 </template>
@@ -34,6 +34,7 @@
             return {
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 sign_type: 'signin',
+                isUserEnabled: false,
             }
         },
         methods: {
@@ -46,6 +47,13 @@
             showCart() {
                 this.$eventBus.$emit('showCart')
             },
+            isUserModuleEnabled() {
+                axios.get('/api/isFeatureEnabled/' + 'user_module', {
+                })
+                .then(res => {
+                    this.isUserEnabled = res.data;
+                })
+            },
 
         },
         computed: {
@@ -55,6 +63,7 @@
 
         },
         created() {
+            this.isUserModuleEnabled();
         }
     }
 </script>

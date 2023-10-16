@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use MongoDB\Driver\Session;
+use \LaravelFeature\Facade\Feature;
 
 class ApiController extends Controller
 {
@@ -193,6 +194,10 @@ class ApiController extends Controller
                 return '/storage/images/' . $name;
                 },
             $names);
+    }
 
+    public function isFeatureEnabled(Request $request)
+    {
+        return json_encode(Feature::isEnabled($request->name));
     }
 }
