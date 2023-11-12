@@ -11,32 +11,214 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+html {
+    background: #2c2c2c !important;
+}
+
 body {
     overflow-x: hidden;
     font-size: 1rem !important;
+    background: #2c2c2c !important;
 }
-main {
-    @media (max-width: 600px) {
-        padding: 0 !important;
-    }
-}
+$body-bg : #EDEEF0;
+
 
 #app {
-    max-width: 1400px;
-    min-height: 1200px;
+    max-width: 1440px;
     margin: auto;
     position: relative !important;
     overflow-x: hidden !important;
+
+    #logo {
+        display: flex;
+        #logo-text {
+            display: flex;
+            flex-direction: column;
+            font-family: 'Source Sans 3', sans-serif;
+            #logo-title {
+                color: #0D6034;
+                font-weight: 600;
+            }
+            #logo-description {
+                color: #98B73D;
+            }
+        }
+        img {
+            align-self: center;
+        }
+    }
+
+    header {
+        padding: 10px 120px 20px;
+        background: $body-bg;
+        #logo {
+            #logo-text {
+                #logo-title {
+                    font-size: 28px;
+                }
+
+                #logo-description {
+                    font-size: 12px;
+                }
+            }
+        }
+        #header-top-wr {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+        }
+        #contacts {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 40px;
+            font-size: 14px;
+            color: #5A4636;
+            .contacts-title {
+                color: #363636;
+                font-size: 15px;
+            }
+            div {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .mdi {
+                font-size: 20px;
+                color: #219B3C;
+            }
+        }
+        #user-links {
+            display: flex;
+            gap: 20px;
+            color: #5A4636;
+            font-size: 24px;
+        }
+        #center {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            #search {
+                flex-grow: 2;
+                input {
+                    width: 70%;
+                    font-size: 15px;
+                    padding: 8px 10px;
+                    border-radius: 5px;
+                    border: 1px solid #5A4636;
+                    background-color: $body-bg;
+                    background-image: url('/storage/images/public/icons/icon_search.png');
+                    background-position: right center;
+                    background-repeat: no-repeat;
+                    background-origin: content-box;
+                    &:focus {
+                        outline: none !important;
+                    }
+                    &::placeholder {
+                        font-size: 12px;
+                        font-family: 'Inter', sans-serif;
+                    }
+                }
+            }
+        }
+        nav {
+            display: flex;
+            justify-content: left;
+            a {
+                font-size: 15px;
+                color: #5A4636;
+                padding: 5px 15px;
+            }
+            a:first-child {
+                padding-left: 0;
+            }
+        }
+    }
+
+    footer {
+        $plain-text-color: #1F2B0C;
+        width: 100%;
+        background-color: #E2DBD0;
+        #logo-text {
+            #logo-title {
+                font-size: 22px;
+                letter-spacing: -1px;
+            }
+            #logo-description {
+                font-size: 8px;
+            }
+        }
+        #footer-content {
+            display: flex;
+            padding: 25px 15px;
+            .footer-column {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                flex-grow: 2;
+                padding: 8px;
+                color: $plain-text-color;
+                .footer-col-title {
+                    text-transform: uppercase;
+                    font: 500 1rem 'Inter', sans-serif;
+                    color: #00672E;
+                }
+                .footer-icon {
+                    min-width: 30px;
+                    height: 30px;
+                    background-position: center;
+                    margin-right: 20px;
+                }
+                .footer-icon-marker {
+                    background: url("/storage/images/public/icons/icon_marker.png");
+                }
+                .footer-icon-phone {
+                    background: url("/storage/images/public/icons/icon_phone.png");
+                }
+                .footer-icon-email {
+                    background: url("/storage/images/public/icons/icon_email.png");
+                }
+            }
+            .footer-column:first-child {
+                //flex-grow: 2.5;
+            }
+            .footer-column:last-child {
+                gap: 30px;
+            }
+            .footer-column:nth-child(2),.footer-column:nth-child(3) {
+                gap: 25px;
+            }
+            input#subscribe {
+                background: none;
+                border: 1px solid #000;
+                border-radius: 0;
+                padding: 10px;
+                &:focus {
+                    outline: none !important;
+                }
+                &::placeholder {
+                    font-family: 'Inter', sans-serif;
+                    color: #000 !important;
+                }
+                &::-webkit-input-placeholder {
+                    font-family: 'Inter', sans-serif;
+                    color: #000 !important;
+                }
+                :-moz-placeholder {
+                    font-family: 'Inter', sans-serif;
+                    color: #000 !important;
+                }
+            }
+        }
+    }
+    .container-pd {
+        max-width: 1200px;
+        margin-right: auto;
+        margin-left: auto;
+    }
 }
 
-#app.frontend {
-    overflow-x: visible !important;
-    max-width: 1920px;
-}
-a.link-passive, a.link-passive:hover {
-    color: white;
-    text-decoration: none;
-}
 .theme--dark.v-overlay {
   color: #fff;
 }
