@@ -7,6 +7,11 @@
 // Bootstrap
 //@import '~bootstrap/scss/bootstrap';
 @import '~pretty-checkbox/src/pretty-checkbox.scss';
+
+.fz18 {
+    font-size: 18px !important;
+}
+
 * {
     font-family: 'Open Sans', sans-serif;
 }
@@ -22,6 +27,9 @@ body {
 }
 $body-bg : #EDEEF0;
 
+.body-bg {
+    background: $body-bg;
+}
 
 #app {
     max-width: 1440px;
@@ -140,6 +148,7 @@ $body-bg : #EDEEF0;
         $plain-text-color: #1F2B0C;
         width: 100%;
         background-color: #E2DBD0;
+        padding-top: 10px;
         #logo-text {
             #logo-title {
                 font-size: 22px;
@@ -180,9 +189,7 @@ $body-bg : #EDEEF0;
                     background: url("/storage/images/public/icons/icon_email.png");
                 }
             }
-            .footer-column:first-child {
-                //flex-grow: 2.5;
-            }
+
             .footer-column:last-child {
                 gap: 30px;
             }
@@ -217,7 +224,22 @@ $body-bg : #EDEEF0;
         margin-right: auto;
         margin-left: auto;
     }
+
+    .btn-green {
+        padding: 15px 50px;
+        font-size: 20px;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        background-color: $btn-green-color;
+        cursor: pointer;
+    }
+
+    .no-border-radius {
+        border-radius: 0 !important;
+    }
 }
+
 
 .theme--dark.v-overlay {
   color: #fff;
