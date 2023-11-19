@@ -1,11 +1,17 @@
-@extends('frontend.layouts.app')
+@extends('frontend.layouts.services')
 @section('title', 'Gorsad - Услуги')
 @section('content')
-<div class="container-fluid services-all">
-    <div class="row justify-content-center bg-white">
-        <div class="col-md-12 services-wrapper flex-column align-items-center">
-            <services-page :service_groups="{{$service_groups}}"></services-page>
-        </div>
-    </div>
+<div id="services-banner">
+    <img src="/storage/images/service_groups/services-banner.jpg" alt="">
 </div>
+    <div id="services-list" class="container-pd">
+        @foreach($service_groups as $service_group)
+            <a href="{{'services/'.$service_group->id}}">
+                <div class="service-link">
+                    <img src="{{'/storage/images/'.$service_group->images[0]['large']}}" alt="">
+                    <span class="service-title">{{$service_group->name}}</span>
+                </div>
+            </a>
+        @endforeach
+    </div>
 @endsection

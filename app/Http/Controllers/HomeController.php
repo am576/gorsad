@@ -113,7 +113,6 @@ class HomeController extends Controller
 
     public function showServicesPage()
     {
-        // dd(ServiceGroup::with(['images'])->get());
         $service_groups = ServiceGroup::with(['images'])->get();
 
         return view('frontend.services.index', compact('service_groups'));
@@ -121,7 +120,9 @@ class HomeController extends Controller
 
     public function showServicePage($id)
     {
-        return view('frontend.services.service_page')->with('service_group', ServiceGroup::with(['images', 'services'])->find($id));
+        $service_group = ServiceGroup::with(['images', 'services'])->find($id);
+        $heading = $service_group->name;
+        return view('frontend.services.service_page', compact('service_group', 'heading'));
     }
 
     public function showGuidePage(string $guide_name)

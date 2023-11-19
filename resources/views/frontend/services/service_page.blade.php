@@ -1,5 +1,5 @@
-@extends('frontend.layouts.app')
+@extends('frontend.layouts.services')
 @section('title', 'Gorsad - Услуги | ' . $service_group->name)
 @section('content')
-    <service-page :service_group="{{$service_group}}"></service-page>
+
 @endsection

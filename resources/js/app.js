@@ -51,8 +51,6 @@ Vue.component('shopping-cart', require('./components/frontend/ShoppingCart').def
 Vue.component('signin-form', require('./components/frontend/user/SigninForm').default);
 
 Vue.component('projects-map', require('./components/frontend/projects/ProjectsMap').default);
-Vue.component('services-page', require('./components/frontend/services/ServicesPage').default);
-Vue.component('service-page', require('./components/frontend/services/ServicePage').default);
 
 Vue.component('contact-form', require('./components/frontend/contacts/ContactForm').default);
 

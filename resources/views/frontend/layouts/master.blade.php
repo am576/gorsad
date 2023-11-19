@@ -59,7 +59,7 @@
         </div>
         <nav>
             <a class="nav-link" href="#">Каталог</a>
-            <a class="nav-link" href="#">Услуги</a>
+            <a class="nav-link" href="/services">Услуги</a>
             <a class="nav-link" href="#">Наши работы</a>
             <a class="nav-link" href="#">Советы</a>
             <a class="nav-link" href="#">Дизайн</a>

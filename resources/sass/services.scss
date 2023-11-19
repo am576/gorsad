@@ -1,0 +1,84 @@
+@import 'variables';
+
+#services-page {
+    .page-menu {
+        display: block;
+        margin-bottom: 30px;
+        font: 400 18px 'Inter', sans-serif;
+        line-height: 22px;
+        .page-menu-link {
+            display: inline-block;
+        }
+    }
+    #services-banner {
+        margin-top: 50px;
+        img {
+            width: 100%;
+        }
+    }
+    #services-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        padding-top: 80px;
+        padding-bottom: 150px;
+        .service-link {
+            position: relative;
+            .service-title {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 10px 0;
+                text-align: center;
+                background-color: rgba(0,0,0,0.6);
+                color: #ffffff;
+            }
+        }
+    }
+}
+#service-landing-form-wr {
+    background-image: url('/storage/images/service_groups/service-landing-form-bg.jpg');
+    background-size: cover;
+    #service-landing-form-inner {
+        padding: 60px 100px;
+        display: flex;
+        * {
+            flex: 1;
+        }
+        #landing-caption {
+            padding: 85px 0;
+            text-align: left;
+            font-size: 50px;
+        }
+        #service-landing-form {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 25px;
+            input {
+                width: 100%;
+                background: none;
+                border: none;
+                border-bottom: 1px solid #ffffff;
+                font-size: 18px;
+                color: #ffffff;
+                padding: 10px;
+                &:focus {
+                    outline: none !important;
+                }
+                &::placeholder {
+                    color: #ffffff;
+                    opacity: 1;
+                }
+            }
+            button {
+                width: 50%;
+                margin-top: 15px;
+            }
+        }
+    }
+}
+footer {
+    padding-top: 50px !important;
+}

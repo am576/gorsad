@@ -31,6 +31,11 @@ $body-bg : #EDEEF0;
     background: $body-bg;
 }
 
+.heading {
+    font: 500 40px 'Inter', sans-serif;
+    color: $text-color;
+}
+
 #app {
     max-width: 1440px;
     margin: auto;
