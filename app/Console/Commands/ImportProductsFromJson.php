@@ -101,9 +101,9 @@ class ImportProductsFromJson extends Command
                                 'mimetype' => 'image/jpeg',
                                 'imageable_type' => 'App\Product',
                                 'imageable_id' => $product->id,
-                                'icon' => ImageUtils::createResizedImage('icon', $filename, 'products', config('images.size.icon')),
-                                'small' => ImageUtils::createResizedImage('small', $filename, 'products',config('images.size.small')),
-                                'medium' => ImageUtils::createResizedImage('medium', $filename, 'products',config('images.size.medium')),
+                                'icon' => ImageUtils::createResizedImage('icon', $filename, 'products', config('images.size.icon'), config('images.size.icon')),
+                                'small' => ImageUtils::createResizedImage('small', $filename, 'products',config('images.size.small'), config('images.size.icon')),
+                                'medium' => ImageUtils::createResizedImage('medium', $filename, 'products',config('images.size.medium'), config('images.size.icon')),
                                 'large' => $path,
                             ]);
                             $image->save();

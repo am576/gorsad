@@ -8,11 +8,11 @@ use Intervention\Image\Facades\Image as InterventionImage;
 
 class ImageUtils
 {
-    public static function createResizedImage(string $type, string $filename, string $subfolder, $size)
+    public static function createResizedImage(string $type, string $filename, string $subfolder, $sizeX, $sizeY)
     {
         $fullname = pathinfo($filename, PATHINFO_FILENAME);
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
-        $file = InterventionImage::make($filename)->resize($size,$size, function($constraint) {
+        $file = InterventionImage::make($filename)->resize($sizeX, $sizeY, function($constraint) {
             $constraint->aspectRatio();
         });
 
