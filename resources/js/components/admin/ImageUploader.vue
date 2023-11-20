@@ -54,7 +54,7 @@
                         <i class="mdi mdi-close-circle-outline" @click.prevent="removeImage(current_image)"></i>
                     </span>
                     <span v-if="isEntityImage">
-                        <img class="single-image" :src="entity_image">
+                        <img class="single-image" :src="single_image">
                         <i class="mdi mdi-close-circle-outline" @click.prevent="removeImage(entity_image)"></i>
                     </span>
                 </div>
@@ -161,28 +161,31 @@
             },
             getImages()
             {
-                axios.get('/api/getImages',{
-                    params: {
-                        id: this.entity_id,
-                        model: this.entity_model,
-                    }
-                })
-                .then(response => {
-                    if(!this.isSingleImage){
-                        this.existing_images = this.entity.images;
-                    }
-                    if(this.isSingleImage)
-                        if(typeof this.entity.images[0] !== 'undefined')
+                if(this.uploader_type === 'multiple')
+                {
+                    this.existing_images = this.entity.images;
+                }
+                else if(this.uploader_type === 'single')
+                {
+                    if(typeof this.entity.images[0] !== 'undefined')
                         this.current_image = this.entity.images[0];
-                })
+                }
+                else if(this.uploader_type === 'entity')
+                {
+                    this.entity_image = this.entity.image;
+                }
             },
-
         },
         computed: {
             single_image() {
                 if (this.entity_id)
                 {
-                    return typeof this.current_image === 'string' ? this.current_image : '/storage/images/' +  this.current_image.large;
+                    if(this.uploader_type === 'single') {
+                        return typeof this.current_image === 'string' ? this.current_image : '/storage/images/' +  this.current_image.large;
+                    }
+                    if(this.uploader_type === 'entity') {
+                        return '/storage/images/' +  this.entity_image
+                    }
                 }
                 else
                 {
