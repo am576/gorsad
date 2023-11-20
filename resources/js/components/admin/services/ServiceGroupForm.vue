@@ -26,7 +26,7 @@
                 <image-uploader :uploader_type="'single'" :entity="service_group" :entity_id="service_group.id" :entity_model="'ServiceGroup'"
                                 @removeImage="removeImage" :storage="'service_groups/'"></image-uploader>
                 <image-uploader :uploader_type="'entity'" :entity="service_group" :entity_id="service_group.id" :entity_model="'ServiceGroup'"
-                                @removeImage="removeImage" :storage="'service_groups/'"></image-uploader>
+                                @removeImage="removeImage" @removeEntityImage="removeMainImage" :storage="'service_groups/'"></image-uploader>
             </div>
             <button type="submit" class="btn btn-primary">{{submitCaption}}</button>
         </form>
@@ -68,7 +68,6 @@
             }
         },
         methods: {
-
             setImages(images) {
                 this.images = images;
             },
@@ -85,7 +84,7 @@
                 Object.keys(this.service_group).forEach(key => {
                     formData.append(key, this.service_group[key])
                 });
-                if(typeof this.main_image.name === 'string')
+                if(typeof this.main_image.name === 'string' || this.main_image === 'delete')
                 {
                     formData.append('main_image', this.main_image);
                 }
@@ -124,6 +123,10 @@
                     this.images_to_delete.push(image_id);
                 }
             },
+            removeMainImage()
+            {
+                this.main_image = "delete"
+            }
         },
         computed: {
             submitCaption() {

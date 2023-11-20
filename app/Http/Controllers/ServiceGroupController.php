@@ -85,6 +85,26 @@ class ServiceGroupController extends Controller
             }
 
             StaticTools::saveImages($request->images, $service_group, 'service_groups/'.$service_group->id);
+
+            if(isset($request->main_image))
+            {
+                if($request->main_image == 'delete')
+                {
+                    StaticTools::deleteEntityImage($service_group);
+                    return 1;
+                }
+                else {
+                    try
+                    {
+                        $service_group->image = ImageUtils::saveOriginalImage($request->main_image, $service_group, "service_groups/$service_group->id/");
+                        $service_group->save();
+                    }
+                    catch (ImageException $e)
+                    {
+                        return response()->json($e);
+                    }
+                }
+            }
         }
     }
 

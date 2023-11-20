@@ -54,8 +54,8 @@
                         <i class="mdi mdi-close-circle-outline" @click.prevent="removeImage(current_image)"></i>
                     </span>
                     <span v-if="isEntityImage">
-                        <img class="single-image" :src="single_image">
-                        <i class="mdi mdi-close-circle-outline" @click.prevent="removeImage(entity_image)"></i>
+                        <img class="single-image" :src="current_entity_image">
+                        <i class="mdi mdi-close-circle-outline" @click.prevent="removeEntityImage()"></i>
                     </span>
                 </div>
             </div>
@@ -82,7 +82,7 @@
             images: [],
             existing_images: [],
             current_image: {},
-            entity_image: {},
+            entity_image: '',
         }),
         methods : {
             onInputChange(e) {
@@ -135,8 +135,11 @@
                 {
                     this.$emit('removeImage', image.id);
                 }
-                if(this.isSingleImage) this.current_image = {};
-                else if(this.isEntityImage) this.entity_image = {};
+                this.current_image = {};
+            },
+            removeEntityImage() {
+                this.$emit('removeEntityImage');
+                 this.entity_image = undefined;
             },
             removeUploadedImage(index) {
                 this.$delete(this.files, index);
@@ -183,19 +186,28 @@
                     if(this.uploader_type === 'single') {
                         return typeof this.current_image === 'string' ? this.current_image : '/storage/images/' +  this.current_image.large;
                     }
-                    if(this.uploader_type === 'entity') {
-                        return '/storage/images/' +  this.entity_image
-                    }
+
                 }
                 else
                 {
                     return this.current_image;
                 }
             },
+            current_entity_image() {
+                if (this.entity_id) {
+                    if(this.uploader_type === 'entity') {
+                        return this.entity_image.includes('data:image/') ? this.entity_image : '/storage/images/' + this.entity_image;
+                    }
+                }
+                else
+                {
+                    return this.entity_id;
+                }
+            },
             isImageEmpty() {
                 if(this.isEntityImage)
                 {
-                    return Object.keys(this.entity_image).length === 0
+                    return typeof this.entity_image === 'undefined' || this.entity_image === ''
                 }
                 if(this.isSingleImage)
                 {

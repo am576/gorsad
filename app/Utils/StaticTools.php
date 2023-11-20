@@ -84,14 +84,23 @@ class StaticTools
 
     public static function deleteImages($images)
     {
-        /*foreach ($images as $image_id) {
-            $images = array_values(\App\Image::select('icon','small','medium','large')
+        $images_paths = array();
+        foreach ($images as $image_id) {
+            $images_paths = array_values(Image::select('icon', 'small', 'medium', 'large')
                 ->where('id', $image_id)->get()->toArray()[0]);
-
-            Storage::disk('images')->delete($images);
-        }*/
-        \App\Image::whereIn('id', $images)
+            foreach ($images_paths as $image_path) {
+                unlink(Storage::disk('images')->path('').$image_path);
+            }
+        }
+        Image::whereIn('id', $images)
             ->delete();
+    }
+
+    public static function deleteEntityImage(Model $entity)
+    {
+        unlink(Storage::disk('images')->path('').$entity->image);
+        $entity->image = null;
+        $entity->save();
     }
 
     public static function filterProducts($product_name, $filter)
