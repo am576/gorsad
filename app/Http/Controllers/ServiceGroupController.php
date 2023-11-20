@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ServiceGroupRequest;
 use App\Image;
 use App\ServiceGroup;
+use App\Utils\ImageUtils;
 use App\Utils\StaticTools;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Exception\ImageException;
 
 class ServiceGroupController extends Controller
 {
@@ -38,7 +40,19 @@ class ServiceGroupController extends Controller
         if($service_group->save())
         {
             StaticTools::saveImages($request->images, $service_group, 'service_groups/'.$service_group->id);
+            if(isset($request->main_image))
+            {
+                try
+                {
+                    $service_group->image = ImageUtils::saveOriginalImage($request->main_image, $service_group, "service_groups/$service_group->id/");
+                    $service_group->save();
+                }
+                catch (ImageException $e)
+                {
+                    return response()->json($e);
+                }
 
+            }
             return redirect()->intended(route('service_groups.index'));
         }
 

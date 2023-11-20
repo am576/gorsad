@@ -18,9 +18,14 @@
                     </div>
                 </div>
             </div>
-            <div class="row" v-if="!is_edit"><image-uploader></image-uploader></div>
-            <div class="row" v-if="is_edit">
-                <image-uploader :isSingleImage="true" :entity="service_group" :entity_id="service_group.id" :entity_model="'ServiceGroup'"
+            <div class="d-flex" v-if="!is_edit">
+                <image-uploader :uploader_type="'single'"></image-uploader>
+                <image-uploader :uploader_type="'entity'"></image-uploader>
+            </div>
+            <div class="d-flex" v-if="is_edit">
+                <image-uploader :uploader_type="'single'" :entity="service_group" :entity_id="service_group.id" :entity_model="'ServiceGroup'"
+                                @removeImage="removeImage" :storage="'service_groups/'"></image-uploader>
+                <image-uploader :uploader_type="'entity'" :entity="service_group" :entity_id="service_group.id" :entity_model="'ServiceGroup'"
                                 @removeImage="removeImage" :storage="'service_groups/'"></image-uploader>
             </div>
             <button type="submit" class="btn btn-primary">{{submitCaption}}</button>
@@ -58,6 +63,7 @@
                 errors: {},
                 images: [],
                 images_to_delete: [],
+                main_image: {},
                 overlay: false,
             }
         },
@@ -65,6 +71,9 @@
 
             setImages(images) {
                 this.images = images;
+            },
+            setMainImage(image) {
+                this.main_image = image
             },
             submit() {
                 this.overlay = true;
@@ -76,7 +85,10 @@
                 Object.keys(this.service_group).forEach(key => {
                     formData.append(key, this.service_group[key])
                 });
-
+                if(typeof this.main_image.name === 'string')
+                {
+                    formData.append('main_image', this.main_image);
+                }
                 formData.delete('images');
                 if(this.images.length)
                 {
@@ -123,6 +135,7 @@
                 this.service_group = this.service_group_data;
             }
             this.$eventBus.$on('addImages', this.setImages)
+            this.$eventBus.$on('addEntityImage', this.setMainImage)
         }
     }
 </script>

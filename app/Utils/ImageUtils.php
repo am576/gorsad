@@ -5,6 +5,7 @@ namespace App\Utils;
 
 
 use Intervention\Image\Facades\Image as InterventionImage;
+use Illuminate\Database\Eloquent\Model;
 
 class ImageUtils
 {
@@ -20,5 +21,24 @@ class ImageUtils
         $store_path = $subfolder.'/'.$fullname.'_'.$type.'.'.$extension;
         if($file->save($path))
             return $store_path;
+    }
+
+    public static function saveOriginalImage($file, Model $object, string $subfolder)
+    {
+        $fullname = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $filename = str_replace(' ', '_', $fullname);
+        $extension = $file->getClientOriginalExtension();
+        $store_path =  $file->storeAs($subfolder, $filename . '.' . $extension, 'images');
+        $path = public_path('storage/images/' . $store_path);
+        $image = InterventionImage::make($path);
+
+        try {
+            $image->save($path);
+            return $subfolder . $fullname . '.' . $extension;
+        }
+        catch (\Exception $e)
+        {
+            return response()->json($e);
+        }
     }
 }

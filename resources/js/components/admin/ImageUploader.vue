@@ -1,6 +1,6 @@
 <template>
     <div class="product_images images-container">
-        <div v-show="!isSingleImage && existing_images.length" class="card">
+        <div v-show="isMultipleImage && existing_images.length" class="card">
             <div class="card-header">Сохранённые изображения</div>
             <div class="card-body">
                 <div class="images-preview" v-show="existing_images.length">
@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-        <div v-show="(isSingleImage && isImageEmpty) || !isSingleImage" class="uploader"
+        <div v-show="((isSingleImage || isEntityImage) && isImageEmpty) || isMultipleImage" class="uploader"
              :class="{dragging: isDragging}"
         >
             <div class="dropin"
@@ -25,10 +25,10 @@
                 <div>ИЛИ</div>
             </div>
             <div class="file-input">
-                <label for="file">Выберите файл</label>
-                <input type="file" id="file" multiple @change="onInputChange">
+                <label :for="input_id">Выберите файл</label>
+                <input type="file" :id="input_id" multiple @change="onInputChange" v-if="isMultipleImage">
+                <input type="file" :id="input_id" @change="onInputChange" v-if="!isMultipleImage">
             </div>
-
             <div class="card" v-show="images.length">
                 <div class="card-header d-flex flex-row">
                     <div class="m-auto"></div>
@@ -40,18 +40,23 @@
                             <i class="mdi mdi-close-circle-outline" @click.prevent="removeUploadedImage(index)"></i>
                             <div class="image-details">
                                 <span class="image-name" v-text="files[index].name" :title="files[index].name"></span>
-<!--                                <span class="image-size" v-text="files[index].size + ' байт'"></span>-->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card-body">
-            <div v-if="isSingleImage && !isImageEmpty" class="images-preview">
-                <div class="img-wrapper" :class="[isSingleImage ? 'single_image_wrapper' : '']">
-                    <img class="single-image" :src="single_image">
-                    <i class="mdi mdi-close-circle-outline" @click.prevent="removeSingleImage()"></i>
+        <div class="card-body" v-if="!isMultipleImage && !isImageEmpty">
+            <div class="images-preview">
+                <div class="img-wrapper" :class="[isSingleImage || isEntityImage ? 'single_image_wrapper' : '']">
+                    <span v-if="isSingleImage">
+                        <img class="single-image" :src="single_image">
+                        <i class="mdi mdi-close-circle-outline" @click.prevent="removeImage(current_image)"></i>
+                    </span>
+                    <span v-if="isEntityImage">
+                        <img class="single-image" :src="entity_image">
+                        <i class="mdi mdi-close-circle-outline" @click.prevent="removeImage(entity_image)"></i>
+                    </span>
                 </div>
             </div>
         </div>
@@ -64,7 +69,10 @@
             entity_id: 0,
             entity_model: '',
             entity: {},
-            isSingleImage: false,
+            uploader_type: {
+                type: String,
+                default: 'single' //allowed: single, multiple, entity
+            },
             storage: ''
         },
         data: () => ({
@@ -73,7 +81,8 @@
             files: [],
             images: [],
             existing_images: [],
-            current_image: {}
+            current_image: {},
+            entity_image: {},
         }),
         methods : {
             onInputChange(e) {
@@ -105,11 +114,15 @@
                 this.files.push(file);
                 const reader = new FileReader();
 
+                if(this.isEntityImage)
+                {
+                    reader.onload = (e) => this.entity_image = e.target.result;
+                }
                 if(this.isSingleImage)
                 {
                     reader.onload = (e) => this.current_image = e.target.result;
                 }
-                else
+                if(this.isMultipleImage)
                 {
                     reader.onload = (e) => this.images.push(e.target.result);
                 }
@@ -117,12 +130,13 @@
                 reader.readAsDataURL(file);
 
             },
-            removeSingleImage() {
-                if(typeof this.current_image !== 'string')
+            removeImage(image) {
+                if(typeof image !== 'string')
                 {
-                    this.$emit('removeImage', this.current_image.id);
+                    this.$emit('removeImage', image.id);
                 }
-                this.current_image = {};
+                if(this.isSingleImage) this.current_image = {};
+                else if(this.isEntityImage) this.entity_image = {};
             },
             removeUploadedImage(index) {
                 this.$delete(this.files, index);
@@ -135,7 +149,15 @@
                 this.$emit('removeImage', image_id)
             },
             passImages() {
-                this.$eventBus.$emit('addImages', this.files)
+                if(this.uploader_type === 'entity')
+                {
+                    this.$eventBus.$emit('addEntityImage', this.files[0])
+                }
+                else
+                {
+                    this.$eventBus.$emit('addImages', this.files)
+                }
+
             },
             getImages()
             {
@@ -166,21 +188,29 @@
                 {
                     return this.current_image;
                 }
-
             },
             isImageEmpty() {
-                if(typeof this.current_image === 'undefined')
+                if(this.isEntityImage)
+                {
+                    return Object.keys(this.entity_image).length === 0
+                }
+                if(this.isSingleImage)
                 {
                     return Object.keys(this.current_image).length === 0
                 }
-                else if(typeof this.current_image === 'string')
-                {
-                    return this.current_image.length === 0
-                }
-                else
-                {
-                    return Object.keys(this.current_image).length === 0
-                }
+
+            },
+            isSingleImage() {
+                return this.uploader_type === 'single'
+            },
+            isMultipleImage() {
+                return this.uploader_type === 'multiple'
+            },
+            isEntityImage() {
+                return this.uploader_type === 'entity'
+            },
+            input_id() {
+                return "file" + Math.floor(Math.random() * (100 - 1 + 1)) + 1;
             }
         },
         created() {
