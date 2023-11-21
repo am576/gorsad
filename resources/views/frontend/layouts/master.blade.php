@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -52,7 +51,7 @@
             </div>
         </div>
         <div id="center">
-            @include('frontend.common.logo')
+            <x-frontend.logo></x-frontend.logo>
             <div id="search">
                 <input type="text" name="" id="" placeholder="Поиск">
             </div>
@@ -61,7 +60,7 @@
             <a class="nav-link" href="#">Каталог</a>
             <a class="nav-link" href="/services">Услуги</a>
             <a class="nav-link" href="#">Наши работы</a>
-            <a class="nav-link" href="#">Советы</a>
+            <a class="nav-link" href="/knowhow">Советы</a>
             <a class="nav-link" href="#">Дизайн</a>
             <a class="nav-link" href="#">Вакансии</a>
         </nav>
@@ -71,7 +70,7 @@
     <footer>
         <div id="footer-content" class="container-pd bg-white">
             <div class="footer-column">
-                @include('frontend.common.logo')
+                <x-frontend.logo></x-frontend.logo>
                 <span class="w-75 mt-4">
                     Комплексное озеленение
                     и саженцы оптом в Калининграде

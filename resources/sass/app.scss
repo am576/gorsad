@@ -41,7 +41,9 @@ $body-bg : #EDEEF0;
     margin: auto;
     position: relative !important;
     overflow-x: hidden !important;
-
+    a.logo-link:hover {
+        text-decoration: none;
+    }
     #logo {
         display: flex;
         #logo-text {
@@ -51,6 +53,9 @@ $body-bg : #EDEEF0;
             #logo-title {
                 color: #0D6034;
                 font-weight: 600;
+                &:hover {
+                    text-decoration: none;
+                }
             }
             #logo-description {
                 color: #98B73D;

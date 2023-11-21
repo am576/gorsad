@@ -42,14 +42,14 @@ class Handler extends ExceptionHandler
         parent::report($exception);
     }
 
-    public function register()
+    /*public function register()
     {
         // reportable
         $this->renderable(function (Throwable $e) {
             //
             return response(['error' => $e->getMessage()], $e->getCode() ?: 400);
         });
-    }
+    }*/
     /**
      * Render an exception into an HTTP response.
      *

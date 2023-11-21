@@ -1,78 +1,32 @@
-@use 'staticinfo_page';
-.colorbar {
-    background: #eaddc6;
-}
-.page-img-main .page-img-title {
+@import '_variables.scss';
 
-}
-.page-content {
-    .section-text {
-        @media (min-width: 360px) {
-            padding: 0 30px 0 50px;
+#knowhow-page {
+    #top-banner {
+        display: flex;
+        margin-top: 80px;
+        font-family: 'Inter', sans-serif;
+        color: $text-color;
+        div {
+            flex: 1;
         }
-        @media (min-width: 1200px) {
-            padding: 0;
+        .banner-left {
+            flex: 1.2;
+            background-color: #ffffff;
+            padding-top: 30px;
+            padding-left: 40px;
         }
-    }
-    .section-image {
-        @media(max-width:768px) {
-            display: none;
+        .page-title {
+            font-size: 40px;
+            width: 50%;
+            line-height: 50px;
+            font-weight: 600;
         }
-    }
-    #planning {
-        background: #f2edd9;
-        p {
-            flex-direction: column;
-            line-height: 40px;
-            padding-right: 50px;
-        }
-    }
-    #topiary{
-        background: #efefef;
-        @media(max-width: 576px) {
-            text-align: left;
-        }
-        h3 {
-            padding-left: 50px;
-            @media(max-width: 576px) {
-                padding-right: 50px;
-                padding-left: 0;
-            }
-        }
-        p {
-            flex-direction: column;
-            line-height: 40px;
-            padding-left: 50px;
-            @media(max-width: 576px) {
-                padding-right: 50px;
-                padding-left: 0;
-            }
-        }
-        img {
-            border-radius: 200px;
-            height: max-content;
-            @media(max-width: 576px) {
-                display: none;
-            }
-        }
-    }
-    #ordering {
-        background: #ffffff;
-        p {
-            line-height: 40px;
-            padding-right: 50px;
-        }
-    }
-    #transport {
-        background: #ffecd0;
-    }
-    #planting {
-        background: #ffffff;
-    }
-    #pruning {
-        background: #fcfff8;
-        img {
-            height: 50px;
+        .page-description {
+            width: 85%;
+            margin-top: 30px;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
         }
     }
 }
