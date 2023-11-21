@@ -4,7 +4,7 @@
 <div id="services-banner">
     <img src="/storage/images/service_groups/services-banner.jpg" alt="">
 </div>
-    <div id="services-list" class="container-pd">
+    <div id="services-links" class="container-pd">
         @foreach($service_groups as $service_group)
             <a href="{{'services/'.$service_group->id}}">
                 <div class="service-link">

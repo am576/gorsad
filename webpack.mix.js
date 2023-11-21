@@ -29,3 +29,10 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/admin.scss', 'public/css')
     .sass('resources/sass/projects.scss', 'public/css')
     .sass('resources/sass/guide_page.scss', 'public/css')
+    .webpackConfig({
+        resolve: {
+            alias: {
+                '@': path.resolve('resources/sass')
+            }
+        }
+    })
