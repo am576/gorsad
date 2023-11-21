@@ -6,6 +6,14 @@
 @section('body')
     <div id="knowhow-page" class="body-bg">
         <div class="container-pd">
+            <div id="advices-menu-wr">
+                <nav id="advices-menu">
+                    <a href="/knowhow/planting">Шаги посадки</a>
+                    <a href="/knowhow/topiar">Топиарные и формованные деревья</a>
+                    <a href="/knowhow/order-trees">Заказ деревьев</a>
+                    <a href="/knowhow/tree-care">Уход за деревьями</a>
+                </nav>
+            </div>
             <nav class="page-menu">
                 <a href="/">Главная</a>
                 /

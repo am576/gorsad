@@ -1,6 +1,26 @@
 @import '_variables.scss';
 
 #knowhow-page {
+    #advices-menu-wr {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 70px;
+        #advices-menu {
+            display: flex;
+            justify-content: space-between;
+            width: 70%;
+            a {
+                padding-right: 20px;
+                color: $text-color;
+                font-size: 16px;
+                border-right: 1px solid #000000;
+            }
+            a:last-child {
+                border-right: none;
+            }
+        }
+    }
+
     #top-banner {
         display: flex;
         margin-top: 80px;
@@ -27,6 +47,36 @@
             font-weight: 400;
             font-size: 16px;
             line-height: 24px;
+        }
+    }
+    #advices-links {
+        display: flex;
+        gap: 20px;
+        margin-top: 70px;
+        padding-bottom: 150px;
+        .advice-link {
+            color: $text-color;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            .advice-title {
+                display: flex;
+                justify-content: space-between;
+                font-size: 20px;
+                font-weight: 500;
+                a, a:hover {
+                    color: $text-color;
+                    text-decoration: none;
+                }
+                img {
+                    height: 25px;
+                    width: 25px;
+                }
+            }
+            .advice-description {
+                font-size: 18px;
+                margin-top: 10px;
+            }
         }
     }
 }
