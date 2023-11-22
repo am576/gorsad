@@ -9,6 +9,7 @@
 @section('image')
     <img src="/storage/images/public/knowhow/shape_trees_bg.jpg" alt="">
 @endsection
+@section('banner-class', 'banner-pc')
 @section('body-bg')
     <div id="topiar-types">
         <div class="heading">Топиарные виды</div>

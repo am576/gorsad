@@ -32,7 +32,7 @@ Route::get('/projects/{id}', 'HomeController@showProjectPage');
 Route::prefix('knowhow')->group(function() {
     Route::get('/',function() {
         return view('frontend.knowhow.index');
-    });
+    })->name('knowhow');
     Route::get('/planning',function() {
         return view('frontend.knowhow.planning');
     })->name('planning');
@@ -53,7 +53,7 @@ Route::get('/guide/{guide_name}', 'HomeController@ShowGuidePage')->name('guide')
 
 Route::get('/design',function() {
     return view('frontend.design.index');
-});
+})->name('design');
 Route::get('/design/styles',function() {
     return view('frontend.design.design_styles');
 })->name('design_styles');

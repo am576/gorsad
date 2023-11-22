@@ -1,122 +1,103 @@
-@extends('frontend.design.layout')
-@section('title', 'Gorsad - Дизайн')
-@section('page')
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            @include('frontend.design.menu')
-            @include('frontend.design.mmenu')
-            <section class="page-bg col-md-12 p-0">
-                <div class="page-img-main"
-                     style="background-image: url('/storage/images/public/design/design_bg.jpg'); ">
-                    <h1 class="page-img-title">Красота и изящество зелени</h1>
+@extends('frontend.layouts.design')
+@section('title', 'Горсад - Дизайн')
+@section('page-title')
+    <div class="design-title">Стили ландшафтного дизайна</div>
+@endsection
+@section('page-description')
+    Натуральность и естественный стиль, точные геометрические формы, величественные парки в английском стиле пейзажа или
+    минималистические японские сады. Это лишь некоторая доля различных стилей озеленения, которая создавалась в разных
+    уголках мира на протяжении нескольких веков.
+    Все они имеют свои особенности и тематический ассортимент.
+@endsection
+@section('image')
+    <img src="/storage/images/public/design/design_index_bg.jpg" alt="">
+@endsection
+@section('banner-class', 'banner-pdl')
+@section('content')
+    <div class="point-links design-point-links">
+        <div class="point-link">
+            <img src="/storage/images/public/design/outdoor_design_thmb.jpg" alt="">
+            <div>
+                <div class="point-title design-point-title">
+                    <a href="{{route('outdoor_design')}}">Внешнее пространство</a>
+                    <img src="/storage/images/public/icons/arrow_right_up.png" alt="">
                 </div>
-            </section>
-            <div class="colorbar"></div>
-            <section class="page-content col-md-12 p-0">
-                <div id="balance" class="static-page-section">
-                    <div class="section-details">
-                        <div class="section-text">
-                            <h3>Формирование природного единства и неповторимого баланса.</h3>
-                            <p>
-                            <span>
-                                Дизайн внешнего пространства является результатом взаимодействия нескольких элементов,
-                                среди
-                                которых обязательная роль отводится выбору подходящего растения.
-                                Основная цель питомника «Городской садовник» – это выращивание уникальных растений с
-                                неповторимыми
-                                особенностями – формой, цветом и областью применения.
-                                Так мы создаем идеальную атмосферу, благоприятствующую разнообразию флоры вашей жилой и
-                                рабочей среды.
-                            </span>
-                                <a href="{{route('outdoor_design')}}" class="read-more-btn">Узнайте больше <span class="mobile-hide">об
-                                        ассортименте и особенностях
-                                        природного баланса. </span><i
-                                        class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i> </a>
-                            </p>
-                        </div>
-                    </div>
+                <div class="point-description">
+                    Внешний ландшафт - это не просто фон, а ключевой элемент, который придает уникальный характер и
+                    эмоциональное воздействие на окружающее пространство.
                 </div>
-                <div id="styles" class="static-page-section">
-                    <div class="section-details font-weight-lighter">
-                        <div class="section-text mw pr-md-4 pr-sm-0"
-                             style="border-right: 2px solid rgba(138,138,138,0.1); padding-right: 2rem;">
-                            <h3>Стили для дизайна ландшафта</h3>
-                            <p>
-                                <span>
-                                    Натуральность и естественный стиль, точные геометрические формы, величественные парки
-                                    в английском стиле пейзажа или минималистические японские сады. Это лишь некоторая доля различных
-                                    стилей озеленения, которая создавалась в разных уголках мира на протяжении нескольких веков.
-                                    Все они имеют свои особенности и тематический ассортимент.
-                                </span>
-                                <a href="{{route('design_styles')}}" class="read-more-btn">Подробно о стилях <span class="mobile-hide">ландшафтного
-                                        дизайна</span> <i
-                                        class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i> </a>
-                            </p>
-                        </div>
-                        <div class="section-text mw" style="padding-left: 2rem">
-                            <h3>Модернизация, развитие и экологические особенности дизайна</h3>
-                            <p>
-                                <span>
-                                    С целью устойчивого развития жилых и рабочих открытых пространств используются все
-                                    виды материалов и возможностей озеленения.Главная особенность дизайна – это умение видеть
-                                    и быть едиными с природой.
-                                </span>
-                                <a href="{{route('ecology')}}" class="read-more-btn">Читать далее <i
-                                        class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i></a>
-                            </p>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div class="point-link">
+            <img src="/storage/images/public/design/ecology_thmb.jpg" alt="">
+            <div>
+                <div class="point-title design-point-title">
+                    <a href="{{route('ecology')}}">Экология</a>
+                    <img src="/storage/images/public/icons/arrow_right_up.png" alt="">
                 </div>
-                <div id="roofs" class="static-page-section">
-                    <div class="section-details">
-                        <img class="mw" src="{{asset('storage/images/public/design/roofs.jpg')}}" alt="">
-                        <div class="section-text pl-5">
-                            <h3>Озеленение крыш и благоустройство территории с помощью контейнерных растений</h3>
-                            <ul>
-                                <li>Украшение территории ценными растениями.</li>
-                                <li>Благоприятное воздействие на городской микроклимат.</li>
-                                <li>Широкий ассортимент растений на выбор.</li>
-                                <li>Обеспечение высокого уровня менеджмента и обслуживания на мероприятиях.</li>
-                            </ul>
-                            <a href="{{route('roofs')}}">Озеленение крыш и благоустройство территории с помощью контейнерных растений.</a>
-                        </div>
-                    </div>
+                <div class="point-description">
+                    Деревья и другие виды устойчивых элементов ландшафта являются основополагающими частями природного
+                    баланса в человеческой среде. Деревья значительно снижают эффект локального перегрева в городском
+                    климате. Они улучшают влажность воздуха за счет водяного пара, снижают его температуру и минимизируют
+                    содержание углекислого газа.
+                    Деревья необходимы для больших городов, дорог и промышленных районов с целью улучшения качества воздуха
                 </div>
-                <div id="street_profiles" class="static-page-section">
-                    <div class="section-details font-weight-lighter">
-                        <div class="section-text">
-                            <h3>Поперечные уличные профили</h3>
-                            <p>
-                                Роскошные деревья на улицах города и вдоль аллей придадут среде особую утонченность с
-                                неповторимым ощущением гармонии.
-                                Но дизайн аллеи и улиц обязательно должен соответствовать перечню требований. Рост
-                                населения городов приводит к стесненности улиц и аллей, поэтому посадка деревьев придаст
-                                узким улицам более привлекательный вид.
-                                Но одновременно с этим специалисты рекомендуют разнообразить дизайн различными
-                                функциями, что обеспечит более привлекательный внешний вид. Это лучшее достижение.
-                            </p>
-                            <a href="{{route('street_profiles')}}" class="read-more-btn">Идеи от питомника «Городской садовник» <i
-                                    class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i></a>
-                        </div>
-                    </div>
+            </div>
+        </div>
+        <div class="point-link">
+            <img src="/storage/images/public/design/roofs_thmb.jpg" alt="">
+            <div>
+                <div class="point-title design-point-title">
+                    <a href="{{route('roofs')}}">Кровля и контейнеры</a>
+                    <img src="/storage/images/public/icons/arrow_right_up.png" alt="">
                 </div>
-                <div id="lighting" class="static-page-section">
-                    <div class="section-details font-weight-lighter">
-                        <div class="section-text">
-                            <h3>Деревья и освещение улиц</h3>
-                            <p>
-                                В процессе создания особенностей освещения на улице и установке фонарей, дизайнеры
-                                должны учитывать особенности и параметры деревьев. При нарушении данного правила кроны
-                                деревьев могут заслонять свечение фонарного столба, что приведет к обрезке или удалению
-                                дерева. Это является ошибочной затратой финансов, которую легко предупредить на ранних
-                                этапах озеленения.
-                            </p>
-                            <a href="{{route('street_lighting')}}" class="read-more-btn">Читать далее <i
-                                    class="mdi mdi-24px mdi-chevron-right-circle-outline ml-2"></i></a>
-                        </div>
-                    </div>
+                <div class="point-description">
+                    Озеленение крыш и благоустройство территории с помощью контейнерных растений становится все более
+                    популярной услугой в ландшафтном дизайне.
+                    Это очень ценный компонент дизайна для городской среды, так как он значительно улучшает экологию и
+                    эстетику заданной местности.
+                    Одними из основных факторов обустройства садов на крыше с помощью контейнерных деревьев и растений
+                    являются работы по управлению и обслуживанию процесса.
                 </div>
-            </section>
+            </div>
+        </div>
+    </div>
+    <div class="point-links mt-0">
+        <div class="point-link flex-1">
+            <img src="/storage/images/public/design/street_profiles_thmb.jpg" alt="">
+            <div>
+                <div class="point-title design-point-title">
+                    <a href="{{route('street_profiles')}}">Улицы и аллеи</a>
+                    <img src="/storage/images/public/icons/arrow_right_up.png" alt="">
+                </div>
+                <div class="point-description">
+                    При оформлении ландшафтного дизайна улиц и аллей специалисты должны обращать внимание на требования
+                    к эстетике и комфорту в использовании.
+                    Несмотря на увеличение стесненности
+                    в пространстве над и под землей, перед людьми стоит основная задача во внедрении функционального
+                    дизайна.
+                    И это действительно подвиг мастеров своего дела. Так как в таких случаях очень трудно проявить
+                    оригинальность, что и обуславливает схожую планировку улиц в большинстве городов.
+
+                </div>
+            </div>
+        </div>
+        <div class="point-link flex-1">
+            <img src="/storage/images/public/design/lighting_thmb.jpg" alt="">
+            <div>
+                <div class="point-title design-point-title">
+                    <a href="{{route('street_lighting')}}">Освещение</a>
+                    <img src="/storage/images/public/icons/arrow_right_up.png" alt="">
+                </div>
+                <div class="point-description">
+                    В большинстве случаев фонарные столбы и деревья устанавливаются поочередно на одной линии.
+                    Такое близкое расположение очень неудобно за счет корней дерева и разросшихся кронов. Ведь при
+                    ремонте подземных компонентов могут быть задеты корни деревьев. А сильно разросшиеся кроны мешают
+                    попаданию солнечного света.
+                    С целью предупреждения данных проблем в процессе разработки следует рассчитывать размеры корней и
+                    кронов взрослого дерева. А затем подбирать другие варианты посадки и планировки.
+                </div>
+            </div>
         </div>
     </div>
 @endsection
