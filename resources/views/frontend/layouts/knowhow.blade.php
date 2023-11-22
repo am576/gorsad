@@ -20,8 +20,8 @@
                 <a href="/knowhow">Советы</a>
                 @yield('current-page-link')
             </nav>
-            <div id="top-banner" class="ppp">
-                <div class="banner-left">
+            <div id="top-banner">
+                <div class="banner-left @yield('banner-class')">
                     <div class="page-title">
                         @yield('page-title')
                     </div>

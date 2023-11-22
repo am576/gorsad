@@ -14,8 +14,8 @@
 @endsection
 @section('content')
     <img id="planting-condition" src="/storage/images/public/knowhow/planting_condition.jpg" alt="">
-    <div id="planning-points">
-        <div class="planning-point">
+    <div class="advice-points">
+        <div class="advice-point">
             <div class="point-title heading">
                 <div>Дизайн</div>
             </div>

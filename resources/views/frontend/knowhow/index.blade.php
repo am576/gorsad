@@ -40,7 +40,7 @@
             <img src="/storage/images/public/knowhow/tree_order_thmb.jpg" alt="">
             <div>
                 <div class="advice-title">
-                    <a href="">Заказ деревьев</a>
+                    <a href="{{route('trees_ordering')}}">Заказ деревьев</a>
                     <img src="/storage/images/public/icons/arrow_right_up.png" alt="">
                 </div>
                 <div class="advice-description">
