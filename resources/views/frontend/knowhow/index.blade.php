@@ -24,10 +24,10 @@
             </div>
         </div>
         <div class="advice-link">
-            <img src="/storage/images/public/knowhow/topiar_form_thmb.jpg" alt="">
+            <img src="/storage/images/public/knowhow/shape_trees_thmb.jpg" alt="">
             <div>
                 <div class="advice-title">
-                    <a href="">Топиарные и формованные деревья</a>
+                    <a href="{{route('shape_trees')}}">Топиарные и формованные деревья</a>
                     <img src="/storage/images/public/icons/arrow_right_up.png" alt="">
                 </div>
                 <div class="advice-description">

@@ -32,8 +32,28 @@ $body-bg : #EDEEF0;
 }
 
 .heading {
-    font: 600 40px 'Inter', sans-serif;
+    font: 500 40px 'Inter', sans-serif;
     color: $text-color;
+}
+
+.italic-link {
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 400;
+    color: #219B3C;
+    cursor: pointer;
+    &:after {
+        content: "";
+        display: inline-block;
+        background: url('/storage/images/public/icons/icon_arrow.png') no-repeat;
+        width: 55px;
+        padding: 5px;
+        margin-left: 20px;
+    }
+    &:hover {
+        color: #219B3C;
+        text-decoration: none;
+    }
 }
 
 #app {

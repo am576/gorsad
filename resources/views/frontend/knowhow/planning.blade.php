@@ -1,5 +1,5 @@
 @extends('frontend.layouts.knowhow')
-@section('title', 'Горсад - Советы')
+@section('title', 'Горсад - Советы | План посадки')
 @section('current-page-link')
     /<a href="{{route('planning')}}">Шаги посадки</a>
 @endsection

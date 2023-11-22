@@ -1,72 +1,98 @@
-@extends('frontend.layouts.app')
-@section('title', 'Gorsad - Советы - Формовые и топиарные деревья')
-@section('content')
-@push('styles')
-    <link href="{{ asset('css/staticinfo_page.css') }}" rel="stylesheet">
-@endpush
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            @include('frontend.knowhow.menu')
-            @include('frontend.knowhow.mmenu')
-            <section class="page-bg col-md-12 p-0">
-                <div class="page-img-main" style="background-image: url('/storage/images/public/knowhow/topiary_bg.jpg'); ">
-                    <h1 class="page-img-title" style="">Топиарные и формованные виды деревьев</h1>
+Топиарные и формованные деревья
+@extends('frontend.layouts.knowhow')
+@section('title', 'Горсад - Советы | Топиарные и формованные деревья')
+@section('current-page-link')
+    /<a href="{{route('shape_trees')}}">Топиарные и формованные деревья</a>
+@endsection
+@section('page-title')
+    <div class="topiar-title">Топиарные и формованные деревья</div>
+@endsection
+@section('image')
+    <img src="/storage/images/public/knowhow/shape_trees_bg.jpg" alt="">
+@endsection
+@section('body-bg')
+    <div id="topiar-types">
+        <div class="heading">Топиарные виды</div>
+        <div class="shape-icons">
+            <div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/stvol_bez.png" alt="">
+                    <div class="type-name">Со стволами и без</div>
                 </div>
-            </section>
-            <div class="colorbar" style="background: #b3c5ed;"></div>
-            <section class="page-content w-100">
-                <div class="container pt-5 pb-5">
-                    <h2>Топиарные виды</h2>
-                    <ul>
-                        <li>Со стволами и без.</li>
-                        <li>Арки из живых растений и цветов.</li>
-                        <li>Фигуры в виде следующих форм: шар, чаша, цилиндр, куб и т.д.</li>
-                        <li>Деревья-канделябр</li>
-                        <li>Форма в виде крыши.</li>
-                        <li>Деревья, установленные на шпалеру.</li>
-                        <li>Поллард – метод обрезки деревьев для контроля их зрелого размера и формы.</li>
-                        <li>Деревья в виде экрана.</li>
-                        <li>Живая изгородь.</li>
-                        <li>Деревья крышевидных и зонтичных форм с множеством стволов.</li>
-                    </ul>
-                    <a href="{{route('guide', ['guide_name' => 'topiar'])}}" target="_blank">Просмотреть инструкцию о Топиарных Деревьях</a>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/arcs.png" alt="">
+                    <div class="type-name">Арки из живых растений и цветов</div>
                 </div>
-                <div class="container pb-5">
-                    <h2>Формованные виды</h2>
-                    <ul>
-                        <li>Многоствольные варианты.</li>
-                        <li>Полустандарт – деревья с невысоким стволом и высокоствольные сорта.</li>
-                        <li>Деревья со свисающими, поникающими ветвями – плакучие сорта.</li>
-                        <li>Деревья с ветвлением от земли и центральным стволом.</li>
-                        <li>Деревья с необычной «прямой» кроной – колоновидные сорта.</li>
-                        <li>Деревья с шаровидной кроной.</li>
-                    </ul>
-                    <a href="{{route('guide', ['guide_name' => 'shape'])}}" target="_blankqq">Просмотреть инструкцию о Формованных Деревьях</a>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/spherical.png" alt="">
+                    <div class="type-name">Фигуры в виде следующих форм: шар, чаша, цилиндр, куб и т.д.</div>
                 </div>
-                <div class="container">
-                    <div class="d-flex">
-                        <img src="{{asset('storage/images/public/knowhow/multistem.jpg')}}" class="col-md-6 multistem-img" style="height: max-content;" alt="">
-                        <div class="pt-3 pl-5 col-md-6">
-                            <h2>Деревья с множеством стволов</h2>
-
-                            Питомник «Городской садовник» включает в себя множество разнообразных видов многоствольных деревьев
-                            для посадки на любой территории. Мы предоставим для вашего доступа книгу «Многоствольные
-                            деревья», которая вдохновит Вас на создание своего видения идеального ландшафта.
-
-                            <a href="">Просмотр</a>
-                        </div>
-                    </div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/candel.png" alt="">
+                    <div class="type-name">Деревья-канделябр</div>
                 </div>
-                <div class="container pt-5 pb-5">
-                    <h2>«Живые» скульптуры</h2>
-                    <p>
-                        Кроме стандартных правильных форм в питомнике «Натруалист» представлены деревья с эксклюзивными
-                        формами. Количество данных экземпляров ограничено. Для получения дополнительной информации о
-                        деревьях, просто позвоните по указанному телефону или оставьте заявку на сайте.
-                    </p>
-
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/roof.png" alt="">
+                    <div class="type-name">Форма в виде крыши</div>
                 </div>
-            </section>
+            </div>
+            <div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/spaler.png" alt="">
+                    <div class="type-name">Деревья, установленные на шпалеру</div>
+                </div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/pollard.png" alt="">
+                    <div class="type-name">Поллард – метод обрезки деревьев для контроля их размера и формы</div>
+                </div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/screen.png" alt="">
+                    <div class="type-name">Деревья в виде экрана</div>
+                </div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/manystems.png" alt="">
+                    <div class="type-name">Деревья крышевидных и зонтичных форм с множеством стволов</div>
+                </div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/liveizg.png" alt="">
+                    <div class="type-name">Живая изгородь</div>
+                </div>
+            </div>
+            <a href="" class="italic-link text-center">Посмотреть инструкцию</a>
+        </div>
+    </div>
+    <div id="form-types">
+        <div class="heading">Формованные деревья</div>
+        <div class="shape-icons">
+            <div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/multistem.png" alt="">
+                    <div class="type-name">Многоствольные варианты</div>
+                </div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/shorthigh.png" alt="">
+                    <div class="type-name">С невысоким стволом и высокоствольные сорта</div>
+                </div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/unusual.png" alt="">
+                    <div class="type-name">С необычной «прямой» кроной – колоновидные сорта</div>
+                </div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/weeping.png" alt="">
+                    <div class="type-name">Со свисающими, поникающими ветвями – плакучие сорта</div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center" style="gap: inherit">
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/round.png" alt="">
+                    <div class="type-name">С шаровидной кроной</div>
+                </div>
+                <div class="topiar-icon">
+                    <img src="/storage/images/public/knowhow/icons/central.png" alt="">
+                    <div class="type-name">С ветвлением от земли и центральным стволом</div>
+                </div>
+            </div>
+            <a href="" class="italic-link text-center">Посмотреть инструкцию</a>
         </div>
     </div>
 @endsection

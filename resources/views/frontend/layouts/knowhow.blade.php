@@ -35,5 +35,6 @@
             </div>
             @yield('content')
         </div>
+        @yield('body-bg')
     </div>
 @endsection
