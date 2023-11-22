@@ -79,4 +79,26 @@
             }
         }
     }
+    #planting-condition {
+        margin-top: 100px;
+    }
+    #planning-points {
+        display: flex;
+        flex-direction: column;
+        gap: 100px;
+        padding-top: 100px;
+        padding-bottom: 70px;
+        .planning-point {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            color: $text-color;
+            .point-title {
+                flex: 1;
+            }
+            .point-description {
+                flex: 1.2;
+            }
+        }
+    }
 }

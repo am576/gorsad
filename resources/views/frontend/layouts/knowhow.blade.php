@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title', 'Gorsad - Советы')
+@section('title', 'Горсад - Советы')
 @push('styles')
     <link href="{{ asset('css/knowhow.css') }}" rel="stylesheet">
 @endpush
@@ -8,9 +8,9 @@
         <div class="container-pd">
             <div id="advices-menu-wr">
                 <nav id="advices-menu">
-                    <a href="/knowhow/planting">Шаги посадки</a>
-                    <a href="/knowhow/topiar">Топиарные и формованные деревья</a>
-                    <a href="/knowhow/order-trees">Заказ деревьев</a>
+                    <a href="{{route('planning')}}">Шаги посадки</a>
+                    <a href="{{route('shape_trees')}}">Топиарные и формованные деревья</a>
+                    <a href="{{route('trees_ordering')}}">Заказ деревьев</a>
                     <a href="/knowhow/tree-care">Уход за деревьями</a>
                 </nav>
             </div>

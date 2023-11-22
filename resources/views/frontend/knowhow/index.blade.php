@@ -1,5 +1,5 @@
 @extends('frontend.layouts.knowhow')
-@section('title', 'Gorsad - Советы')
+@section('title', 'Горсад - Советы')
 @section('page-title', 'Как ухаживать за деревьями')
 @section('page-description')
     Мы собрали для вас передовой опыт в уходе за деревьями от передовых специалистов, а также разработали удобные гайды.
@@ -13,7 +13,7 @@
             <img src="/storage/images/public/knowhow/planting_plan_thmb.jpg" alt="">
             <div>
                 <div class="advice-title">
-                    <a href="">План посадки</a>
+                    <a href="{{route('planning')}}">План посадки</a>
                     <img src="/storage/images/public/icons/arrow_right_up.png" alt="">
                 </div>
                 <div class="advice-description">
