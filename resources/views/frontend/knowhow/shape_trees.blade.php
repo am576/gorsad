@@ -1,4 +1,3 @@
-Топиарные и формованные деревья
 @extends('frontend.layouts.knowhow')
 @section('title', 'Горсад - Советы | Топиарные и формованные деревья')
 @section('current-page-link')
