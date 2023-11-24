@@ -39,7 +39,9 @@ $body-bg : #EDEEF0;
     font: 500 40px 'Inter', sans-serif;
     color: $text-color;
 }
-
+.text-underline {
+    text-decoration: underline;
+}
 .italic-link {
     font-size: 20px;
     font-style: italic;
@@ -58,6 +60,12 @@ $body-bg : #EDEEF0;
         color: #219B3C;
         text-decoration: none;
     }
+}
+.italic-link-blue {
+    font: 400 17px 'Inter', sans-serif;
+    font-style: italic;
+    display: inline-block;
+    border-bottom: 1px solid;
 }
 
 #app {

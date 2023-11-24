@@ -210,4 +210,17 @@
         font-size: 25px !important;
         line-height: 38px;
     }
+    .design-article {
+        padding-top: 50px;
+        padding-bottom: 100px;
+        width: 80%;
+        margin: auto;
+        text-align: center;
+        .heading {
+            margin-bottom: 30px;
+        }
+        .design-article-text {
+            color: $text-color;
+        }
+    }
 }

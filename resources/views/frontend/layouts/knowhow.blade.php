@@ -10,3 +10,4 @@
     /
     <a href="/knowhow">Советы</a>
 @endsection
+@section('top-banner','1')

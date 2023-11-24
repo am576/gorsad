@@ -16,6 +16,7 @@
                 @yield('category-link')
                 @yield('current-page-link')
             </nav>
+            @hasSection('top-banner')
             <div id="top-banner">
                 <div class="banner-left @yield('banner-class')">
                     <div class="page-title">
@@ -29,8 +30,9 @@
                     @yield('image')
                 </div>
             </div>
-            @yield('content')
+            @endif
         </div>
+        @yield('content')
         @yield('body-bg')
     </div>
 @endsection
