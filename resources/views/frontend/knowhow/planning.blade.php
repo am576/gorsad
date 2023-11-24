@@ -1,7 +1,7 @@
 @extends('frontend.layouts.knowhow')
 @section('title', 'Горсад - Советы | План посадки')
 @section('current-page-link')
-    /<a href="{{route('planning')}}">Шаги посадки</a>
+    <a href="{{route('planning')}}">Шаги посадки</a>
 @endsection
 @section('page-title', 'Шаги посадки')
 @section('page-description')

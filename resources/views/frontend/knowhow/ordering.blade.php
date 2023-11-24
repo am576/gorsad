@@ -1,7 +1,7 @@
 @extends('frontend.layouts.knowhow')
 @section('title', 'Горсад - Советы | Заказ деревьев')
 @section('current-page-link')
-    /<a href="{{route('trees_ordering')}}">Заказ деревьев</a>
+    <a href="{{route('trees_ordering')}}">Заказ деревьев</a>
 @endsection
 @section('page-title')
 <div class="order-trees-title">Заказ деревьев</div>

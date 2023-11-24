@@ -9,5 +9,8 @@
 @section('category-link')
     /
     <a href="/knowhow">Советы</a>
+    @hasSection('current-page-link')
+        /
+    @endif
 @endsection
 @section('top-banner','1')

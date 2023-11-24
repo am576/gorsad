@@ -1,7 +1,7 @@
 @extends('frontend.layouts.knowhow')
 @section('title', 'Горсад - Советы | Топиарные и формованные деревья')
 @section('current-page-link')
-    /<a href="{{route('shape_trees')}}">Топиарные и формованные деревья</a>
+    <a href="{{route('shape_trees')}}">Топиарные и формованные деревья</a>
 @endsection
 @section('page-title')
     <div class="topiar-title">Топиарные и формованные деревья</div>

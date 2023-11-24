@@ -1,7 +1,6 @@
 @extends('frontend.layouts.design')
 @section('title', 'Горсад - Дизайн | Внешнее пространство')
 @section('current-page-link')
-    /
     <a href="{{route('outdoor_design')}}">Внешнее пространство</a>
 @endsection
 @section('content')

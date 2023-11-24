@@ -12,4 +12,7 @@
 @section('category-link')
     /
     <a href="{{route('design')}}">Дизайн</a>
+    @hasSection('current-page-link')
+        /
+    @endif
 @endsection
