@@ -223,4 +223,24 @@
             color: $text-color;
         }
     }
+    .design-style-article {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding-top: 50px;
+        padding-bottom: 100px;
+        color: $text-color;
+        text-align: center;
+        .heading {
+            width: 70%;
+        }
+        .style-description {
+            width: 45%;
+            margin-top: 30px;
+            font-size: 17px;
+            font-family: 'Inter', sans-serif;
+        }
+    }
 }
