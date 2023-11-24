@@ -7,7 +7,7 @@
     <div class="static-page body-bg">
         <div class="container-pd">
             <div id="menu-wr">
-                <nav id="menu">
+                <nav id="menu" class="@yield('menu-class')">
                     @yield('menu')
                 </nav>
             </div>

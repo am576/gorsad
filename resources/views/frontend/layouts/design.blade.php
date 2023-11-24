@@ -1,5 +1,6 @@
 @extends('frontend.layouts.static_page')
 @section('title', 'Горсад - Дизайн')
+@section('menu-class','design-menu')
 @section('menu')
     <a href="{{route('outdoor_design')}}">Внешнее пространство</a>
     <a href="{{route('design_styles')}}">Стили ландшафтного дизайна</a>
