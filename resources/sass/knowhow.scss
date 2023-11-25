@@ -252,21 +252,23 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            font: 400 17px 'Inter', sans-serif;;
+            font: 400 17px 'Inter', sans-serif;
+            .static-article-description {
+                font: 400 17px 'Inter', sans-serif;
+                line-height: 26px;
+            }
         }
         img {
             flex: 1;
         }
     }
-    #ecology-page {
+    #ecology-page, #roofs-page {
         padding-bottom: 100px;
         .static-info-article:not(:last-child) {
             margin-bottom: 100px;
         }
-        .static-info-article {
-            a {
-                margin-top: 20px;
-            }
-        }
+    }
+    .static-article-link {
+        margin-top: 20px;
     }
 }

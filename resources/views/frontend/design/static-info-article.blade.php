@@ -8,7 +8,7 @@
             <div class="d-flex flex-column justify-content-between">
                 <p class="static-article-description">{!! $article_text !!}</p>
                 @if(isset($link))
-                    <a href="{{$link['href']}}" class="italic-link-blue">{{$link['text']}}</a>
+                    <a href="{{$link['href']}}" class="italic-link-blue static-article-link">{{$link['text']}}</a>
                 @endif
             </div>
         </article>
@@ -20,7 +20,7 @@
             <div class="d-flex flex-column justify-content-between">
                 <p class="static-article-description">{!! $article_text !!}</p>
                 @if(isset($link))
-                    <a href="{{$link['href']}}" class="italic-link-blue">{{$link['text']}}</a>
+                    <a href="{{$link['href']}}" class="italic-link-blue static-article-link">{{$link['text']}}</a>
                 @endif
             </div>
         </article>
