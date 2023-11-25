@@ -5,7 +5,7 @@
 @endsection
 @section('content')
     <div class="body-bg">
-        <img src="/storage/images/public/design/outdoor_design1.jpg" alt="">
+        <img src="/storage/images/public/design/outdoor/outdoor_design1.jpg" alt="">
     </div>
     <div class="container-pd">
         <article class="design-article">
@@ -21,7 +21,7 @@
         </article>
     </div>
     <div class="body-bg">
-        <img src="/storage/images/public/design/outdoor_design2.jpg" alt="">
+        <img src="/storage/images/public/design/outdoor/outdoor_design2.jpg" alt="">
     </div>
     <div class="container-pd">
         <article class="design-article">
@@ -44,7 +44,7 @@
         </article>
     </div>
     <div class="body-bg">
-        <img src="/storage/images/public/design/outdoor_design3.jpg" alt="">
+        <img src="/storage/images/public/design/outdoor/outdoor_design3.jpg" alt="">
     </div>
     <div class="container-pd">
         <article class="design-article">
@@ -59,7 +59,7 @@
         </article>
     </div>
     <div class="body-bg">
-        <img src="/storage/images/public/design/outdoor_design4.jpg" alt="">
+        <img src="/storage/images/public/design/outdoor/outdoor_design4.jpg" alt="">
     </div>
     <div class="container-pd">
         <article class="design-article">

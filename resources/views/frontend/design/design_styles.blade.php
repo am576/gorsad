@@ -5,9 +5,9 @@
 @endsection
 @section('content')
     <div class="body-bg pt-5">
-        <img src="/storage/images/public/design/styles/page_bg.jpg" alt="">
-        @include('frontend.design.style-article',
+        @include('frontend.design.static-article-wide',
         [
+            'image' => '/storage/images/public/design/styles/page_bg.jpg',
             'style_name' => 'Стили ландшафтного дизайна и ассортимент',
             'style_description' => 'Отношения человека и природы – это особая взаимосвязь, которая
                 находила отражение в ландшафтах и садах, создаваемых людьми.
@@ -17,9 +17,9 @@
                 дизайна отличаются собственным ассортиментом деревьев: неповторимые
                 расцветки, отточенная геометрия или натуральные формы.'
         ])
-        <img src="/storage/images/public/design/styles/medieval.jpg" alt="">
-        @include('frontend.design.style-article',
+        @include('frontend.design.static-article-wide',
         [
+            'image' => '/storage/images/public/design/styles/medieval.jpg',
             'style_name' => 'Средневековый стиль',
             'style_description' => 'Ландшафтный дизайн сада в стиле средних веков – это зональное
                 разделение территории на несколько частей, объединяемых дорожками. Там,
@@ -30,9 +30,9 @@
                 возле клумб с кустарниками и многолетниками дизайнеры рекомендуют
                 высаживать деревья, которые отбрасывают величественную тень.'
         ])
-        <img src="/storage/images/public/design/styles/barocco.jpg" alt="">
-        @include('frontend.design.style-article',
+        @include('frontend.design.static-article-wide',
         [
+            'image' => '/storage/images/public/design/styles/barocco.jpg',
             'style_name' => 'Стиль Барокко',
             'style_description' => 'Данный стиль сочетает в себе сдержанный дизайн и симметрию по
                 отношению к центру оси. В стиле Барокко можно заметить визуальную
@@ -44,9 +44,9 @@
                 имеют определенный рост, не превышающий 60 см. Стиль отличается
                 сдержанными цветами: белый, серый и зеленый.'
         ])
-        <img src="/storage/images/public/design/styles/renessans.jpg" alt="">
-        @include('frontend.design.style-article',
+        @include('frontend.design.static-article-wide',
         [
+            'image' => '/storage/images/public/design/styles/renessans.jpg',
             'style_name' => 'Стиль Ренессанс (Возрождение)',
             'style_description' => 'Данный стиль сочетает в себе простоту геометрических форм и прямые
                 линии, которые создают атмосферу простоты и спокойствия. Живые изгороди позволяют разделять
@@ -56,9 +56,9 @@
                 Центральная фигура этого стиля – фонтан в виде скульптуры. В стиле
                 Ренессанс используются сдержанные и утонченные цвета.'
         ])
-        <img src="/storage/images/public/design/styles/english.jpg" alt="">
-        @include('frontend.design.style-article',
+        @include('frontend.design.static-article-wide',
         [
+            'image' => '/storage/images/public/design/styles/english.jpg',
             'style_name' => 'Английский пейзажный стиль',
             'style_description' => 'Ландшафт с холмами, водоемами, милыми дорожками, деревьями,
                 которые могут расти в своей естественной форме – это описание особенностей английского пейзажного стиля. Этот ландшафт
@@ -66,9 +66,9 @@
                 величественными деревьями и незамысловатыми кустарниками. Деревья и кустарники в английском стиле сдержанны в плане
                 плодоношения и цветения, преимущество отдается габитусу и цвету.'
         ])
-        <img src="/storage/images/public/design/styles/victorian.jpg" alt="">
-        @include('frontend.design.style-article',
+        @include('frontend.design.static-article-wide',
         [
+            'image' => '/storage/images/public/design/styles/victorian.jpg',
             'style_name' => 'Викторианский стиль',
             'style_description' => 'Когда началась революция в промышленном мире, на территорию Европы
                 доставили большое количество необычных видов растений из Африки.
@@ -80,9 +80,9 @@
                 необычайной пышностью, яркостью и разнообразием цвета. С целью создания спокойной атмосферы в викторианском
                 стиле используются хвойники.'
         ])
-        <img src="/storage/images/public/design/styles/country.jpg" alt="">
-        @include('frontend.design.style-article',
+        @include('frontend.design.static-article-wide',
         [
+            'image' => '/storage/images/public/design/styles/country.jpg',
             'style_name' => 'Деревенский стиль',
             'style_description' => 'Деревенский стиль – это абсолютная романтика и легкость, которая
                 сочетает в себе сочные цвета и яркие краски. Этот стиль был создан в трудные
@@ -94,9 +94,9 @@
                 Деревенский стиль отражает в себе разделенные участки, пересекаемые
                 узкими тропинками.'
         ])
-        <img src="/storage/images/public/design/styles/chinese.jpg" alt="">
-        @include('frontend.design.style-article',
+        @include('frontend.design.static-article-wide',
         [
+            'image' => '/storage/images/public/design/styles/chinese.jpg',
             'style_name' => 'Китайский стиль',
             'style_description' => 'В данном стиле применяются натуральные материалы и используются
                 линии с плавным переходом.
@@ -109,9 +109,9 @@
                 Цвета обязательно должны быть приглушены, а цветовая гамма должна
                 находиться в пределах бледных оттенков: серый и зеленый.'
         ])
-        <img src="/storage/images/public/design/styles/japanese.jpg" alt="">
-        @include('frontend.design.style-article',
+        @include('frontend.design.static-article-wide',
         [
+            'image' => '/storage/images/public/design/styles/japanese.jpg',
             'style_name' => 'Японский стиль',
             'style_description' => 'Японский стиль – это уважение и любовь к природе. Использование
                 природных атрибутов обеспечивает уникальную неповторимость для создания
@@ -122,9 +122,9 @@
                 внешнего вида. Очень часто применяются растения, кустарники и деревья с
                 необычной формой листьев.'
         ])
-        <img src="/storage/images/public/design/styles/mauretan.jpg" alt="">
-        @include('frontend.design.style-article',
+        @include('frontend.design.static-article-wide',
         [
+            'image' => '/storage/images/public/design/styles/mauretan.jpg',
             'style_name' => 'Мавританский стиль',
             'style_description' => 'В данном стиле сочетаются правильные геометрические линии и точные
                 формы. Территория делится на четыре части, ограниченные тропинками или
