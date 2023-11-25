@@ -243,4 +243,30 @@
             font-family: 'Inter', sans-serif;
         }
     }
+    .static-info-article {
+        display: flex;
+        gap: 20px;
+        color: $text-color;
+        .article-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font: 400 17px 'Inter', sans-serif;;
+        }
+        img {
+            flex: 1;
+        }
+    }
+    #ecology-page {
+        padding-bottom: 100px;
+        .static-info-article:not(:last-child) {
+            margin-bottom: 100px;
+        }
+        .static-info-article {
+            a {
+                margin-top: 20px;
+            }
+        }
+    }
 }
