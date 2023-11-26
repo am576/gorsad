@@ -4,7 +4,7 @@
     <a href="{{route('roofs')}}">Кровельное и контейнерное озеленение</a>
 @endsection
 @section('content')
-    <div id="roofs-page" class="body-bg">
+    <div class="body-bg static-page-n">
         <div class="container-pd">
             @include('frontend.design.static-info-article',
             [

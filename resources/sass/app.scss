@@ -67,6 +67,9 @@ $body-bg : #EDEEF0;
     font-style: italic;
     display: inline-block;
     border-bottom: 1px solid;
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 #app {
