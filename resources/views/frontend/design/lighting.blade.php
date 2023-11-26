@@ -4,7 +4,7 @@
     <a href="{{route('street_lighting')}}">Освещение</a>
 @endsection
 @section('content')
-    <div class="body-bg static-page-n">
+    <div class="body-bg static-page-n static-page-content">
         <div class="container-pd">
             @include('frontend.design.static-info-article',
             [

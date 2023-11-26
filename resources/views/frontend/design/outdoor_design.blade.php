@@ -4,7 +4,7 @@
     <a href="{{route('outdoor_design')}}">Внешнее пространство</a>
 @endsection
 @section('content')
-    <div class="body-bg">
+    <div class="body-bg static-page-content">
         <img src="/storage/images/public/design/outdoor/outdoor_design1.jpg" alt="">
     </div>
     <div class="container-pd">

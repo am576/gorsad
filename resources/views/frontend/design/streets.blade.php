@@ -4,7 +4,7 @@
     <a href="{{route('street_profiles')}}">Дизайн улиц и аллей</a>
 @endsection
 @section('content')
-    <div class="body-bg pt-5">
+    <div class="body-bg static-page-content">
         @include('frontend.design.static-article-wide',
         [
             'image' => '/storage/images/public/design/streets/1.jpg',

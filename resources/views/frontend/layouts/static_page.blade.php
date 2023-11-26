@@ -1,7 +1,7 @@
 @extends('frontend.layouts.master')
 @section('title', 'Горсад - Советы')
 @push('styles')
-    <link href="{{ asset('css/knowhow.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/static_page.css') }}" rel="stylesheet">
 @endpush
 @section('body')
     <div class="static-page body-bg">

@@ -1,6 +1,6 @@
 @extends('frontend.layouts.master')
 @section('title', 'Gorsad - Услуги')
-@push('head')
+@push('styles')
     <link href="{{ asset('css/services.css') }}" rel="stylesheet">
 @endpush
 @section('body')

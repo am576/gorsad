@@ -1,10 +1,17 @@
 @import '_variables.scss';
 
 .static-page {
+    .static-page-content {
+        padding-top: 30px;
+    }
     #menu-wr {
         display: flex;
         justify-content: center;
         margin-bottom: 70px;
+        .page-menu {
+            color: $text-color;
+            font-size: 18px;
+        }
         #menu {
             display: flex;
             justify-content: space-between;
@@ -25,7 +32,13 @@
             gap: 20px;
         }
     }
+    .page-menu {
+        a {
+            color: rgba(0,0,0,0.6) !important;
+            font-size: 18px;
+        }
 
+    }
     #top-banner {
         display: flex;
         margin-top: 80px;
@@ -271,4 +284,9 @@
     .static-article-link {
         margin-top: 20px;
     }
+
+}
+footer {
+    padding-top: 50px !important;
+    padding-bottom: 50px !important;
 }
