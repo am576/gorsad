@@ -59,7 +59,7 @@
         <nav>
             <a class="nav-link" href="#">Каталог</a>
             <a class="nav-link" href="/services">Услуги</a>
-            <a class="nav-link" href="#">Наши работы</a>
+            <a class="nav-link" href="{{route('projects')}}">Наши работы</a>
             <a class="nav-link" href="{{route('knowhow')}}">Советы</a>
             <a class="nav-link" href="{{route('design')}}">Дизайн</a>
             <a class="nav-link" href="#">Вакансии</a>

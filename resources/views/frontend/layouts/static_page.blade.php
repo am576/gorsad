@@ -36,3 +36,4 @@
         @yield('body-bg')
     </div>
 @endsection
+

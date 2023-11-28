@@ -87,23 +87,23 @@ class HomeController extends Controller
 
     public function showProjectsPage()
     {
-        $projects = Project::select('id','name','coordinates')->get();
-
-        foreach ($projects as $project) {
-            $coordinates = explode(';', $project['coordinates']);
-            $project['lat'] = $coordinates[0];
-            $project['long'] = $coordinates[1];
-            unset($project['coordinates']);
-        }
+        $projects = Project::select('id','name', 'type')
+            ->with('images')
+            ->orderBy('type', 'asc')
+            ->get()
+            ->groupBy('type');
 
         return view('frontend.projects.index', compact('projects'));
     }
 
-    public function showProjects()
+    public function showProjectTypePage($type)
     {
-        $projects = Project::select('id','name')->with('images')->get();
+        $projects = Project::select('id','name')
+            ->where('type', '=', $type)
+            ->with('images')
+            ->get();
 
-        return view('frontend.projects.all', compact('projects'));
+        return view('frontend.projects.project_type_page', compact('projects'));
     }
 
     public function showProjectPage($id)

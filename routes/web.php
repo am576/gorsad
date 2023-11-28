@@ -24,11 +24,10 @@ Route::prefix('shop')->group(function() {
     Route::get('load', 'ShopController@loadProducts');
 });
 
-Route::get('/projects', 'HomeController@showProjectsPage');
-Route::get('/projects/all', 'HomeController@showProjects')->name('projects.all');
-Route::get('/projects/{id}', 'HomeController@showProjectPage');
+
 
 //**** STATIC PAGES *****/
+//** Knowhow **/
 Route::prefix('knowhow')->group(function() {
     Route::get('/',function() {
         return view('frontend.knowhow.index');
@@ -51,6 +50,7 @@ Route::prefix('knowhow')->group(function() {
 });
 Route::get('/guide/{guide_name}', 'HomeController@ShowGuidePage')->name('guide');
 
+//** Design **/
 Route::get('/design',function() {
     return view('frontend.design.index');
 })->name('design');
@@ -73,6 +73,7 @@ Route::get('/design/street-lighting',function() {
     return view('frontend.design.lighting');
 })->name('street_lighting');
 
+//** Services **/
 Route::get('/services', 'HomeController@showServicesPage');
 Route::get('/services/{id}', 'HomeController@showServicePage');
 Route::post('/services/{id}/order', 'ShopController@createOrderService');
@@ -81,6 +82,12 @@ Route::get('/contacts', function() {
     return view('frontend.contacts');
 });
 
+//** Projects **/
+Route::prefix('projects')->group(function () {
+    Route::get('/', 'HomeController@showProjectsPage')->name('projects');
+    Route::get('/{id}', 'HomeController@showProjectPage')->where('id', '[0-9]+')->name('project_page');
+    Route::get('/{type}', 'HomeController@showProjectTypePage')->name('project_type_page');
+});
 //**** END STATIC PAGES *****/
 
 

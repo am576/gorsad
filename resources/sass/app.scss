@@ -38,6 +38,7 @@ $body-bg : #EDEEF0;
 .heading {
     font: 500 40px 'Inter', sans-serif;
     color: $text-color;
+    margin-bottom: 0 !important;
 }
 .text-underline {
     text-decoration: underline;
