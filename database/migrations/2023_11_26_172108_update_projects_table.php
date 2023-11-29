@@ -14,7 +14,13 @@ class UpdateProjectsTable extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->string('type', 32)->after('name')->default('');
+            $table->after('description', function ($table) {
+                $table->string('type', 32)->default('');
+                $table->date('date')->useCurrent();
+                $table->unsignedSmallInteger('trees_count')->default(0);
+                $table->unsignedInteger('price')->default(0);
+            });
+
         });
     }
 
@@ -26,7 +32,7 @@ class UpdateProjectsTable extends Migration
     public function down()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('type');
+            $table->dropColumn(['type','date','trees_count','price']);
         });
     }
 }
