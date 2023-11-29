@@ -7,7 +7,7 @@
     <a href="{{route('project_type_page','industrial')}}">Промышленные объекты</a>
     <a href="{{route('project_type_page','school')}}">Школы</a>
     <a href="{{route('project_type_page','private')}}">Частные проекты</a>
-    <a href="{{route('project_type_page','compensate')}}">Компенсационное озеленение</a>
+    <a href="{{route('project_type_page','compensation')}}">Компенсационное озеленение</a>
 @endsection
 @section('category-link')
     /

@@ -55,6 +55,72 @@
         }
     }
 }
+#project-type-page {
+    #page-title.heading {
+        padding-top: 30px;
+        padding-bottom: 45px;
+    }
+    a {
+        &:hover {
+            text-decoration-color: $text-color;
+        }
+    }
+    img.project-type-bg {
+        width: 100%;
+        height: 650px;
+        object-fit: cover;
+    }
+    .project-details {
+        color: $text-color;
+        margin-top: 20px;
+        .project-name {
+            font-size: 20px;
+            font-weight: 500;
+        }
+        .project-description {
+            width: 50%;
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: 400;
+        }
+    }
+    #projects-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 20px;
+        margin-top: 30px;
+        padding-bottom: 45px;
+
+        .project-card {
+            margin-top: 10px;
+            flex: 1;
+            max-width: 50%;
+            cursor: pointer;
+            &:hover img {
+                opacity: 0.9;
+            }
+            img {
+                width: 590px;
+                height: 290px;
+                object-fit: cover;
+            }
+            .project-name {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+
+                img {
+                    width: 25px;
+                    height: 25px;
+                }
+            }
+            .project-description {
+                width: 100%;
+            }
+        }
+    }
+}
 #projects-landing-form {
     background-image: url('/storage/images/public/projects_landing_form_bg.jpg');
     .projects-landing-form-inner {

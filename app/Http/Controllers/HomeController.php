@@ -98,12 +98,12 @@ class HomeController extends Controller
 
     public function showProjectTypePage($type)
     {
-        $projects = Project::select('id','name')
+        $projects = Project::select('id','name','description')
             ->where('type', '=', $type)
             ->with('images')
             ->get();
-
-        return view('frontend.projects.project_type_page', compact('projects'));
+        $type_name = config('projects.types.'.$type.'.name');
+        return view('frontend.projects.project_type_page', compact(['projects','type','type_name']));
     }
 
     public function showProjectPage($id)
