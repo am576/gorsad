@@ -11,7 +11,7 @@
                             <p class="project-type-description">{{config('projects.types.'.$type_name.'.description')}}</p>
                         </div>
                         <div class="project-type-links">
-                            @foreach($project_type as $project)
+                            @foreach($project_type->slice(0,4) as $project)
                                 <div class="project-type-link" onclick="window.location.href='/projects/'+{{$project->id}}">
                                     <img src="/storage/images/{{$project->images[0]->medium}}" alt="">
                                     <div class="project-name"><div class="project-name-wr">{{$project->name}}</div></div>
