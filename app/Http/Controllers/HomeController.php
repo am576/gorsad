@@ -103,12 +103,17 @@ class HomeController extends Controller
             ->with('images')
             ->get();
         $type_name = config('projects.types.'.$type.'.name');
+
         return view('frontend.projects.project_type_page', compact(['projects','type','type_name']));
     }
 
     public function showProjectPage($id)
     {
-        return view('frontend.projects.project_page')->with('project', Project::with('images:icon,small,medium,large,imageable_id')->find($id));
+        $project = Project::with('images')->findOrFail($id);
+        $project->plants = $project->plants();
+        $type_name = config('projects.types.'.$project->type.'.name');
+
+        return view('frontend.projects.project_page', compact(['project', 'type_name']));
     }
 
     public function showServicesPage()

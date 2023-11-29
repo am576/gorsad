@@ -4,13 +4,12 @@
     <a href="{{route('project_type_page',$type)}}">{{$type_name}}</a>
 @endsection
 @section('content')
-
     <div id="project-type-page" class="body-bg">
         <div class="container-pd">
             <h4 id="page-title" class="heading">{{$type_name}}</h4>
         </div>
         @if(count($projects))
-            <img class="project-type-bg" src="/storage/images/{{$projects[0]->images[0]->large}}" alt="">
+            <img class="project-bg" src="/storage/images/{{$projects[0]->images[0]->large}}" alt="">
             <div class="container-pd">
                 <a href="{{route('project_page', $projects[0]->id)}}">
                     <div class="project-details">

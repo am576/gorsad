@@ -16,7 +16,7 @@ Route::post('/search', 'HomeController@ApplyFilter');
 
 Route::prefix('shop')->group(function() {
     Route::get('/', 'ShopController@showShopPage')->name('shop');
-    Route::get('/products/{product_id}',  'ShopController@productPage');
+    Route::get('/products/{product_id}', 'ShopController@productPage')->name('product_page');
     Route::post('/compare/add','ShopController@addProductsToCompare');
     Route::post('/compare/remove','ShopController@removeFromCompare');
     Route::get('comparison', 'ShopController@getProductsForComparison');
