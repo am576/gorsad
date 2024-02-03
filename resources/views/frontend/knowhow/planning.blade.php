@@ -13,6 +13,7 @@
     <img src="/storage/images/public/knowhow/planting_plan_bg.jpg" alt="">
 @endsection
 @section('content')
+<div class="container-pd">
     <img id="planting-condition" src="/storage/images/public/knowhow/planting_condition.jpg" alt="">
     <div class="advice-points">
         <div class="advice-point">
@@ -61,4 +62,5 @@
             </div>
         </div>
     </div>
+</div>
 @endsection

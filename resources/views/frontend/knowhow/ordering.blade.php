@@ -16,6 +16,7 @@
     <img src="/storage/images/public/knowhow/tree_order_bg.jpg" alt="">
 @endsection
 @section('content')
+<div class="container-pd">
     <img id="tz_requirements" src="/storage/images/public/knowhow/tz_requirements.jpg" alt="">
     <div class="advice-points">
         <div class="advice-point">
@@ -57,4 +58,5 @@
             </div>
         </div>
     </div>
+</div>
 @endsection

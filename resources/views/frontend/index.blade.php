@@ -14,7 +14,7 @@
                     Преобразите свое пространство с помощью профессиональных услуг и широкого ассортимента деревьев и
                     кустарников компании «Городской Садовник»
                 </div>
-                <button class="btn-green">Перейти в каталог</button>
+                <button class="btn-green" onclick="window.location.assign('/F')">Перейти в каталог</button>
             </div>
         </div>
         <div class="body-bg">
@@ -120,7 +120,7 @@
                         <img src="/storage/images/public/homepage/services-trees.png" alt="">
                     </div>
                 </div>
-                <span class="italic-link">Наши услуги</span>
+                <span class="italic-link curpointer" onclick="window.location.assign('/services')">Наши услуги</span>
                 <div id="services-links" class="links-list">
                     <div id="planting" class="service-link home-shop-link">
                         <div class="service-link-title link-title">
@@ -165,7 +165,7 @@
                                 разработали удобные гайды.
                             </div>
                         </div>
-                        <span class="italic-link">Советы</span>
+                        <span class="italic-link curpointer" onclick="window.location.assign('/knowhow')">Советы</span>
                     </div>
 
                     <img src="/storage/images/public/homepage/tree-care-bg.jpg" alt="">
@@ -183,7 +183,7 @@
                                     специалиста для себя и своего дома или другого пространства.
                                 </div>
                             </div>
-                            <span class="italic-link">Дизайн</span>
+                            <span class="italic-link curpointer" onclick="window.location.assign('/design')">Дизайн</span>
                         </div>
                     </div>
                 </div>
