@@ -12,7 +12,7 @@
     @stack('head')
     <!-- Scripts -->
     <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="@yield('script_file', 'js/app.js')" defer></script> 
 
     <!-- Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
     @stack('scripts')
 </head>
 <body>
-<div id="app" data-app class="frontend">
+<div id="app" data-app class="{{ str_contains(request()->url(), '/catalog') ? 'catalog frontend' : 'frontend' }}">
     <header>
         <div class="d-flex justify-content-end">
             <div id="header-top-wr">
@@ -57,7 +57,7 @@
             </div>
         </div>
         <nav>
-            <a class="nav-link" href="#">Каталог</a>
+            <a class="nav-link" href="{{route('catalog')}}">Каталог</a>
             <a class="nav-link" href="/services">Услуги</a>
             <a class="nav-link" href="{{route('projects')}}">Наши работы</a>
             <a class="nav-link" href="{{route('knowhow')}}">Советы</a>

@@ -31,7 +31,7 @@ Route::get('getAttributeValues', 'ApiController@getAttributeValues');
 Route::get('getAttributesGroups', 'ApiController@getAttributesGroups');
 Route::get('getImages', 'ApiController@getImages');
 Route::get('filterProducts', 'ApiController@filterProducts');
-Route::get('getProducts', 'ApiController@getProducts');
+Route::get('/products', 'ApiController@getProducts');
 Route::get('getTable', 'ApiController@getTable');
 Route::get('getAttributesTypes', 'ApiController@getAttributesTypes');
 Route::get('getIconsets', 'ApiController@getIconsets');

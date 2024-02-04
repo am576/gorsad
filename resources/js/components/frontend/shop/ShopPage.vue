@@ -1,64 +1,47 @@
 <template>
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-1" v-if="!isMobileView">
-                <a href="/"><img src="storage/images/logo/shop-logo.png" alt="">
-                </a>
-            </div>
-            <div class="header-mobile" v-if="isMobileView">
-                <a class="home-link" href="/"><img src="storage/images/logo/shop-logo.png" alt="">
-                    <span class="logo-text">GORSAD</span>
-                </a>
-                <!--<div class="d-flex align-items-center" v-if="!isGuest">
-                    <a class="nav-link curpointer" @click="showCart">
-                        <span class="mdi mdi-cart"></span>
-                    </a>
-                    <account-dropdown :user="user"></account-dropdown>
-                </div>-->
-            </div>
-            <div class="col-md-10 shop-content">
-                <g-banner v-if="show_banner">
-                    <div>
-                        Внимание! В данный момент заказы принимаются по телефону или через <a href="/contacts">форму</a> обратной связи.
-                        <br>
-                        Регистрация и добавление товаров в корзину временно не доступны.
+    
+    <div>
+        <div>CATALOG</div>
+        <div class="row">
+            <div id="catalog-filter" class="col-3">
+                <div v-for="attribute_group in attributes">
+                    <h4>{{ attribute_group.group_name }}</h4>
+                    <div v-for="attribute in attribute_group.attributes">
+                        <button class="btn btn-light btn-block" v-b-toggle="'attribute-' + attribute.id">
+                        {{ attribute.name }}
+                    </button>
+                    <b-collapse :id="'attribute-' + attribute.id">
+                        <div v-for="value in attribute.values">
+                            <div @click="addFilterOption(attribute.id, value.id)">{{ value.value }}</div>
+                        </div>
+                    </b-collapse>
                     </div>
-                </g-banner>
-                <div class="pt-3">
-                    <transition name="filter-slide">
-                        <shop-filter v-if="showFilters" :attributes_groups="attributes" :filtered_name="filtered_name" :selected_options="filter_options || {}" @filterProducts="filterProducts"></shop-filter>
-                    </transition>
-                    <shop-navigation :user="user" :isMobileView="isMobileView">
-                        <template slot="back_btn" >
-                            <div id="filter-btn-wr" :class="{'visibility-hidden' : showComparison}">
-                                <button class="nav-btn" id="btn-toggle-filters" @click="toggleFilters">
-                                    <i class="mdi mdi-24px" v-bind:class="showFilters ? 'mdi-chevron-up' : 'mdi-chevron-down'"></i>
-                                    {{filterBtnCaption}}
-                                </button>
-                            </div>
-                        </template>
-                        <template slot="additional_buttons" v-if="productsToCompare.length > 1">
-                            <button class="nav-btn show_compare mr-4" @click="toggleComparisonPage">
-                                <i class="mdi mdi-24px mdi-format-horizontal-align-center mr-1 mr-l1"></i>
-                                Показать сравнение
-                            </button>
-                        </template>
-                    </shop-navigation>
-                    <products-list v-show="!showComparison" :products="products" :productsToCompare="productsToCompare" :cart="cart" :user="user" @toggleFilters="toggleFilters" :hasFilterOptions="hasFilterOptions"></products-list>
-                    <comparison-page v-if="showComparison" :comparison="compareProducts" @closeComparison="closeComparison"></comparison-page>
+                    
                 </div>
             </div>
-            <div class="col-1"></div>
+            <div class="product-list col-9">
+                <div class="product-card" v-for="product in products" :key="product.id" >
+                    <div class="product-thumb" v-bind:style="{'background-image':productThumbnail(product)}">
+                    </div>
+                    <div class="product-name">
+                        {{ product.title }}
+                    </div>
+                    <div>
+                        <button class="btn-green w-100" type="button">Описание</button>
+                    </div>
+                </div>
+            </div>
         </div>
-<!--        <shopping-cart></shopping-cart>-->
-    </div>
+        
+        <button @click="loadMore" v-if="products_all.current_page < products_all.last_page">Load More</button>
+  </div>
 </template>
 
 <script>
     export default {
         props: {
             products_all: {
-                type: Array
+                type: Object
             },
             attributes: {
                 type: Array,
@@ -67,7 +50,8 @@
                 type: Object
             },
             filter_options: {
-                type: Array
+                type: Object,
+                default: {}
             },
             filtered_name: {
                 type: String,
@@ -88,10 +72,72 @@
                 showComparison: false,
                 productsToCompare: [],
                 compareProducts: [],
-                hasFilterOptions: false
+                hasFilterOptions: false,
+                filter: {}
             }
         },
         methods: {
+            loadProducts(page = 1) {
+                axios.get(`/api/products?page=${page}`)
+                    .then(response => {
+                    if (this.products) {
+                        this.products = this.products.concat(response.data.data);
+                        this.products_all.current_page += 1
+                    } else {
+                        this.products = response.data;
+                    }
+                    })
+                    .catch(error => {
+                    console.error('Error loading products:', error);
+                });
+            },
+            loadMore() {
+                this.loadProducts(this.products_all.current_page + 1);
+            },
+            productThumbnail(product) {
+                if(product.image) {
+                    return `url(/storage/images/${product.image.medium})`
+                }
+            },
+            addFilterOption(attr_id, value_id) {
+                if (this.filter.hasOwnProperty(attr_id)) {
+                    if (this.filter[attr_id].includes(value_id)) {
+                        if(this.filter[attr_id].length === 1) {
+                            this.$delete(this.filter, attr_id)
+                        }
+                        else {
+                            this.filter[attr_id].splice(this.filter[attr_id].indexOf(value_id), 1)
+                        }
+                        
+                    }
+                    else {
+                        this.filter[attr_id].push(value_id)
+                    }    
+                }
+                else {
+                    this.filter[attr_id] = [value_id]
+                }
+                
+            },
+            // addFilterOption(option) {
+            //     if(option.values.length) {
+            //         this.filter_options[option.attribute] = option.values;
+            //     }
+            //     else {
+            //         this.$delete(this.filter_options, option.attribute);
+            //     }
+
+            //     this.doFilterProducts();
+            // },
+            doFilterProducts() {
+                axios.post('/shop/filter', {
+                    product_name: this.product_name,
+                    filter: this.filter_options
+                })
+                .then(response => {
+                    this.$emit('filterProducts', response.data, this.filter_options)
+                })
+            },
             filterProducts(products, filter_options) {
                 let isFilter = false;
                 this.products = 'data' in products ? products.data : products;
@@ -113,7 +159,7 @@
             showCart() {
                 this.$eventBus.$emit('showCart')
             },
-            getComparison() {
+            /*getComparison() {
                 axios.get('/shop/comparison')
                     .then(response => {
                         if(response.data) {
@@ -160,7 +206,7 @@
                     formData.append('products[]', id);
                 })
                 axios.post('/shop/compare/add', formData);
-            },
+            },*/
 
         },
         computed: {
@@ -173,9 +219,9 @@
         },
         created() {
             this.products = 'data' in this.products_all ? this.products_all.data : this.products_all;
-            this.handleView();
-            this.getComparison();
-            this.$eventBus.$on('toggleProductCompare', this.toggleProductCompare);
+            // this.handleView();
+            // this.getComparison();
+            // this.$eventBus.$on('toggleProductCompare', this.toggleProductCompare);
 
         }
     }

@@ -1,9 +1,17 @@
 require('./bootstrap');
-window.Vue = require('vue');
 
+window.Vue = require('vue');
 Vue.prototype.$eventBus = new Vue();
 
-Vue.component('InfiniteLoading', require('vue-infinite-loading'));
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { BCollapse } from "bootstrap-vue/esm/components/collapse";
+import { VBToggle } from "bootstrap-vue/esm/directives/toggle";
+
+// Vue.use(Vuetify);
+
+Vue.component('b-collapse', BCollapse);
+Vue.directive('b-toggle', VBToggle);
 Vue.component('signin-form', require('./components/frontend/user/SigninForm').default);
 
 /* Shop components */
@@ -26,5 +34,5 @@ Vue.component('account-dropdown', require('./components/frontend/shared/AccountD
 /* End Shared components */
 
 const app = new Vue({
-    el: '#app.shop',
+    el: '#app.catalog',
 });

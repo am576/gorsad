@@ -152,9 +152,14 @@ class ApiController extends Controller
         return Project::paginate($request->per_page)->toJson();
     }
 
-    public function getProducts()
+    public function getProducts(Request $request)
     {
-        $products = Product::with('category')->paginate(5);
+        $perPage = config('shop.paginate');
+        $page = $request->query('page', 1); // Get the page number from the query string
+
+        $products = Product::with('image')
+            ->where('status', '=', 1)
+            ->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json($products);
     }
