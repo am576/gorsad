@@ -155,8 +155,7 @@ class ApiController extends Controller
     public function getProducts(Request $request)
     {
         $perPage = config('shop.paginate');
-        $page = $request->query('page', 1); // Get the page number from the query string
-
+        $page = $request->query('page', 1);
         $products = Product::with('image')
             ->where('status', '=', 1)
             ->paginate($perPage, ['*'], 'page', $page);

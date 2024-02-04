@@ -103,8 +103,9 @@ class StaticTools
         $entity->save();
     }
 
-    public static function filterProducts($product_name, $filter)
+    public static function filterProducts($product_name, $filter, $page)
     {
+        $perPage = config('shop.paginate');
         $filter_values = [];
         foreach ($filter as $filter_item) {
             $filter_values = array_merge($filter_values, $filter_item);
@@ -125,8 +126,7 @@ class StaticTools
             })
             ->with(['image:medium,imageable_id'])
             ->groupBy('product_id')
-            ->get()
-            ->toArray();
+            ->paginate($perPage, ['*'], 'page', $page);
     }
 
     public static function getAttributesByGroup()

@@ -68,12 +68,13 @@ class ShopController extends Controller
 
     public function applyFilter(Request $request)
     {
-        $product_name = $request->get('product_name');
+        $product_name = $request->input('product_name');
         $filter_parameters = $request->get('filter');
+        $page = $request->get('page');
 
         if(count($filter_parameters) > 0 || !empty($product_name))
         {
-            $filtered_products = StaticTools::filterProducts($product_name, $filter_parameters);
+            $filtered_products = StaticTools::filterProducts($product_name, $filter_parameters, $page);
         }
         else
         {

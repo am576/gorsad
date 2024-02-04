@@ -4,6 +4,7 @@
         <div>CATALOG</div>
         <div class="row">
             <div id="catalog-filter" class="col-3">
+                <input id="name-search" type="text" v-model="filter_product_name" @keyup="loadFilteredProducts()">
                 <div v-for="attribute_group in attributes">
                     <h4>{{ attribute_group.group_name }}</h4>
                     <div v-for="attribute in attribute_group.attributes">
@@ -12,7 +13,7 @@
                     </button>
                     <b-collapse :id="'attribute-' + attribute.id">
                         <div v-for="value in attribute.values">
-                            <div @click="addFilterOption(attribute.id, value.id)">{{ value.value }}</div>
+                            <div @click="addFilterOption(attribute.id, value.id)"> <span :class="{'text-success':isSelected(attribute.id, value.id)}">{{ value.value }}</span></div>
                         </div>
                     </b-collapse>
                     </div>
@@ -58,10 +59,7 @@
                 default: ''
             },
             cart: {},
-            show_banner: {
-                type: Boolean,
-                default: true
-            }
+            filter_product_name : ""
         },
         data() {
             return {
@@ -73,23 +71,29 @@
                 productsToCompare: [],
                 compareProducts: [],
                 hasFilterOptions: false,
-                filter: {}
+                filter: {},
+                selectedValues: []
             }
         },
         methods: {
             loadProducts(page = 1) {
-                axios.get(`/api/products?page=${page}`)
+                if(!Object.keys(this.filter).length) {
+                    axios.get(`/api/products?page=${page}`)
                     .then(response => {
-                    if (this.products) {
-                        this.products = this.products.concat(response.data.data);
-                        this.products_all.current_page += 1
-                    } else {
-                        this.products = response.data;
-                    }
+                        if (this.products) {
+                            this.products = this.products.concat(response.data.data);
+                            this.products_all.current_page = page
+                        } else {
+                            this.products = response.data;
+                        }
                     })
                     .catch(error => {
-                    console.error('Error loading products:', error);
-                });
+                        console.error('Error loading products:', error);
+                    });
+                }
+                else {
+                    this.loadFilteredProducts(page)
+                }
             },
             loadMore() {
                 this.loadProducts(this.products_all.current_page + 1);
@@ -117,25 +121,23 @@
                 else {
                     this.filter[attr_id] = [value_id]
                 }
+                this.toggleSelection(attr_id, value_id)
+                this.loadFilteredProducts()
                 
             },
-            // addFilterOption(option) {
-            //     if(option.values.length) {
-            //         this.filter_options[option.attribute] = option.values;
-            //     }
-            //     else {
-            //         this.$delete(this.filter_options, option.attribute);
-            //     }
-
-            //     this.doFilterProducts();
-            // },
-            doFilterProducts() {
-                axios.post('/shop/filter', {
-                    product_name: this.product_name,
-                    filter: this.filter_options
+            loadFilteredProducts(page = 1) {
+                axios.post('/catalog/filter', {
+                    product_name: this.filter_product_name,
+                    filter: this.filter,
+                    page: page
                 })
                 .then(response => {
-                    this.$emit('filterProducts', response.data, this.filter_options)
+                    if (page > 1) {
+                        this.products = this.products.concat(response.data.data);
+                        this.products_all.current_page = page
+                    } else {
+                        this.products = response.data.data;
+                    }
                 })
             },
             filterProducts(products, filter_options) {
@@ -158,6 +160,29 @@
             },
             showCart() {
                 this.$eventBus.$emit('showCart')
+            },
+            isSelected(attributeId, valueId) {
+                return this.selectedValues.some((selection) => {
+                    return selection.attributeId === attributeId && selection.valueId === valueId;
+                });
+            },
+            toggleSelection(attributeId, valueId) {
+                const index = this.selectedValues.findIndex((selection) => {
+                    return selection.attributeId === attributeId && selection.valueId === valueId;
+                });
+
+                if (index === -1) {
+                    this.selectedValues.push({ attributeId, valueId });
+                } else {
+                    this.selectedValues.splice(index, 1);
+                }
+            },
+            valueSelected(attr_id, value_id) {
+                console.log(attr_id);
+                if (this.filter.hasOwnProperty(attr_id)) {
+                    console.log(this.filter[attr_id].includes(value_id));
+                    return this.filter[attr_id].includes(value_id)
+                }
             },
             /*getComparison() {
                 axios.get('/shop/comparison')
