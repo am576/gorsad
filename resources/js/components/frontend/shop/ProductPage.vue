@@ -1,12 +1,12 @@
 <template>
     <div id="product-page" class="product-page">
-        <div class="row justify-content-start m-0">
-            <div class="image-wrapper col-lg-6 col-sm-12">
+        <div class="row justify-content-start m-0 top-block">
+            <div class="image-wrapper col-lg-5 col-sm-12">
                 <div class="display-image" :style="{'background-image':'url(/storage/images/' + product.images[0].large +')'}">
                 </div>
             </div>
-            <div class="col-lg-5 col-md-12 col-sm-12">
-                <div class="p-3">
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="mb-3">
                     <h3 class="product-title">{{product.title}}</h3>
                 </div>
                 <div class="attributes-brief">
@@ -16,99 +16,87 @@
                 </div>
             </div>
         </div>
-        <div class="divider"></div>
-        <!--<nav class="nav-tabs product-variants" v-if="hasVariants">
-            <div class="tabs" horizintal="">
-                <div class="tabs-wrapper d-flex justify-content-start">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item" v-for="(tab_variant, type) in variants_table_data.items">
-                            <a class="nav-link" href="#" @click.prevent="setActiveTab(type)" :class="[ isTabActive(type) ? ['active','tab_active'] : ''  ]">{{tabVariants[type].label}}</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="tab-content">
-                    <div class="tab-pane" v-for="(variant_type, type) in variants_table_data.items" :class="[ isTabActive(type) ? ['active','tab_active'] : ''  ]" >
-                        <table class="table b-table table-borderless">
-                            <thead role="rowgroup">
-                            <tr>
-                                <th v-for="field in variants_table_data.fields">
-                                    <div>{{field.label}}</div>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody role="rowgroup">
-                            <tr class="table-row" role="row" v-for="variant in variant_type">
-                                <td>{{variant.height}}</td>
-                                <td>{{variant.width}}</td>
-                                <td>
-                                    <span v-if="variant.price > 0">{{variant.price}}</span>
-                                </td>
-                                <td>
-                                    <input class="quantity-input" type="number" oninput="(value>0 ||validity.valid)||(value='1');" onchange="value = validity.valid && value > 0 ? value : 1" v-model="quantities[variant.id]" v-if="variant.price > 0">
-                                </td>
-                                <td>
-                                    <button class="buy-btn" @click="addToCart(variant.id)" v-if="variant.price > 0">
-                                        <span class="mdi mdi-cart-outline mdi-24px"></span>
-                                    </button>
-                                    <button style="padding: 10px !important; font-size: 16px;" class="buy-btn" @click="priceRequest(variant.id)" v-else>
-                                        Запрос цены
-                                    </button>
-                                </td>
-                                <td>
-                                    <img height="50" v-if="variant.bonus_value > 0" src="/storage/images/public/bonus_icon.png" alt="" :title="'Покупка этого товара принесёт ' + variant.bonus_value + ' баллов'">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <div class="product-variants" v-if="hasVariants">
+            <table>
+                <thead>
+                    <th>Обхват ствола</th>
+                    <th>Размер кома/вес</th>
+                    <th>Упаковка</th>
+                    <th>Количество</th>
+                    <th>Срок доставки</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <tr v-for="variant in product.variants.st">
+                        <td>{{ variantWidth(variant)[0] }} - {{ variantWidth(variant)[1] }}</td>
+                        <td>{{ variantWeight(variantWidth(variant)[1]) }}</td>
+                        <td>Мешковина+сетка</td>
+                        <td>
+                            <input class="quantity-input" type="number" oninput="(value>0 ||validity.valid)||(value='1');" onchange="value = validity.valid && value > 0 ? value : 1" v-model="quantities[variant.id]" v-if="variant.price > 0">
+                        </td>
+                        <td class="text-left">
+                            Сделайте предварительный заказ сейчас!
+                        </td>
+                        <td>
+                            <button class="buy-btn" @click="addToCart(variant.id)" v-if="variant.price > 0">
+                                <span class="mdi mdi-cart-outline mdi-24px"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end">
+                <div style="width: 20%; font-size: 20px;">Для расчёта стоимости, перейдите в корзину</div>
+                <button class="btn-green" type="button">Перейти в корзину</button>
             </div>
-        </nav>-->
-        <div class="d-flex justify-content-center pb-5 mb-4 mt-4">
-            <div class="all-specs">
-                <div class="specs-header">
-                    <h4 class="font-weight-bold">ХАРАКТЕРИСТИКИ</h4>
-                </div>
-                <div class="row" v-for="attribute in product.attributes">
-                    <div class="col-lg-3 col-sm-4 d-flex align-items-center">
-                        {{attribute.name}}
-                    </div>
-                    <div class="col-lg-9 col-sm-8">
+        </div>
+        <product-images :product="product" v-if="product.images.length"></product-images>
+        <div class="product-description">
+            <h3 class="product-title">{{product.title}}</h3>
+            <p class="product-description-text">
+                {{ product.description }}
+            </p>
+        </div>
+        <table class="product-attributes table table-striped">
+            <tbody>
+                <tr v-for="attribute in product.attributes">
+                    <td class="text-left">
+                        {{ attribute.name }}
+                    </td>
+                    <td class="text-right">
                         <div v-if="isTagType(attribute)">
                             <span class="attr-tag" v-for="attr_value in attribute.values">{{attr_value.value}}</span>
                         </div>
                         <div v-if="attribute.type === 'range'">
-                            <span v-if="attribute.values .length > 1">{{attribute.values[0].value}} - {{attribute.values[1].value}}</span>
-                            <span v-else-if="attribute.values .length === 1">{{attribute.values[0].value}}</span>
-                            м.
+                            <span v-if="attribute.values .length > 1">{{attribute.values[0].value}}м - {{attribute.values[1].value}}м</span>
+                            <span v-else-if="attribute.values .length === 1">{{attribute.values[0].value}}м</span>
                         </div>
-                        <div v-if="attribute.type === 'text' && !isTagType(attribute)" v-for="attr_value in attribute.values">
-                            {{attr_value.value}}
-                        </div>
-                        <div v-if="attribute.type === 'color'">
-                        <span class="attr-color" v-for="color in attribute.values"
-                              v-bind:style="{background: color.value}">
-                        </span>
-                        </div>
-                        <div v-if="attribute.type === 'icon'" class="d-flex align-items-center">
+                        <div v-if="attribute.type === 'icon'" class="d-flex align-items-center justify-content-end">
                             <div class="d-flex align-items-center" v-for="(attr_value, index) in attribute.values">
                                 <span>{{attr_value.value}}</span>
                                 <img height="40" :src="'/storage/images/' + attr_value.icon.image.icon" alt="" style="margin-left: 10px;">
                             </div>
-
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--<div class="user-reviews mt-5">
-            <h2>Отзывы</h2>
-            <b-card v-for="(review,index) in product.reviews" :key="index" :title="review.user.name" :sub-title="moment(product.created_at).format('DD.MM.YYYY hh:mm')" class="mt-4">
-                <b-card-text>Достоинства: {{review.pluses}}</b-card-text>
-                <b-card-text>Недостатки: {{review.minuses}}</b-card-text>
-                <b-card-text>Комментарий: {{review.comment}}</b-card-text>
-            </b-card>
-        </div>-->
+                        <div v-if="attribute.type === 'text' && !isTagType(attribute)" v-for="attr_value in attribute.values">
+                            {{attr_value.value}} 
+                            <div class="d-inline-block" v-if="attribute.name==='Зимостойкость'">
+                                (<span v-html="productWinterZone()"></span>)
+                            </div>
+                        </div>
+                        <div v-if="attribute.type === 'color'">
+                            <span class="attr-color" v-for="color in attribute.values"
+                                v-bind:style="{background: color.value}">
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">Синонимы</td>
+                    <td class="text-right">{{ product.title_lat }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- RESERVED FOR PROJECT USAGE IMAGES -->
 <!--        <shopping-cart></shopping-cart>-->
     </div>
 </template>
@@ -143,6 +131,33 @@
             }
         },
         methods: {
+            setVariantsTableData() {
+                this.variants_table_data.fields = [
+                    {key: 'height', label: 'Высота'},
+                    {key: 'width', label: 'Обхват ствола'},
+                    {key: 'price', label: 'Цена'},
+                    {key: 'quantity', label: 'Количество'},
+                    {key: 'buy', label: ''},
+                    {key: 'bonus', label: ''},
+                ];
+                Object.keys(this.product.variants).forEach((type) => {
+                    this.product.variants[type].forEach(variant => {
+                        if(!this.variants_table_data.items.hasOwnProperty(type)) {
+                            this.$set(this.variants_table_data.items, type, []);
+                        }
+                        this.variants_table_data.items[type].push({
+                            id: variant.id,
+                            height: this.rangeFormatted(variant.height, 'см') || '',
+                            width: this.rangeFormatted(variant.width, 'см') || '',
+                            price: variant.price,
+                            quantity: 1,
+                            buy: variant,
+                            bonus: variant
+                        });
+                        this.quantities[variant.id] = 0;
+                    });
+                })
+            },
             setActiveTab(new_tab) {
                 this.activeTab = new_tab;
             },
@@ -182,33 +197,7 @@
                 }
                 return 0;
             },
-            setVariantsTableData() {
-                this.variants_table_data.fields = [
-                    {key: 'height', label: 'Высота'},
-                    {key: 'width', label: 'Обхват ствола'},
-                    {key: 'price', label: 'Цена'},
-                    {key: 'quantity', label: 'Количество'},
-                    {key: 'buy', label: ''},
-                    {key: 'bonus', label: ''},
-                ];
-                Object.keys(this.product.variants).forEach((type) => {
-                    this.product.variants[type].forEach(variant => {
-                        if(!this.variants_table_data.items.hasOwnProperty(type)) {
-                            this.$set(this.variants_table_data.items, type, []);
-                        }
-                        this.variants_table_data.items[type].push({
-                            id: variant.id,
-                            height: this.rangeFormatted(variant.height, 'см') || '',
-                            width: this.rangeFormatted(variant.width, 'см') || '',
-                            price: variant.price,
-                            quantity: 1,
-                            buy: variant,
-                            bonus: variant
-                        });
-                        this.quantities[variant.id] = 0;
-                    });
-                })
-            },
+            
             isTagType(attribute) {
                 return attribute.type === 'text' && attribute.values.length > 1
             },
@@ -250,6 +239,13 @@
                             return 'Temperature range not available';
                         }
                 }
+            },
+            variantWidth(variant) {
+                const width_string = variant.width;
+                return width_string.split(',')
+            },
+            variantWeight(width) {
+                return width * 10
             }
         },
         computed: {
@@ -258,7 +254,7 @@
             }
         },
         created() {
-            this.setVariantsTableData();
+            this.setVariantsTableData()
             this.replaceMissingImages();
             this.setCurrentImage(this.product.images[0]);
             if(this.hasVariants) {
@@ -271,6 +267,10 @@
 <style lang="scss">
     @import '@/_variables.scss';
     .product-page {
+        .top-block {
+            display: flex;
+            gap: 30px
+        }
         color: $text-color;
         .product-title {
             font-size: 30px;
@@ -294,19 +294,21 @@
             background: #4c4b4b;
             border-radius: 2px;
         }
-        .divider {
-            background: #343434;
-            height: 100px;
-            width: 100%;
-        }
         .product-variants {
-            margin-top: -50px;
+            margin-top: 100px;
+            margin-bottom: 100px;
+            table {
+                margin: auto;
+                margin-bottom: 45px;
+                width: 90%;    
+            }
         }
         .image-wrapper {
             padding: 10px;
         }
         .display-image {
-            min-height: 600px;
+            min-height: 440px;
+            width: 440px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -314,64 +316,23 @@
             background-size: cover;
             background-position: center;
         }
-        .tabs-wrapper {
-            width: 75%;
+        .product-description {
+            width: 85%;
+            margin: 75px auto 50px;
         }
-        a.tab_active {
-            background: #4c4b4b !important;
-            border: none !important;
-            border-radius: 0 !important;
-        }
-
-        .table-row {
-            background: #9d9898;
-            border-bottom: 20px solid #a9a6a6;
-            border-top: 20px solid #a9a6a6;
-        }
-        .b-table tbody {
-            background: #a9a6a6 !important;
-        }
-        td, th {
-            text-align: center;
-            vertical-align: middle;
-            font-weight: bold;
-            font-size: 2.1vh;
-        }
-        th {
-            padding: 1rem 0.25rem;
-        }
-        td {
-            padding: 0.25rem;
-        }
-        th:not(:last-child){
-            width: 20%;
-        }
-
-        .nav-tabs {
-            border-bottom: none !important;
-            a.nav-link {
-                font-size: 2.25vh;
-                font-weight: bold;
-                border: none !important;
-                color: #e7e7e7 !important;
-                &:hover {
-                    color: #e7e7e7 !important;
-                    border: none !important;
-                }
+        table.product-attributes {
+            margin: auto;
+            margin-bottom: 100px;
+            width: 70%;
+            tbody tr:nth-of-type(2n+1) {
+                background-color: #ffffff;
             }
-        }
-
-        ul.nav-tabs {
-            border: none !important;
+            td {
+                vertical-align: middle;
+            }
         }
         .all-specs {
-            width: 60%;
-            .row,.specs-header {
-                padding: 5px 0;
-                margin-bottom: 5px;
-                font-size: 18px;
-                font-weight: 600;
-            }
+            width: 80%;
         }
         .thumbs {
             .thumb-link {
@@ -402,8 +363,8 @@
             margin-right: 5px;
             padding: 3px 10px;
             display: inline-block;
-            background: #373535;
-            border: 1px solid #6c6c6c
+            background: #eaeaea;
+            border: 1px solid #726155
         }
         .nav-tabs {
             display: flex;
