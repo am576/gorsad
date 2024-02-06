@@ -16,15 +16,13 @@ Route::post('/search', 'HomeController@ApplyFilter');
 
 Route::prefix('catalog')->group(function() {
     Route::get('/', 'ShopController@showShopPage')->name('catalog');
-    Route::get('/products/{product_id}', 'ShopController@productPage')->name('product_page');
+    Route::get('/trees/{product_id}', 'ShopController@productPage')->name('product_page');
     Route::post('/compare/add','ShopController@addProductsToCompare');
     Route::post('/compare/remove','ShopController@removeFromCompare');
     Route::get('comparison', 'ShopController@getProductsForComparison');
     Route::post('filter', 'ShopController@applyFilter')->name('filter');
     Route::get('load', 'ShopController@loadProducts');
 });
-
-
 
 //**** STATIC PAGES *****/
 //** Knowhow **/

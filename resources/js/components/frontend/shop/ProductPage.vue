@@ -3,18 +3,16 @@
         <div class="row justify-content-start m-0">
             <div class="image-wrapper col-lg-6 col-sm-12">
                 <div class="display-image" :style="{'background-image':'url(/storage/images/' + product.images[0].large +')'}">
-                    <div class="product-name-rus">{{product.title}}</div>
-                    <div class="product-name-lat">{{product.title_lat}}</div>
                 </div>
             </div>
             <div class="col-lg-5 col-md-12 col-sm-12">
                 <div class="p-3">
-                    <h3>{{product.title}}</h3>
-                    <h5 class="text-muted">{{product.title_lat}}</h5>
-                    <div>----</div>
-                    <div>
-                        <p v-html="product.description"></p>
-                    </div>
+                    <h3 class="product-title">{{product.title}}</h3>
+                </div>
+                <div class="attributes-brief">
+                    <div>{{ productHeight() }}</div>
+                    <div>{{ productPaving() }}</div>
+                    <div v-html="productWinterZone()"></div>
                 </div>
             </div>
         </div>
@@ -117,6 +115,8 @@
 
 <script>
     import moment from "moment";
+    import winterZones from "@js/data/winterZones.js"
+
     export default {
         props: {
             product: {},
@@ -221,6 +221,35 @@
                        large: 'products/noimage/noimage_large.jpg'
                    })
                 }
+            },
+            // ========================= 
+            productHeight() {
+                const attribute = this.product.attributes.find(attribute => attribute.name === 'Высота');
+                if(attribute) {
+                    return `${attribute.values[0].value} - ${attribute.values[1].value}м`
+                }
+                return "";
+            },
+            productPaving() {
+                const attribute = this.product.attributes.find(attribute => attribute.name === 'Мощение');
+                if(attribute) {
+                    return `${attribute.values[0].value}`
+                }
+                return "";
+            },
+            productWinterZone() {
+                const attribute = this.product.attributes.find(attribute => attribute.name === 'Зимостойкость');
+                if(attribute) {
+                    const zone_index = attribute.values[0].value
+                    const zone = winterZones.find(zone => zone.index === zone_index);
+                    if (zone) {
+                        const [min, max] = zone.range;
+                        return `${min} &#8212 ${max}°C`;
+                        } 
+                        else {
+                            return 'Temperature range not available';
+                        }
+                }
             }
         },
         computed: {
@@ -240,10 +269,19 @@
 </script>
 
 <style lang="scss">
+    @import '@/_variables.scss';
     .product-page {
-        background: #434242;
-        * {
-            color: #e7e7e7;
+        color: $text-color;
+        .product-title {
+            font-size: 30px;
+        }
+        .attributes-brief {
+            display: flex;
+            justify-content: space-around;
+            color: #000000;
+            div {
+                flex: 1;
+            }
         }
         input.quantity-input {
             color: #000000 !important;
@@ -266,9 +304,6 @@
         }
         .image-wrapper {
             padding: 10px;
-            @media (max-width: 600px) {
-                padding: 0;
-            }
         }
         .display-image {
             min-height: 600px;
@@ -278,47 +313,9 @@
             justify-content: center;
             background-size: cover;
             background-position: center;
-
-            @media (max-width: 600px) {
-                width: 100vw;
-                height: 50vh;
-                min-height: 0;
-                min-width: 0;
-            }
-
-            .product-name-rus {
-                text-align: center;
-                font-weight: bold;
-                color: #ffffff !important;
-                @media (min-width: 0px) {
-                    font-size: 1.7rem;
-                }
-                @media (min-width: 460px) {
-                    font-size: 2rem;
-                }
-                @media (min-width: 900px) {
-                    font-size: 2.5rem;
-                }
-            }
-            .product-name-lat {
-                color: #ffffff !important;
-                text-align: center;
-                @media (min-width: 0px) {
-                    font-size: 1.2rem;
-                }
-                @media (min-width: 460px) {
-                    font-size: 1.5rem;
-                }
-                @media (min-width: 900px) {
-                    font-size: 2rem;
-                }
-            }
         }
         .tabs-wrapper {
             width: 75%;
-            @media (max-width: 600px) {
-                width: 100%;
-            }
         }
         a.tab_active {
             background: #4c4b4b !important;
@@ -369,20 +366,11 @@
         }
         .all-specs {
             width: 60%;
-            @media (max-width: 600px) {
-                width: 90%;
-                .specs-header {
-                    text-align: center;
-                }
-            }
             .row,.specs-header {
                 padding: 5px 0;
                 margin-bottom: 5px;
                 font-size: 18px;
                 font-weight: 600;
-                @media (max-width:600px) {
-                    flex-wrap: nowrap;
-                }
             }
         }
         .thumbs {
@@ -400,9 +388,6 @@
 
         .attr-row {
             margin: 10px 0;
-            @media (max-width:600px) {
-                flex-wrap: nowrap;
-            }
         }
 
         .attr-color {
@@ -429,9 +414,6 @@
         }
         .tabs {
             width: 70%;
-            @media (max-width: 600px) {
-                width: 100%;
-            }
         }
         .b-table {
             border-spacing: 0 20px;

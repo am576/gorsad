@@ -28,7 +28,9 @@
                         {{ product.title }}
                     </div>
                     <div>
-                        <button class="btn-green w-100" type="button">Описание</button>
+                        <a :href="'/catalog/trees/'+product.id">
+                            <button class="btn-green w-100" type="button">Описание</button>
+                        </a>
                     </div>
                 </div>
             </div>
