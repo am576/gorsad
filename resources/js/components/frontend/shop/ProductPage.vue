@@ -6,13 +6,32 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12">
-                <div class="mb-3">
+                <div class="mb-4">
                     <h3 class="product-title">{{product.title}}</h3>
                 </div>
                 <div class="attributes-brief">
-                    <div>{{ productHeight() }}</div>
-                    <div>{{ productPaving() }}</div>
-                    <div v-html="productWinterZone()"></div>
+                    <div v-if="productHeight()">
+                        <span class="brief-title">Высота</span>
+                        <div class="brief-wr d-flex justify-content-between">
+                            <img src="/storage/images/public/icons/icon_height.png" alt="">
+                            <div class="brief-value">{{ productHeight() }}</div>
+                        </div>
+                        </div>
+                    <div v-if="productPaving()">
+                        <span class="brief-title">Мощение</span>
+                        <div class="brief-wr d-flex justify-content-between">
+                            <img src="/storage/images/public/icons/icon_paving.png" alt="">
+                            <div class="brief-value">{{ productPaving() }}</div>
+                        </div>
+                    </div>
+                    <div v-if="productWinterZone()">
+                        <span class="brief-title">Зона зимостойкости</span>
+                        <div class="brief-wr d-flex justify-content-between">
+                            <img src="/storage/images/public/icons/icon_winter_zone.png" alt="">
+                            <div class="brief-value" v-html="productWinterZone()"></div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -22,32 +41,48 @@
                     <th>Обхват ствола</th>
                     <th>Размер кома/вес</th>
                     <th>Упаковка</th>
-                    <th>Количество</th>
+                    <th class="text-center">Количество</th>
                     <th>Срок доставки</th>
                     <th></th>
                 </thead>
                 <tbody>
                     <tr v-for="variant in product.variants.st">
-                        <td>{{ variantWidth(variant)[0] }} - {{ variantWidth(variant)[1] }}</td>
-                        <td>{{ variantWeight(variantWidth(variant)[1]) }}</td>
+                        <td width="120">{{ variantWidth(variant)[0] }} - {{ variantWidth(variant)[1] }}</td>
+                        <td width="150">{{ variantWeight(variantWidth(variant)[1]) }}</td>
                         <td>Мешковина+сетка</td>
                         <td>
-                            <input class="quantity-input" type="number" oninput="(value>0 ||validity.valid)||(value='1');" onchange="value = validity.valid && value > 0 ? value : 1" v-model="quantities[variant.id]" v-if="variant.price > 0">
+                            <v-text-field
+                                solo
+                                readonly="true"
+                                prepend-inner-icon="mdi-minus"
+                                append-icon="mdi-plus"
+                                v-model="quantities[variant.id]"
+                                @click:append="changeQuantity(variant.id, quantities[variant.id] + 1)"
+                                @click:prepend-inner="changeQuantity(variant.id, quantities[variant.id] - 1)"
+                            >
+                            </v-text-field>
+                            <!-- <input class="quantity-input" type="number" oninput="(value>0 ||validity.valid)||(value='1');" onchange="value = validity.valid && value > 0 ? value : 1" v-model="quantities[variant.id]" v-if="variant.price > 0"> -->
                         </td>
                         <td class="text-left">
                             Сделайте предварительный заказ сейчас!
                         </td>
                         <td>
-                            <button class="buy-btn" @click="addToCart(variant.id)" v-if="variant.price > 0">
-                                <span class="mdi mdi-cart-outline mdi-24px"></span>
+                            <button class="btn btn-green buy-btn" @click="addToCart(variant.id)" v-if="variant.price > 0">
+                                <span class="mdi mdi-cart mdi-24px"></span>
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end" style="gap: 30px;">
                 <div style="width: 20%; font-size: 20px;">Для расчёта стоимости, перейдите в корзину</div>
                 <button class="btn-green" type="button">Перейти в корзину</button>
+            </div>
+        </div>
+        <div v-else class="mt-5 mb-5">
+            <div class="d-flex justify-content-center" style="gap: 30px;">
+                <div style="width: 40%; font-size: 20px;">Для уточнения цены, пожалуйста, оставьте заявку, или свяжитесь с нами по телефону</div>
+                <button class="btn-green" type="button">Оставить заявку</button>
             </div>
         </div>
         <product-images :product="product" v-if="product.images.length"></product-images>
@@ -164,9 +199,16 @@
             isTabActive(type) {
                 return type === this.activeTab;
             },
-            changeQuantity(variant, new_quantity) {
-                this.quantities[variant] = new_quantity;
+            changeQuantity(variant_id, new_quantity) {
+                let quantity = 0;
+                if (Number.isInteger(new_quantity) && new_quantity >= 0) {
+                    quantity = new_quantity
+                }
+                this.$set(this.quantities, variant_id, quantity)
+                this.$forceUpdate();
+                // this.quantities[variant_id] = new_quantity;
             },
+            
             setCurrentImage(image) {
                 this.current_image = image;
             },
@@ -267,32 +309,51 @@
 <style lang="scss">
     @import '@/_variables.scss';
     .product-page {
+        padding-top: 35px;
         .top-block {
             display: flex;
             gap: 30px
         }
         color: $text-color;
         .product-title {
+            font-family: $font-family-sans-serif;
+            font-weight: normal;
             font-size: 30px;
+            margin-bottom: 40px !important;
+        }
+        .product-description-text {
+            font-size: 18px;
+            line-height: 30px;
+            font-family: $font-gilroy;
+            font-weight: normal;
         }
         .attributes-brief {
+            font-family: $font-glory;
             display: flex;
-            justify-content: space-around;
+            justify-content: flex-start;
+            gap: 60px;
             color: #000000;
             div {
-                flex: 1;
+                flex: -0.5;
+                gap:20px;
             }
-        }
-        input.quantity-input {
-            color: #000000 !important;
-            text-align: center;
-            width: 50%;
+            .brief-wr {
+                padding-top: 5px;
+            }
+            .brief-title {
+                font: $font-glory;
+                font-size: 12px;
+                color: #4f4f4f;
+            }
+            .brief-value {
+                font-size: 18px;
+            }
         }
         button.buy-btn {
             border: none;
-            padding: 0 35px !important;
+            padding: 0 25px !important;
             background: #4c4b4b;
-            border-radius: 2px;
+            border-radius: 0 !important;
         }
         .product-variants {
             margin-top: 100px;
@@ -300,7 +361,32 @@
             table {
                 margin: auto;
                 margin-bottom: 45px;
-                width: 90%;    
+                width: 90%;
+                th {
+                    font: $font-glory;
+                    font-size: 12px;
+                    color: $text-color;
+                    font-weight: normal;
+                }
+                tr {
+                    border-bottom: 1px solid #9f9f9f
+                }
+                td {
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                }    
+                .v-input {
+                    width: 40%;
+                    margin: auto;
+                }
+                .v-text-field__slot {
+                    input {
+                        text-align: center;
+                    }
+                }
+                .v-text-field__details {
+                    display: none;
+                }
             }
         }
         .image-wrapper {

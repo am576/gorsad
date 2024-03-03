@@ -7,8 +7,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { BCollapse } from "bootstrap-vue/esm/components/collapse";
 import { VBToggle } from "bootstrap-vue/esm/directives/toggle";
+import vuetify from './vuetify';
 
-// Vue.use(Vuetify);
 
 Vue.component('b-collapse', BCollapse);
 Vue.directive('b-toggle', VBToggle);
@@ -35,4 +35,5 @@ Vue.component('account-dropdown', require('./components/frontend/shared/AccountD
 
 const app = new Vue({
     el: '#app.catalog',
+    vuetify
 });

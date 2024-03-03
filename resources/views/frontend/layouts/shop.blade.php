@@ -12,7 +12,7 @@
     <div class="catalog body-bg">
         <div class="container-pd">
             <nav class="page-menu">
-                <a href="/">Главная</a>
+                <a class="page-link-item" href="/">Главная</a>
                 @yield('category-link')
                 @yield('current-page-link')
             </nav>

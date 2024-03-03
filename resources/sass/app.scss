@@ -571,4 +571,18 @@ $body-bg : #EDEEF0;
 .contacts-header {
     padding: $contacts-header-margin;
 }
+.catalog {
+    .page-menu {
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.6) !important; 
+    }
+    a {
+        color: rgba(0, 0, 0, 0.6) !important;
+        font-size: 18px;
+        
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
 
