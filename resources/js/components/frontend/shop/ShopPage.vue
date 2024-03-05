@@ -1,23 +1,61 @@
 <template>
     
     <div>
-        <div>CATALOG</div>
-        <div class="row">
+        <div class="shop-page">
             <div id="catalog-filter" class="col-3">
-                <input id="name-search" type="text" v-model="filter_product_name" @keyup="loadFilteredProducts()">
-                <div v-for="attribute_group in attributes">
-                    <h4>{{ attribute_group.group_name }}</h4>
+                <div class="category" v-for="attribute_group in attributes">
+                    <h4 class="category-name">{{ attribute_group.group_name }}</h4>
                     <div v-for="attribute in attribute_group.attributes">
-                        <button class="btn btn-light btn-block" v-b-toggle="'attribute-' + attribute.id">
-                        {{ attribute.name }}
-                    </button>
-                    <b-collapse :id="'attribute-' + attribute.id">
-                        <div v-for="value in attribute.values">
-                            <div @click="addFilterOption(attribute.id, value.id)"> <span :class="{'text-success':isSelected(attribute.id, value.id)}">{{ value.value }}</span></div>
-                        </div>
-                    </b-collapse>
+                        <button class="attribute-name btn btn-light btn-block" v-b-toggle="'attribute-' + attribute.id">
+                            <span class="d-flex align-items-center" style="gap: 10px;">
+                                <i class="mdi mdi-chevron-right mdi-24px"></i>
+                                {{ attribute.name }}
+                            </span>
+                        </button>
+                        <b-collapse class="attribute-values" :id="'attribute-' + attribute.id">
+                            <div v-if="attribute.type === 'text'" class="mt-1 mb-1" v-for="value in attribute.values">
+                                <div @click="addFilterOption(attribute.id, value.id)"> 
+                                    <span class="attribute-value" :class="{'text-success':isSelected(attribute.id, value.id)}">
+                                        {{ value.value }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div v-if="attribute.type === 'range'">
+                                <vue-slider
+                                    v-model="range"
+                                    :tooltip-placement="'bottom'"
+                                    :enable-cross="false"
+                                    :data="attribute.values"
+                                    :data-value="'id'"
+                                    :data-label="'value'"
+                                    :marks="false"
+                                    :hide-label="true"
+                                    @change="applyRangeFilter(attribute.id)"
+                                ></vue-slider>
+                            </div>
+                            <div class="color-attribute-wr" v-if="attribute.type === 'color'">
+                                <span 
+                                    class="color-icon-wr" 
+                                    v-for="value in attribute.values" 
+                                    @click="addFilterOption(attribute.id, value.id)"
+                                    :tooltip="value.ext_value"
+                                    :class="{'selected':isSelected(attribute.id, value.id)}"
+                                >
+                                        <i class="mdi mdi-leaf mdi-24px" v-bind:style="{color: value.value}" ></i>
+                                </span>
+                            </div>
+                            <div class="icon-attribute-wr" v-if="attribute.type === 'icon'">
+                                <div class="icon-img-wr" v-for="value in attribute.values" @click="addFilterOption(attribute.id, value.id)">
+                                    <img 
+                                        :src="'/storage/images/' + value.icon" alt="" 
+                                        :class="{'selected':isSelected(attribute.id, value.id)}"
+                                        
+                                    >
+                                    {{ value.value }}
+                                </div>
+                            </div>
+                        </b-collapse>
                     </div>
-                    
                 </div>
             </div>
             <div class="product-list col-9">
@@ -34,14 +72,20 @@
                     </div>
                 </div>
             </div>
+            <button class="load-more-btn btn-green" @click="loadMore" v-if="products_all.current_page < products_all.last_page">Загрузить ещё</button>
         </div>
         
-        <button @click="loadMore" v-if="products_all.current_page < products_all.last_page">Load More</button>
+        
   </div>
 </template>
 
 <script>
+    import VueSlider from 'vue-slider-component'
+    import 'vue-slider-component/theme/default.css'
     export default {
+        components: {
+            VueSlider,
+        },
         props: {
             products_all: {
                 type: Object
@@ -74,7 +118,8 @@
                 compareProducts: [],
                 hasFilterOptions: false,
                 filter: {},
-                selectedValues: []
+                selectedValues: [],
+                range: []
             }
         },
         methods: {
@@ -104,6 +149,16 @@
                 if(product.image) {
                     return `url(/storage/images/${product.image.medium})`
                 }
+            },
+            setRangeDefaults() {
+                let attributes = this.attributes.flatMap(obj => obj.attributes)
+                attributes.forEach(attribute => {
+                    if (attribute.type === 'range') {
+                        this.range.push(attribute.values[0].id)
+                        this.range.push(attribute.values.slice(-1)[0].id)
+                    }
+                });
+                this.$forceUpdate();
             },
             addFilterOption(attr_id, value_id) {
                 if (this.filter.hasOwnProperty(attr_id)) {
@@ -141,6 +196,14 @@
                         this.products = response.data.data;
                     }
                 })
+            },
+            applyRangeFilter(attribute_id) {
+                let selected_range = []
+                for (let i = this.range[0]; i <= this.range[1]; i++) {
+                    selected_range.push(i);
+                }
+                this.filter[attribute_id] = selected_range
+                this.loadFilteredProducts()
             },
             filterProducts(products, filter_options) {
                 let isFilter = false;
@@ -184,6 +247,11 @@
                 if (this.filter.hasOwnProperty(attr_id)) {
                     console.log(this.filter[attr_id].includes(value_id));
                     return this.filter[attr_id].includes(value_id)
+                }
+            },
+            setValues(attribute){
+                if(attribute.type === 'range') {
+                    
                 }
             },
             /*getComparison() {
@@ -246,6 +314,8 @@
         },
         created() {
             this.products = 'data' in this.products_all ? this.products_all.data : this.products_all;
+            this.setRangeDefaults();
+            // this.$forceUpdate()
             // this.handleView();
             // this.getComparison();
             // this.$eventBus.$on('toggleProductCompare', this.toggleProductCompare);
@@ -254,63 +324,94 @@
     }
 </script>
 <style lang="scss" scoped>
-    $header-height : 6vh;
-    @media (max-width: 600px) {
-        .shop-content {
-            margin-top: $header-height;
-        }
-    }
-    .filter-slide-leave-active,
-    .filter-slide-enter-active {
-        transition: margin-top 300ms linear;
-    }
-    .filter-slide-enter, .filter-slide-leave-to {
-        margin-top: -300px;
-    }
-
-    .header-mobile {
-        position: fixed;
-        background: rgba(7, 19, 8, 0.79);
-        z-index: 1000;
-        height: $header-height;
-        width: 100%;
+    @import '@/_variables.scss';
+    .shop-page {
         display: flex;
-        justify-content: space-between;
-        img {
-            height: $header-height;
-        }
-        .mdi-account, .mdi-cart{
-            font-size: 28px !important;
-            color: #ffffff !important;
-        }
-        a.home-link {
-            color: #b5b4b4 !important;
-            display: flex;
-            align-items: center;
-            &:hover {
-                text-decoration: none;
+        justify-content: center;
+        flex-wrap: wrap;
+        flex: 1;
+        margin-left: -15px;
+        margin-right: -15px;
+        margin-top: 30px;
+        padding-bottom: 50px;
+
+        #catalog-filter {
+            .category {
+                margin-top: 20px;
+                .category-name {
+                    font-family: $font-family-sans-serif;
+                    font-size: 18px;
+                    color: $text-color;
+                    padding-left: 10px;
+                }
+                .attribute-name {
+                    font-family: $font-gilroy;
+                    font-size: 16px;
+                    text-align: left;
+                    color: $text-color;
+                    padding: 0;
+                }
+                .attribute-values {
+                    padding-left: 20px;
+                    .attribute-value {
+                        font-family: $font-gilroy;
+                        font-size: 14px;
+                        color: $text-color;
+                        cursor: pointer;
+                        margin-top: 15px;
+                        margin-bottom: 15px;
+                    }
+                    .color-attribute-wr {
+                        //background: #2c2c2c;
+                        display: flex;
+                        flex-wrap: wrap;
+                        margin: 10px 0;
+                        padding: 0 10px;
+                        .color-icon-wr {
+                            width: 30px;
+                            height: 30px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            border: 1px solid rgba(255, 0, 0, 0);
+                            border-radius: 100px;
+                            &.selected {
+                                border: 1px solid rgba(255, 0, 0, 1);
+                            }
+                        }
+                        i {
+                            text-shadow: 0px 0px 2px rgba(160,160,160,0.8);
+                            cursor: pointer;
+                        }
+                    }
+                    .icon-attribute-wr {
+                        background: #076632;
+                        margin: 10px 0;
+                        padding: 10px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        .icon-img-wr {
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                        }
+                        img {
+                            width: 40px;
+                            cursor: pointer;
+                            border: 1px solid #ffffff00;
+                            border-radius: 100px;
+                            &.selected {
+                                border: 1px solid #ffffff;
+                            }
+                        }
+                    }
+                }
+                
             }
         }
-        .logo-text {
-            font-size: 2.5vh;
-            font-weight: bold;
-            margin-left: 1vh;
+        .load-more-btn {
+            margin-top: 50px;
         }
     }
-    #filter-btn-wr {
-        #btn-toggle-filters {
-            padding: 0 15px 0 5px;
-            .mdi {
-                margin-right: 5px;
-            }
-            @media (max-width:600px) {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-        @media (max-width:600px) {
-            width: 100%;
-            justify-content: center;
-        }
-    }
+    
 </style>

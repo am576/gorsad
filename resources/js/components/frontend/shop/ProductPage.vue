@@ -103,7 +103,7 @@
                             <span class="attr-tag" v-for="attr_value in attribute.values">{{attr_value.value}}</span>
                         </div>
                         <div v-if="attribute.type === 'range'">
-                            <span v-if="attribute.values .length > 1">{{attribute.values[0].value}}м - {{attribute.values[1].value}}м</span>
+                            <span v-if="attribute.values.length > 1">{{attribute.values[0].value}}м - {{attribute.values[1].value}}м</span>
                             <span v-else-if="attribute.values .length === 1">{{attribute.values[0].value}}м</span>
                         </div>
                         <div v-if="attribute.type === 'icon'" class="d-flex align-items-center justify-content-end">
@@ -257,7 +257,8 @@
             productHeight() {
                 const attribute = this.product.attributes.find(attribute => attribute.name === 'Высота');
                 if(attribute) {
-                    return `${attribute.values[0].value} - ${attribute.values[1].value}м`
+                    let product_height = attribute.values.length > 1 ? `${attribute.values[0].value} - ${attribute.values[1].value}м` : `${attribute.values[0].value}`
+                    return product_height
                 }
                 return "";
             },
