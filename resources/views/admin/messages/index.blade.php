@@ -10,7 +10,7 @@
 @section('content')
     <div class="panel panel-bordered">
         <div class="panel-body">
-            <messages-table :messages="{{$messages}}"></messages-table>
+            <messages-table></messages-table>
         </div>
     </div>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Attribute;
 use App\AttributesGroup;
 use App\Category;
+use App\ContactMessage;
 use App\IconSet;
 use App\Image;
 use App\Product;
@@ -187,6 +188,11 @@ class ApiController extends Controller
     public function paginateServices(Request $request)
     {
         return Service::with(['group'])->paginate($request->per_page)->toJson();
+    }
+
+    public function paginateMessages(Request $request)
+    {
+        return ContactMessage::paginate($request->per_page)->toJson();
     }
 
     public function getGuideImageNames(Request $request)

@@ -42,6 +42,7 @@ Route::get('getServiceGroups', 'ApiController@getServiceGroups');
 
 Route::get('paginateProjects', 'ApiController@paginateProjects');
 Route::get('paginateServices', 'ApiController@paginateservices');
+Route::get('paginateMessages', 'ApiController@paginateMessages');
 Route::get('getGuideImageNames', 'ApiController@getGuideImageNames');
 
 Route::post('approveQuery', function (Request $request) {
