@@ -51,7 +51,7 @@ class ImportProductsFromJson extends Command
             ->groupBy(function ($item) {
                 return $item->name;
             });
-
+        
         $db_attributes = collect($attributes)->mapToGroups(function ($attribute) {
             return collect($attribute)->mapToGroups(function ($attrs) {
                 return [
@@ -67,7 +67,6 @@ class ImportProductsFromJson extends Command
                 ];
             })->toArray();
         })->toArray();
-
         $image_files = scandir('./public/storage/images/products');
         $file_names = array_map('strtolower', $image_files);
 
@@ -102,8 +101,8 @@ class ImportProductsFromJson extends Command
                                 'imageable_type' => 'App\Product',
                                 'imageable_id' => $product->id,
                                 'icon' => ImageUtils::createResizedImage('icon', $filename, 'products', config('images.size.icon'), config('images.size.icon')),
-                                'small' => ImageUtils::createResizedImage('small', $filename, 'products',config('images.size.small'), config('images.size.icon')),
-                                'medium' => ImageUtils::createResizedImage('medium', $filename, 'products',config('images.size.medium'), config('images.size.icon')),
+                                'small' => ImageUtils::createResizedImage('small', $filename, 'products',config('images.size.small'), config('images.size.small')),
+                                'medium' => ImageUtils::createResizedImage('medium', $filename, 'products',config('images.size.medium'), config('images.size.medium')),
                                 'large' => $path,
                             ]);
                             $image->save();

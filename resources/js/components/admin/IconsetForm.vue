@@ -10,8 +10,8 @@
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>
                 <div class="col-md-6">
-                    <image-uploader :entity_id="iconset_id" :entity_model="'IconSet'" :entity="iconset"
-                                    :isSingleImage="false" :storage="'attributes/'" @removeImage="removeImage">
+                    <image-uploader :uploader_type="'multiple'" :entity_id="iconset_id" :entity_model="'IconSet'" :entity="iconset"
+                                     :storage="'attributes/'" @removeImage="removeImage">
                     </image-uploader>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                     .then(response => {
                         if(response.status == '200')
                         {
-                            window.location.href = '/admin/icon_sets'
+                            // window.location.href = '/admin/icon_sets'
                         }
                     }).catch(error => {
                     if ([422, 500].includes(error.response.status)) {

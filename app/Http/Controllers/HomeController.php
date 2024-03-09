@@ -46,7 +46,7 @@ class HomeController extends Controller
 
         if(isset($filter_parameters) || !empty($product_name))
         {
-            $filtered_products = StaticTools::filterProducts($product_name, $filter_parameters);
+            $filtered_products = StaticTools::filterProducts($product_name, $filter_parameters, 1);
         }
         else
         {

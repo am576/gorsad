@@ -156,25 +156,39 @@ $body-bg : #EDEEF0;
             gap: 30px;
             #search {
                 flex-grow: 2;
-                input {
+                form {
                     width: 70%;
-                    font-size: 15px;
-                    padding: 8px 10px;
-                    border-radius: 5px;
-                    border: 1px solid #5A4636;
-                    background-color: $body-bg;
-                    background-image: url('/storage/images/public/icons/icon_search.png');
-                    background-position: right center;
-                    background-repeat: no-repeat;
-                    background-origin: content-box;
-                    &:focus {
-                        outline: none !important;
+                    position: relative;
+                    input[type="text"] {
+                        width: 100%;
+                        font-size: 15px;
+                        padding: 8px 10px;
+                        border-radius: 5px;
+                        border: 1px solid #5A4636;
+                        background-color: $body-bg;
+                        background-position: right center;
+                        background-repeat: no-repeat;
+                        background-origin: content-box;
+                        &:focus {
+                            outline: none !important;
+                        }
+                        &::placeholder {
+                            font-size: 12px;
+                            font-family: 'Inter', sans-serif;
+                        }
                     }
-                    &::placeholder {
-                        font-size: 12px;
-                        font-family: 'Inter', sans-serif;
+                    .search-icon {
+                        background-image: url('/storage/images/public/icons/icon_search.png');
+                        position: absolute;
+                        width: 20px;
+                        height: 20px;
+                        background-repeat: no-repeat;
+                        top: 10px;
+                        right: 10px;
+                        cursor: pointer;
                     }
                 }
+                
             }
         }
         nav {

@@ -24,7 +24,6 @@ class ShopController extends Controller
         $products = Product::getAndPaginateActiveProducts();
 
         $attributes = StaticTools::getAttributesByGroup();
-
         $view_with =
         [
             'products'=> $products->toJson(),

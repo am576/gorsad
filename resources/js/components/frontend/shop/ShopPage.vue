@@ -45,10 +45,10 @@
                                 </span>
                             </div>
                             <div class="icon-attribute-wr" v-if="attribute.type === 'icon'">
-                                <div class="icon-img-wr" v-for="value in attribute.values" @click="addFilterOption(attribute.id, value.id)">
+                                <div class="icon-img-wr" :class="{'selected':isSelected(attribute.id, value.id)}" v-for="value in attribute.values" @click="addFilterOption(attribute.id, value.id)">
                                     <img 
                                         :src="'/storage/images/' + value.icon" alt="" 
-                                        :class="{'selected':isSelected(attribute.id, value.id)}"
+                                        
                                         
                                     >
                                     {{ value.value }}
@@ -71,6 +71,7 @@
                         </a>
                     </div>
                 </div>
+                <div v-if="noProductsFound" class="no-results-msg">По вашему запросу ничего не найдено.</div>
             </div>
             <button class="load-more-btn btn-green" @click="loadMore" v-if="products_all.current_page < products_all.last_page">Загрузить ещё</button>
         </div>
@@ -311,12 +312,13 @@
             filterBtnCaption() {
                 return this.showFilters ? 'Скрыть фильтры' : 'Показать фильтры';
             },
+            noProductsFound() {
+                return this.products.length === 0;
+            }
         },
         created() {
             this.products = 'data' in this.products_all ? this.products_all.data : this.products_all;
             this.setRangeDefaults();
-            // this.$forceUpdate()
-            // this.handleView();
             // this.getComparison();
             // this.$eventBus.$on('toggleProductCompare', this.toggleProductCompare);
 
@@ -385,29 +387,35 @@
                         }
                     }
                     .icon-attribute-wr {
-                        background: #076632;
-                        margin: 10px 0;
+                        color: $text-color;
                         padding: 10px;
                         display: flex;
                         flex-wrap: wrap;
                         .icon-img-wr {
+                            cursor: pointer;
+                            margin-top: 5px;
+                            margin-bottom: 5px;
                             width: 100%;
                             display: flex;
                             align-items: center;
+                            &.selected {
+                                background: #ececec;
+                            }
                         }
                         img {
-                            width: 40px;
-                            cursor: pointer;
+                            width: 30px;
                             border: 1px solid #ffffff00;
                             border-radius: 100px;
-                            &.selected {
-                                border: 1px solid #ffffff;
-                            }
+                            
                         }
                     }
                 }
                 
             }
+        }
+        .no-results-msg {
+            grid-column: 1 / span 2;
+            text-align: center;
         }
         .load-more-btn {
             margin-top: 50px;

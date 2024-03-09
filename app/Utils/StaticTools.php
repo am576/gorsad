@@ -132,7 +132,7 @@ class StaticTools
     public static function getAttributesByGroup()
     {
         return AttributesGroup::has('attributes')
-            ->with(['attributes','attributes.values:id,value,attribute_id,ext_value','attributes.values.icon.image:icon,id'])
+            ->with(['attributes','attributes.values:id,value,attribute_id,ext_value','attributes.values.icon.image:large,icon,id'])
             ->get()
             ->map(function ($group) {
                 return [
@@ -152,8 +152,10 @@ class StaticTools
                                     'value' => $value->value,
                                 ];
                                 if($value->ext_value) $new_value['ext_value'] = $value->ext_value;
-                                if($value->icon) $new_value['icon'] = $value->icon->image->icon;
-
+                                if($value->icon){
+                                    $new_value['icon'] = $value->icon->image->large;
+                                } 
+                                
                                 return $new_value;
                             })->toArray()
                         ];

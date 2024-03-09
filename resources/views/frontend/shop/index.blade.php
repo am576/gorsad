@@ -17,6 +17,6 @@
         :filtered_name="{{"'".$filtered_name ."'" }}"
         :filter_options="{{$filter_options ?? '{}'}}"
         :user="{{$user}}"
-        :show_banner="{{$showBanner}}">
+        >
     </shop-page>
 @endsection

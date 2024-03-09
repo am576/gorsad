@@ -53,7 +53,12 @@
         <div id="center">
             <x-frontend.logo></x-frontend.logo>
             <div id="search">
-                <input type="text" name="" id="" placeholder="Поиск">
+                <form id="search-form" action="/catalog" method="POST">
+                    @csrf
+                    <input type="text" name="product_name" id="" placeholder="Поиск" value="{{$filtered_name ?? ''}}">
+                    <span id="search-btn" class="search-icon" onclick="const form = document.getElementById('search-form'); form.submit()"></span>
+                    <input type="submit" style="display: none"  />
+                </form>
             </div>
         </div>
         <nav>
@@ -112,5 +117,13 @@
         </div>
     </footer>
 </div>
+<script>
+    
+
+    document.getElementById("search-btn").addEventListener("click", function () {
+        alert(1)
+    form.submit();
+    });
+</script>
 </body>
 </html>
