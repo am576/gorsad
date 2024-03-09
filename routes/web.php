@@ -73,7 +73,7 @@ Route::get('/design/street-lighting',function() {
 })->name('street_lighting');
 
 //** Services **/
-Route::get('/services', 'HomeController@showServicesPage');
+Route::get('/services', 'HomeController@showServicesPage')->name('services');
 Route::get('/services/{id}', 'HomeController@showServicePage');
 Route::post('/services/{id}/order', 'ShopController@createOrderService');
 

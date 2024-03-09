@@ -11,6 +11,10 @@ p {
         .page-menu-link {
             display: inline-block;
         }
+        a {
+            color: rgba(0, 0, 0, 0.6) !important;
+            font-size: 18px;
+        }
     }
     #services-banner {
         margin-top: 50px;

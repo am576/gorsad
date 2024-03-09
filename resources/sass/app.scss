@@ -86,7 +86,9 @@ $body-bg : #EDEEF0;
         #logo-text {
             display: flex;
             flex-direction: column;
+            align-items: center;
             font-family: 'Source Sans 3', sans-serif;
+            padding-left: 8px;
             #logo-title {
                 color: #0D6034;
                 font-weight: 600;
@@ -123,6 +125,7 @@ $body-bg : #EDEEF0;
             align-items: center;
             width: 80%;
         }
+        
         #contacts {
             display: flex;
             justify-content: space-around;
@@ -130,6 +133,9 @@ $body-bg : #EDEEF0;
             gap: 40px;
             font-size: 14px;
             color: #5A4636;
+            a.mail {
+                color: #5A4636 ;
+            }
             .contacts-title {
                 color: #363636;
                 font-size: 15px;
@@ -216,7 +222,7 @@ $body-bg : #EDEEF0;
                 letter-spacing: -1px;
             }
             #logo-description {
-                font-size: 8px;
+                font-size: 9px;
             }
         }
         #footer-content {
@@ -248,6 +254,12 @@ $body-bg : #EDEEF0;
                 }
                 .footer-icon-email {
                     background: url("/storage/images/public/icons/icon_email.png");
+                }
+                a.mail {
+                    color: $plain-text-color;
+                }
+                .footer-link {
+                    color: $plain-text-color;
                 }
             }
 

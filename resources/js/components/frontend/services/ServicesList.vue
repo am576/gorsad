@@ -4,7 +4,9 @@
             <div class="services-links-wr">
                 <div class="services-links">
                     <div class="service-link" v-for="service in services" @click="setServiceActive(service)">
-                        <span class="active-marker" :style="{opacity: isServiceActive(service)}">></span>
+                        <span class="active-marker" :style="{opacity: isServiceActive(service)}">
+                            <i class="mdi mdi-chevron-right mdi-24px"></i>
+                        </span>
                         <span>{{service.name}}</span>
                     </div>
                 </div>

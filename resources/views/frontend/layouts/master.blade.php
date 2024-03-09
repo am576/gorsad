@@ -12,7 +12,7 @@
     @stack('head')
     <!-- Scripts -->
     <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
-    <script src="@yield('script_file', 'js/app.js')" defer></script> 
+    <script src="@yield('script_file', '/js/app.js')" defer></script> 
 
     <!-- Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,7 +36,8 @@
                     </div>
                     <div>
                         <span class="mdi mdi-email-open-outline"></span>
-                        <span>mail@gorsad39.ru</span>
+                        <span>
+                            <a class="mail" href="mailto:">mail@gorsad39.ru</a></span>
                     </div>
                     <div>
                         <span class="mdi mdi-clock-time-four-outline"></span>
@@ -84,11 +85,21 @@
             </div>
             <div class="footer-column flex-grow-1">
                 <span class="footer-col-title">Узнай больше</span>
-                <span>Деревья</span>
-                <span>Услуги</span>
-                <span>Проекты</span>
-                <span>Советы</span>
-                <span>Дизайн</span>
+                <span>
+                    <a class="footer-link" href="{{route('catalog')}}">Деревья</a>
+                </span>
+                <span>
+                    <a class="footer-link" href="{{route('services')}}">Услуги</a>
+                </span>
+                <span>
+                    <a class="footer-link" href="{{route('projects')}}">Проекты</a>
+                </span>
+                <span>
+                    <a class="footer-link" href="{{route('knowhow')}}">Советы</a>
+                </span>
+                <span>
+                    <a class="footer-link" href="{{route('design')}}">Дизайн</a>
+                </span>
             </div>
             <div class="footer-column">
                 <span class="footer-col-title">Контакты</span>
@@ -105,7 +116,7 @@
                 </div>
                 <div class="d-flex">
                     <span class="footer-icon footer-icon-email"></span>
-                    <span>Mail@gorsad39.ru</span>
+                    <span><a class="mail" href="mailto:mail@gorsad39.ru">mail@gorsad39.ru</a></span>
                 </div>
 
             </div>
