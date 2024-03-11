@@ -20,11 +20,12 @@
     <div id="projects-landing-form" class="body-bg">
         <div class="projects-landing-form-inner container-pd">
             <h4 class="heading">Хотите обсудить проект или задать вопросы?</h4>
-            <form action="">
-                <div><input type="text" placeholder="Имя"></div>
-                <div><input type="text" placeholder="Телефон"></div>
-                <div><input type="text" placeholder="E-mail"></div>
-                <button class="btn-green no-border-radius">Обсудить проект</button>
+            <form>
+                <div><input type="text" name="name" placeholder="Имя"></div>
+                <div><input type="text" name="phone" placeholder="Телефон"></div>
+                <div><input type="text" name="email" placeholder="E-mail"></div>
+                <input type="hidden" name="message" value="Запрос на обратную связь">
+                <button type="button" class="btn-green no-border-radius" v-submit-form>Обсудить проект</button>
             </form>
         </div>
     </div>

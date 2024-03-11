@@ -14,7 +14,7 @@
                     Преобразите свое пространство с помощью профессиональных услуг и широкого ассортимента деревьев и
                     кустарников компании «Городской Садовник»
                 </div>
-                <button class="btn-green" onclick="window.location.assign('/F')">Перейти в каталог</button>
+                <button class="btn-green" onclick="window.location.assign('/catalog')">Перейти в каталог</button>
             </div>
         </div>
         <div class="body-bg">
@@ -60,12 +60,15 @@
             </div>
         </div>
         <div id="home-landing-form1">
-            <div class="home-landing-form1-inner container-pd">
-                <div><input type="text" placeholder="Имя"></div>
-                <div><input type="text" placeholder="Телефон"></div>
-                <div><input type="text" placeholder="E-mail"></div>
-                <button class="btn-green no-border-radius">Обсудить проект</button>
-            </div>
+            <form class="home-landing-form1-inner container-pd">
+                    @csrf
+                    <div><input type="text" name="name" placeholder="Имя" required></div>
+                    <div><input type="text" name="phone" placeholder="Телефон"></div>
+                    <div><input type="text" name="email" placeholder="E-mail" required></div>
+                    <input type="hidden" name="message" value="Запрос на обратную связь">
+                    <button type="button" class="btn-green no-border-radius" v-submit-form>Обсудить проект</button>
+            </form>
+                    
         </div>
         <div class="body-bg">
             <div id="catalog-block" class="home-block container-pd">
@@ -196,11 +199,11 @@
                             Ищем рабочих для ландшафтных работ и ландшафтных дизайнеров
                         </div>
                     </div>
-                    <form action="">
-                        <input type="text" placeholder="Ваше имя">
-                        <input type="text" placeholder="E-mail">
-                        <input type="text" placeholder="Комментарий">
-                        <button type="submit" class="btn-green no-border-radius">Отправить</button>
+                    <form>
+                        <input type="text" name="name" placeholder="Ваше имя">
+                        <input type="text" name="email" placeholder="E-mail">
+                        <input type="text" name="message" placeholder="Комментарий">
+                        <button type="button" class="btn-green no-border-radius" v-submit-form>Отправить</button>
                     </form>
                 </div>
             </div>
@@ -227,10 +230,11 @@
                         Оставьте свои контакты, и мы перезвоним вам или напишем в ближайшее время!
                     </div>
                 </div>
-                <form action="">
-                    <input type="text" name="" id="" placeholder="Имя">
-                    <input type="text" name="" id="" placeholder="Телефон">
-                    <input type="text" name="" id="" placeholder="E-mail">
+                <form>
+                    <input type="text" name="name" placeholder="Имя">
+                    <input type="text" name="phone" placeholder="Телефон">
+                    <input type="text" name="email" placeholder="E-mail">
+                    <input type="hidden" name="message" value="Запрос на обратную связь">
                     <div id="checkboxes">
                         <label class="checkbox-container">Позвоните мне
                             <input type="checkbox" name="" id="" checked="checked">
@@ -241,7 +245,7 @@
                             <span class="checkmark"></span>
                         </label>
                     </div>
-                    <button type="submit" class="btn-green no-border-radius w-75">Отправить</button>
+                    <button type="button" class="btn-green no-border-radius w-75" v-submit-form>Отправить</button>
                 </form>
             </div>
         </div>

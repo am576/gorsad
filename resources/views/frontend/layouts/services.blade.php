@@ -29,12 +29,12 @@
             <div id="landing-caption" class="heading text-white">
                 Вы можете заказать у нас проект
             </div>
-            <form action="" id="service-landing-form">
-                <input type="text" placeholder="ФИО">
-                <input type="text" placeholder="E-mail">
-                <input type="text" placeholder="Телефон">
-                <input type="text" placeholder="Комментарий">
-                <button type="submit" class="btn-green no-border-radius">Отправить</button>
+            <form id="service-landing-form">
+                <input type="text" name="name" placeholder="ФИО">
+                <input type="text" name="email" placeholder="E-mail">
+                <input type="text" name="phone" placeholder="Телефон">
+                <input type="text" name="message" placeholder="Комментарий">
+                <button type="button" class="btn-green no-border-radius" v-submit-form>Отправить</button>
             </form>
         </div>
     </div>

@@ -69,7 +69,7 @@
                     let res = await axios.post('/services/' + this.active_service.id + '/order', formData);
                     if(res.status === 200) {
                         alert('Спасибо! Ваша заявка принята. В ближайшее время с Вами свяжется наш менеджер для уточнения деталей');
-                        // window.location.reload();
+                        window.location.reload();
                     }
                 }
                 catch(error) {

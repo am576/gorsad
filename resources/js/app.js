@@ -19,6 +19,7 @@ import { BBadge } from "bootstrap-vue/esm/components/badge";
 import { BCollapse } from "bootstrap-vue/esm/components/collapse";
 import { VBToggle } from "bootstrap-vue/esm/directives/toggle";
 import Flipbook from 'flipbook-vue/dist/vue2/flipbook.min';
+import { submitFormDirective } from './directives/submitForm';
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -30,7 +31,6 @@ Vue.use( ClassicEditor );
 Vue.use( Flipbook );
 
 Vue.component('v-select', vSelect);
-Vue.component('InfiniteLoading', require('vue-infinite-loading'));
 
 Vue.component('b-table', BTable);
 Vue.component('b-pagination', BPagination);
@@ -53,6 +53,7 @@ Vue.component('signin-form', require('./components/frontend/user/SigninForm').de
 Vue.component('projects-map', require('./components/frontend/projects/ProjectsMap').default);
 
 Vue.component('contact-form', require('./components/frontend/contacts/ContactForm').default);
+Vue.directive('submit-form', submitFormDirective)
 
 /* Account page components */
 Vue.component('user-profile', require('./components/frontend/profile/UserProfile').default);
