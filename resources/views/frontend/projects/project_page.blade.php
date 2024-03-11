@@ -13,7 +13,7 @@
         <img class="project-bg" src="/storage/images/{{$project->images[0]->large}}" alt="">
         <div class="container-pd">
             <div id="project-details">
-                <div class="project-info">
+                {{-- <div class="project-info">
                     <div class="project-date">
                         {{date('Y', strtotime($project->date))}}
                     </div>
@@ -22,7 +22,7 @@
                         <div>{{$project->area}} м<sup>2</sup></div>
                         <div>{{$project->price}} &#8381;</div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="project-description">
                     {{$project->description}}
                 </div>
